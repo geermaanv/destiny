@@ -9,6 +9,7 @@ from app.adapters.kyc import IdentityVerificationAdapter, get_kyc_adapter
 from app.database import get_db
 from app.models import PhoneVerificationCode, Profile
 from app.schemas import (
+    PERIOD_MIDPOINTS,
     BirthDataIn,
     ContinueExistingOut,
     NotificationPreferenceIn,
@@ -46,9 +47,10 @@ def set_birth_data(profile_id: uuid.UUID, payload: BirthDataIn, db: Session = De
 
     profile.birth_date = payload.birth_date
     if payload.birth_time is None:
-        # "No sé mi hora exacta" -> 12:00 interno, flag de estimada. Derivado
+        # "No sé mi hora exacta" -> punto medio de la franja si la recuerda
+        # (madrugada/mañana/tarde/noche), si no 12:00; flag de estimada. Derivado
         # server-side: no se confía en un flag de estimada mandado por el cliente.
-        profile.birth_time = time(12, 0)
+        profile.birth_time = PERIOD_MIDPOINTS.get(payload.birth_time_period or "", time(12, 0))
         profile.birth_time_estimated = True
     else:
         profile.birth_time = payload.birth_time

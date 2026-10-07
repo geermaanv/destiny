@@ -25,9 +25,12 @@ export async function searchPlaces(query: string): Promise<Place[]> {
   return res.json();
 }
 
+export type BirthTimePeriod = "madrugada" | "manana" | "tarde" | "noche";
+
 export type BirthDataPayload = {
   birth_date: string;
   birth_time?: string;
+  birth_time_period?: BirthTimePeriod;
   birth_place: BirthPlace;
 };
 

@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createProfile, Place, searchPlaces, setBirthData } from "@/lib/api";
+import { BirthTimePeriod, createProfile, Place, searchPlaces, setBirthData } from "@/lib/api";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -28,6 +28,15 @@ function isAdult(isoDate: string): boolean {
   const eighteenth = new Date(y + MIN_AGE, m - 1, d);
   return eighteenth <= today;
 }
+
+// Si no sabe la hora exacta pero recuerda la franja, usamos el punto medio de
+// esa franja (desvío máximo de 3 h en vez de 12 h). Mismos valores que la API.
+const PERIODS: { value: BirthTimePeriod; label: string; range: string; midpoint: string }[] = [
+  { value: "madrugada", label: "Madrugada", range: "00 a 06 hs", midpoint: "03:00" },
+  { value: "manana", label: "Mañana", range: "06 a 12 hs", midpoint: "09:00" },
+  { value: "tarde", label: "Tarde", range: "12 a 18 hs", midpoint: "15:00" },
+  { value: "noche", label: "Noche", range: "18 a 24 hs", midpoint: "21:00" },
+];
 
 const SELECT_CLASS =
   "rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400 enabled:cursor-pointer disabled:opacity-40";
@@ -139,6 +148,8 @@ function DatosNatalesForm() {
   const [birthMinute, setBirthMinute] = useState("00");
   const birthTime = birthHour ? `${birthHour}:${birthMinute}` : "";
   const [timeUnknown, setTimeUnknown] = useState(false);
+  const [timePeriod, setTimePeriod] = useState<BirthTimePeriod | null>(null);
+  const chosenPeriod = PERIODS.find((p) => p.value === timePeriod);
   const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -175,6 +186,7 @@ function DatosNatalesForm() {
       await setBirthData(profileId, {
         birth_date: birthDate,
         birth_time: timeUnknown || !birthTime ? undefined : birthTime,
+        birth_time_period: timeUnknown && timePeriod ? timePeriod : undefined,
         birth_place: place
           ? { query: place.label, lat: place.lat, lon: place.lon, timezone: place.timezone }
           : { query: birthPlace },
@@ -302,11 +314,39 @@ function DatosNatalesForm() {
           No sé mi hora exacta
         </label>
         {timeUnknown && (
-          <p className="rounded-md bg-slate-900 px-3 py-2 text-xs text-slate-400">
-            No pasa nada: tomamos las <span className="text-slate-200">12:00</span>, el mediodía, porque es el
-            punto medio del día y así el desvío del cálculo es el menor posible, para cualquier hora real en que
-            hayas nacido.
-          </p>
+          <div className="space-y-2 rounded-md bg-slate-900 px-3 py-3">
+            <p className="text-sm text-slate-300">¿Te acordás si fue de madrugada, a la mañana, a la tarde o a la noche?</p>
+            <div className="grid grid-cols-2 gap-2">
+              {PERIODS.map((p) => (
+                <button
+                  key={p.value}
+                  type="button"
+                  onClick={() => setTimePeriod(timePeriod === p.value ? null : p.value)}
+                  className={`rounded-md px-2 py-1.5 text-left ring-1 ${
+                    timePeriod === p.value
+                      ? "bg-violet-600 text-white ring-violet-500"
+                      : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-violet-400"
+                  }`}
+                >
+                  <span className="block text-sm">{p.label}</span>
+                  <span className="block text-xs opacity-70">{p.range}</span>
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-slate-400">
+              {chosenPeriod ? (
+                <>
+                  Tomamos las <span className="text-slate-200">{chosenPeriod.midpoint}</span>, el medio de la{" "}
+                  {chosenPeriod.label.toLowerCase()}: así el desvío del cálculo es como mucho de 3 horas.
+                </>
+              ) : (
+                <>
+                  Si no te acordás, no pasa nada: tomamos las <span className="text-slate-200">12:00</span>, el
+                  mediodía, porque es el punto medio del día y así el desvío del cálculo es el menor posible.
+                </>
+              )}
+            </p>
+          </div>
         )}
       </div>
 

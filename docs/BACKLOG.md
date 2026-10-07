@@ -58,6 +58,8 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [ ] **Match unilateral**: tocar "Match" crea el chat al instante; la otra persona no se entera y no hay lista de chats/matches para encontrarlo.
 - [ ] **Sin sesión**: el perfil viaja en la URL (`?profileId=`). Si se cierra el navegador se pierde el acceso. La verificación por WhatsApp + "Seguir con mi cuenta" ya sirve como login: falta guardarlo (cookie) y una entrada de "Ya tengo cuenta".
 
+- [ ] Idea de German para el perfil: **momento del día en que la persona tiene más energía** (madrugador / nocturno). Mucha gente lo asocia a cuándo nació; puede ser un dato de color del perfil y una señal más para el matching. Va con el diseño del perfil básico.
+
 **Navegación / fricción**
 - [x] No hay barra de navegación ni botón "atrás": Home tiene links sueltos y desde chat, calendario o invitar no se vuelve. **Hecho**: barra inferior (Inicio / Descubrir / Calendario / Invitar) en todas las pantallas post-onboarding.
 - [ ] Idea de German: el onboarding como **una sola pantalla con secciones** (datos natales, ritmo, verificación) en vez de pasos separados, para poder volver y cambiar algo fácil.

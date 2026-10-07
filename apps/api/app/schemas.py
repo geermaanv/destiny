@@ -28,9 +28,21 @@ class PlaceOut(BaseModel):
 MIN_AGE = 18  # spec A1: Destiny es para mayores de edad
 
 
+# Franja del día si no se sabe la hora exacta (spec A1): se usa el punto medio,
+# así el desvío máximo baja de 12 a 3 horas.
+BirthTimePeriod = Literal["madrugada", "manana", "tarde", "noche"]
+PERIOD_MIDPOINTS: dict[str, time] = {
+    "madrugada": time(3, 0),
+    "manana": time(9, 0),
+    "tarde": time(15, 0),
+    "noche": time(21, 0),
+}
+
+
 class BirthDataIn(BaseModel):
     birth_date: date
     birth_time: time | None = None
+    birth_time_period: BirthTimePeriod | None = None
     birth_place: BirthPlaceIn
 
     @field_validator("birth_date")

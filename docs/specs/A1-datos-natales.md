@@ -54,7 +54,7 @@ Si `birth_time` es `null`, el backend asigna `"12:00"` y fuerza `birth_time_esti
 - Si el geocoder no responde, se acepta el texto libre (sin coordenadas) para no bloquear el onboarding.
 - Fecha en **tres desplegables (Día / Mes / Año)**, con el mes por nombre: el calendario nativo abría en el año actual y llegar al año de nacimiento era tedioso. Los días se ajustan al mes (ej. febrero 28/29).
 - **Mínimo 18 años** (decisión 2026-10-07, habitual en apps de citas y exigido por las tiendas): la lista de años arranca 18 años atrás y llega a 100; el front y la API (`422`) rechazan menores.
-- Al marcar "No sé mi hora exacta" se explica por qué se usan las 12:00: es el punto medio del día y minimiza el desvío del cálculo para cualquier hora real de nacimiento.
+- Al marcar "No sé mi hora exacta" se pregunta si recuerda la **franja del día** (madrugada 00–06, mañana 06–12, tarde 12–18, noche 18–24). Se usa el punto medio (03:00 / 09:00 / 15:00 / 21:00): el desvío máximo baja de 12 a 3 horas. Si no la recuerda, 12:00 (punto medio del día). En todos los casos `birth_time_estimated: true`. API: campo opcional `birth_time_period` en `POST /profiles/{id}/birth-data`; si viene la hora exacta, gana la hora exacta.
 - Hora en **formato 24 h** con dos desplegables (hora 00–23 y minutos): el input de hora nativo usa AM/PM según el idioma del navegador y era fácil cargarla mal a mano.
 
 ## Criterios de aceptación
