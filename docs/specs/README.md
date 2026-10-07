@@ -5,7 +5,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 ## Workflow
 
 1. Se crea la spec en estado `draft` a partir de `TEMPLATE.md`.
-2. Pablo (founder) revisa y resuelve los puntos abiertos (en particular los heredados de `[ESPACIO PARA EL FOUNDER]` en `../ALCANCE_MVP.md`).
+2. Pablo (founder) revisa y resuelve los puntos abiertos (en particular los listados en `../BACKLOG.md`, sección P0).
 3. Cuando no quedan puntos abiertos, la spec pasa a `approved`.
 4. Se implementa. Al mergear la implementación, la spec pasa a `implemented`.
 

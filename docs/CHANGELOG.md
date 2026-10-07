@@ -11,3 +11,5 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - `BACKLOG.md` creado con los puntos pendientes priorizados (P0: decisiones del founder que bloquean specs; P1–P3: specs por módulo; tareas técnicas sueltas).
 - Equipo: Pablo Maiztegui (founder, dueño de las decisiones de producto), German Villamarin (soporte técnico/armado del MVP).
 - Commit inicial pusheado a `main`.
+- `apps/api` validado end-to-end: venv + `pip install` sin errores, `uvicorn` levanta y `/health` responde `200 {"status":"ok"}`.
+- `ALCANCE_MVP.md` limpiado: se sacaron los marcadores `[ESPACIO PARA EL FOUNDER]` y la sección de pendientes — ese tracking vive únicamente en `BACKLOG.md` (P0) para que Pablo los resuelva en paralelo sin bloquear el avance sobre lo ya definido.

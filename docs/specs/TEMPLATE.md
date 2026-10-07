@@ -10,7 +10,7 @@ Qué resuelve esta feature para el usuario, en 2-3 líneas.
 
 ## Puntos abiertos
 
-Lista de decisiones que todavía no están tomadas (copiar los `[ESPACIO PARA EL FOUNDER]` relevantes de `ALCANCE_MVP.md`). La spec no puede pasar a `approved` mientras esta lista no esté vacía.
+Lista de decisiones que todavía no están tomadas (copiar los puntos relevantes de `BACKLOG.md`, sección P0). La spec no puede pasar a `approved` mientras esta lista no esté vacía.
 
 - [ ]
 
