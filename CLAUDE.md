@@ -1,6 +1,19 @@
 # CLAUDE.md — Destiny
 
-Instrucciones de proyecto para Claude Code. Leer también `docs/VISION.md` (tesis, pitch deck) y `docs/ALCANCE_MVP.md` (los 3 módulos del MVP y espacios pendientes del founder) antes de trabajar en producto.
+Instrucciones de proyecto para Claude Code. Leer también, en este orden, antes de trabajar en producto:
+
+1. `docs/VISION.md` — tesis, pitch deck.
+2. `docs/ALCANCE_MVP.md` — los 3 módulos del MVP y espacios pendientes del founder.
+3. `docs/BACKLOG.md` — qué sigue, priorizado.
+4. `docs/specs/` — specs por feature (ver regla dura abajo).
+5. `docs/decisions/` — ADRs, el detalle y el porqué de cada decisión técnica.
+6. `docs/CHANGELOG.md` — bitácora cronológica de qué se hizo y decidió en cada sesión.
+
+## Regla dura: spec-driven
+
+**Ninguna feature se codifica sin una spec en estado `approved` en `docs/specs/`.** Ver `docs/specs/README.md` para el workflow y `docs/specs/TEMPLATE.md` para la plantilla. Si una spec tiene puntos abiertos marcados `[ESPACIO PARA EL FOUNDER]` o similar, no puede pasar de `draft` a `approved`.
+
+Al terminar cualquier sesión de trabajo con cambios relevantes, actualizar `docs/CHANGELOG.md` y `docs/BACKLOG.md`.
 
 ## Idioma
 
@@ -54,6 +67,8 @@ npm run dev
 Corre en `http://localhost:3000`.
 
 ## Decisiones técnicas y razonamiento
+
+> Resumen operativo. El detalle y el porqué completo de cada una está en `docs/decisions/` (ADRs 0001–0006) — actualizar ahí primero si una decisión cambia, y reflejar el resumen acá.
 
 ### Frontend: PWA primero, no nativo
 
