@@ -51,11 +51,20 @@ docker-compose.yml — Postgres local
 docker compose up -d
 ```
 
+Alternativa sin Docker (recomendada en Macs con poca RAM — Docker en Mac corre una VM): Postgres nativo con Homebrew, con el mismo usuario/base que espera `.env.example`:
+
+```bash
+brew install postgresql@16 && brew services start postgresql@16
+psql -d postgres -c "CREATE ROLE destiny LOGIN PASSWORD 'destiny';" -c "CREATE DATABASE destiny OWNER destiny;"
+```
+
 ### API (`apps/api`)
+
+Requiere **Python 3.12**: las versiones fijadas en `requirements.txt` (ej. `psycopg-binary==3.2.3`, `pydantic==2.9.2`) no instalan en Python 3.14. En Mac: `brew install python@3.12`.
 
 ```bash
 cd apps/api
-python3 -m venv .venv && source .venv/bin/activate
+python3.12 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 uvicorn app.main:app --reload
