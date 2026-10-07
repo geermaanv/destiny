@@ -2,12 +2,20 @@ import uuid
 from datetime import time
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from app.adapters.kyc import IdentityVerificationAdapter, get_kyc_adapter
 from app.database import get_db
-from app.models import Profile
-from app.schemas import BirthDataIn, NotificationPreferenceIn, ProfileOut, VerificationOut, WhatsappCodeOut
+from app.models import PhoneVerificationCode, Profile
+from app.schemas import (
+    BirthDataIn,
+    ContinueExistingOut,
+    NotificationPreferenceIn,
+    ProfileOut,
+    VerificationOut,
+    WhatsappCodeOut,
+)
 from app.whatsapp import build_wa_link, is_mock_mode, issue_code
 
 router = APIRouter(prefix="/profiles", tags=["profiles"])
@@ -118,3 +126,25 @@ def get_verification(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> Ve
         status=profile.verification_status,
         method=profile.verification_method,
     )
+
+
+@router.post("/{profile_id}/verification/continue-existing", response_model=ContinueExistingOut)
+def continue_with_existing_profile(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> ContinueExistingOut:
+    """Tras duplicado_detectado: seguir con la cuenta que ya tiene ese número.
+
+    El perfil nuevo (todavía sin verificar) se descarta y se devuelve el existente.
+    """
+    profile = db.get(Profile, profile_id)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    if profile.verification_status != "duplicado_detectado" or profile.duplicate_of_id is None:
+        raise HTTPException(status_code=409, detail="Profile is not a detected duplicate")
+
+    existing = db.get(Profile, profile.duplicate_of_id)
+    if existing is None or existing.verification_status != "verificado":
+        raise HTTPException(status_code=409, detail="Existing profile not available")
+
+    db.execute(delete(PhoneVerificationCode).where(PhoneVerificationCode.profile_id == profile.id))
+    db.delete(profile)
+    db.commit()
+    return ContinueExistingOut(profile_id=existing.id)

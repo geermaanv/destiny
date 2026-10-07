@@ -54,6 +54,10 @@ class VerificationOut(BaseModel):
     method: str | None = None
 
 
+class ContinueExistingOut(BaseModel):
+    profile_id: uuid.UUID
+
+
 class WhatsappCodeOut(BaseModel):
     code: str
     wa_link: str

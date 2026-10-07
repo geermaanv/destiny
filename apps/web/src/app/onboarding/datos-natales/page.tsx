@@ -16,6 +16,12 @@ function openPicker(e: React.MouseEvent<HTMLInputElement>) {
 
 const SEARCH_DEBOUNCE_MS = 300;
 
+const pad = (n: number) => String(n).padStart(2, "0");
+const HOURS = Array.from({ length: 24 }, (_, i) => pad(i));
+const MINUTES = Array.from({ length: 60 }, (_, i) => pad(i));
+const SELECT_CLASS =
+  "rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400 enabled:cursor-pointer disabled:opacity-40";
+
 // Autocomplete del lugar de nacimiento (spec A1): hay que elegir una opción de
 // la lista para tener lat/lon + timezone. Si el geocoder no responde, se
 // acepta el texto libre para no bloquear el onboarding.
@@ -115,7 +121,9 @@ function DatosNatalesForm() {
   const [birthPlace, setBirthPlace] = useState("");
   const [place, setPlace] = useState<Place | null>(null);
   const [geocodingDown, setGeocodingDown] = useState(false);
-  const [birthTime, setBirthTime] = useState("");
+  const [birthHour, setBirthHour] = useState("");
+  const [birthMinute, setBirthMinute] = useState("00");
+  const birthTime = birthHour ? `${birthHour}:${birthMinute}` : "";
   const [timeUnknown, setTimeUnknown] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -191,18 +199,43 @@ function DatosNatalesForm() {
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="birth-time" className="block text-sm text-slate-400">
+        <label htmlFor="birth-hour" className="block text-sm text-slate-400">
           Hora de nacimiento
         </label>
-        <input
-          id="birth-time"
-          type="time"
-          disabled={timeUnknown}
-          value={birthTime}
-          onChange={(e) => setBirthTime(e.target.value)}
-          onClick={openPicker}
-          className="w-full rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400 enabled:cursor-pointer disabled:opacity-40"
-        />
+        {/* Dos selects en 24 h: el input type="time" nativo usa AM/PM según el
+            idioma del navegador y es fácil cargar mal la hora a mano. */}
+        <div className="flex items-center gap-2">
+          <select
+            id="birth-hour"
+            aria-label="Hora"
+            disabled={timeUnknown}
+            value={birthHour}
+            onChange={(e) => setBirthHour(e.target.value)}
+            className={`${SELECT_CLASS} flex-1`}
+          >
+            <option value="">Hora</option>
+            {HOURS.map((h) => (
+              <option key={h} value={h}>
+                {h}
+              </option>
+            ))}
+          </select>
+          <span className="text-slate-500">:</span>
+          <select
+            aria-label="Minutos"
+            disabled={timeUnknown || !birthHour}
+            value={birthMinute}
+            onChange={(e) => setBirthMinute(e.target.value)}
+            className={`${SELECT_CLASS} flex-1`}
+          >
+            {MINUTES.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
+          </select>
+          <span className="text-sm text-slate-500">hs</span>
+        </div>
         <label className="flex items-center gap-2 pt-1 text-sm text-slate-400">
           <input type="checkbox" checked={timeUnknown} onChange={(e) => setTimeUnknown(e.target.checked)} />
           No sé mi hora exacta

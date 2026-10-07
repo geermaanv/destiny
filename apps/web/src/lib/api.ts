@@ -206,6 +206,11 @@ export async function getVerification(profileId: string): Promise<VerificationRe
   return res.json();
 }
 
+// Tras duplicado_detectado: descarta el perfil nuevo y devuelve el que ya tiene ese número.
+export function continueWithExistingProfile(profileId: string): Promise<{ profile_id: string }> {
+  return postJson(`/profiles/${profileId}/verification/continue-existing`);
+}
+
 // Solo modo mock (sin credenciales de WhatsApp): simula el mensaje que Meta
 // mandaría al webhook cuando el usuario envía el código.
 export function simulateWhatsappMessage(fromPhone: string, text: string): Promise<void> {

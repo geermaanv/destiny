@@ -47,6 +47,7 @@ def issue_code(db: Session, profile: Profile) -> PhoneVerificationCode:
     now = _now()
     if profile.verification_status == "duplicado_detectado":
         profile.verification_status = "pendiente"
+        profile.duplicate_of_id = None
     for old in db.scalars(
         select(PhoneVerificationCode).where(
             PhoneVerificationCode.profile_id == profile.id, PhoneVerificationCode.used_at.is_(None)
@@ -122,7 +123,10 @@ def process_incoming(db: Session, sender: str, text: str) -> None:
     owner = db.scalar(select(Profile).where(Profile.phone_e164 == phone, Profile.id != profile.id))
     profile.verification_method = "whatsapp"
     if owner is not None:
+        # Quien mandó el código probó que tiene ese número: puede seguir con la
+        # cuenta existente (POST /profiles/{id}/verification/continue-existing).
         profile.verification_status = "duplicado_detectado"
+        profile.duplicate_of_id = owner.id
     else:
         profile.phone_e164 = phone
         profile.verification_status = "verificado"

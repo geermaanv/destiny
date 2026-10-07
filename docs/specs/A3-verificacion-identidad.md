@@ -35,7 +35,9 @@ El usuario le escribe a Destiny, en vez de que Destiny le mande un código. Los 
 4. Meta llama al webhook de la API con el mensaje. La API extrae el código, lo asocia al perfil y toma el número del remitente (`from` / `wa_id`) como el teléfono verificado.
 5. El front consulta el estado cada pocos segundos (polling) mientras espera. Al resolver:
    - `verificado` → Home (`/home`), o la revelación de compatibilidad si el onboarding viene con `ref` (C8), igual que hoy.
-   - `duplicado_detectado` → pantalla de error: ese número ya está asociado a otra cuenta.
+   - `duplicado_detectado` → "Ya tenés una cuenta", con dos opciones:
+     - **Seguir con mi cuenta**: se descarta el perfil nuevo (y los datos recién cargados) y se entra con el perfil que ya tiene ese número. Es seguro porque quien mandó el código demostró que tiene ese WhatsApp.
+     - **Usar otro número**: genera un código nuevo para verificar con otro número.
    - Código vencido → botón para generar uno nuevo.
    - Pedir un código nuevo después de `duplicado_detectado` (ej. "Probar con otro número") vuelve el perfil a `pendiente`.
 
@@ -43,7 +45,7 @@ El usuario le escribe a Destiny, en vez de que Destiny le mande un código. Los 
 
 - Estados de verificación: se reutilizan los existentes. v1 usa `pendiente` → `verificado` | `duplicado_detectado`. (`en_revision` y `rechazado` quedan para v2.)
 - Código: 6 dígitos, de un solo uso, vence a los 15 minutos. Generar uno nuevo invalida el anterior del mismo perfil.
-- Un número de teléfono solo puede estar verificado en **un** perfil. Si llega un código válido desde un número ya verificado en otro perfil → `duplicado_detectado`.
+- Un número de teléfono solo puede estar verificado en **un** perfil. Si llega un código válido desde un número ya verificado en otro perfil → `duplicado_detectado`, y el perfil nuevo guarda `duplicate_of_id` (el perfil existente) para poder seguir con esa cuenta.
 - Mensajes que no contienen un código válido y vigente se ignoran (no cambian ningún estado).
 - El teléfono se guarda normalizado (formato E.164) y **nunca** se expone en endpoints que vean otros usuarios (`/discover`, chats, invitaciones).
 - Acceso a `/discover` bloqueado mientras el estado no sea `verificado` (sin cambios respecto de hoy).
@@ -63,6 +65,9 @@ POST /profiles/{id}/verification/whatsapp
 
 GET  /profiles/{id}/verification
   -> { "status": "pendiente|verificado|duplicado_detectado", "method": "whatsapp" }   (ya existe; suma "method")
+
+POST /profiles/{id}/verification/continue-existing
+  -> { "profile_id": "<perfil existente>" }   (solo si el estado es duplicado_detectado; borra el perfil nuevo)
 
 GET  /webhooks/whatsapp    -> handshake de Meta (hub.mode, hub.verify_token, hub.challenge)
 POST /webhooks/whatsapp    -> mensajes entrantes; valida la firma X-Hub-Signature-256 con el app secret
@@ -102,6 +107,7 @@ Particularidad del **número de prueba** de Meta (+1 555…): un usuario no pued
 - [x] Enviar un código válido y vigente verifica el perfil y guarda su teléfono.
 - [x] Un código vencido, ya usado o inexistente no cambia ningún estado.
 - [x] Un número ya verificado en otro perfil termina en `duplicado_detectado`.
+- [x] Tras `duplicado_detectado`, "Seguir con mi cuenta" lleva a Home con el perfil existente y borra el nuevo; "Usar otro número" permite reintentar.
 - [x] El webhook rechaza payloads con firma inválida cuando `WHATSAPP_APP_SECRET` está configurado.
 - [x] El teléfono no aparece en ninguna respuesta de `/discover`, chats ni invitaciones.
 - [x] El flujo completo (A1 → A2 → A3 → Home, y con `ref` de C8) funciona en modo mock.

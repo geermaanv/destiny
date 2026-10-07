@@ -2,7 +2,9 @@
 
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
+  continueWithExistingProfile,
   getVerification,
   revealInvitation,
   simulateWhatsappMessage,
@@ -18,7 +20,8 @@ const POLL_MS = 3000;
 
 const STATUS_COPY: Record<string, string> = {
   verificado: "Número verificado. Ya podés acceder a descubrimiento.",
-  duplicado_detectado: "Ese número de WhatsApp ya está asociado a otra cuenta. Probá con otro número o contactanos si es un error.",
+  duplicado_detectado:
+    "Ese número de WhatsApp ya tiene una cuenta en Destiny. Podés seguir con esa cuenta (con los datos que ya cargaste antes) o verificarte con otro número.",
 };
 
 function randomDevPhone(): string {
@@ -26,6 +29,7 @@ function randomDevPhone(): string {
 }
 
 function VerificacionForm() {
+  const router = useRouter();
   const params = useSearchParams();
   const profileId = params.get("profileId");
   const ref = params.get("ref");
@@ -35,6 +39,7 @@ function VerificacionForm() {
   const [error, setError] = useState(false);
   const [reveal, setReveal] = useState<string | null>(null);
   const [devPhone, setDevPhone] = useState(randomDevPhone);
+  const [continuing, setContinuing] = useState(false);
   // Evita pedir dos códigos al montar (React StrictMode corre los effects dos
   // veces en dev, y el segundo código invalidaría al que se muestra).
   const started = useRef(false);
@@ -80,6 +85,18 @@ function VerificacionForm() {
     }
   }, [result, ref, profileId]);
 
+  async function continueExisting() {
+    if (!profileId) return;
+    setContinuing(true);
+    try {
+      const { profile_id } = await continueWithExistingProfile(profileId);
+      router.push(`/home?profileId=${profile_id}`);
+    } catch {
+      setContinuing(false);
+      setError(true);
+    }
+  }
+
   if (!profileId) {
     return <p className="text-slate-400">Falta el perfil. Volvé a empezar el onboarding.</p>;
   }
@@ -87,7 +104,9 @@ function VerificacionForm() {
   if (result) {
     return (
       <div className="w-full max-w-sm space-y-3 text-center">
-        <h1 className="text-2xl font-semibold capitalize">{result.status.replace("_", " ")}</h1>
+        <h1 className="text-2xl font-semibold">
+          {result.status === "duplicado_detectado" ? "Ya tenés una cuenta" : "Verificado"}
+        </h1>
         <p className="text-slate-400">{STATUS_COPY[result.status] ?? ""}</p>
         {reveal && <p className="rounded-md bg-violet-950 p-3 text-sm text-violet-200">{reveal}</p>}
         {result.status === "verificado" && (
@@ -96,9 +115,19 @@ function VerificacionForm() {
           </a>
         )}
         {result.status === "duplicado_detectado" && (
-          <button onClick={requestCode} className="text-violet-400 underline">
-            Probar con otro número
-          </button>
+          <div className="space-y-3 pt-2">
+            <button
+              onClick={continueExisting}
+              disabled={continuing}
+              className="w-full rounded-md bg-violet-600 px-3 py-2 font-medium text-white disabled:opacity-50"
+            >
+              {continuing ? "Entrando…" : "Seguir con mi cuenta"}
+            </button>
+            <button onClick={requestCode} className="text-sm text-violet-400 underline">
+              Usar otro número
+            </button>
+            {error && <p className="text-sm text-red-400">No se pudo entrar a tu cuenta. Probá de nuevo.</p>}
+          </div>
         )}
       </div>
     );

@@ -31,6 +31,8 @@ class Profile(Base):
     verification_method: Mapped[str | None] = mapped_column(String, nullable=True)  # "whatsapp" (v1) | "kyc_video" (v2)
     # Teléfono verificado por WhatsApp, E.164. Nunca se expone a otros usuarios.
     phone_e164: Mapped[str | None] = mapped_column(String, nullable=True, unique=True)
+    # Si la verificación dio duplicado_detectado: el perfil que ya tiene ese número.
+    duplicate_of_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
 
 
 class PhoneVerificationCode(Base):
