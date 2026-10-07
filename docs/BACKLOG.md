@@ -22,8 +22,8 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 Specs approved, listas para codear:
 
 - [x] `A1-datos-natales.md` — implementado (modelo `Profile`, endpoints `POST /profiles`, `POST /profiles/{id}/birth-data`, `GET /profiles/{id}`, pantalla `/onboarding/datos-natales`).
-- [ ] `A2-ritmo-notificaciones.md`.
-- [ ] `A3-verificacion-identidad.md` — con adapter mock de KYC (ver ADR 0006).
+- [x] `A2-ritmo-notificaciones.md` — implementado (`notification_rhythm` en `Profile`, endpoint `POST /profiles/{id}/notification-preference`, pantalla `/onboarding/ritmo-notificaciones`).
+- [x] `A3-verificacion-identidad.md` — implementado (adapter mock de KYC en `app/adapters/kyc.py`, endpoints `POST`/`GET /profiles/{id}/verification`, pantalla `/onboarding/verificacion`). Onboarding completo A1→A2→A3 encadenado y validado end-to-end.
 
 ## P2 — Implementar Módulo B (core loop diario)
 
@@ -39,5 +39,6 @@ Specs approved, listas para codear:
 ## Tareas técnicas sueltas
 
 - [ ] Confirmar con Pablo si Postgres es el motor definitivo (ADR 0001) antes de modelar el esquema real.
-- [ ] El esquema de datos arrancó con `A1` (tabla `profiles`, campos de carta natal). Falta modelar verificación (A3), matches/compatibilidad (B5), chat (B7) e invitaciones (C8) a medida que se implementan.
+- [x] Esquema de datos: `profiles` ya tiene carta natal (A1), ritmo de notificaciones (A2) y verificación (A3). Falta modelar matches/compatibilidad (B5), chat (B7) e invitaciones (C8) a medida que se implementan.
+- [ ] Gating real de `/discover` según `verification_status` (criterio de aceptación de `A3-verificacion-identidad.md`) — pendiente hasta que exista `/discover` (se agrega al implementar `B5-pantalla-descubrir.md`).
 - [ ] Hoy las tablas se crean con `Base.metadata.create_all` al levantar la API (sin migraciones). Evaluar sumar Alembic antes de tocar esquema en un entorno con datos reales — no es necesario mientras solo haya datos de desarrollo.

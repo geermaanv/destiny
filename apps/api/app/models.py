@@ -23,3 +23,8 @@ class Profile(Base):
     birth_place_lat: Mapped[float | None] = mapped_column(Float, nullable=True)
     birth_place_lon: Mapped[float | None] = mapped_column(Float, nullable=True)
     birth_place_timezone: Mapped[str | None] = mapped_column(String, nullable=True)
+
+    notification_rhythm: Mapped[str | None] = mapped_column(String, nullable=True)
+
+    verification_status: Mapped[str] = mapped_column(String, default="pendiente", nullable=False)
+    verification_id: Mapped[str | None] = mapped_column(String, nullable=True)

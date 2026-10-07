@@ -1,7 +1,14 @@
 import uuid
 from datetime import date, time
+from typing import Literal
 
 from pydantic import BaseModel
+
+NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
+
+
+class NotificationPreferenceIn(BaseModel):
+    rhythm: NotificationRhythm
 
 
 class BirthPlaceIn(BaseModel):
@@ -26,6 +33,14 @@ class ProfileOut(BaseModel):
     birth_place_lat: float | None
     birth_place_lon: float | None
     birth_place_timezone: str | None
+    notification_rhythm: NotificationRhythm | None
+    verification_status: str
+    verification_id: str | None
 
     class Config:
         from_attributes = True
+
+
+class VerificationOut(BaseModel):
+    verification_id: str | None
+    status: str

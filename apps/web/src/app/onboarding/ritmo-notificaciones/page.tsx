@@ -1,0 +1,71 @@
+"use client";
+
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { NotificationRhythm, setNotificationPreference } from "@/lib/api";
+
+const OPTIONS: { value: NotificationRhythm; title: string; description: string }[] = [
+  {
+    value: "ritmo_diario",
+    title: "Ritmo Diario",
+    description: "Un mensaje a la mañana con el pulso astrológico del día.",
+  },
+  {
+    value: "pulso_cosmos",
+    title: "Pulso del Cosmos",
+    description: "Alertas en tiempo real cuando un tránsito exacto afecta tu carta.",
+  },
+];
+
+function RitmoNotificacionesForm() {
+  const router = useRouter();
+  const profileId = useSearchParams().get("profileId");
+  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+
+  async function choose(rhythm: NotificationRhythm) {
+    if (!profileId) return;
+    setStatus("submitting");
+    try {
+      await setNotificationPreference(profileId, rhythm);
+      router.push(`/onboarding/verificacion?profileId=${profileId}`);
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (!profileId) {
+    return <p className="text-slate-400">Falta el perfil. Volvé a empezar el onboarding.</p>;
+  }
+
+  return (
+    <div className="w-full max-w-sm space-y-5">
+      <h1 className="text-2xl font-semibold">Elegí tu ritmo</h1>
+      <div className="space-y-3">
+        {OPTIONS.map((option) => (
+          <button
+            key={option.value}
+            onClick={() => choose(option.value)}
+            disabled={status === "submitting"}
+            className="w-full rounded-md bg-slate-900 p-4 text-left ring-1 ring-slate-700 hover:ring-violet-400 disabled:opacity-50"
+          >
+            <p className="font-medium">{option.title}</p>
+            <p className="mt-1 text-sm text-slate-400">{option.description}</p>
+          </button>
+        ))}
+      </div>
+      {status === "error" && (
+        <p className="text-sm text-red-400">No se pudo guardar tu elección. Probá de nuevo.</p>
+      )}
+    </div>
+  );
+}
+
+export default function RitmoNotificacionesPage() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
+      <Suspense>
+        <RitmoNotificacionesForm />
+      </Suspense>
+    </main>
+  );
+}

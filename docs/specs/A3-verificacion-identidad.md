@@ -1,6 +1,6 @@
 # A3-verificacion-identidad — Verificación de identidad mandatoria
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: A3
 - **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07

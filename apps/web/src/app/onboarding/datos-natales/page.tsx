@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createProfile, setBirthData } from "@/lib/api";
 
 export default function DatosNatalesPage() {
+  const router = useRouter();
   const [profileId, setProfileId] = useState<string | null>(null);
   const [birthDate, setBirthDate] = useState("");
   const [birthPlace, setBirthPlace] = useState("");
@@ -30,19 +32,11 @@ export default function DatosNatalesPage() {
         birth_place: { query: birthPlace },
       });
       setStatus("done");
+      router.push(`/onboarding/ritmo-notificaciones?profileId=${profileId}`);
     } catch {
       setError("No se pudieron guardar los datos. Probá de nuevo.");
       setStatus("error");
     }
-  }
-
-  if (status === "done") {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
-        <h1 className="text-2xl font-semibold">Listo.</h1>
-        <p className="mt-2 text-slate-400">Guardamos tu carta natal. Vamos a calcular tu momento astrológico.</p>
-      </main>
-    );
   }
 
   return (
