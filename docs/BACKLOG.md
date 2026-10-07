@@ -10,7 +10,10 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 
 - [ ] UX de la pantalla de datos natales (spec `A1-datos-natales.md`).
 - [ ] Confirmar el cambio de verificación a WhatsApp para v1, con selfie/video en vivo pospuesta a v2 (spec `A3-verificacion-identidad.md` / ADR 0008).
-- [ ] Número dedicado de WhatsApp para Destiny y titular de la cuenta de Meta Business (operativo; el desarrollo avanza en modo mock).
+- [x] Número dedicado de WhatsApp para Destiny — definido por German (línea aparte; configurado solo en `apps/api/.env` local, no en el repo). Se pasa de la app WhatsApp Business a la Cloud API borrando la cuenta de la app (opción elegida: número dedicado solo a verificación, sin coexistencia).
+- [ ] Cuenta comercial de Meta ("portfolio comercial"): **todavía no existe la empresa Destiny**, así que se crea a nombre de German. Sumar a Pablo como administrador desde el inicio; cuando exista la empresa, se completa ahí.
+- [ ] Página web simple de Destiny (qué es + contacto + **política de privacidad**): ayuda a que Meta apruebe el nombre visible "Destiny", la pide para pasar la app a modo en vivo, y la política hace falta igual por guardar teléfonos (Ley 25.326).
+- [ ] Verificación del negocio en Meta (CUIT/documentación) — cuando exista la empresa. No bloquea la verificación por WhatsApp: los mensajes los inicia el usuario.
 - [ ] Proveedor de KYC/verificación para **v2** — Persona, Onfido, Veriff o Didit (spec `A3-verificacion-identidad.md` / ADR 0006). Ya no bloquea v1.
 - [ ] Tonos/copies de notificaciones — "Ritmo Diario" vs. "Pulso del Cosmos" (spec `A2-ritmo-notificaciones.md`).
 - [ ] Decisión PWA vs. nativo para push notifications en iOS (ver ADR 0002 — afecta a `A2-ritmo-notificaciones.md`).
