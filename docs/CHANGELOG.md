@@ -13,3 +13,5 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - Commit inicial pusheado a `main`.
 - `apps/api` validado end-to-end: venv + `pip install` sin errores, `uvicorn` levanta y `/health` responde `200 {"status":"ok"}`.
 - `ALCANCE_MVP.md` limpiado: se sacaron los marcadores `[ESPACIO PARA EL FOUNDER]` y la sección de pendientes — ese tracking vive únicamente en `BACKLOG.md` (P0) para que Pablo los resuelva en paralelo sin bloquear el avance sobre lo ya definido.
+- Las 8 specs del MVP (`A1`-`A3`, `B4`-`B7`, `C8`) escritas y marcadas `approved`, aprobadas para implementación por German Villamarin (no por Pablo). Cada punto de `BACKLOG.md` P0 todavía abierto queda explícitamente fuera de alcance de v1 en la spec que afecta (con un default razonable o un adapter/stub), para no bloquear código mientras Pablo decide en paralelo.
+- `BACKLOG.md` reorganizado: P0 son decisiones de producto pendientes que ya no bloquean (quedaron fuera de alcance en las specs); P1-P3 pasan de "specs a escribir" a "implementar" (specs ya aprobadas).

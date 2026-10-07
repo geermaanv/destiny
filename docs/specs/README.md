@@ -17,4 +17,13 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 
 | Spec | Módulo | Estado |
 |---|---|---|
-| _(ninguna creada todavía)_ | | |
+| [A1-datos-natales](./A1-datos-natales.md) | A1 | approved |
+| [A2-ritmo-notificaciones](./A2-ritmo-notificaciones.md) | A2 | approved |
+| [A3-verificacion-identidad](./A3-verificacion-identidad.md) | A3 | approved |
+| [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | approved |
+| [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | approved |
+| [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | approved |
+| [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | approved |
+| [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | approved |
+
+Todas aprobadas para implementación por German Villamarin (2026-10-07), para desbloquear avance mientras Pablo resuelve los puntos de `../BACKLOG.md` P0 en paralelo. Cada spec dice explícitamente qué queda fuera de alcance de v1 por esos puntos todavía abiertos.
