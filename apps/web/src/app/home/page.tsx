@@ -59,6 +59,10 @@ function HomeContent() {
         <p className="text-sm text-slate-400">En tu frecuencia</p>
         <p className="text-xl font-semibold">{frequencyCount ?? "—"} personas</p>
       </div>
+
+      <a href={`/discover?profileId=${profileId}`} className="block text-center text-violet-400 underline">
+        Ir a Descubrir
+      </a>
     </div>
   );
 }

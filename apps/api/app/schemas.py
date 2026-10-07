@@ -61,3 +61,13 @@ class AstroWeatherOut(BaseModel):
 
 class FrequencyCountOut(BaseModel):
     count: int
+
+
+class DiscoverCandidateOut(BaseModel):
+    profile_id: uuid.UUID
+    compatibility_pct: int
+    preview: str
+
+
+class ExplanationOut(BaseModel):
+    text: str

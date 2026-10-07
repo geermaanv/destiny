@@ -74,6 +74,24 @@ export function submitMoodCheckin(profileId: string, mood: Mood): Promise<void> 
   return postJson("/mood-checkins", { profile_id: profileId, mood });
 }
 
+export type DiscoverCandidate = {
+  profile_id: string;
+  compatibility_pct: number;
+  preview: string;
+};
+
+export async function getDiscoverCandidates(viewerId: string): Promise<DiscoverCandidate[]> {
+  const res = await fetch(`${API_URL}/discover?viewer_id=${viewerId}`);
+  if (!res.ok) throw new Error("No se pudo cargar descubrir");
+  return res.json();
+}
+
+export async function getExplanation(viewerId: string, candidateId: string): Promise<{ text: string }> {
+  const res = await fetch(`${API_URL}/discover/${candidateId}/explanation?viewer_id=${viewerId}`);
+  if (!res.ok) throw new Error("No se pudo cargar la explicación");
+  return res.json();
+}
+
 export async function startVerification(profileId: string, media: File): Promise<VerificationResult> {
   const formData = new FormData();
   formData.append("media", media);

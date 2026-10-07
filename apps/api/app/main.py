@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
-from app.routers import home, profiles
+from app.routers import discover, home, profiles
 
 
 @asynccontextmanager
@@ -25,6 +25,7 @@ app.add_middleware(
 app.include_router(profiles.router)
 app.include_router(home.router)
 app.include_router(home.mood_router)
+app.include_router(discover.router)
 
 
 @app.get("/health")

@@ -1,6 +1,6 @@
 # B5-pantalla-descubrir — Pantalla "Descubrir"
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: B5
 - **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
