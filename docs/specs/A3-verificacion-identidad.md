@@ -1,6 +1,6 @@
 # A3-verificacion-identidad — Verificación de identidad mandatoria
 
-- **Estado**: approved (v1 — verificación por WhatsApp, pendiente de implementar)
+- **Estado**: implemented (v1 — verificación por WhatsApp, en modo mock hasta tener cuenta de Meta; v2 selfie/video pospuesta)
 - **Módulo**: A3
 - **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
@@ -38,6 +38,7 @@ El usuario le escribe a Destiny, en vez de que Destiny le mande un código. Los 
    - `verificado` → Home (`/home`), o la revelación de compatibilidad si el onboarding viene con `ref` (C8), igual que hoy.
    - `duplicado_detectado` → pantalla de error: ese número ya está asociado a otra cuenta.
    - Código vencido → botón para generar uno nuevo.
+   - Pedir un código nuevo después de `duplicado_detectado` (ej. "Probar con otro número") vuelve el perfil a `pendiente`.
 
 ### Requisitos funcionales
 
@@ -88,13 +89,13 @@ Mismo patrón que los otros adapters (KYC, explainer, icebreaker): **sin credenc
 
 ### Criterios de aceptación
 
-- [ ] Un perfil no `verificado` no puede acceder a `/discover`.
-- [ ] Enviar un código válido y vigente verifica el perfil y guarda su teléfono.
-- [ ] Un código vencido, ya usado o inexistente no cambia ningún estado.
-- [ ] Un número ya verificado en otro perfil termina en `duplicado_detectado`.
-- [ ] El webhook rechaza payloads con firma inválida cuando `WHATSAPP_APP_SECRET` está configurado.
-- [ ] El teléfono no aparece en ninguna respuesta de `/discover`, chats ni invitaciones.
-- [ ] El flujo completo (A1 → A2 → A3 → Home, y con `ref` de C8) funciona en modo mock.
+- [x] Un perfil no `verificado` no puede acceder a `/discover`.
+- [x] Enviar un código válido y vigente verifica el perfil y guarda su teléfono.
+- [x] Un código vencido, ya usado o inexistente no cambia ningún estado.
+- [x] Un número ya verificado en otro perfil termina en `duplicado_detectado`.
+- [x] El webhook rechaza payloads con firma inválida cuando `WHATSAPP_APP_SECRET` está configurado.
+- [x] El teléfono no aparece en ninguna respuesta de `/discover`, chats ni invitaciones.
+- [x] El flujo completo (A1 → A2 → A3 → Home, y con `ref` de C8) funciona en modo mock.
 
 ### Fuera de alcance de v1
 

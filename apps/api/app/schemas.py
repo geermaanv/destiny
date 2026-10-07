@@ -44,6 +44,14 @@ class ProfileOut(BaseModel):
 class VerificationOut(BaseModel):
     verification_id: str | None
     status: str
+    method: str | None = None
+
+
+class WhatsappCodeOut(BaseModel):
+    code: str
+    wa_link: str
+    expires_at: datetime
+    mock: bool  # true si no hay credenciales de WhatsApp: la pantalla ofrece "Simular envío (dev)"
 
 
 Mood = Literal["energico", "tranquilo", "reflexivo", "ansioso", "inspirado"]

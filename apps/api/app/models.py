@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, datetime, time
 
-from sqlalchemy import Boolean, Date, DateTime, Float, String, Time
+from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, String, Time
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
@@ -28,6 +28,20 @@ class Profile(Base):
 
     verification_status: Mapped[str] = mapped_column(String, default="pendiente", nullable=False)
     verification_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    verification_method: Mapped[str | None] = mapped_column(String, nullable=True)  # "whatsapp" (v1) | "kyc_video" (v2)
+    # Teléfono verificado por WhatsApp, E.164. Nunca se expone a otros usuarios.
+    phone_e164: Mapped[str | None] = mapped_column(String, nullable=True, unique=True)
+
+
+class PhoneVerificationCode(Base):
+    __tablename__ = "phone_verification_codes"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=False)
+    code: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
 class CalendarAnnotation(Base):

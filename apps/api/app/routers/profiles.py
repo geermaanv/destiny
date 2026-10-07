@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session
 from app.adapters.kyc import IdentityVerificationAdapter, get_kyc_adapter
 from app.database import get_db
 from app.models import Profile
-from app.schemas import BirthDataIn, NotificationPreferenceIn, ProfileOut, VerificationOut
+from app.schemas import BirthDataIn, NotificationPreferenceIn, ProfileOut, VerificationOut, WhatsappCodeOut
+from app.whatsapp import build_wa_link, is_mock_mode, issue_code
 
 router = APIRouter(prefix="/profiles", tags=["profiles"])
 
@@ -86,9 +87,24 @@ async def start_verification(
 
     profile.verification_id = result.verification_id
     profile.verification_status = result.status
+    profile.verification_method = "kyc_video"
     db.commit()
 
-    return VerificationOut(verification_id=result.verification_id, status=result.status)
+    return VerificationOut(verification_id=result.verification_id, status=result.status, method="kyc_video")
+
+
+@router.post("/{profile_id}/verification/whatsapp", response_model=WhatsappCodeOut)
+def start_whatsapp_verification(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> WhatsappCodeOut:
+    profile = db.get(Profile, profile_id)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    if profile.verification_status == "verificado":
+        raise HTTPException(status_code=409, detail="Profile already verified")
+
+    entry = issue_code(db, profile)
+    return WhatsappCodeOut(
+        code=entry.code, wa_link=build_wa_link(entry.code), expires_at=entry.expires_at, mock=is_mock_mode()
+    )
 
 
 @router.get("/{profile_id}/verification", response_model=VerificationOut)
@@ -97,4 +113,8 @@ def get_verification(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> Ve
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
 
-    return VerificationOut(verification_id=profile.verification_id, status=profile.verification_status)
+    return VerificationOut(
+        verification_id=profile.verification_id,
+        status=profile.verification_status,
+        method=profile.verification_method,
+    )

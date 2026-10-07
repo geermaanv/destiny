@@ -59,6 +59,14 @@ export type VerificationStatus = "pendiente" | "en_revision" | "verificado" | "r
 export type VerificationResult = {
   verification_id: string | null;
   status: VerificationStatus;
+  method?: "whatsapp" | "kyc_video" | null;
+};
+
+export type WhatsappCode = {
+  code: string;
+  wa_link: string;
+  expires_at: string;
+  mock: boolean;
 };
 
 export type Mood = "energico" | "tranquilo" | "reflexivo" | "ansioso" | "inspirado";
@@ -172,4 +180,24 @@ export async function startVerification(profileId: string, media: File): Promise
   });
   if (!res.ok) throw new Error("No se pudo iniciar la verificación");
   return res.json();
+}
+
+// Verificación v1 por WhatsApp (spec A3, ADR 0008).
+export function startWhatsappVerification(profileId: string): Promise<WhatsappCode> {
+  return postJson(`/profiles/${profileId}/verification/whatsapp`);
+}
+
+export async function getVerification(profileId: string): Promise<VerificationResult> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/verification`);
+  if (!res.ok) throw new Error("No se pudo consultar la verificación");
+  return res.json();
+}
+
+// Solo modo mock (sin credenciales de WhatsApp): simula el mensaje que Meta
+// mandaría al webhook cuando el usuario envía el código.
+export function simulateWhatsappMessage(fromPhone: string, text: string): Promise<void> {
+  return postJson("/webhooks/whatsapp", {
+    object: "whatsapp_business_account",
+    entry: [{ changes: [{ value: { messages: [{ from: fromPhone, type: "text", text: { body: text } }] } }] }],
+  });
 }
