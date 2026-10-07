@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Toda la app es oscura: sin esto los controles nativos (íconos de calendario
+   y reloj de los inputs date/time, selectores, scrollbars) se dibujan en modo
+   claro y quedan invisibles sobre el fondo. */
+:root {
+  color-scheme: dark;
+}

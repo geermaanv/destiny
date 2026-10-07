@@ -4,6 +4,16 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createProfile, setBirthData } from "@/lib/api";
 
+// En desktop los inputs date/time solo abren el selector desde el ícono; así se
+// abre al tocar cualquier parte del campo (en mobile ya es el comportamiento nativo).
+function openPicker(e: React.MouseEvent<HTMLInputElement>) {
+  try {
+    e.currentTarget.showPicker?.();
+  } catch {
+    // showPicker puede fallar (ej. input deshabilitado o navegador sin soporte): queda el comportamiento nativo.
+  }
+}
+
 function DatosNatalesForm() {
   const router = useRouter();
   const ref = useSearchParams().get("ref");
@@ -60,7 +70,8 @@ function DatosNatalesForm() {
           required
           value={birthDate}
           onChange={(e) => setBirthDate(e.target.value)}
-          className="w-full rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400"
+          onClick={openPicker}
+          className="w-full cursor-pointer rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400"
         />
       </div>
 
@@ -89,7 +100,8 @@ function DatosNatalesForm() {
           disabled={timeUnknown}
           value={birthTime}
           onChange={(e) => setBirthTime(e.target.value)}
-          className="w-full rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400 disabled:opacity-40"
+          onClick={openPicker}
+          className="w-full rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400 enabled:cursor-pointer disabled:opacity-40"
         />
         <label className="flex items-center gap-2 pt-1 text-sm text-slate-400">
           <input type="checkbox" checked={timeUnknown} onChange={(e) => setTimeUnknown(e.target.checked)} />
