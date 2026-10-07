@@ -95,3 +95,24 @@ class TransitOut(BaseModel):
 class CalendarDayDetailOut(BaseModel):
     transits: list[TransitOut]
     annotations: list[AnnotationOut]
+
+
+class MatchIn(BaseModel):
+    profile_a_id: uuid.UUID
+    profile_b_id: uuid.UUID
+
+
+class ChatMessageOut(BaseModel):
+    sender: str
+    text: str
+    created_at: datetime
+
+
+class MatchOut(BaseModel):
+    id: uuid.UUID
+    icebreaker: str
+
+
+class SendMessageIn(BaseModel):
+    profile_id: uuid.UUID
+    text: str

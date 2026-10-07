@@ -1,10 +1,11 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { DiscoverCandidate, getDiscoverCandidates, getExplanation } from "@/lib/api";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createMatch, DiscoverCandidate, getDiscoverCandidates, getExplanation } from "@/lib/api";
 
 function DiscoverContent() {
+  const router = useRouter();
   const profileId = useSearchParams().get("profileId");
   const [candidates, setCandidates] = useState<DiscoverCandidate[] | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -25,6 +26,12 @@ function DiscoverContent() {
     setExplanations((prev) => ({ ...prev, [candidateId]: text }));
   }
 
+  async function match(candidateId: string) {
+    if (!profileId) return;
+    const { id } = await createMatch(profileId, candidateId);
+    router.push(`/chat/${id}?profileId=${profileId}`);
+  }
+
   if (!profileId) return <p className="text-slate-400">Falta el perfil.</p>;
   if (error) return <p className="text-red-400">{error}</p>;
 
@@ -40,7 +47,15 @@ function DiscoverContent() {
             <span className="font-semibold text-violet-300">{c.compatibility_pct}%</span>
           </button>
           {openId === c.profile_id && (
-            <p className="mt-3 text-sm text-slate-300">{explanations[c.profile_id] ?? "Cargando explicación..."}</p>
+            <>
+              <p className="mt-3 text-sm text-slate-300">{explanations[c.profile_id] ?? "Cargando explicación..."}</p>
+              <button
+                onClick={() => match(c.profile_id)}
+                className="mt-3 w-full rounded-md bg-violet-600 px-3 py-1.5 text-sm font-medium text-white"
+              >
+                Match
+              </button>
+            </>
           )}
         </div>
       ))}

@@ -30,7 +30,7 @@ Specs approved, listas para codear:
 - [x] `B4-home-tu-momento.md` — implementado (`app/astro.py` con `astronomy-engine` real para fase lunar + signo, `MoodCheckin`, endpoints `/home/today`, `/home/frequency-count`, `/mood-checkins`, pantalla `/home`).
 - [x] `B5-pantalla-descubrir.md` — implementado. `app/compatibility.py` (aspecto Sol-Sol real vía `astronomy-engine`, simplificación v1 — ver nota abajo), `app/explainer.py` (adapter: `ClaudeResonanceExplainer` si hay `ANTHROPIC_API_KEY`, si no `MockResonanceExplainer` con copy borrador), endpoints `GET /discover` y `GET /discover/{id}/explanation`, pantalla `/discover`. Gating por verificación ya aplicado (ver abajo).
 - [x] `B6-calendario-memoria.md` — implementado. `app/aspects.py` extrae la clasificación de aspectos compartida con `B5`; `app/transits.py` calcula Luna del día vs. Sol natal del usuario (simplificación v1, mismo criterio que `B5`). Modelo `CalendarAnnotation`. Endpoints `GET /calendar/{year}/{month}`, `GET /calendar/day/{day}`, `POST /calendar/day/{day}/annotations`. Pantalla `/calendario` (grilla mensual + anotaciones).
-- [ ] `B7-chat-rompehielos.md`.
+- [x] `B7-chat-rompehielos.md` — implementado. `app/icebreaker.py`: tercer adapter con el mismo patrón que KYC/explainer (mock sin `ANTHROPIC_API_KEY`, Claude real con ella). Modelos `Match`/`ChatMessage`. Endpoints `POST /matches` (crea el match + genera e inserta el icebreaker automáticamente), `GET`/`POST /chats/{match_id}/messages`. Pantalla `/chat/[matchId]`, con botón "Match" agregado a `/discover` para completar el flujo.
 
 ## P3 — Implementar Módulo C (growth loop)
 
@@ -39,8 +39,8 @@ Specs approved, listas para codear:
 ## Tareas técnicas sueltas
 
 - [ ] Confirmar con Pablo si Postgres es el motor definitivo (ADR 0001) antes de modelar el esquema real.
-- [x] Esquema de datos: `profiles` ya tiene carta natal (A1), ritmo de notificaciones (A2) y verificación (A3). Falta modelar matches/compatibilidad (B5), chat (B7) e invitaciones (C8) a medida que se implementan.
+- [x] Esquema de datos: `profiles` (A1-A3), `MoodCheckin`/`CalendarAnnotation` (B4/B6), `Match`/`ChatMessage` (B7). Falta modelar invitaciones (C8).
 - [x] Gating real de `/discover` según `verification_status` — implementado en `B5-pantalla-descubrir.md` (`_require_verified_profile`, 403 si no verificado).
 - [ ] Hoy las tablas se crean con `Base.metadata.create_all` al levantar la API (sin migraciones). Evaluar sumar Alembic antes de tocar esquema en un entorno con datos reales — no es necesario mientras solo haya datos de desarrollo.
-- [ ] `ANTHROPIC_API_KEY` no está configurada en ningún entorno todavía — `app/explainer.py` usa `MockResonanceExplainer` (copy borrador, no LLM real). Cuando Pablo/German tengan la key, se agrega a `.env` y el adapter cambia solo con eso, sin tocar código (ver `app/explainer.py::get_explainer`).
+- [ ] `ANTHROPIC_API_KEY` no está configurada en ningún entorno todavía — `app/explainer.py` (B5) y `app/icebreaker.py` (B7) corren en modo mock. Cuando Pablo/German tengan la key, se agrega a `.env` y ambos adapters cambian solo con eso, sin tocar código.
 - [ ] `app/compatibility.py` calcula compatibilidad solo con el aspecto Sol-Sol (simplificación v1, documentada en el código). Una carta completa (Luna, Venus, Marte, ascendente) da una señal más rica — evaluar si vale la pena antes de sumar más signos al cálculo.

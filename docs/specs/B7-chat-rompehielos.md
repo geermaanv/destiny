@@ -1,6 +1,6 @@
 # B7-chat-rompehielos — Chat con rompehielos de IA
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: B7
 - **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07

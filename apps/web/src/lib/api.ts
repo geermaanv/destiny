@@ -112,6 +112,22 @@ export function addAnnotation(profileId: string, day: string, text: string): Pro
   return postJson(`/calendar/day/${day}/annotations`, { profile_id: profileId, text });
 }
 
+export type ChatMessage = { sender: string; text: string; created_at: string };
+
+export function createMatch(profileAId: string, profileBId: string): Promise<{ id: string; icebreaker: string }> {
+  return postJson("/matches", { profile_a_id: profileAId, profile_b_id: profileBId });
+}
+
+export async function getMessages(matchId: string): Promise<ChatMessage[]> {
+  const res = await fetch(`${API_URL}/chats/${matchId}/messages`);
+  if (!res.ok) throw new Error("No se pudieron cargar los mensajes");
+  return res.json();
+}
+
+export function sendMessage(matchId: string, profileId: string, text: string): Promise<ChatMessage> {
+  return postJson(`/chats/${matchId}/messages`, { profile_id: profileId, text });
+}
+
 export async function startVerification(profileId: string, media: File): Promise<VerificationResult> {
   const formData = new FormData();
   formData.append("media", media);
