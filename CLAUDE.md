@@ -13,7 +13,15 @@ Instrucciones de proyecto para Claude Code. Leer también, en este orden, antes 
 
 **Ninguna feature se codifica sin una spec en estado `approved` en `docs/specs/`.** Ver `docs/specs/README.md` para el workflow y `docs/specs/TEMPLATE.md` para la plantilla. Si una spec tiene puntos abiertos marcados `[ESPACIO PARA EL FOUNDER]` o similar, no puede pasar de `draft` a `approved`.
 
-Al terminar cualquier sesión de trabajo con cambios relevantes, actualizar `docs/CHANGELOG.md` y `docs/BACKLOG.md`.
+## Regla dura: cada commit actualiza la documentación
+
+**Todo commit debe incluir, en el mismo commit, la actualización de la documentación afectada.** Como mínimo:
+
+- `docs/CHANGELOG.md` — entrada con qué se hizo y por qué.
+- `docs/BACKLOG.md` — marcar lo completado / agregar lo nuevo que surja.
+- La spec en `docs/specs/` si el cambio toca una feature, el ADR en `docs/decisions/` si cambia una decisión técnica, y este `CLAUDE.md` si cambia cómo se corre o se trabaja en el proyecto.
+
+No se hacen commits "de código" y después otro "de docs": van juntos.
 
 ## Idioma
 
