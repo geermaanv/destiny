@@ -17,7 +17,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 
 | Spec | Módulo | Estado |
 |---|---|---|
-| [A1-datos-natales](./A1-datos-natales.md) | A1 | approved |
+| [A1-datos-natales](./A1-datos-natales.md) | A1 | implemented |
 | [A2-ritmo-notificaciones](./A2-ritmo-notificaciones.md) | A2 | approved |
 | [A3-verificacion-identidad](./A3-verificacion-identidad.md) | A3 | approved |
 | [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | approved |

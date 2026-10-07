@@ -21,7 +21,7 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 
 Specs approved, listas para codear:
 
-- [ ] `A1-datos-natales.md`.
+- [x] `A1-datos-natales.md` — implementado (modelo `Profile`, endpoints `POST /profiles`, `POST /profiles/{id}/birth-data`, `GET /profiles/{id}`, pantalla `/onboarding/datos-natales`).
 - [ ] `A2-ritmo-notificaciones.md`.
 - [ ] `A3-verificacion-identidad.md` — con adapter mock de KYC (ver ADR 0006).
 
@@ -39,4 +39,5 @@ Specs approved, listas para codear:
 ## Tareas técnicas sueltas
 
 - [ ] Confirmar con Pablo si Postgres es el motor definitivo (ADR 0001) antes de modelar el esquema real.
-- [ ] Definir el esquema de datos base (perfiles, carta natal, verificación, matches, chat) antes de arrancar `A1` — ningún módulo tiene persistencia real todavía.
+- [ ] El esquema de datos arrancó con `A1` (tabla `profiles`, campos de carta natal). Falta modelar verificación (A3), matches/compatibilidad (B5), chat (B7) e invitaciones (C8) a medida que se implementan.
+- [ ] Hoy las tablas se crean con `Base.metadata.create_all` al levantar la API (sin migraciones). Evaluar sumar Alembic antes de tocar esquema en un entorno con datos reales — no es necesario mientras solo haya datos de desarrollo.

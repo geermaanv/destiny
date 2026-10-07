@@ -1,6 +1,6 @@
 # A1-datos-natales — Carga de datos natales
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: A1
 - **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
