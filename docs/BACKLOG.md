@@ -44,6 +44,32 @@ Specs approved, listas para codear:
 
 - [x] `C8-invitacion-whatsapp.md` — implementado. Modelo `Invitation`. `POST /invitations` (teaser aproximado por signo solar únicamente — `approximate_longitude_for_sign`, punto medio del signo; `locked_fields` explícitos), `GET /invitations/{ref_id}` (preload del invitado), `GET /invitations/{ref_id}/reveal` (compatibilidad real una vez que el invitado completa su carta). Pantallas `/invitar` y `/onboarding/invitacion`; `ref` se encadena por todo el onboarding (A1→A2→A3) y la revelación real se muestra al verificarse. **Con esto, los 8 módulos del MVP están implementados.**
 
+## Refinamiento del MVP (recorrido completo, 2026-10-07)
+
+Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidir qué se encara primero.
+
+**Bugs**
+- [ ] `/discover` da 500 si el perfil verificado no tiene datos natales (se puede llegar a la verificación entrando directo por URL). Responder un error claro y pedir completar los datos.
+- [ ] Textos rotos cuando no hay aspecto mayor entre los soles: "Hay un sin aspecto mayor…" (explicación B5) y "nuestros soles están en sin aspecto mayor" (icebreaker B7).
+- [ ] Home dice "En tu frecuencia: N personas" pero Descubrir puede decir "Todavía no hay nadie": cuentan cosas distintas (el contador incluye perfiles sin datos natales).
+
+**Gaps de producto (los más importantes)**
+- [ ] Los perfiles no tienen **nombre, foto, edad, género ni a quién buscan**: en Descubrir solo se ve "Sin aspecto mayor solar · 60%". Para una app de citas es lo primero que falta.
+- [ ] **Match unilateral**: tocar "Match" crea el chat al instante; la otra persona no se entera y no hay lista de chats/matches para encontrarlo.
+- [ ] **Sin sesión**: el perfil viaja en la URL (`?profileId=`). Si se cierra el navegador se pierde el acceso. La verificación por WhatsApp + "Seguir con mi cuenta" ya sirve como login: falta guardarlo (cookie) y una entrada de "Ya tengo cuenta".
+
+**Navegación / fricción**
+- [ ] No hay barra de navegación ni botón "atrás": Home tiene links sueltos y desde chat, calendario o invitar no se vuelve.
+- [ ] Idea de German: el onboarding como **una sola pantalla con secciones** (datos natales, ritmo, verificación) en vez de pasos separados, para poder volver y cambiar algo fácil.
+- [ ] Ritmo de notificaciones: no explica que es para notificaciones ni que todavía no se envían; sin indicador de paso del onboarding.
+
+**Calendario**
+- [ ] Sin mes/año, sin días de la semana, no se puede cambiar de mes, no marca hoy, no explica qué son los días violetas, y la grilla no arranca en el día de la semana correcto.
+
+**Textos y apariencia**
+- [ ] Jerga astrológica sin traducir ("Sin aspecto mayor solar", "cuadratura"): pasar a lenguaje simple.
+- [ ] Invitar: "Generar reporte" no es claro y falta explicar qué recibe el amigo.
+
 ## Tareas técnicas sueltas
 
 - [ ] Confirmar si Postgres es el motor definitivo (ADR 0001) antes de producción.
