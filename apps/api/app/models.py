@@ -30,6 +30,16 @@ class Profile(Base):
     verification_id: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
+class CalendarAnnotation(Base):
+    __tablename__ = "calendar_annotations"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
+    day: Mapped[date] = mapped_column(Date, nullable=False)
+    text: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
 class MoodCheckin(Base):
     __tablename__ = "mood_checkins"
 

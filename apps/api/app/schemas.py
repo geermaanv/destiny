@@ -1,5 +1,5 @@
 import uuid
-from datetime import date, time
+from datetime import date, datetime, time
 from typing import Literal
 
 from pydantic import BaseModel
@@ -71,3 +71,27 @@ class DiscoverCandidateOut(BaseModel):
 
 class ExplanationOut(BaseModel):
     text: str
+
+
+class CalendarDayOut(BaseModel):
+    date: date
+    has_key_transit: bool
+
+
+class AnnotationIn(BaseModel):
+    profile_id: uuid.UUID
+    text: str
+
+
+class AnnotationOut(BaseModel):
+    text: str
+    created_at: datetime
+
+
+class TransitOut(BaseModel):
+    aspect: str
+
+
+class CalendarDayDetailOut(BaseModel):
+    transits: list[TransitOut]
+    annotations: list[AnnotationOut]

@@ -92,6 +92,26 @@ export async function getExplanation(viewerId: string, candidateId: string): Pro
   return res.json();
 }
 
+export type CalendarDay = { date: string; has_key_transit: boolean };
+export type CalendarAnnotation = { text: string; created_at: string };
+export type CalendarDayDetail = { transits: { aspect: string }[]; annotations: CalendarAnnotation[] };
+
+export async function getMonth(profileId: string, year: number, month: number): Promise<CalendarDay[]> {
+  const res = await fetch(`${API_URL}/calendar/${year}/${month}?profile_id=${profileId}`);
+  if (!res.ok) throw new Error("No se pudo cargar el calendario");
+  return res.json();
+}
+
+export async function getDay(profileId: string, day: string): Promise<CalendarDayDetail> {
+  const res = await fetch(`${API_URL}/calendar/day/${day}?profile_id=${profileId}`);
+  if (!res.ok) throw new Error("No se pudo cargar el día");
+  return res.json();
+}
+
+export function addAnnotation(profileId: string, day: string, text: string): Promise<CalendarAnnotation> {
+  return postJson(`/calendar/day/${day}/annotations`, { profile_id: profileId, text });
+}
+
 export async function startVerification(profileId: string, media: File): Promise<VerificationResult> {
   const formData = new FormData();
   formData.append("media", media);

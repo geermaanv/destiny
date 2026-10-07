@@ -1,6 +1,6 @@
 # B6-calendario-memoria — Calendario de memoria
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: B6
 - **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07

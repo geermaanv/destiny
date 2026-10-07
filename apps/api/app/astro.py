@@ -25,6 +25,12 @@ def zodiac_sign(ecliptic_longitude: float) -> str:
     return ZODIAC_SIGNS[int(ecliptic_longitude // 30) % 12]
 
 
+@lru_cache(maxsize=32)
+def moon_longitude(day: date) -> float:
+    t = astronomy.Time.Make(day.year, day.month, day.day, 12, 0, 0)
+    return astronomy.EclipticGeoMoon(t).lon
+
+
 def moon_phase_name(phase_angle: float) -> str:
     closest = min(MOON_PHASE_NAMES, key=lambda entry: abs(entry[0] - phase_angle) % 360)
     return closest[1]
@@ -32,10 +38,9 @@ def moon_phase_name(phase_angle: float) -> str:
 
 @lru_cache(maxsize=8)
 def astro_weather_for_date(day: date) -> str:
-    time = astronomy.Time.Make(day.year, day.month, day.day, 12, 0, 0)
-    moon_lon = astronomy.EclipticGeoMoon(time).lon
-    phase_angle = astronomy.MoonPhase(time)
-    return f"{moon_phase_name(phase_angle)} en {zodiac_sign(moon_lon)}"
+    t = astronomy.Time.Make(day.year, day.month, day.day, 12, 0, 0)
+    phase_angle = astronomy.MoonPhase(t)
+    return f"{moon_phase_name(phase_angle)} en {zodiac_sign(moon_longitude(day))}"
 
 
 def today_astro_weather() -> str:

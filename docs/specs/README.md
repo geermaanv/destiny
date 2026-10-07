@@ -22,7 +22,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 | [A3-verificacion-identidad](./A3-verificacion-identidad.md) | A3 | implemented |
 | [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | implemented |
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | implemented |
-| [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | approved |
+| [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | implemented |
 | [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | approved |
 | [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | approved |
 

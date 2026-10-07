@@ -60,9 +60,14 @@ function HomeContent() {
         <p className="text-xl font-semibold">{frequencyCount ?? "—"} personas</p>
       </div>
 
-      <a href={`/discover?profileId=${profileId}`} className="block text-center text-violet-400 underline">
-        Ir a Descubrir
-      </a>
+      <div className="flex justify-center gap-4">
+        <a href={`/discover?profileId=${profileId}`} className="text-violet-400 underline">
+          Descubrir
+        </a>
+        <a href={`/calendario?profileId=${profileId}`} className="text-violet-400 underline">
+          Calendario
+        </a>
+      </div>
     </div>
   );
 }
