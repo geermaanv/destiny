@@ -1,4 +1,9 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+// "/api" en vez de una URL absoluta: Next.js la proxea server-side a
+// API_INTERNAL_URL (ver next.config.ts). Así el browser solo necesita
+// llegar al origen de Next — un solo túnel alcanza para hostear
+// (ver docs/decisions/0007-hosting-local-tunel.md). NEXT_PUBLIC_API_URL
+// sigue existiendo como escape hatch si alguna vez se separan los hosts.
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api";
 
 export type BirthPlace = {
   query: string;

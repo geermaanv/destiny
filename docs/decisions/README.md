@@ -12,3 +12,4 @@ Architecture Decision Records. Cada decisión técnica con peso (elegir una libr
 | [0004](./0004-claude-api-resonancia.md) | Claude API para explicaciones de resonancia | aceptada |
 | [0005](./0005-astronomy-engine.md) | `astronomy-engine` en vez de Swiss Ephemeris | aceptada |
 | [0006](./0006-kyc-adapter.md) | KYC como interfaz/adapter, sin vendor fijo | aceptada |
+| [0007](./0007-hosting-local-tunel.md) | Hosting: máquina local del equipo + túnel | aceptada |
