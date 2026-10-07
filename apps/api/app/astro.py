@@ -25,6 +25,14 @@ def zodiac_sign(ecliptic_longitude: float) -> str:
     return ZODIAC_SIGNS[int(ecliptic_longitude // 30) % 12]
 
 
+def approximate_longitude_for_sign(sign: str) -> float:
+    """Punto medio del signo (15°). Usado cuando solo se conoce el signo
+    solar, no la fecha exacta (C8-invitacion-whatsapp.md: fricción mínima
+    al invitar — el resultado es necesariamente aproximado/"borroso")."""
+    index = ZODIAC_SIGNS.index(sign)
+    return index * 30 + 15
+
+
 @lru_cache(maxsize=32)
 def moon_longitude(day: date) -> float:
     t = astronomy.Time.Make(day.year, day.month, day.day, 12, 0, 0)

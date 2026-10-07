@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
-from app.routers import calendar, discover, home, matches, profiles
+from app.routers import calendar, discover, home, invitations, matches, profiles
 
 
 @asynccontextmanager
@@ -28,6 +28,7 @@ app.include_router(home.mood_router)
 app.include_router(discover.router)
 app.include_router(calendar.router)
 app.include_router(matches.router)
+app.include_router(invitations.router)
 
 
 @app.get("/health")

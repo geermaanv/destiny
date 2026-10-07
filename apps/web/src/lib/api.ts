@@ -128,6 +128,36 @@ export function sendMessage(matchId: string, profileId: string, text: string): P
   return postJson(`/chats/${matchId}/messages`, { profile_id: profileId, text });
 }
 
+export const SUN_SIGNS = [
+  "Aries", "Tauro", "Gemini", "Cáncer", "Leo", "Virgo",
+  "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis",
+] as const;
+
+export type Invitation = {
+  ref_id: string;
+  whatsapp_url: string;
+  partial_report: { teaser: string; locked_fields: string[] };
+};
+
+export function createInvitation(inviterId: string, friendName: string, friendSunSign: string): Promise<Invitation> {
+  return postJson("/invitations", { inviter_id: inviterId, friend_name: friendName, friend_sun_sign: friendSunSign });
+}
+
+export async function getInvitation(refId: string): Promise<{ ref_id: string; friend_name: string; teaser: string }> {
+  const res = await fetch(`${API_URL}/invitations/${refId}`);
+  if (!res.ok) throw new Error("No se pudo cargar la invitación");
+  return res.json();
+}
+
+export async function revealInvitation(
+  refId: string,
+  inviteeId: string
+): Promise<{ aspect: string; percentage: number; text: string }> {
+  const res = await fetch(`${API_URL}/invitations/${refId}/reveal?invitee_id=${inviteeId}`);
+  if (!res.ok) throw new Error("No se pudo revelar la compatibilidad");
+  return res.json();
+}
+
 export async function startVerification(profileId: string, media: File): Promise<VerificationResult> {
   const formData = new FormData();
   formData.append("media", media);

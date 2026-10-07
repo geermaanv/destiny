@@ -34,7 +34,7 @@ Specs approved, listas para codear:
 
 ## P3 — Implementar Módulo C (growth loop)
 
-- [ ] `C8-invitacion-whatsapp.md` — generador de reporte parcial + link con `ref_id`.
+- [x] `C8-invitacion-whatsapp.md` — implementado. Modelo `Invitation`. `POST /invitations` (teaser aproximado por signo solar únicamente — `approximate_longitude_for_sign`, punto medio del signo; `locked_fields` explícitos), `GET /invitations/{ref_id}` (preload del invitado), `GET /invitations/{ref_id}/reveal` (compatibilidad real una vez que el invitado completa su carta). Pantallas `/invitar` y `/onboarding/invitacion`; `ref` se encadena por todo el onboarding (A1→A2→A3) y la revelación real se muestra al verificarse. **Con esto, los 8 módulos del MVP están implementados.**
 
 ## Tareas técnicas sueltas
 
@@ -44,3 +44,4 @@ Specs approved, listas para codear:
 - [ ] Hoy las tablas se crean con `Base.metadata.create_all` al levantar la API (sin migraciones). Evaluar sumar Alembic antes de tocar esquema en un entorno con datos reales — no es necesario mientras solo haya datos de desarrollo.
 - [ ] `ANTHROPIC_API_KEY` no está configurada en ningún entorno todavía — `app/explainer.py` (B5) y `app/icebreaker.py` (B7) corren en modo mock. Cuando Pablo/German tengan la key, se agrega a `.env` y ambos adapters cambian solo con eso, sin tocar código.
 - [ ] `app/compatibility.py` calcula compatibilidad solo con el aspecto Sol-Sol (simplificación v1, documentada en el código). Una carta completa (Luna, Venus, Marte, ascendente) da una señal más rica — evaluar si vale la pena antes de sumar más signos al cálculo.
+- [ ] El link que `C8-invitacion-whatsapp.md` manda por WhatsApp usa `WEB_BASE_URL` (default `http://localhost:3000`) — no es alcanzable fuera de la red local hasta que el proyecto esté hosteado en algún lado (ver conversación sobre hosting, todavía sin resolver).

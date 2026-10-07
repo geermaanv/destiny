@@ -1,6 +1,6 @@
 # C8-invitacion-whatsapp — Invitación por "resonancia parcial" (WhatsApp Link Generator)
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: C8
 - **Owner de decisión de producto**: Pablo Maiztegui
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07

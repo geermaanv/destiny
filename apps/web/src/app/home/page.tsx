@@ -67,6 +67,9 @@ function HomeContent() {
         <a href={`/calendario?profileId=${profileId}`} className="text-violet-400 underline">
           Calendario
         </a>
+        <a href={`/invitar?profileId=${profileId}`} className="text-violet-400 underline">
+          Invitar
+        </a>
       </div>
     </div>
   );

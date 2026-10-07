@@ -24,6 +24,6 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | implemented |
 | [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | implemented |
 | [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | implemented |
-| [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | approved |
+| [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | implemented |
 
 Todas aprobadas para implementación por German Villamarin (2026-10-07), para desbloquear avance mientras Pablo resuelve los puntos de `../BACKLOG.md` P0 en paralelo. Cada spec dice explícitamente qué queda fuera de alcance de v1 por esos puntos todavía abiertos.

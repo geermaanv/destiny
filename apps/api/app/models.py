@@ -49,6 +49,16 @@ class MoodCheckin(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
+class Invitation(Base):
+    __tablename__ = "invitations"
+
+    ref_id: Mapped[str] = mapped_column(String, primary_key=True)
+    inviter_profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
+    friend_name: Mapped[str] = mapped_column(String, nullable=False)
+    friend_sun_sign: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
 class Match(Base):
     __tablename__ = "matches"
 

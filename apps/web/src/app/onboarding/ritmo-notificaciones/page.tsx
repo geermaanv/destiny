@@ -19,7 +19,9 @@ const OPTIONS: { value: NotificationRhythm; title: string; description: string }
 
 function RitmoNotificacionesForm() {
   const router = useRouter();
-  const profileId = useSearchParams().get("profileId");
+  const params = useSearchParams();
+  const profileId = params.get("profileId");
+  const ref = params.get("ref");
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
 
   async function choose(rhythm: NotificationRhythm) {
@@ -27,7 +29,9 @@ function RitmoNotificacionesForm() {
     setStatus("submitting");
     try {
       await setNotificationPreference(profileId, rhythm);
-      router.push(`/onboarding/verificacion?profileId=${profileId}`);
+      const next = new URLSearchParams({ profileId });
+      if (ref) next.set("ref", ref);
+      router.push(`/onboarding/verificacion?${next.toString()}`);
     } catch {
       setStatus("error");
     }

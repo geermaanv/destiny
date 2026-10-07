@@ -1,8 +1,8 @@
 "use client";
 
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { startVerification, VerificationResult } from "@/lib/api";
+import { revealInvitation, startVerification, VerificationResult } from "@/lib/api";
 
 const STATUS_COPY: Record<string, string> = {
   verificado: "Identidad verificada. Ya podés acceder a descubrimiento.",
@@ -12,10 +12,19 @@ const STATUS_COPY: Record<string, string> = {
 };
 
 function VerificacionForm() {
-  const profileId = useSearchParams().get("profileId");
+  const params = useSearchParams();
+  const profileId = params.get("profileId");
+  const ref = params.get("ref");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [result, setResult] = useState<VerificationResult | null>(null);
+  const [reveal, setReveal] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (result?.status === "verificado" && ref && profileId) {
+      revealInvitation(ref, profileId).then((r) => setReveal(r.text));
+    }
+  }, [result, ref, profileId]);
 
   async function handleFile(file: File) {
     if (!profileId) return;
@@ -38,6 +47,7 @@ function VerificacionForm() {
       <div className="w-full max-w-sm space-y-3 text-center">
         <h1 className="text-2xl font-semibold capitalize">{result.status.replace("_", " ")}</h1>
         <p className="text-slate-400">{STATUS_COPY[result.status] ?? ""}</p>
+        {reveal && <p className="rounded-md bg-violet-950 p-3 text-sm text-violet-200">{reveal}</p>}
         {result.status === "verificado" && (
           <a href={`/home?profileId=${profileId}`} className="inline-block text-violet-400 underline">
             Ir a Tu Momento
