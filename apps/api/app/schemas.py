@@ -44,3 +44,20 @@ class ProfileOut(BaseModel):
 class VerificationOut(BaseModel):
     verification_id: str | None
     status: str
+
+
+Mood = Literal["energico", "tranquilo", "reflexivo", "ansioso", "inspirado"]
+
+
+class MoodCheckinIn(BaseModel):
+    profile_id: uuid.UUID
+    mood: Mood
+
+
+class AstroWeatherOut(BaseModel):
+    astro_weather: str
+    date: date
+
+
+class FrequencyCountOut(BaseModel):
+    count: int

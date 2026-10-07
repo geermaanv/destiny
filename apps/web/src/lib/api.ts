@@ -56,6 +56,24 @@ export type VerificationResult = {
   status: VerificationStatus;
 };
 
+export type Mood = "energico" | "tranquilo" | "reflexivo" | "ansioso" | "inspirado";
+
+export async function getTodayAstroWeather(): Promise<{ astro_weather: string; date: string }> {
+  const res = await fetch(`${API_URL}/home/today`);
+  if (!res.ok) throw new Error("No se pudo obtener el clima astrológico");
+  return res.json();
+}
+
+export async function getFrequencyCount(): Promise<{ count: number }> {
+  const res = await fetch(`${API_URL}/home/frequency-count`);
+  if (!res.ok) throw new Error("No se pudo obtener el contador de frecuencia");
+  return res.json();
+}
+
+export function submitMoodCheckin(profileId: string, mood: Mood): Promise<void> {
+  return postJson("/mood-checkins", { profile_id: profileId, mood });
+}
+
 export async function startVerification(profileId: string, media: File): Promise<VerificationResult> {
   const formData = new FormData();
   formData.append("media", media);

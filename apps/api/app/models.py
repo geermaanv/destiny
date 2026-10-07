@@ -28,3 +28,12 @@ class Profile(Base):
 
     verification_status: Mapped[str] = mapped_column(String, default="pendiente", nullable=False)
     verification_id: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class MoodCheckin(Base):
+    __tablename__ = "mood_checkins"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
+    mood: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

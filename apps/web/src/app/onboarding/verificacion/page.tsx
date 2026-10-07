@@ -38,6 +38,11 @@ function VerificacionForm() {
       <div className="w-full max-w-sm space-y-3 text-center">
         <h1 className="text-2xl font-semibold capitalize">{result.status.replace("_", " ")}</h1>
         <p className="text-slate-400">{STATUS_COPY[result.status] ?? ""}</p>
+        {result.status === "verificado" && (
+          <a href={`/home?profileId=${profileId}`} className="inline-block text-violet-400 underline">
+            Ir a Tu Momento
+          </a>
+        )}
       </div>
     );
   }

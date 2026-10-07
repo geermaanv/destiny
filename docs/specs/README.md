@@ -20,7 +20,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 | [A1-datos-natales](./A1-datos-natales.md) | A1 | implemented |
 | [A2-ritmo-notificaciones](./A2-ritmo-notificaciones.md) | A2 | implemented |
 | [A3-verificacion-identidad](./A3-verificacion-identidad.md) | A3 | implemented |
-| [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | approved |
+| [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | implemented |
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | approved |
 | [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | approved |
 | [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | approved |

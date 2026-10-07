@@ -1,6 +1,6 @@
 # B4-home-tu-momento — Home "Tu Momento"
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: B4
 - **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07

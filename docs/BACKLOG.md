@@ -27,7 +27,7 @@ Specs approved, listas para codear:
 
 ## P2 — Implementar Módulo B (core loop diario)
 
-- [ ] `B4-home-tu-momento.md`.
+- [x] `B4-home-tu-momento.md` — implementado (`app/astro.py` con `astronomy-engine` real para fase lunar + signo, `MoodCheckin`, endpoints `/home/today`, `/home/frequency-count`, `/mood-checkins`, pantalla `/home`).
 - [ ] `B5-pantalla-descubrir.md` — incluye el contrato de datos del JSON que se manda a Claude API (ver ADR 0004).
 - [ ] `B6-calendario-memoria.md`.
 - [ ] `B7-chat-rompehielos.md`.
