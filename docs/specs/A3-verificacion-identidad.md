@@ -87,6 +87,16 @@ Mismo patrón que los otros adapters (KYC, explainer, icebreaker): **sin credenc
 - Un número dedicado que **no** esté usado en la app común de WhatsApp.
 - URL pública para el webhook. En el setup actual (ADR 0007) es el túnel `ngrok`; conviene un dominio fijo para no reconfigurar el webhook en Meta cada vez que cambia la URL.
 
+### Runbook de alta en Meta (probado 2026-10-07)
+
+1. developers.facebook.com → Crear app → caso de uso "Conectarte con los clientes a través de WhatsApp" → portfolio comercial (sin verificar alcanza). Una cuenta de Facebook recién creada tiene que esperar ~1 h antes de poder crear el portfolio.
+2. Paso 2 → Configurar webhooks: URL `https://<dominio>/api/webhooks/whatsapp` + `WHATSAPP_VERIFY_TOKEN`; confirmar que el campo `messages` quede suscrito.
+3. Configuración de la app → Básica → Clave secreta → `WHATSAPP_APP_SECRET` en `apps/api/.env` (desde ahí el webhook exige firma y se apaga el mock).
+4. **Suscribir la cuenta de WhatsApp Business a la app** — el dashboard no lo hace solo, y sin esto solo llegan los "Probar" del dashboard, no los mensajes reales: `POST https://graph.facebook.com/v25.0/<WABA_ID>/subscribed_apps` con un token de acceso (el temporal del Paso 1 alcanza). Verificar con `GET` del mismo endpoint que aparezca la app propia.
+5. No hace falta: medio de pago (es para mensajes iniciados por la empresa), verificación del negocio, ni publicar la app.
+
+Particularidad del **número de prueba** de Meta (+1 555…): un usuario no puede iniciar el chat con él (WhatsApp dice que "no está en WhatsApp"). Para probar, primero se manda desde el dashboard (Paso 1) un mensaje de plantilla al celular de prueba, y después se responde en ese chat con el código. Con la línea real no pasa.
+
 ### Criterios de aceptación
 
 - [x] Un perfil no `verificado` no puede acceder a `/discover`.
