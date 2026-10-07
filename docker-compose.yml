@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: destiny
+      POSTGRES_PASSWORD: destiny
+      POSTGRES_DB: destiny
+    ports:
+      - "5432:5432"
+    volumes:
+      - destiny_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  destiny_postgres_data:
