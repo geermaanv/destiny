@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.aspects import aspect_label
 from app.compatibility import compatibility_signals
 from app.database import get_db
 from app.explainer import ResonanceExplainer, get_explainer
@@ -35,6 +36,8 @@ def _chart_payload(profile: Profile) -> dict:
 @router.get("", response_model=list[DiscoverCandidateOut])
 def list_discover(viewer_id: uuid.UUID = Query(...), db: Session = Depends(get_db)) -> list[DiscoverCandidateOut]:
     viewer = _require_verified_profile(viewer_id, db)
+    if viewer.birth_date is None:
+        raise HTTPException(status_code=409, detail="Perfil sin datos natales")
 
     candidates = db.scalars(
         select(Profile)
@@ -53,7 +56,7 @@ def list_discover(viewer_id: uuid.UUID = Query(...), db: Session = Depends(get_d
             DiscoverCandidateOut(
                 profile_id=candidate.id,
                 compatibility_pct=signals["percentage"],
-                preview=f"{signals['aspect'].capitalize()} solar",
+                preview=aspect_label(signals["aspect"]),
             )
         )
     return results

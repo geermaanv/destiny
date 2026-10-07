@@ -1,6 +1,7 @@
 import json
 from typing import Protocol
 
+from app.aspects import aspect_label
 from app.config import settings
 
 EDITORIAL_GUIDELINE = (
@@ -21,11 +22,9 @@ class MockIcebreakerGenerator:
     ResonanceExplainer (app/explainer.py) y KYC (ADR 0006)."""
 
     def generate(self, profile_a: dict, profile_b: dict, signals: dict) -> str:
-        aspect = signals["aspect"]
         return (
-            f"Che, nuestros soles están en {aspect} — dicen que eso explica "
-            "bastante. ¿Vos sentís que sos de las personas intensas o de las "
-            "tranquilas del grupo?"
+            f"Che, Destiny dice que lo nuestro es «{aspect_label(signals['aspect']).lower()}». "
+            "¿Vos sentís que sos de las personas intensas o de las tranquilas del grupo?"
         )
 
 

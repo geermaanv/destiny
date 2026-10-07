@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import AppNav from "@/components/AppNav";
 import { getFrequencyCount, getTodayAstroWeather, Mood, submitMoodCheckin } from "@/lib/api";
 
 const MOODS: { value: Mood; label: string }[] = [
@@ -20,7 +21,7 @@ function HomeContent() {
 
   useEffect(() => {
     getTodayAstroWeather().then((r) => setAstroWeather(r.astro_weather));
-    getFrequencyCount().then((r) => setFrequencyCount(r.count));
+    getFrequencyCount(profileId ?? undefined).then((r) => setFrequencyCount(r.count));
   }, []);
 
   async function checkIn(mood: Mood) {
@@ -59,28 +60,17 @@ function HomeContent() {
         <p className="text-sm text-slate-400">En tu frecuencia</p>
         <p className="text-xl font-semibold">{frequencyCount ?? "—"} personas</p>
       </div>
-
-      <div className="flex justify-center gap-4">
-        <a href={`/discover?profileId=${profileId}`} className="text-violet-400 underline">
-          Descubrir
-        </a>
-        <a href={`/calendario?profileId=${profileId}`} className="text-violet-400 underline">
-          Calendario
-        </a>
-        <a href={`/invitar?profileId=${profileId}`} className="text-violet-400 underline">
-          Invitar
-        </a>
-      </div>
     </div>
   );
 }
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
       <Suspense>
         <HomeContent />
       </Suspense>
+      <AppNav />
     </main>
   );
 }

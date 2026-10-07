@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import AppNav from "@/components/AppNav";
 import { createInvitation, Invitation, SUN_SIGNS } from "@/lib/api";
 
 function InvitarForm() {
@@ -69,10 +70,11 @@ function InvitarForm() {
 
 export default function InvitarPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
       <Suspense>
         <InvitarForm />
       </Suspense>
+      <AppNav />
     </main>
   );
 }

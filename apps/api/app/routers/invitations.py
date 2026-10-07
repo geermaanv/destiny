@@ -5,7 +5,7 @@ from urllib.parse import quote
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.aspects import angle_between, classify_aspect
+from app.aspects import angle_between, aspect_sentence, classify_aspect
 from app.astro import approximate_longitude_for_sign
 from app.compatibility import compatibility_signals, sun_longitude
 from app.config import settings
@@ -46,8 +46,8 @@ def create_invitation(payload: InvitationIn, db: Session = Depends(get_db)) -> I
     aspect = classify_aspect(angle_between(inviter_lon, friend_lon))
 
     teaser = (
-        f"Con el sol en {payload.friend_sun_sign}, {payload.friend_name} podría tener un "
-        f"{aspect['aspect']} con tu carta. Para ver la resonancia real (y revelarla para los "
+        f"Con el sol en {payload.friend_sun_sign}, {payload.friend_name} podría tener esta "
+        f"conexión con vos: {aspect_sentence(aspect['aspect'])}. Para ver la resonancia real (y revelarla para los "
         "dos) necesitamos que complete su carta natal."
     )
     partial_report = PartialReportOut(
@@ -75,7 +75,10 @@ def get_invitation(ref_id: str, db: Session = Depends(get_db)) -> InvitationPrel
     return InvitationPreloadOut(
         ref_id=ref_id,
         friend_name=invitation.friend_name,
-        teaser=f"Alguien te invitó a Destiny. Con tu signo, hay un {aspect['aspect']} posible. Completá tu carta para la revelación real.",
+        teaser=(
+            f"Alguien te invitó a Destiny. Con tu signo, puede que {aspect_sentence(aspect['aspect'])}. "
+            "Completá tu carta para la revelación real."
+        ),
     )
 
 
@@ -92,7 +95,7 @@ def reveal_invitation(ref_id: str, invitee_id: uuid.UUID, db: Session = Depends(
 
     signals = compatibility_signals(inviter, invitee)
     text = (
-        f"Resonancia real revelada: {signals['aspect']} entre los soles de {invitation.friend_name} "
-        f"y quien lo invitó ({signals['percentage']}%)."
+        f"Resonancia real revelada entre {invitation.friend_name} y quien lo invitó: "
+        f"{aspect_sentence(signals['aspect'])} ({signals['percentage']}%)."
     )
     return RevealOut(aspect=signals["aspect"], percentage=signals["percentage"], text=text)

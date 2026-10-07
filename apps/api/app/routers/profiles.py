@@ -108,6 +108,9 @@ def start_whatsapp_verification(profile_id: uuid.UUID, db: Session = Depends(get
         raise HTTPException(status_code=404, detail="Profile not found")
     if profile.verification_status == "verificado":
         raise HTTPException(status_code=409, detail="Profile already verified")
+    if profile.birth_date is None:
+        # La verificación cierra el onboarding: sin datos natales no hay Descubrir posible.
+        raise HTTPException(status_code=409, detail="Profile has no birth data")
 
     entry = issue_code(db, profile)
     return WhatsappCodeOut(

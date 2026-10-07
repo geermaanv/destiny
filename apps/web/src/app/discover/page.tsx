@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import AppNav from "@/components/AppNav";
 import { createMatch, DiscoverCandidate, getDiscoverCandidates, getExplanation } from "@/lib/api";
 
 function DiscoverContent() {
@@ -16,7 +17,15 @@ function DiscoverContent() {
     if (!profileId) return;
     getDiscoverCandidates(profileId)
       .then(setCandidates)
-      .catch(() => setError("No pudimos cargar descubrir. ¿Tu perfil está verificado?"));
+      .catch((e: Error) =>
+        setError(
+          e.message === "403"
+            ? "Para ver Descubrir primero tenés que verificar tu identidad."
+            : e.message === "409"
+              ? "Te faltan tus datos natales. Volvé a empezar el registro para completarlos."
+              : "No pudimos cargar Descubrir. Probá de nuevo en un rato."
+        )
+      );
   }, [profileId]);
 
   async function openCandidate(candidateId: string) {
@@ -65,10 +74,11 @@ function DiscoverContent() {
 
 export default function DiscoverPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
       <Suspense>
         <DiscoverContent />
       </Suspense>
+      <AppNav />
     </main>
   );
 }

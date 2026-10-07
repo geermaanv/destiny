@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends
+import uuid
+
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -18,12 +20,20 @@ def get_today() -> AstroWeatherOut:
 
 
 @router.get("/frequency-count", response_model=FrequencyCountOut)
-def get_frequency_count(db: Session = Depends(get_db)) -> FrequencyCountOut:
+def get_frequency_count(
+    profile_id: uuid.UUID | None = Query(default=None), db: Session = Depends(get_db)
+) -> FrequencyCountOut:
     # Heurística v1: todos los perfiles verificados comparten el tránsito del
     # día (ver B4-home-tu-momento.md, "fuera de alcance": agrupación
     # geográfica y afinidad fina de tránsitos quedan para una iteración
     # posterior).
-    count = db.scalar(select(func.count()).select_from(Profile).where(Profile.verification_status == "verificado"))
+    # Mismo universo que /discover: verificados con datos natales, sin contarse a uno mismo.
+    query = select(func.count()).select_from(Profile).where(
+        Profile.verification_status == "verificado", Profile.birth_date.is_not(None)
+    )
+    if profile_id is not None:
+        query = query.where(Profile.id != profile_id)
+    count = db.scalar(query)
     return FrequencyCountOut(count=count or 0)
 
 

@@ -24,3 +24,23 @@ def classify_aspect(angle: float) -> dict:
 
     name, percentage = DEFAULT_ASPECT
     return {"aspect": name, "angle": round(angle, 1), "percentage": percentage, "is_major": False}
+
+
+# Textos en lenguaje simple para mostrar al usuario (evitar jerga y frases
+# rotas como "hay un sin aspecto mayor"): etiqueta corta + frase completa.
+ASPECT_TEXT = {
+    "conjunción": ("Energía parecida", "sus soles están en sintonía: tienen una energía muy parecida"),
+    "sextil": ("Se complementan", "sus soles se complementan con facilidad"),
+    "cuadratura": ("Tensión que impulsa", "entre sus soles hay una tensión que puede ser motor"),
+    "trígono": ("Fluyen fácil", "sus soles fluyen naturalmente juntos"),
+    "oposición": ("Polos opuestos", "sus soles son polos opuestos que se atraen"),
+    "sin aspecto mayor": ("Por descubrir", "sus soles no marcan un vínculo fuerte: la conexión está por descubrirse"),
+}
+
+
+def aspect_label(name: str) -> str:
+    return ASPECT_TEXT.get(name, (name.capitalize(), name))[0]
+
+
+def aspect_sentence(name: str) -> str:
+    return ASPECT_TEXT.get(name, (name, name))[1]

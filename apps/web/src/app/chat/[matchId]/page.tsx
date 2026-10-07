@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
+import AppNav from "@/components/AppNav";
 import { ChatMessage, getMessages, sendMessage } from "@/lib/api";
 
 function ChatContent() {
@@ -59,10 +60,11 @@ function ChatContent() {
 
 export default function ChatPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
       <Suspense>
         <ChatContent />
       </Suspense>
+      <AppNav />
     </main>
   );
 }

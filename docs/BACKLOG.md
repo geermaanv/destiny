@@ -49,9 +49,9 @@ Specs approved, listas para codear:
 Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidir qué se encara primero.
 
 **Bugs**
-- [ ] `/discover` da 500 si el perfil verificado no tiene datos natales (se puede llegar a la verificación entrando directo por URL). Responder un error claro y pedir completar los datos.
-- [ ] Textos rotos cuando no hay aspecto mayor entre los soles: "Hay un sin aspecto mayor…" (explicación B5) y "nuestros soles están en sin aspecto mayor" (icebreaker B7).
-- [ ] Home dice "En tu frecuencia: N personas" pero Descubrir puede decir "Todavía no hay nadie": cuentan cosas distintas (el contador incluye perfiles sin datos natales).
+- [x] `/discover` da 500 si el perfil verificado no tiene datos natales (se puede llegar a la verificación entrando directo por URL). Responder un error claro y pedir completar los datos. **Hecho**: 409 + mensaje en la pantalla, y la verificación por WhatsApp no arranca sin datos natales.
+- [x] Textos rotos cuando no hay aspecto mayor entre los soles: "Hay un sin aspecto mayor…" (explicación B5) y "nuestros soles están en sin aspecto mayor" (icebreaker B7).
+- [x] Home dice "En tu frecuencia: N personas" pero Descubrir puede decir "Todavía no hay nadie": cuentan cosas distintas (el contador incluye perfiles sin datos natales). **Hecho**: el contador usa el mismo universo que Descubrir y no se cuenta a uno mismo.
 
 **Gaps de producto (los más importantes)**
 - [ ] Los perfiles no tienen **nombre, foto, edad, género ni a quién buscan**: en Descubrir solo se ve "Sin aspecto mayor solar · 60%". Para una app de citas es lo primero que falta.
@@ -59,7 +59,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [ ] **Sin sesión**: el perfil viaja en la URL (`?profileId=`). Si se cierra el navegador se pierde el acceso. La verificación por WhatsApp + "Seguir con mi cuenta" ya sirve como login: falta guardarlo (cookie) y una entrada de "Ya tengo cuenta".
 
 **Navegación / fricción**
-- [ ] No hay barra de navegación ni botón "atrás": Home tiene links sueltos y desde chat, calendario o invitar no se vuelve.
+- [x] No hay barra de navegación ni botón "atrás": Home tiene links sueltos y desde chat, calendario o invitar no se vuelve. **Hecho**: barra inferior (Inicio / Descubrir / Calendario / Invitar) en todas las pantallas post-onboarding.
 - [ ] Idea de German: el onboarding como **una sola pantalla con secciones** (datos natales, ritmo, verificación) en vez de pasos separados, para poder volver y cambiar algo fácil.
 - [ ] Ritmo de notificaciones: no explica que es para notificaciones ni que todavía no se envían; sin indicador de paso del onboarding.
 
@@ -67,7 +67,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [ ] Sin mes/año, sin días de la semana, no se puede cambiar de mes, no marca hoy, no explica qué son los días violetas, y la grilla no arranca en el día de la semana correcto.
 
 **Textos y apariencia**
-- [ ] Jerga astrológica sin traducir ("Sin aspecto mayor solar", "cuadratura"): pasar a lenguaje simple.
+- [x] Jerga astrológica sin traducir ("Sin aspecto mayor solar", "cuadratura"): pasar a lenguaje simple. **Hecho**: `app/aspects.py` tiene etiquetas y frases simples ("Energía parecida", "Polos opuestos", "Por descubrir"…) usadas en Descubrir, la explicación, el rompehielos y la invitación.
 - [ ] Invitar: "Generar reporte" no es claro y falta explicar qué recibe el amigo.
 
 ## Tareas técnicas sueltas

@@ -1,6 +1,7 @@
 import json
 from typing import Protocol
 
+from app.aspects import aspect_sentence
 from app.config import settings
 
 EDITORIAL_GUIDELINE = (
@@ -24,10 +25,9 @@ class MockResonanceExplainer:
     """
 
     def explain(self, viewer: dict, candidate: dict, signals: dict) -> str:
-        aspect = signals["aspect"]
         pct = signals["percentage"]
         return (
-            f"Hay un {aspect} entre sus soles, con un {pct}% de resonancia. "
+            f"{aspect_sentence(signals['aspect']).capitalize()}, con un {pct}% de resonancia. "
             "No es una garantía, es una invitación: el momento parece acompañar "
             "el encuentro, vale la pena ver qué pasa cuando se cruzan."
         )

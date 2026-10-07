@@ -90,8 +90,9 @@ export async function getTodayAstroWeather(): Promise<{ astro_weather: string; d
   return res.json();
 }
 
-export async function getFrequencyCount(): Promise<{ count: number }> {
-  const res = await fetch(`${API_URL}/home/frequency-count`);
+export async function getFrequencyCount(profileId?: string): Promise<{ count: number }> {
+  const query = profileId ? `?profile_id=${profileId}` : "";
+  const res = await fetch(`${API_URL}/home/frequency-count${query}`);
   if (!res.ok) throw new Error("No se pudo obtener el contador de frecuencia");
   return res.json();
 }
@@ -108,7 +109,7 @@ export type DiscoverCandidate = {
 
 export async function getDiscoverCandidates(viewerId: string): Promise<DiscoverCandidate[]> {
   const res = await fetch(`${API_URL}/discover?viewer_id=${viewerId}`);
-  if (!res.ok) throw new Error("No se pudo cargar descubrir");
+  if (!res.ok) throw new Error(String(res.status));
   return res.json();
 }
 
