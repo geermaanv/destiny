@@ -9,6 +9,7 @@ from app.compatibility import compatibility_signals
 from app.database import get_db
 from app.explainer import ResonanceExplainer, get_explainer
 from app.models import Profile
+from app.public_profile import public_fields
 from app.schemas import DiscoverCandidateOut, ExplanationOut
 
 router = APIRouter(prefix="/discover", tags=["discover"])
@@ -57,6 +58,7 @@ def list_discover(viewer_id: uuid.UUID = Query(...), db: Session = Depends(get_d
                 profile_id=candidate.id,
                 compatibility_pct=signals["percentage"],
                 preview=aspect_label(signals["aspect"]),
+                **public_fields(candidate),
             )
         )
     return results

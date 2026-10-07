@@ -20,7 +20,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 | [A1-datos-natales](./A1-datos-natales.md) | A1 | implemented |
 | [A2-ritmo-notificaciones](./A2-ritmo-notificaciones.md) | A2 | implemented |
 | [A3-verificacion-identidad](./A3-verificacion-identidad.md) | A3 | implemented (v1 WhatsApp, modo mock; v2 selfie/video pospuesta) |
-| [A4-perfil-liviano](./A4-perfil-liviano.md) | A4 | draft |
+| [A4-perfil-liviano](./A4-perfil-liviano.md) | A4 | implemented |
 | [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | implemented |
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | implemented |
 | [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | implemented |

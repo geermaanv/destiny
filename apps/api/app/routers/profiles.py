@@ -1,15 +1,20 @@
 import uuid
 from datetime import time
+from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from app.adapters.kyc import IdentityVerificationAdapter, get_kyc_adapter
+from app.config import settings
+from app.public_profile import sun_sign
 from app.database import get_db
 from app.models import PhoneVerificationCode, Profile
 from app.schemas import (
     PERIOD_MIDPOINTS,
+    BasicInfoIn,
     BirthDataIn,
     ContinueExistingOut,
     NotificationPreferenceIn,
@@ -32,11 +37,11 @@ def create_profile(db: Session = Depends(get_db)) -> Profile:
 
 
 @router.get("/{profile_id}", response_model=ProfileOut)
-def get_profile(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> Profile:
+def get_profile(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> ProfileOut:
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    return profile
+    return ProfileOut.model_validate(profile).model_copy(update={"sun_sign": sun_sign(profile)})
 
 
 @router.post("/{profile_id}/birth-data", response_model=ProfileOut)
@@ -153,3 +158,71 @@ def continue_with_existing_profile(profile_id: uuid.UUID, db: Session = Depends(
     db.delete(profile)
     db.commit()
     return ContinueExistingOut(profile_id=existing.id)
+
+
+# Perfil liviano (spec A4).
+PHOTO_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
+MAX_PHOTO_BYTES = 5 * 1024 * 1024
+
+
+@router.post("/{profile_id}/basic-info", response_model=ProfileOut)
+def set_basic_info(profile_id: uuid.UUID, payload: BasicInfoIn, db: Session = Depends(get_db)) -> Profile:
+    profile = db.get(Profile, profile_id)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
+
+    profile.display_name = payload.display_name
+    profile.energy_period = payload.energy_period
+    profile.interests = list(dict.fromkeys(payload.interests))
+    profile.bio = payload.bio
+    profile.neighborhood = payload.neighborhood
+    profile.avatar = payload.avatar
+    db.commit()
+    db.refresh(profile)
+    return profile
+
+
+@router.post("/{profile_id}/photo", response_model=ProfileOut)
+async def upload_photo(profile_id: uuid.UUID, photo: UploadFile = File(...), db: Session = Depends(get_db)) -> Profile:
+    profile = db.get(Profile, profile_id)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    extension = PHOTO_TYPES.get(photo.content_type or "")
+    if extension is None:
+        raise HTTPException(status_code=415, detail="La foto tiene que ser JPG, PNG o WebP")
+    content = await photo.read(MAX_PHOTO_BYTES + 1)
+    if len(content) > MAX_PHOTO_BYTES:
+        raise HTTPException(status_code=413, detail="La foto no puede pesar más de 5 MB")
+
+    uploads = Path(settings.uploads_dir)
+    uploads.mkdir(parents=True, exist_ok=True)
+    if profile.photo_path:
+        Path(profile.photo_path).unlink(missing_ok=True)
+    path = uploads / f"{profile.id}{extension}"
+    path.write_bytes(content)
+
+    profile.photo_path = str(path)
+    db.commit()
+    db.refresh(profile)
+    return profile
+
+
+@router.delete("/{profile_id}/photo", response_model=ProfileOut)
+def delete_photo(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> Profile:
+    profile = db.get(Profile, profile_id)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    if profile.photo_path:
+        Path(profile.photo_path).unlink(missing_ok=True)
+        profile.photo_path = None
+        db.commit()
+        db.refresh(profile)
+    return profile
+
+
+@router.get("/{profile_id}/photo")
+def get_photo(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> FileResponse:
+    profile = db.get(Profile, profile_id)
+    if profile is None or not profile.photo_path or not Path(profile.photo_path).exists():
+        raise HTTPException(status_code=404, detail="Photo not found")
+    return FileResponse(profile.photo_path, headers={"Cache-Control": "no-cache"})

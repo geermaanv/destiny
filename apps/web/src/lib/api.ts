@@ -46,7 +46,61 @@ export type Profile = {
   birth_place_lon: number | null;
   birth_place_timezone: string | null;
   notification_rhythm: NotificationRhythm | null;
+  // Perfil liviano (spec A4)
+  display_name: string | null;
+  bio: string | null;
+  neighborhood: string | null;
+  energy_period: EnergyPeriod | null;
+  interests: Interest[];
+  avatar: AvatarKey | null;
+  has_photo: boolean;
+  sun_sign: string | null;
 };
+
+export type EnergyPeriod = "madrugada" | "manana" | "tarde" | "noche";
+export type Interest =
+  | "musica" | "deporte" | "arte" | "tecnologia" | "viajes" | "espiritualidad"
+  | "lectura" | "cine" | "naturaleza" | "cocina" | "emprendimientos" | "juegos";
+export type AvatarKey =
+  | "signo" | "luna" | "sol" | "estrella" | "planeta" | "fuego" | "ola" | "hoja" | "mariposa" | "rayo";
+
+export type BasicInfoPayload = {
+  display_name: string;
+  energy_period: EnergyPeriod | null;
+  interests: Interest[];
+  bio: string | null;
+  neighborhood: string | null;
+  avatar: AvatarKey | null;
+};
+
+export async function getProfile(profileId: string): Promise<Profile> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}`);
+  if (!res.ok) throw new Error("No se pudo cargar el perfil");
+  return res.json();
+}
+
+export function setBasicInfo(profileId: string, payload: BasicInfoPayload): Promise<Profile> {
+  return postJson(`/profiles/${profileId}/basic-info`, payload);
+}
+
+export async function uploadPhoto(profileId: string, photo: File): Promise<Profile> {
+  const formData = new FormData();
+  formData.append("photo", photo);
+  const res = await fetch(`${API_URL}/profiles/${profileId}/photo`, { method: "POST", body: formData });
+  if (!res.ok) throw new Error(res.status === 413 ? "La foto no puede pesar más de 5 MB" : "No se pudo subir la foto");
+  return res.json();
+}
+
+export async function deletePhoto(profileId: string): Promise<Profile> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/photo`, { method: "DELETE" });
+  if (!res.ok) throw new Error("No se pudo borrar la foto");
+  return res.json();
+}
+
+// photo_url viene relativo a la API (ej. "/profiles/{id}/photo").
+export function apiUrl(path: string): string {
+  return `${API_URL}${path}`;
+}
 
 async function postJson<T>(path: string, body?: unknown): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
@@ -108,6 +162,15 @@ export type DiscoverCandidate = {
   profile_id: string;
   compatibility_pct: number;
   preview: string;
+  display_name: string | null;
+  age: number | null;
+  sun_sign: string | null;
+  photo_url: string | null;
+  avatar: AvatarKey | null;
+  energy_period: EnergyPeriod | null;
+  interests: Interest[];
+  bio: string | null;
+  neighborhood: string | null;
 };
 
 export async function getDiscoverCandidates(viewerId: string): Promise<DiscoverCandidate[]> {

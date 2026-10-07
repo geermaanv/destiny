@@ -54,11 +54,14 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] Home dice "En tu frecuencia: N personas" pero Descubrir puede decir "Todavía no hay nadie": cuentan cosas distintas (el contador incluye perfiles sin datos natales). **Hecho**: el contador usa el mismo universo que Descubrir y no se cuenta a uno mismo.
 
 **Gaps de producto (los más importantes)**
-- [ ] Los perfiles no tienen **nombre, foto, edad** (spec en borrador: `A4-perfil-liviano.md`, perfil liviano sin tipo de relación ni género): en Descubrir solo se ve "Sin aspecto mayor solar · 60%". Para una app de citas es lo primero que falta.
+- [x] Los perfiles no tienen **nombre, foto, edad** (spec en borrador: `A4-perfil-liviano.md`, perfil liviano sin tipo de relación ni género): en Descubrir solo se ve "Sin aspecto mayor solar · 60%". Para una app de citas es lo primero que falta.
 - [ ] **Match unilateral**: tocar "Match" crea el chat al instante; la otra persona no se entera y no hay lista de chats/matches para encontrarlo.
 - [ ] **Sin sesión**: el perfil viaja en la URL (`?profileId=`). Si se cierra el navegador se pierde el acceso. La verificación por WhatsApp + "Seguir con mi cuenta" ya sirve como login: falta guardarlo (cookie) y una entrada de "Ya tengo cuenta".
 
-- [ ] Idea de German para el perfil: **momento del día en que la persona tiene más energía** (madrugador / nocturno). Mucha gente lo asocia a cuándo nació; puede ser un dato de color del perfil y una señal más para el matching. Va con el diseño del perfil básico.
+- [x] Idea de German para el perfil: **momento del día en que la persona tiene más energía** (ya está en el perfil; falta usarlo como señal de matching) (madrugador / nocturno). Mucha gente lo asocia a cuándo nació; puede ser un dato de color del perfil y una señal más para el matching. Va con el diseño del perfil básico.
+
+- [ ] El signo Géminis figura como "Gemini" (en inglés) en `app/astro.py` y en el selector de Invitar.
+- [ ] `GET /profiles/{id}` devuelve datos natales completos a cualquiera que tenga el id (no hay sesión): revisarlo cuando se sume la sesión.
 
 **Navegación / fricción**
 - [x] No hay barra de navegación ni botón "atrás": Home tiene links sueltos y desde chat, calendario o invitar no se vuelve. **Hecho**: barra inferior (Inicio / Descubrir / Calendario / Invitar) en todas las pantallas post-onboarding.
@@ -82,6 +85,6 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [ ] `app/compatibility.py` calcula compatibilidad solo con el aspecto Sol-Sol (simplificación v1, documentada en el código). Una carta completa (Luna, Venus, Marte, ascendente) da una señal más rica — evaluar si vale la pena antes de sumar más signos al cálculo.
 - [x] Hosting para que Pablo vea el avance — resuelto por ahora: MacBook Air de German + túnel `ngrok`, con proxy de `apps/web` a la API para que un solo túnel alcance (ver ADR `0007-hosting-local-tunel.md`, incluye el runbook). Ejecutarlo requiere una sesión de Claude Code **local** en esa Mac (esta sesión cloud no tiene acceso a esa máquina). No reemplaza una decisión de hosting real para usuarios fuera del equipo.
 - [ ] Las dependencias de `apps/api/requirements.txt` están fijadas a versiones que no soportan Python 3.14 (hoy se usa 3.12). Evaluar actualizarlas o fijar la versión de Python en el repo (`.python-version`).
-- [ ] Las tablas se crean con `create_all`, que **no agrega columnas nuevas** a tablas existentes: una base local anterior a la verificación por WhatsApp necesita recrearse (o `ALTER TABLE profiles ADD COLUMN verification_method varchar, ADD COLUMN phone_e164 varchar UNIQUE, ADD COLUMN duplicate_of_id uuid`). Otro argumento para sumar Alembic.
+- [ ] Las tablas se crean con `create_all`, que **no agrega columnas nuevas** a tablas existentes: una base local anterior a la verificación por WhatsApp necesita recrearse (o `ALTER TABLE profiles ADD COLUMN verification_method varchar, ADD COLUMN phone_e164 varchar UNIQUE, ADD COLUMN duplicate_of_id uuid` y las columnas del perfil liviano: `display_name`, `bio`, `neighborhood`, `energy_period`, `avatar`, `photo_path` varchar e `interests varchar[] NOT NULL DEFAULT '{}'`). Otro argumento para sumar Alembic.
 - [ ] Rate limiting de `POST /profiles/{id}/verification/whatsapp` antes de abrir a usuarios fuera del equipo (fuera de alcance de A3 v1).
 - [ ] Cuando se corra el runbook de la ADR 0007, setear `WEB_BASE_URL` en `apps/api/.env` a la URL de `ngrok` del momento, para que el link de invitación de `C8-invitacion-whatsapp.md` sea válido desde afuera (si no, sigue apuntando a `localhost:3000`).

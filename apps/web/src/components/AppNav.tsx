@@ -11,6 +11,7 @@ const ITEMS = [
   { href: "/discover", label: "Descubrir", icon: "✦" },
   { href: "/calendario", label: "Calendario", icon: "▦" },
   { href: "/invitar", label: "Invitar", icon: "＋" },
+  { href: "/perfil", label: "Perfil", icon: "◉" },
 ];
 
 function NavLinks() {
@@ -28,7 +29,7 @@ function NavLinks() {
               <Link
                 href={`${item.href}?profileId=${profileId}`}
                 aria-current={active ? "page" : undefined}
-                className={`flex flex-col items-center gap-0.5 px-3 py-2 text-xs ${
+                className={`flex flex-col items-center gap-0.5 px-2 py-2 text-xs ${
                   active ? "text-violet-300" : "text-slate-500 hover:text-slate-300"
                 }`}
               >

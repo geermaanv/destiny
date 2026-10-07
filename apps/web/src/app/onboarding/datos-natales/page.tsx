@@ -162,7 +162,7 @@ function DatosNatalesForm() {
   function nextStepUrl(id: string) {
     const params = new URLSearchParams({ profileId: id });
     if (ref) params.set("ref", ref);
-    return `/onboarding/ritmo-notificaciones?${params.toString()}`;
+    return `/onboarding/perfil?${params.toString()}`;
   }
 
   async function handleSubmit(e: React.FormEvent) {

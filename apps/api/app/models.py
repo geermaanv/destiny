@@ -2,6 +2,7 @@ import uuid
 from datetime import date, datetime, time
 
 from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, String, Time
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
@@ -31,6 +32,19 @@ class Profile(Base):
     verification_method: Mapped[str | None] = mapped_column(String, nullable=True)  # "whatsapp" (v1) | "kyc_video" (v2)
     # Teléfono verificado por WhatsApp, E.164. Nunca se expone a otros usuarios.
     phone_e164: Mapped[str | None] = mapped_column(String, nullable=True, unique=True)
+    # Perfil liviano (spec A4). Lo ven otros usuarios; nunca teléfono ni datos natales exactos.
+    display_name: Mapped[str | None] = mapped_column(String, nullable=True)
+    bio: Mapped[str | None] = mapped_column(String, nullable=True)
+    neighborhood: Mapped[str | None] = mapped_column(String, nullable=True)
+    energy_period: Mapped[str | None] = mapped_column(String, nullable=True)
+    interests: Mapped[list[str]] = mapped_column(ARRAY(String), default=list, nullable=False)
+    avatar: Mapped[str | None] = mapped_column(String, nullable=True)
+    photo_path: Mapped[str | None] = mapped_column(String, nullable=True)
+
+    @property
+    def has_photo(self) -> bool:
+        return self.photo_path is not None
+
     # Si la verificación dio duplicado_detectado: el perfil que ya tiene ese número.
     duplicate_of_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
 

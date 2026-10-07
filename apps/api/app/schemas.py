@@ -2,7 +2,7 @@ import uuid
 from datetime import date, datetime, time
 from typing import Literal
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
 
@@ -55,6 +55,32 @@ class BirthDataIn(BaseModel):
         return value
 
 
+# Perfil liviano (spec A4).
+EnergyPeriod = Literal["madrugada", "manana", "tarde", "noche"]
+Interest = Literal[
+    "musica", "deporte", "arte", "tecnologia", "viajes", "espiritualidad",
+    "lectura", "cine", "naturaleza", "cocina", "emprendimientos", "juegos",
+]
+Avatar = Literal["signo", "luna", "sol", "estrella", "planeta", "fuego", "ola", "hoja", "mariposa", "rayo"]
+
+
+class BasicInfoIn(BaseModel):
+    display_name: str = Field(min_length=1, max_length=40)
+    energy_period: EnergyPeriod | None = None
+    interests: list[Interest] = Field(default_factory=list, max_length=5)
+    bio: str | None = Field(default=None, max_length=140)
+    neighborhood: str | None = Field(default=None, max_length=40)
+    avatar: Avatar | None = None
+
+    @field_validator("display_name", "bio", "neighborhood", mode="before")
+    @classmethod
+    def strip_blank(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        return value or None
+
+
 class ProfileOut(BaseModel):
     id: uuid.UUID
     birth_date: date | None
@@ -67,6 +93,14 @@ class ProfileOut(BaseModel):
     notification_rhythm: NotificationRhythm | None
     verification_status: str
     verification_id: str | None
+    display_name: str | None = None
+    bio: str | None = None
+    neighborhood: str | None = None
+    energy_period: str | None = None
+    interests: list[str] = []
+    avatar: str | None = None
+    has_photo: bool = False
+    sun_sign: str | None = None  # solo lo completa GET /profiles/{id}
 
     class Config:
         from_attributes = True
@@ -110,6 +144,16 @@ class DiscoverCandidateOut(BaseModel):
     profile_id: uuid.UUID
     compatibility_pct: int
     preview: str
+    # Perfil liviano (spec A4): solo datos públicos.
+    display_name: str | None = None
+    age: int | None = None
+    sun_sign: str | None = None
+    photo_url: str | None = None
+    avatar: str | None = None
+    energy_period: str | None = None
+    interests: list[str] = []
+    bio: str | None = None
+    neighborhood: str | None = None
 
 
 class ExplanationOut(BaseModel):
