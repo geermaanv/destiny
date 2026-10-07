@@ -53,6 +53,7 @@ Si `birth_time` es `null`, el backend asigna `"12:00"` y fuerza `birth_time_esti
 - Autocomplete contra `GET /geocoding/search?q=` (Open-Meteo, Argentina primero; alias "CABA"/"Capital Federal"/"Bs As" → Buenos Aires). Hay que elegir una opción de la lista; se guarda el texto elegido + lat/lon + timezone.
 - Si el geocoder no responde, se acepta el texto libre (sin coordenadas) para no bloquear el onboarding.
 - En desktop, tocar cualquier parte del campo de fecha abre el selector.
+- Al marcar "No sé mi hora exacta" se explica por qué se usan las 12:00: es el punto medio del día y minimiza el desvío del cálculo para cualquier hora real de nacimiento.
 - Hora en **formato 24 h** con dos desplegables (hora 00–23 y minutos): el input de hora nativo usa AM/PM según el idioma del navegador y era fácil cargarla mal a mano.
 
 ## Criterios de aceptación

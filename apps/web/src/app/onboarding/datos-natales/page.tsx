@@ -240,6 +240,13 @@ function DatosNatalesForm() {
           <input type="checkbox" checked={timeUnknown} onChange={(e) => setTimeUnknown(e.target.checked)} />
           No sé mi hora exacta
         </label>
+        {timeUnknown && (
+          <p className="rounded-md bg-slate-900 px-3 py-2 text-xs text-slate-400">
+            No pasa nada: tomamos las <span className="text-slate-200">12:00</span>, el mediodía, porque es el
+            punto medio del día y así el desvío del cálculo es el menor posible, para cualquier hora real en que
+            hayas nacido.
+          </p>
+        )}
       </div>
 
       {error && <p className="text-sm text-red-400">{error}</p>}
