@@ -19,7 +19,7 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 - [ ] Proveedor de KYC/verificación para **v2** — Persona, Onfido, Veriff o Didit (spec `A3-verificacion-identidad.md` / ADR 0006). Ya no bloquea v1.
 - [ ] Tonos/copies de notificaciones — "Ritmo Diario" vs. "Pulso del Cosmos" (spec `A2-ritmo-notificaciones.md`).
 - [ ] Decisión PWA vs. nativo para push notifications en iOS (ver ADR 0002 — afecta a `A2-ritmo-notificaciones.md`).
-- [ ] Qué tipos de relación filtrar — pareja/amistad/etc. (spec `B5-pantalla-descubrir.md`, v1 asume un solo contexto: dating).
+- [ ] Contexto de relación en Descubrir — **decidido el enfoque**: no va en el perfil, se elige en Descubrir y la lista queda abierta (pareja, amistad, trabajo/jefe, socio…). Falta la spec del selector y de cómo cambia la explicación (`B5-pantalla-descubrir.md`).
 - [ ] Integración de actividades en el calendario de memoria (spec `B6-calendario-memoria.md`, v1 no las incluye).
 - [ ] Tonos/copies del chat y de los rompehielos de IA (spec `B7-chat-rompehielos.md`, v1 usa copy borrador).
 - [ ] Estética y visuales del Hub en general (transversal, no bloquea ninguna spec).
@@ -54,7 +54,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] Home dice "En tu frecuencia: N personas" pero Descubrir puede decir "Todavía no hay nadie": cuentan cosas distintas (el contador incluye perfiles sin datos natales). **Hecho**: el contador usa el mismo universo que Descubrir y no se cuenta a uno mismo.
 
 **Gaps de producto (los más importantes)**
-- [ ] Los perfiles no tienen **nombre, foto, edad, género ni a quién buscan**: en Descubrir solo se ve "Sin aspecto mayor solar · 60%". Para una app de citas es lo primero que falta.
+- [ ] Los perfiles no tienen **nombre, foto, edad** (spec en borrador: `A4-perfil-liviano.md`, perfil liviano sin tipo de relación ni género): en Descubrir solo se ve "Sin aspecto mayor solar · 60%". Para una app de citas es lo primero que falta.
 - [ ] **Match unilateral**: tocar "Match" crea el chat al instante; la otra persona no se entera y no hay lista de chats/matches para encontrarlo.
 - [ ] **Sin sesión**: el perfil viaja en la URL (`?profileId=`). Si se cierra el navegador se pierde el acceso. La verificación por WhatsApp + "Seguir con mi cuenta" ya sirve como login: falta guardarlo (cookie) y una entrada de "Ya tengo cuenta".
 

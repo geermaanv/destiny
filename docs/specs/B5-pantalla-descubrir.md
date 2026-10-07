@@ -11,7 +11,8 @@ Lista curada y chica de perfiles (menos opciones, mejor señal), con compatibili
 
 ## Puntos abiertos (no bloquean v1)
 
-- Qué tipos de relación filtrar (pareja/amistad/etc.) — `BACKLOG.md` P0. **Default de v1**: un solo contexto de relación (pareja/dating), sin selector de tipo. El filtro por tipo de relación queda fuera de alcance hasta que se defina cuáles soportar (alineado con la visión de `VISION.md` de extender el Identity Graph a otros contextos más adelante, no en el MVP).
+- Qué tipos de relación filtrar (pareja/amistad/etc.) — `BACKLOG.md` P0. **Default de v1**: un solo contexto de relación (pareja/dating), sin selector de tipo.
+- **Decisión de dirección (German, 2026-10-07)**: el tipo de relación **no** va en el perfil (ver `A4-perfil-liviano.md`): se elige **en Descubrir**, como "contexto" de la búsqueda, y la lista queda **abierta** a crecer: pareja, amistad, trabajo (evaluar un jefe o un compañero), socio, y otros que surjan. El contexto cambia el enfoque de la explicación de resonancia (no es lo mismo leer una carta como pareja que como socios). Diseño detallado pendiente: spec a escribir antes de implementarlo.
 
 ## Requisitos funcionales
 
