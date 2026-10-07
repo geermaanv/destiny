@@ -15,7 +15,7 @@ Anclar la identidad del usuario en su carta natal (fecha, lugar, hora de nacimie
 
 ## Requisitos funcionales
 
-- Capturar: fecha de nacimiento (obligatoria), lugar de nacimiento (obligatorio, geocodificado a lat/lon + timezone), hora de nacimiento (opcional).
+- Capturar: fecha de nacimiento (obligatoria; el usuario debe ser mayor de 18), lugar de nacimiento (obligatorio, geocodificado a lat/lon + timezone), hora de nacimiento (opcional).
 - Botón de escape **"No sé mi hora exacta"**: si el usuario no la sabe, se asigna `12:00` internamente y el perfil queda marcado con `hora_estimada: true`.
 - Los datos natales se usan para calcular posiciones planetarias vía `astronomy-engine` (ADR 0005) — no se recalculan en cada pantalla, se persisten.
 
@@ -52,7 +52,8 @@ Si `birth_time` es `null`, el backend asigna `"12:00"` y fuerza `birth_time_esti
 - Se pide la **ciudad**, no la dirección: alcanza para el cálculo y evita datos sensibles.
 - Autocomplete contra `GET /geocoding/search?q=` (Open-Meteo, Argentina primero; alias "CABA"/"Capital Federal"/"Bs As" → Buenos Aires). Hay que elegir una opción de la lista; se guarda el texto elegido + lat/lon + timezone.
 - Si el geocoder no responde, se acepta el texto libre (sin coordenadas) para no bloquear el onboarding.
-- En desktop, tocar cualquier parte del campo de fecha abre el selector.
+- Fecha en **tres desplegables (Día / Mes / Año)**, con el mes por nombre: el calendario nativo abría en el año actual y llegar al año de nacimiento era tedioso. Los días se ajustan al mes (ej. febrero 28/29).
+- **Mínimo 18 años** (decisión 2026-10-07, habitual en apps de citas y exigido por las tiendas): la lista de años arranca 18 años atrás y llega a 100; el front y la API (`422`) rechazan menores.
 - Al marcar "No sé mi hora exacta" se explica por qué se usan las 12:00: es el punto medio del día y minimiza el desvío del cálculo para cualquier hora real de nacimiento.
 - Hora en **formato 24 h** con dos desplegables (hora 00–23 y minutos): el input de hora nativo usa AM/PM según el idioma del navegador y era fácil cargarla mal a mano.
 

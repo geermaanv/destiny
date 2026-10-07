@@ -2,7 +2,7 @@ import uuid
 from datetime import date, datetime, time
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
 
@@ -25,10 +25,22 @@ class PlaceOut(BaseModel):
     timezone: str
 
 
+MIN_AGE = 18  # spec A1: Destiny es para mayores de edad
+
+
 class BirthDataIn(BaseModel):
     birth_date: date
     birth_time: time | None = None
     birth_place: BirthPlaceIn
+
+    @field_validator("birth_date")
+    @classmethod
+    def must_be_adult(cls, value: date) -> date:
+        today = date.today()
+        age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
+        if age < MIN_AGE:
+            raise ValueError(f"must be at least {MIN_AGE} years old")
+        return value
 
 
 class ProfileOut(BaseModel):

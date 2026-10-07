@@ -4,21 +4,31 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createProfile, Place, searchPlaces, setBirthData } from "@/lib/api";
 
-// En desktop los inputs date/time solo abren el selector desde el ícono; así se
-// abre al tocar cualquier parte del campo (en mobile ya es el comportamiento nativo).
-function openPicker(e: React.MouseEvent<HTMLInputElement>) {
-  try {
-    e.currentTarget.showPicker?.();
-  } catch {
-    // showPicker puede fallar (ej. input deshabilitado o navegador sin soporte): queda el comportamiento nativo.
-  }
-}
-
 const SEARCH_DEBOUNCE_MS = 300;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const HOURS = Array.from({ length: 24 }, (_, i) => pad(i));
 const MINUTES = Array.from({ length: 60 }, (_, i) => pad(i));
+// Fecha en tres desplegables (día / mes / año): el calendario nativo abre en el
+// año actual y llegar al año de nacimiento es tedioso. Mínimo 18 años (spec A1).
+const MIN_AGE = 18;
+const MAX_AGE = 100;
+const CURRENT_YEAR = new Date().getFullYear();
+const YEARS = Array.from({ length: MAX_AGE - MIN_AGE + 1 }, (_, i) => String(CURRENT_YEAR - MIN_AGE - i));
+const MONTHS = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+];
+const daysInMonth = (year: string, month: string) =>
+  year && month ? new Date(Number(year), Number(month), 0).getDate() : 31;
+
+function isAdult(isoDate: string): boolean {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  const today = new Date();
+  const eighteenth = new Date(y + MIN_AGE, m - 1, d);
+  return eighteenth <= today;
+}
+
 const SELECT_CLASS =
   "rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400 enabled:cursor-pointer disabled:opacity-40";
 
@@ -117,7 +127,11 @@ function DatosNatalesForm() {
   const router = useRouter();
   const ref = useSearchParams().get("ref");
   const [profileId, setProfileId] = useState<string | null>(null);
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const birthDate =
+    birthDay && birthMonth && birthYear ? `${birthYear}-${birthMonth}-${birthDay}` : "";
   const [birthPlace, setBirthPlace] = useState("");
   const [place, setPlace] = useState<Place | null>(null);
   const [geocodingDown, setGeocodingDown] = useState(false);
@@ -143,6 +157,14 @@ function DatosNatalesForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!profileId) return;
+    if (!birthDate) {
+      setError("Completá tu fecha de nacimiento.");
+      return;
+    }
+    if (!isAdult(birthDate)) {
+      setError(`Tenés que ser mayor de ${MIN_AGE} años para usar Destiny.`);
+      return;
+    }
     if (!place && !geocodingDown) {
       setError("Elegí tu ciudad de la lista de sugerencias.");
       return;
@@ -170,18 +192,57 @@ function DatosNatalesForm() {
       <h1 className="text-2xl font-semibold">Tus datos natales</h1>
 
       <div className="space-y-1">
-        <label htmlFor="birth-date" className="block text-sm text-slate-400">
+        <label htmlFor="birth-day" className="block text-sm text-slate-400">
           Fecha de nacimiento
         </label>
-        <input
-          id="birth-date"
-          type="date"
-          required
-          value={birthDate}
-          onChange={(e) => setBirthDate(e.target.value)}
-          onClick={openPicker}
-          className="w-full cursor-pointer rounded-md bg-slate-900 px-3 py-2 text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-slate-400"
-        />
+        <div className="flex gap-2">
+          <select
+            id="birth-day"
+            aria-label="Día"
+            value={birthDay}
+            onChange={(e) => setBirthDay(e.target.value)}
+            className={`${SELECT_CLASS} w-20`}
+          >
+            <option value="">Día</option>
+            {Array.from({ length: daysInMonth(birthYear, birthMonth) }, (_, i) => pad(i + 1)).map((d) => (
+              <option key={d} value={d}>
+                {Number(d)}
+              </option>
+            ))}
+          </select>
+          <select
+            aria-label="Mes"
+            value={birthMonth}
+            onChange={(e) => {
+              setBirthMonth(e.target.value);
+              if (Number(birthDay) > daysInMonth(birthYear, e.target.value)) setBirthDay("");
+            }}
+            className={`${SELECT_CLASS} min-w-0 flex-1`}
+          >
+            <option value="">Mes</option>
+            {MONTHS.map((name, i) => (
+              <option key={name} value={pad(i + 1)}>
+                {name}
+              </option>
+            ))}
+          </select>
+          <select
+            aria-label="Año"
+            value={birthYear}
+            onChange={(e) => {
+              setBirthYear(e.target.value);
+              if (Number(birthDay) > daysInMonth(e.target.value, birthMonth)) setBirthDay("");
+            }}
+            className={`${SELECT_CLASS} w-24`}
+          >
+            <option value="">Año</option>
+            {YEARS.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="space-y-1">
