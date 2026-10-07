@@ -9,7 +9,9 @@ Regla del proyecto: **nada de esto se codifica sin pasar primero por una spec `a
 Ya **no bloquean** la implementación (las specs correspondientes las dejaron fuera de alcance de v1 con un default o un stub). Cuando Pablo resuelva cada punto, se actualiza la spec afectada y se ajusta la implementación si corresponde.
 
 - [ ] UX de la pantalla de datos natales (spec `A1-datos-natales.md`).
-- [ ] Proveedor de KYC/verificación — Persona, Onfido, Veriff o Didit (spec `A3-verificacion-identidad.md` / ADR 0006).
+- [ ] Confirmar el cambio de verificación a WhatsApp para v1, con selfie/video en vivo pospuesta a v2 (spec `A3-verificacion-identidad.md` / ADR 0008).
+- [ ] Número dedicado de WhatsApp para Destiny y titular de la cuenta de Meta Business (operativo; el desarrollo avanza en modo mock).
+- [ ] Proveedor de KYC/verificación para **v2** — Persona, Onfido, Veriff o Didit (spec `A3-verificacion-identidad.md` / ADR 0006). Ya no bloquea v1.
 - [ ] Tonos/copies de notificaciones — "Ritmo Diario" vs. "Pulso del Cosmos" (spec `A2-ritmo-notificaciones.md`).
 - [ ] Decisión PWA vs. nativo para push notifications en iOS (ver ADR 0002 — afecta a `A2-ritmo-notificaciones.md`).
 - [ ] Qué tipos de relación filtrar — pareja/amistad/etc. (spec `B5-pantalla-descubrir.md`, v1 asume un solo contexto: dating).
@@ -23,7 +25,8 @@ Specs approved, listas para codear:
 
 - [x] `A1-datos-natales.md` — implementado (modelo `Profile`, endpoints `POST /profiles`, `POST /profiles/{id}/birth-data`, `GET /profiles/{id}`, pantalla `/onboarding/datos-natales`).
 - [x] `A2-ritmo-notificaciones.md` — implementado (`notification_rhythm` en `Profile`, endpoint `POST /profiles/{id}/notification-preference`, pantalla `/onboarding/ritmo-notificaciones`).
-- [x] `A3-verificacion-identidad.md` — implementado (adapter mock de KYC en `app/adapters/kyc.py`, endpoints `POST`/`GET /profiles/{id}/verification`, pantalla `/onboarding/verificacion`). Onboarding completo A1→A2→A3 encadenado y validado end-to-end.
+- [ ] `A3-verificacion-identidad.md` **v1 WhatsApp** — a implementar: `phone_e164` + `verification_method` en `Profile`, tabla `phone_verification_codes`, `POST /profiles/{id}/verification/whatsapp`, webhook `GET`/`POST /webhooks/whatsapp` (con modo mock en desarrollo), pantalla `/onboarding/verificacion` con link `wa.me` + polling.
+- [x] `A3-verificacion-identidad.md` (versión original, selfie/video) — implementado con mock (adapter mock de KYC en `app/adapters/kyc.py`, endpoints `POST`/`GET /profiles/{id}/verification`, pantalla `/onboarding/verificacion`). Onboarding completo A1→A2→A3 encadenado y validado end-to-end.
 
 ## P2 — Implementar Módulo B (core loop diario)
 

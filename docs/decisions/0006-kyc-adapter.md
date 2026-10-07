@@ -1,6 +1,6 @@
 # 0006 — KYC como interfaz/adapter, sin vendor fijo
 
-- **Estado**: aceptada (el adapter); **pendiente** la elección de vendor.
+- **Estado**: aceptada (el adapter); **pendiente** la elección de vendor. **Pospuesta a v2** — el MVP v1 verifica por WhatsApp (ver ADR 0008); el adapter y el mock se conservan en el código para v2.
 
 ## Contexto
 

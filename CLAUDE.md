@@ -117,9 +117,11 @@ Swiss Ephemeris exige licencia GPL o pago comercial a Astrodienst para uso cerra
 
 Si más adelante se necesita esa precisión (ej. casas astrológicas exactas), evaluar licenciar Swiss Ephemeris aparte — es una **decisión de negocio**, no un default técnico.
 
-### KYC / verificación biométrica: sin proveedor elegido
+### Verificación de identidad: WhatsApp en v1, KYC (selfie/video) en v2
 
-Candidatos con soporte de captura por cámara web: **Persona, Onfido, Veriff, Didit**. Es una decisión explícita de Pablo (Módulo A.3 en `docs/ALCANCE_MVP.md`).
+MVP v1: verificación por WhatsApp "al revés" — el usuario envía un código al número de Destiny, sin costo (ADR 0008, spec `A3`). La selfie/video en vivo vía vendor de KYC se mantiene como plan para próximas versiones.
+
+KYC (v2) — candidatos con soporte de captura por cámara web: **Persona, Onfido, Veriff, Didit**. Es una decisión explícita de Pablo (Módulo A.3 en `docs/ALCANCE_MVP.md`).
 
 Scaffoldear como **interfaz/adapter abstracto** — no atar código a un vendor específico hasta que se elija.
 
