@@ -39,9 +39,13 @@ npm run dev &
 brew install ngrok
 ngrok config add-authtoken <token de https://dashboard.ngrok.com/get-started/your-authtoken>
 
-# 3. Túnel, cada vez que se quiera compartir
-ngrok http 3000
+# 3. Túnel, cada vez que se quiera compartir. Usar el dominio fijo gratis de
+#    la cuenta (dashboard de ngrok > Domains) para que la URL no cambie: el
+#    webhook de WhatsApp registrado en Meta (spec A3, ADR 0008) depende de ella.
+ngrok http --url=<dominio-fijo>.ngrok-free.dev 3000
 ```
+
+Webhook de WhatsApp para Meta: `https://<dominio-fijo>.ngrok-free.dev/api/webhooks/whatsapp` (pasa por el mismo proxy de Next). El dominio concreto no se commitea (el repo es público).
 
 `ngrok` imprime una URL pública (`https://xxxx.ngrok-free.app`). Esa es la que se comparte con Pablo — apunta al proxy de Next, que a su vez habla con la API local. Si se quiere que el link de invitación de WhatsApp (`C8-invitacion-whatsapp.md`) también sea válido desde afuera, setear `WEB_BASE_URL` en `apps/api/.env` a esa misma URL de ngrok antes de generar invitaciones.
 
