@@ -2,7 +2,7 @@
 
 - **Estado**: implemented (v1 — verificación por WhatsApp, en modo mock hasta tener cuenta de Meta; v2 selfie/video pospuesta)
 - **Módulo**: A3
-- **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
+- **Owner de decisión de producto**: German Villamarin (por ahora)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
 
 ## Historial
@@ -19,7 +19,6 @@ Lo que v1 **no** garantiza: que la persona de las fotos sea quien usa la cuenta 
 
 ## Puntos abiertos (no bloquean v1)
 
-- Pablo confirma el cambio de selfie/video a WhatsApp para v1 — `BACKLOG.md` P0.
 - Número de teléfono dedicado para Destiny y titular de la cuenta de Meta Business (persona o empresa) — operativo, no bloquea código: se desarrolla con el modo mock.
 - Copy de la pantalla y del mensaje prellenado — v1 usa copy borrador.
 - Proveedor de KYC para v2 (Persona, Onfido, Veriff, Didit) — sigue abierto en `BACKLOG.md` P0 / ADR `0006-kyc-adapter.md`.
@@ -126,4 +125,4 @@ Se mantiene la idea original. Se suma **encima** de WhatsApp, no lo reemplaza:
 
 El código ya está preparado: la interfaz `IdentityVerificationAdapter` y el `MockKYCAdapter` (`app/adapters/kyc.py`, ADR 0006) **se conservan** aunque v1 no los use en el flujo de onboarding. Activar v2 es enchufar un adapter real y volver a sumar el paso de captura en la pantalla.
 
-Antes de v2: elegir vendor (decisión de Pablo), confirmar costos por verificación y revisar el tratamiento de datos biométricos (Ley 25.326 — consentimiento explícito; preferir que el vendor guarde la imagen y Destiny solo el resultado).
+Antes de v2: elegir vendor, confirmar costos por verificación y revisar el tratamiento de datos biométricos (Ley 25.326 — consentimiento explícito; preferir que el vendor guarde la imagen y Destiny solo el resultado).

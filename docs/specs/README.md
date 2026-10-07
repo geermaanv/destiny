@@ -5,7 +5,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 ## Workflow
 
 1. Se crea la spec en estado `draft` a partir de `TEMPLATE.md`.
-2. Pablo (founder) revisa y resuelve los puntos abiertos (en particular los listados en `../BACKLOG.md`, sección P0).
+2. Se resuelven los puntos abiertos que bloqueen (por ahora decide German Villamarin); los que no bloquean se dejan fuera de alcance con un default.
 3. Cuando no quedan puntos abiertos, la spec pasa a `approved`.
 4. Se implementa. Al mergear la implementación, la spec pasa a `implemented`.
 
@@ -26,4 +26,4 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 | [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | implemented |
 | [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | implemented |
 
-Todas aprobadas para implementación por German Villamarin (2026-10-07), para desbloquear avance mientras Pablo resuelve los puntos de `../BACKLOG.md` P0 en paralelo. Cada spec dice explícitamente qué queda fuera de alcance de v1 por esos puntos todavía abiertos.
+Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada spec dice explícitamente qué queda fuera de alcance de v1.

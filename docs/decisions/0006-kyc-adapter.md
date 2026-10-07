@@ -4,11 +4,11 @@
 
 ## Contexto
 
-El módulo A.3 de `../ALCANCE_MVP.md` (verificación de identidad mandatoria) necesita selfie/video en vivo + detección de duplicado de hardware, antes de acceder a descubrimiento. El proveedor concreto es una decisión explícita de Pablo, todavía no tomada. Candidatos con soporte de captura por cámara web: Persona, Onfido, Veriff, Didit.
+El módulo A.3 de `../ALCANCE_MVP.md` (verificación de identidad mandatoria) necesita selfie/video en vivo + detección de duplicado de hardware, antes de acceder a descubrimiento. El proveedor concreto todavía no está elegido. Candidatos con soporte de captura por cámara web: Persona, Onfido, Veriff, Didit.
 
 ## Decisión
 
-Scaffoldear la verificación como una interfaz/adapter abstracta en `apps/api` (puerto de dominio + implementación concreta intercambiable), sin atar código a un vendor específico hasta que Pablo elija uno.
+Scaffoldear la verificación como una interfaz/adapter abstracta en `apps/api` (puerto de dominio + implementación concreta intercambiable), sin atar código a un vendor específico hasta elegir uno.
 
 ## Consecuencias
 

@@ -2,7 +2,7 @@
 
 - **Estado**: implemented
 - **Módulo**: A1
-- **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
+- **Owner de decisión de producto**: German Villamarin (por ahora)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
 
 ## Problema
@@ -45,7 +45,7 @@ Si `birth_time` es `null`, el backend asigna `"12:00"` y fuerza `birth_time_esti
 3. Hora de nacimiento, con opción "No sé mi hora exacta".
 4. Confirmación y cálculo inicial de carta.
 
-(Diseño visual y copys finales: iterar con Pablo en paralelo, sin bloquear la implementación funcional.)
+(Diseño visual y copys finales: se iteran sin bloquear la implementación funcional.)
 
 ## Geocodificación (implementada 2026-10-07, ADR 0009)
 

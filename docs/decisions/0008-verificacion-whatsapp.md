@@ -1,6 +1,6 @@
 # 0008 — Verificación de identidad v1 por WhatsApp; selfie/video en vivo pasa a v2
 
-- **Estado**: aceptada (German Villamarin, 2026-10-07) — pendiente el visto bueno de Pablo (`BACKLOG.md` P0).
+- **Estado**: aceptada (German Villamarin, 2026-10-07).
 
 ## Contexto
 

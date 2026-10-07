@@ -2,7 +2,7 @@
 
 - **Estado**: implemented
 - **Módulo**: C8
-- **Owner de decisión de producto**: Pablo Maiztegui
+- **Owner de decisión de producto**: German Villamarin (por ahora)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
 
 ## Problema

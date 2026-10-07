@@ -2,7 +2,7 @@
 
 - **Estado**: implemented
 - **Módulo**: A2
-- **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
+- **Owner de decisión de producto**: German Villamarin (por ahora)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
 
 ## Problema
@@ -33,7 +33,7 @@ El valor queda disponible para analytics de cohorte (ej. `cohort = rhythm`).
 
 ## UX / Flujo
 
-Pantalla de dos opciones con descripción corta de cada ritmo. Copy final a definir con Pablo; v1 usa copy borrador.
+Pantalla de dos opciones con descripción corta de cada ritmo. Copy final a definir; v1 usa copy borrador.
 
 ## Criterios de aceptación
 

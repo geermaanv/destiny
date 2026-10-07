@@ -1,6 +1,6 @@
 # VISION.md — Destiny
 
-> Síntesis del pitch deck pre-seed. Fuente de verdad del producto a nivel de tesis/narrativa. No reinventar sin confirmar con Pablo Maiztegui (founder).
+> Síntesis del pitch deck pre-seed. Fuente de verdad del producto a nivel de tesis/narrativa (Pablo Maiztegui, founder). Los cambios se documentan acá.
 
 ## Tesis
 

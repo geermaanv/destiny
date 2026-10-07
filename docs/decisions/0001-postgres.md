@@ -1,10 +1,10 @@
 # 0001 — Postgres como base de datos
 
-- **Estado**: aceptada, no definitiva — confirmar con Pablo si prefiere otro motor antes de comprometerse en producción.
+- **Estado**: aceptada, no definitiva — revisar antes de comprometerse en producción.
 
 ## Contexto
 
-El MVP necesita un motor relacional para perfiles, cartas natales, resonancias y chat. No hubo una elección deliberada del founder todavía; es una sugerencia técnica de partida.
+El MVP necesita un motor relacional para perfiles, cartas natales, resonancias y chat. Es una sugerencia técnica de partida.
 
 ## Decisión
 

@@ -2,7 +2,7 @@
 
 - **Estado**: implemented
 - **Módulo**: B6
-- **Owner de decisión de producto**: Pablo Maiztegui (los puntos abiertos abajo siguen siendo suyos)
+- **Owner de decisión de producto**: German Villamarin (por ahora)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-07
 
 ## Problema
@@ -43,4 +43,4 @@ POST /calendar/day/{date}/annotations { "text": "..." }
 
 ## Fuera de alcance
 
-- Anotaciones/actividades sugeridas por la app (integración de actividades, pendiente de definición de Pablo).
+- Anotaciones/actividades sugeridas por la app (integración de actividades, pendiente de definición).

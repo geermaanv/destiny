@@ -11,7 +11,7 @@ Instrucciones de proyecto para Claude Code. Leer también, en este orden, antes 
 
 ## Regla dura: spec-driven
 
-**Ninguna feature se codifica sin una spec en estado `approved` en `docs/specs/`.** Ver `docs/specs/README.md` para el workflow y `docs/specs/TEMPLATE.md` para la plantilla. Si una spec tiene puntos abiertos marcados `[ESPACIO PARA EL FOUNDER]` o similar, no puede pasar de `draft` a `approved`.
+**Ninguna feature se codifica sin una spec en estado `approved` en `docs/specs/`.** Ver `docs/specs/README.md` para el workflow y `docs/specs/TEMPLATE.md` para la plantilla. Por ahora las specs las aprueba German Villamarin; los puntos abiertos que no bloquean se dejan fuera de alcance con un default.
 
 ## Regla dura: cada commit actualiza la documentación
 
@@ -29,8 +29,8 @@ Comunicación con el equipo en **español**. El founder (Pablo Maiztegui) y Germ
 
 ## Personas
 
-- **Pablo Maiztegui** — founder. Dueño de las decisiones de producto marcadas `[ESPACIO PARA EL FOUNDER]` en `docs/ALCANCE_MVP.md`. No asumir defaults ahí sin confirmar con él.
-- **German Villamarin** — soporte técnico, ayuda a armar el MVP.
+- **Pablo Maiztegui** — founder.
+- **German Villamarin** — soporte técnico, arma el MVP. **Por ahora toma las decisiones de producto y técnicas** (aprueba specs y ADRs); no hay que frenar el avance esperando confirmación de nadie más.
 
 ## Arquitectura
 
@@ -91,11 +91,11 @@ Corre en `http://localhost:3000`.
 
 Next.js + TypeScript + Tailwind, pensado para iterar rápido en Argentina sin pelear con app stores desde el día 1.
 
-**⚠️ Pendiente de validar con Pablo antes de construir el Módulo A.2 (selector de ritmo de notificaciones, ver `docs/ALCANCE_MVP.md`):** las push notifications son débiles/poco confiables en iOS Safari incluso como PWA instalada (soporte real recién desde iOS 16.4, comportamiento inconsistente entre versiones). Esto puede justificar:
+**⚠️ Decisión abierta para cuando se implementen push reales (el selector de ritmo `A2` ya está hecho):** las push notifications son débiles/poco confiables en iOS Safari incluso como PWA instalada (soporte real recién desde iOS 16.4, comportamiento inconsistente entre versiones). Esto puede justificar:
 - adelantar mobile nativo específicamente para esa función, o
 - aceptar la limitación y arrancar Android-first.
 
-Esta decisión no está tomada — flaguearla a Pablo antes de implementar notificaciones push.
+Esta decisión no está tomada — resolverla antes de implementar el envío real de notificaciones push.
 
 ### Backend: Python + FastAPI
 
@@ -103,7 +103,7 @@ Elegido por velocidad de desarrollo y porque el ecosistema Python es natural par
 
 ### Base de datos: Postgres
 
-Sugerencia técnica, **no es definitiva** — confirmar con Pablo si prefiere otro motor antes de comprometerse en producción.
+Sugerencia técnica, **no es definitiva** — revisar antes de comprometerse en producción.
 
 ### IA para explicaciones de resonancia: Claude API (Anthropic)
 
@@ -125,12 +125,11 @@ Autocomplete de ciudad de nacimiento → lat/lon + timezone, detrás de un adapt
 
 MVP v1: verificación por WhatsApp "al revés" — el usuario envía un código al número de Destiny, sin costo (ADR 0008, spec `A3`). La selfie/video en vivo vía vendor de KYC se mantiene como plan para próximas versiones.
 
-KYC (v2) — candidatos con soporte de captura por cámara web: **Persona, Onfido, Veriff, Didit**. Es una decisión explícita de Pablo (Módulo A.3 en `docs/ALCANCE_MVP.md`).
+KYC (v2) — candidatos con soporte de captura por cámara web: **Persona, Onfido, Veriff, Didit**. Vendor a elegir cuando se encare v2 (Módulo A.3 en `docs/ALCANCE_MVP.md`).
 
 Scaffoldear como **interfaz/adapter abstracto** — no atar código a un vendor específico hasta que se elija.
 
 ## Reglas del MVP
 
 - **100% gratis, sin paywall.** Ver `docs/ALCANCE_MVP.md` — cualquier fricción de pago contamina los datos de retención de cohortes, la única métrica que importa en los primeros 6 meses.
-- No implementar lógica de producto real (matching, IA, KYC) sin confirmar el diseño con Pablo primero, en particular los puntos marcados `[ESPACIO PARA EL FOUNDER]`.
-- Confirmar con Pablo antes de instalar dependencias o elegir librerías adicionales no mencionadas en este documento.
+- Cada decisión de producto o técnica nueva (incluidas dependencias, librerías o servicios externos) se documenta en su spec o en un ADR, en el mismo commit.

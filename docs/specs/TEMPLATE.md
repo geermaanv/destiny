@@ -2,7 +2,7 @@
 
 - **Estado**: draft | approved | implemented
 - **Módulo**: referencia a `../ALCANCE_MVP.md` (ej. A1, B5, C8)
-- **Owner de decisión de producto**: Pablo Maiztegui (los puntos de `BACKLOG.md` P0 siguen siendo suyos aunque la spec esté `approved`)
+- **Owner de decisión de producto**: German Villamarin (por ahora)
 - **Aprobada para implementación por**: quién y cuándo
 
 ## Problema

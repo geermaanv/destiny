@@ -1,8 +1,8 @@
 # ALCANCE_MVP.md — Destiny
 
-> Alcance funcional del MVP v1. Basado en el borrador técnico definitivo de Pablo Maiztegui. Tratarlo como fuente de verdad del producto — no reinventar las decisiones que ya están tomadas acá.
+> Alcance funcional del MVP v1. Basado en el borrador técnico definitivo de Pablo Maiztegui. Tratarlo como fuente de verdad del producto; los cambios se registran como actualizaciones fechadas.
 >
-> Los puntos que todavía dependen de una decisión del founder (UX, copies, proveedor de KYC, etc.) no están acá — se trackean en `BACKLOG.md` (sección P0) y se van resolviendo en paralelo.
+> Las decisiones de producto todavía abiertas (UX, copies, proveedor de KYC, etc.) no están acá — se trackean en `BACKLOG.md` (sección P0) y se van resolviendo en paralelo.
 
 ## Regla no negociable del MVP v1
 
@@ -28,7 +28,7 @@ Razón: la única métrica que importa en los primeros 6 meses es **retención d
    - Selfie/video en vivo + detección de duplicado de hardware.
    - A diferencia de la competencia (que lo deja opcional y posterior), en Destiny es bloqueante.
    - Proveedor de KYC sin elegir todavía (ver ADR `0006-kyc-adapter.md`) — se scaffoldea como interfaz/adapter, sin atar código a un vendor.
-   - **Actualización 2026-10-07**: para v1 la verificación es **por WhatsApp** (sin costo); la selfie/video en vivo pasa a próximas versiones. Pendiente de confirmación de Pablo. Ver spec `A3-verificacion-identidad.md` y ADR `0008-verificacion-whatsapp.md`.
+   - **Actualización 2026-10-07**: para v1 la verificación es **por WhatsApp** (sin costo); la selfie/video en vivo pasa a próximas versiones. Ver spec `A3-verificacion-identidad.md` y ADR `0008-verificacion-whatsapp.md`.
 
 ---
 
