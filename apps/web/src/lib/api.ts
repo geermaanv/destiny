@@ -12,6 +12,19 @@ export type BirthPlace = {
   timezone?: string;
 };
 
+export type Place = {
+  label: string;
+  lat: number;
+  lon: number;
+  timezone: string;
+};
+
+export async function searchPlaces(query: string): Promise<Place[]> {
+  const res = await fetch(`${API_URL}/geocoding/search?q=${encodeURIComponent(query)}`);
+  if (!res.ok) throw new Error("No se pudo buscar el lugar");
+  return res.json();
+}
+
 export type BirthDataPayload = {
   birth_date: string;
   birth_time?: string;

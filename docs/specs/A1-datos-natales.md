@@ -47,13 +47,20 @@ Si `birth_time` es `null`, el backend asigna `"12:00"` y fuerza `birth_time_esti
 
 (Diseño visual y copys finales: iterar con Pablo en paralelo, sin bloquear la implementación funcional.)
 
+## Geocodificación (implementada 2026-10-07, ADR 0009)
+
+- Se pide la **ciudad**, no la dirección: alcanza para el cálculo y evita datos sensibles.
+- Autocomplete contra `GET /geocoding/search?q=` (Open-Meteo, Argentina primero; alias "CABA"/"Capital Federal"/"Bs As" → Buenos Aires). Hay que elegir una opción de la lista; se guarda el texto elegido + lat/lon + timezone.
+- Si el geocoder no responde, se acepta el texto libre (sin coordenadas) para no bloquear el onboarding.
+- En desktop, tocar cualquier parte de los campos de fecha/hora abre el selector.
+
 ## Criterios de aceptación
 
-- [ ] Perfil sin hora exacta queda con `birth_time_estimated: true` y `birth_time: "12:00"`.
-- [ ] Perfil con hora exacta guarda la hora real y `birth_time_estimated: false`.
-- [ ] Los tres campos (fecha, lugar, hora) son suficientes para que el motor astrológico calcule posiciones planetarias.
+- [x] Perfil sin hora exacta queda con `birth_time_estimated: true` y `birth_time: "12:00"`.
+- [x] Perfil con hora exacta guarda la hora real y `birth_time_estimated: false`.
+- [x] Los tres campos (fecha, lugar, hora) son suficientes para que el motor astrológico calcule posiciones planetarias.
 
 ## Fuera de alcance
 
 - Diseño visual final / copy final de la pantalla (se itera después, no bloquea).
-- Validación de calidad del geocoding (proveedor de geocoding se define al implementar, no requiere decisión del founder).
+- Validación de calidad del geocoding.

@@ -18,6 +18,13 @@ class BirthPlaceIn(BaseModel):
     timezone: str | None = None
 
 
+class PlaceOut(BaseModel):
+    label: str
+    lat: float
+    lon: float
+    timezone: str
+
+
 class BirthDataIn(BaseModel):
     birth_date: date
     birth_time: time | None = None

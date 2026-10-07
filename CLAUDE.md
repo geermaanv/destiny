@@ -117,6 +117,10 @@ Swiss Ephemeris exige licencia GPL o pago comercial a Astrodienst para uso cerra
 
 Si más adelante se necesita esa precisión (ej. casas astrológicas exactas), evaluar licenciar Swiss Ephemeris aparte — es una **decisión de negocio**, no un default técnico.
 
+### Geocodificación: Open-Meteo
+
+Autocomplete de ciudad de nacimiento → lat/lon + timezone, detrás de un adapter (`app/geocoding.py`). Gratis para uso no comercial: revisar términos antes de abrir a usuarios reales (ADR 0009).
+
 ### Verificación de identidad: WhatsApp en v1, KYC (selfie/video) en v2
 
 MVP v1: verificación por WhatsApp "al revés" — el usuario envía un código al número de Destiny, sin costo (ADR 0008, spec `A3`). La selfie/video en vivo vía vendor de KYC se mantiene como plan para próximas versiones.
