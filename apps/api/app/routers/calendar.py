@@ -8,8 +8,15 @@ from sqlalchemy.orm import Session
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.models import CalendarAnnotation, Profile
-from app.schemas import AnnotationIn, AnnotationOut, CalendarDayDetailOut, CalendarDayOut, TransitOut
-from app.transits import day_transit, month_transits
+from app.schemas import (
+    AnnotationIn,
+    AnnotationOut,
+    CalendarDayDetailOut,
+    CalendarDayOut,
+    TransitOut,
+    UpcomingEventOut,
+)
+from app.transits import TRANSIT_TEXT, day_transit, month_transits, upcoming_events
 
 router = APIRouter(prefix="/calendar", tags=["calendar"])
 
@@ -21,6 +28,38 @@ def _get_profile_or_404(profile_id: uuid.UUID, db: Session) -> Profile:
     if profile.birth_date is None or profile.birth_time is None:
         raise HTTPException(status_code=422, detail="Perfil sin datos natales")
     return profile
+
+
+@router.get("/upcoming", response_model=list[UpcomingEventOut])
+def get_upcoming(
+    profile_id: uuid.UUID = Query(...),
+    from_date: date | None = Query(default=None, alias="from"),
+    limit: int = Query(default=10, ge=1, le=30),
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> list[UpcomingEventOut]:
+    """Próximos tránsitos importantes desde hoy (o `from`, la fecha local del usuario)."""
+    require_self(profile_id, current)
+    profile = _get_profile_or_404(profile_id, db)
+    events = upcoming_events(profile, from_date or date.today(), limit)
+    if not events:
+        return []
+
+    noted_days = set(
+        db.scalars(
+            select(CalendarAnnotation.day).where(
+                CalendarAnnotation.profile_id == profile_id,
+                CalendarAnnotation.day >= events[0]["start"],
+                CalendarAnnotation.day <= events[-1]["end"],
+            )
+        )
+    )
+    return [
+        UpcomingEventOut(
+            **e, has_notes=any(e["start"] <= d <= e["end"] for d in noted_days)
+        )
+        for e in events
+    ]
 
 
 @router.get("/day/{day}", response_model=CalendarDayDetailOut)
@@ -38,7 +77,13 @@ def get_day(
     ).all()
 
     return CalendarDayDetailOut(
-        transits=[TransitOut(aspect=transit["aspect"])],
+        transits=[
+            TransitOut(
+                aspect=transit["aspect"],
+                title=TRANSIT_TEXT.get(transit["aspect"], (None, None))[0],
+                text=TRANSIT_TEXT.get(transit["aspect"], (None, None))[1],
+            )
+        ],
         annotations=[AnnotationOut(text=a.text, created_at=a.created_at) for a in annotations],
     )
 

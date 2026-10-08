@@ -196,6 +196,17 @@ class AnnotationOut(BaseModel):
 
 class TransitOut(BaseModel):
     aspect: str
+    title: str | None = None
+    text: str | None = None
+
+
+class UpcomingEventOut(BaseModel):
+    start: date
+    end: date
+    aspect: str
+    title: str
+    text: str
+    has_notes: bool
 
 
 class CalendarDayDetailOut(BaseModel):

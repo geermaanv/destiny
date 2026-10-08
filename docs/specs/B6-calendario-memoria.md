@@ -35,6 +35,12 @@ POST /calendar/day/{date}/annotations { "text": "..." }
 1. Vista mensual, días con tránsito clave destacados.
 2. Tap en un día → timeline de tránsitos + anotaciones propias, con opción de agregar una nueva.
 
+## Actualización 2026-10-08 (idea de German)
+
+- Debajo del calendario, **"Próximos eventos"**: los próximos 10 tránsitos importantes desde hoy, sin tener que tocar cada día. Los días seguidos con el mismo tránsito se agrupan en un evento. Cada evento tiene un título y una frase en lenguaje simple (ej. "Día armónico — Todo fluye más fácil…") y marca si el usuario tiene notas. Tocarlo abre el día.
+- Calendario con mes y año, flechas para cambiar de mes, días de la semana (arranca en lunes), hoy destacado y leyenda.
+- API: `GET /calendar/upcoming?profile_id=&from=&limit=10`; el detalle del día suma `title` y `text` del tránsito.
+
 ## Criterios de aceptación
 
 - [ ] Los tránsitos mostrados se calculan a partir de la carta natal real del usuario (A1), no son genéricos.

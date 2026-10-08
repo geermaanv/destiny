@@ -188,7 +188,25 @@ export async function getExplanation(viewerId: string, candidateId: string): Pro
 
 export type CalendarDay = { date: string; has_key_transit: boolean };
 export type CalendarAnnotation = { text: string; created_at: string };
-export type CalendarDayDetail = { transits: { aspect: string }[]; annotations: CalendarAnnotation[] };
+export type CalendarDayDetail = {
+  transits: { aspect: string; title: string | null; text: string | null }[];
+  annotations: CalendarAnnotation[];
+};
+
+export type UpcomingEvent = {
+  start: string;
+  end: string;
+  aspect: string;
+  title: string;
+  text: string;
+  has_notes: boolean;
+};
+
+export async function getUpcoming(profileId: string, fromDate: string, limit = 10): Promise<UpcomingEvent[]> {
+  const res = await fetch(`${API_URL}/calendar/upcoming?profile_id=${profileId}&from=${fromDate}&limit=${limit}`);
+  if (!res.ok) throw new Error("No se pudieron cargar los próximos eventos");
+  return res.json();
+}
 
 export async function getMonth(profileId: string, year: number, month: number): Promise<CalendarDay[]> {
   const res = await fetch(`${API_URL}/calendar/${year}/${month}?profile_id=${profileId}`);
