@@ -26,7 +26,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | implemented |
 | [B5-motor-sinastria](./B5-motor-sinastria.md) | B5 | draft |
 | [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | implemented |
-| [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | implemented |
+| [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | implemented (v2 híbrida) |
 | [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | implemented |
 
 Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada spec dice explícitamente qué queda fuera de alcance de v1.

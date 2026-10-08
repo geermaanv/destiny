@@ -8,8 +8,8 @@ import { usePathname } from "next/navigation";
 const ITEMS = [
   { href: "/home", label: "Inicio", icon: "☾" },
   { href: "/discover", label: "Descubrir", icon: "✦" },
+  { href: "/conexiones", label: "Conexiones", icon: "✉" },
   { href: "/calendario", label: "Calendario", icon: "▦" },
-  { href: "/invitar", label: "Invitar", icon: "＋" },
   { href: "/perfil", label: "Perfil", icon: "◉" },
 ];
 
@@ -20,7 +20,7 @@ export default function AppNav() {
     <nav className="fixed inset-x-0 bottom-0 border-t border-slate-800 bg-slate-950/95 backdrop-blur">
       <ul className="mx-auto flex max-w-sm justify-around px-2 pb-[env(safe-area-inset-bottom)]">
         {ITEMS.map((item) => {
-          const active = pathname === item.href || (item.href === "/discover" && pathname.startsWith("/chat"));
+          const active = pathname === item.href || (item.href === "/conexiones" && pathname.startsWith("/chat"));
           return (
             <li key={item.href}>
               <Link

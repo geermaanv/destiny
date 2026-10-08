@@ -3,7 +3,8 @@
 import { Suspense, useEffect, useState } from "react";
 import AppNav from "@/components/AppNav";
 import { useSessionProfileId } from "@/lib/session";
-import { getFrequencyCount, getTodayAstroWeather, Mood, submitMoodCheckin } from "@/lib/api";
+import Link from "next/link";
+import { getConnections, getFrequencyCount, getTodayAstroWeather, Mood, submitMoodCheckin } from "@/lib/api";
 
 const MOODS: { value: Mood; label: string }[] = [
   { value: "energico", label: "Enérgico" },
@@ -23,8 +24,14 @@ function HomeContent() {
     getTodayAstroWeather().then((r) => setAstroWeather(r.astro_weather));
   }, []);
 
+  const [pendingRequests, setPendingRequests] = useState(0);
+
   useEffect(() => {
-    if (profileId) getFrequencyCount(profileId).then((r) => setFrequencyCount(r.count));
+    if (!profileId) return;
+    getFrequencyCount(profileId).then((r) => setFrequencyCount(r.count));
+    getConnections(profileId)
+      .then((cs) => setPendingRequests(cs.filter((c) => c.status === "pendiente" && c.direction === "recibida").length))
+      .catch(() => null);
   }, [profileId]);
 
   async function checkIn(mood: Mood) {
@@ -63,10 +70,24 @@ function HomeContent() {
         </div>
       </div>
 
+      {pendingRequests > 0 && (
+        <Link href="/conexiones" className="block rounded-md bg-slate-900 p-4 ring-1 ring-gold-400/60">
+          <p className="font-medium text-gold-300">
+            {pendingRequests === 1 ? "1 persona quiere conectar con vos" : `${pendingRequests} personas quieren conectar con vos`}
+          </p>
+          <p className="text-sm text-slate-400">Ver en Conexiones →</p>
+        </Link>
+      )}
+
       <div className="rounded-md bg-slate-900 p-4 ring-1 ring-slate-700">
         <p className="text-sm text-slate-400">En tu frecuencia</p>
         <p className="text-xl font-semibold">{frequencyCount ?? "—"} personas</p>
       </div>
+
+      <Link href="/invitar" className="block rounded-md bg-slate-900 p-4 ring-1 ring-slate-700 hover:ring-violet-400">
+        <p className="font-medium">Invitá a un amigo</p>
+        <p className="text-sm text-slate-400">Mandale por WhatsApp un adelanto de su resonancia con vos →</p>
+      </Link>
     </div>
   );
 }

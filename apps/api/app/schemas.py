@@ -228,6 +228,37 @@ class ChatMessageOut(BaseModel):
 class MatchOut(BaseModel):
     id: uuid.UUID
     icebreaker: str
+    status: str = "aceptada"
+
+
+# Conexión mutua + chat híbrido (spec B7 v2).
+class PublicProfileOut(BaseModel):
+    profile_id: uuid.UUID
+    display_name: str | None = None
+    age: int | None = None
+    sun_sign: str | None = None
+    photo_url: str | None = None
+    avatar: str | None = None
+
+
+class WhatsappHandoffOut(BaseModel):
+    me_ok: bool
+    other_ok: bool
+    link: str | None = None  # solo cuando los dos aceptaron
+
+
+class ConnectionOut(BaseModel):
+    match_id: uuid.UUID
+    status: str
+    direction: Literal["enviada", "recibida"]
+    other: PublicProfileOut
+    last_message: str | None = None
+    last_message_at: datetime | None = None
+    whatsapp: WhatsappHandoffOut
+
+
+class ProfileRefIn(BaseModel):
+    profile_id: uuid.UUID
 
 
 class SendMessageIn(BaseModel):

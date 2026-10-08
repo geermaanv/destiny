@@ -112,9 +112,17 @@ class Match(Base):
     __tablename__ = "matches"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    # profile_a pidió la conexión, profile_b la recibe (spec B7 v2).
     profile_a_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     profile_b_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    status: Mapped[str] = mapped_column(String, default="pendiente", nullable=False)  # pendiente|aceptada|rechazada|bloqueada
+    accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # "Pasar a WhatsApp": cada uno da su OK; con los dos se revelan los números.
+    whatsapp_a_ok: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    whatsapp_b_ok: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    whatsapp_shared_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    blocked_by: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
 
 
 class ChatMessage(Base):

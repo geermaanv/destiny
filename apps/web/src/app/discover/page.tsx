@@ -15,6 +15,7 @@ function DiscoverContent() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [explanations, setExplanations] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
+  const [requested, setRequested] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (!profileId) return;
@@ -40,8 +41,12 @@ function DiscoverContent() {
 
   async function match(candidateId: string) {
     if (!profileId) return;
-    const { id } = await createMatch(profileId, candidateId);
-    router.push(`/chat/${id}`);
+    const { id, status } = await createMatch(profileId, candidateId);
+    if (status === "aceptada") {
+      router.push(`/chat/${id}`);
+    } else {
+      setRequested((prev) => ({ ...prev, [candidateId]: true }));
+    }
   }
 
   if (!profileId) return <p className="text-slate-400">Cargando…</p>;
@@ -90,12 +95,18 @@ function DiscoverContent() {
                 </div>
               )}
               <p className="mt-3 text-sm text-slate-300">{explanations[c.profile_id] ?? "Cargando explicación..."}</p>
-              <button
-                onClick={() => match(c.profile_id)}
-                className="mt-3 w-full rounded-md bg-violet-600 px-3 py-1.5 text-sm font-medium text-white"
-              >
-                Match
-              </button>
+              {requested[c.profile_id] ? (
+                <p className="mt-3 text-center text-sm text-gold-300">
+                  ✓ Solicitud enviada. Te avisamos en Conexiones cuando acepte.
+                </p>
+              ) : (
+                <button
+                  onClick={() => match(c.profile_id)}
+                  className="mt-3 w-full rounded-md bg-violet-600 px-3 py-1.5 text-sm font-medium text-white"
+                >
+                  Conectar
+                </button>
+              )}
             </>
           )}
         </div>

@@ -226,8 +226,51 @@ export function addAnnotation(profileId: string, day: string, text: string): Pro
 
 export type ChatMessage = { sender: string; text: string; created_at: string };
 
-export function createMatch(profileAId: string, profileBId: string): Promise<{ id: string; icebreaker: string }> {
+// Conexión mutua + chat híbrido (spec B7 v2).
+export type ConnectionStatus = "pendiente" | "aceptada" | "rechazada" | "bloqueada";
+
+export function createMatch(
+  profileAId: string,
+  profileBId: string
+): Promise<{ id: string; icebreaker: string; status: ConnectionStatus }> {
   return postJson("/matches", { profile_a_id: profileAId, profile_b_id: profileBId });
+}
+
+export type Connection = {
+  match_id: string;
+  status: ConnectionStatus;
+  direction: "enviada" | "recibida";
+  other: {
+    profile_id: string;
+    display_name: string | null;
+    age: number | null;
+    sun_sign: string | null;
+    photo_url: string | null;
+    avatar: AvatarKey | null;
+  };
+  last_message: string | null;
+  last_message_at: string | null;
+  whatsapp: { me_ok: boolean; other_ok: boolean; link: string | null };
+};
+
+export async function getConnections(profileId: string): Promise<Connection[]> {
+  const res = await fetch(`${API_URL}/connections?profile_id=${profileId}`);
+  if (!res.ok) throw new Error("No se pudieron cargar las conexiones");
+  return res.json();
+}
+
+export async function getConnection(matchId: string): Promise<Connection> {
+  const res = await fetch(`${API_URL}/matches/${matchId}`);
+  if (!res.ok) throw new Error("No se pudo cargar la conexión");
+  return res.json();
+}
+
+export function respondConnection(
+  matchId: string,
+  profileId: string,
+  action: "accept" | "reject" | "block" | "whatsapp"
+): Promise<Connection> {
+  return postJson(`/matches/${matchId}/${action}`, { profile_id: profileId });
 }
 
 export async function getMessages(matchId: string): Promise<ChatMessage[]> {
