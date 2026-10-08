@@ -78,7 +78,15 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] Jerga astrológica sin traducir ("Sin aspecto mayor solar", "cuadratura"): pasar a lenguaje simple. **Hecho**: `app/aspects.py` tiene etiquetas y frases simples ("Energía parecida", "Polos opuestos", "Por descubrir"…) usadas en Descubrir, la explicación, el rompehielos y la invitación.
 - [ ] Invitar: "Generar reporte" no es claro y falta explicar qué recibe el amigo.
 
-## Tareas técnicas sueltas
+## Top 5 de mejoras (revisión de pantallas, 2026-10-08)
+
+- [ ] **Onboarding sin progreso ni "atrás"**: 4 pasos (datos natales → perfil → ritmo → verificación) sin indicador de cuánto falta ni forma de volver. Ritmo no explica que es para notificaciones (y que todavía no se envían). Va de la mano con la idea de pantalla única con secciones.
+- [ ] **Home con poco valor diario**: "Luna menguante en Virgo" sin explicar qué significa para el usuario, y el check-in de ánimo no devuelve nada. Usar el tránsito personal del día (ya calculado para el calendario) como frase del día.
+- [ ] **Descubrir da casi todo igual** ("Por descubrir · 60%") porque mira solo el Sol, y no tiene selector de contexto. Se resuelve con el motor de sinastría (`B5-motor-sinastria.md`) + selector de contexto.
+- [ ] **Invitar es una pantalla pelada**: "Generar reporte" no se entiende, no explica qué recibe el amigo ni muestra el mensaje antes de mandarlo; el selector dice "Gemini".
+- [ ] **Falta feedback en las acciones**: "Perfil guardado" queda fuera de la vista, el check-in no confirma, el chat no muestra la hora de los mensajes, "Conectar" no muestra que está enviando. Además el ícono "N" de Next.js (solo en modo desarrollo, pero Pablo lo ve por el túnel) tapa "Inicio" en la barra.
+
+
 
 - [ ] Confirmar si Postgres es el motor definitivo (ADR 0001) antes de producción.
 - [x] Esquema de datos: `profiles` (A1-A3), `MoodCheckin`/`CalendarAnnotation` (B4/B6), `Match`/`ChatMessage` (B7). Falta modelar invitaciones (C8).
