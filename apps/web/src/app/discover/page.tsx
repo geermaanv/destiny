@@ -1,15 +1,16 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
+import { useSessionProfileId } from "@/lib/session";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { createMatch, DiscoverCandidate, getDiscoverCandidates, getExplanation } from "@/lib/api";
 import { energyLabel, interestLabel } from "@/lib/profile";
 
 function DiscoverContent() {
   const router = useRouter();
-  const profileId = useSearchParams().get("profileId");
+  const profileId = useSessionProfileId();
   const [candidates, setCandidates] = useState<DiscoverCandidate[] | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const [explanations, setExplanations] = useState<Record<string, string>>({});
@@ -40,10 +41,10 @@ function DiscoverContent() {
   async function match(candidateId: string) {
     if (!profileId) return;
     const { id } = await createMatch(profileId, candidateId);
-    router.push(`/chat/${id}?profileId=${profileId}`);
+    router.push(`/chat/${id}`);
   }
 
-  if (!profileId) return <p className="text-slate-400">Falta el perfil.</p>;
+  if (!profileId) return <p className="text-slate-400">Cargando…</p>;
   if (error) return <p className="text-red-400">{error}</p>;
 
   return (

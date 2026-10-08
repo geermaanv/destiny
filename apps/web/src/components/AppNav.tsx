@@ -1,11 +1,10 @@
 "use client";
 
-import { Suspense } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 // Barra de navegación inferior de la app (después del onboarding). El perfil
-// viaja en ?profileId= (todavía no hay sesión, ver BACKLOG), así que cada link lo conserva.
+// sale de la sesión (spec A5), así que los links no llevan profileId.
 const ITEMS = [
   { href: "/home", label: "Inicio", icon: "☾" },
   { href: "/discover", label: "Descubrir", icon: "✦" },
@@ -14,10 +13,8 @@ const ITEMS = [
   { href: "/perfil", label: "Perfil", icon: "◉" },
 ];
 
-function NavLinks() {
+export default function AppNav() {
   const pathname = usePathname();
-  const profileId = useSearchParams().get("profileId");
-  if (!profileId) return null;
 
   return (
     <nav className="fixed inset-x-0 bottom-0 border-t border-slate-800 bg-slate-950/95 backdrop-blur">
@@ -27,7 +24,7 @@ function NavLinks() {
           return (
             <li key={item.href}>
               <Link
-                href={`${item.href}?profileId=${profileId}`}
+                href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={`flex flex-col items-center gap-0.5 px-2 py-2 text-xs ${
                   active ? "text-gold-300" : "text-slate-500 hover:text-slate-300"
@@ -46,10 +43,3 @@ function NavLinks() {
   );
 }
 
-export default function AppNav() {
-  return (
-    <Suspense>
-      <NavLinks />
-    </Suspense>
-  );
-}

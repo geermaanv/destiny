@@ -1,12 +1,12 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import AppNav from "@/components/AppNav";
+import { useSessionProfileId } from "@/lib/session";
 import { createInvitation, Invitation, SUN_SIGNS } from "@/lib/api";
 
 function InvitarForm() {
-  const profileId = useSearchParams().get("profileId");
+  const profileId = useSessionProfileId();
   const [name, setName] = useState("");
   const [sign, setSign] = useState("");
   const [invitation, setInvitation] = useState<Invitation | null>(null);
@@ -17,7 +17,7 @@ function InvitarForm() {
     setInvitation(await createInvitation(profileId, name, sign));
   }
 
-  if (!profileId) return <p className="text-slate-400">Falta el perfil.</p>;
+  if (!profileId) return <p className="text-slate-400">Cargando…</p>;
 
   if (invitation) {
     return (

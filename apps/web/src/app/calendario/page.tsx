@@ -1,12 +1,12 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import AppNav from "@/components/AppNav";
+import { useSessionProfileId } from "@/lib/session";
 import { addAnnotation, CalendarDay, CalendarDayDetail, getDay, getMonth } from "@/lib/api";
 
 function CalendarioContent() {
-  const profileId = useSearchParams().get("profileId");
+  const profileId = useSessionProfileId();
   const now = new Date();
   const [year] = useState(now.getUTCFullYear());
   const [month] = useState(now.getUTCMonth() + 1);
@@ -33,7 +33,7 @@ function CalendarioContent() {
     setDetail(await getDay(profileId, selectedDay));
   }
 
-  if (!profileId) return <p className="text-slate-400">Falta el perfil.</p>;
+  if (!profileId) return <p className="text-slate-400">Cargando…</p>;
 
   return (
     <div className="w-full max-w-sm space-y-4">

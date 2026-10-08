@@ -1,9 +1,9 @@
 # A5-sesion — Sesión con WhatsApp
 
-- **Estado**: draft
+- **Estado**: implemented
 - **Módulo**: A5 (nuevo, Módulo A)
 - **Owner de decisión de producto**: German Villamarin (por ahora)
-- **Aprobada para implementación por**: —
+- **Aprobada para implementación por**: German Villamarin, 2026-10-08
 
 ## Problema
 
@@ -35,11 +35,17 @@ Modelo: tabla `sessions` (token guardado como hash, `profile_id`, vence a los 90
 
 ## Criterios de aceptación
 
-- [ ] Después de verificarse, cerrar y abrir el navegador mantiene la sesión.
-- [ ] "Ya tengo cuenta" con un número verificado entra a esa cuenta; con un número sin cuenta ofrece registrarse.
-- [ ] Conocer el `profileId` de otro no permite entrar ni editar su perfil.
-- [ ] Cerrar sesión vuelve a la pantalla de inicio.
-- [ ] Ningún link de la app lleva `profileId` en la URL.
+- [x] Después de verificarse, cerrar y abrir el navegador mantiene la sesión.
+- [x] "Ya tengo cuenta" con un número verificado entra a esa cuenta; con un número sin cuenta ofrece registrarse.
+- [x] Conocer el `profileId` de otro no permite entrar ni editar su perfil.
+- [x] Cerrar sesión vuelve a la pantalla de inicio.
+- [x] Ningún link de la app lleva `profileId` en la URL.
+
+## Implementación (2026-10-08)
+
+- API: `app/auth.py` (cookie `destiny_session`, token guardado como hash en la tabla `sessions`, 90 días; `require_self` / `require_owner_if_verified`), `app/routers/sessions.py` (`/sessions/claim`, `/sessions/login`, `/sessions/login/{id}`, `/me`, `/sessions/logout`). Los códigos de WhatsApp (`phone_verification_codes`) suman `purpose` (`verify`/`login`), `claim_token_hash`, `claimed_at`, `result_profile_id` y `outcome`. El comprobante se puede usar una sola vez y hasta 30 minutos después de que llegó el mensaje.
+- Protección: perfil verificado → editar o ver datos completos solo con su sesión; Descubrir, explicación, matches, chats (solo sus dos participantes), calendario, check-ins e invitaciones exigen que el `profile_id` del pedido sea el de la sesión.
+- Web: `lib/session.ts` (`useSessionProfileId`, sin sesión → `/`), pantalla de inicio `/` (Empezar / Ya tengo cuenta), `/entrar`, sesión al verificarse y al "Seguir con mi cuenta", "Cerrar sesión" en Mi perfil. Ningún link de la app lleva `profileId`.
 
 ## Fuera de alcance
 

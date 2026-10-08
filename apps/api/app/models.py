@@ -53,11 +53,30 @@ class PhoneVerificationCode(Base):
     __tablename__ = "phone_verification_codes"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=False)
+    # Sin profile_id cuando es un código de "Ya tengo cuenta" (purpose="login", spec A5).
+    profile_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=True)
+    purpose: Mapped[str] = mapped_column(String, default="verify", nullable=False)  # "verify" | "login"
     code: Mapped[str] = mapped_column(String, nullable=False, index=True)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    # Spec A5: solo el navegador que pidió el código (y recibió este comprobante) puede tomar la sesión.
+    claim_token_hash: Mapped[str | None] = mapped_column(String, nullable=True, index=True)
+    claimed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Perfil con el que se entra una vez que llegó el mensaje; outcome del login: "listo" | "sin_cuenta".
+    result_profile_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    outcome: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class UserSession(Base):
+    """Sesión del navegador (spec A5). Se guarda solo el hash del token de la cookie."""
+
+    __tablename__ = "sessions"
+
+    token_hash: Mapped[str] = mapped_column(String, primary_key=True)
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
 class CalendarAnnotation(Base):

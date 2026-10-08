@@ -15,6 +15,7 @@ from urllib.parse import quote
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.auth import hash_token, new_token
 from app.config import settings
 from app.models import PhoneVerificationCode, Profile
 
@@ -38,7 +39,38 @@ def build_wa_link(code: str) -> str:
     return f"https://wa.me/{number}?text={message}"
 
 
-def issue_code(db: Session, profile: Profile) -> PhoneVerificationCode:
+def _unused_code(db: Session, now: datetime) -> str:
+    while True:
+        code = f"{secrets.randbelow(1_000_000):06d}"
+        clash = db.scalar(
+            select(PhoneVerificationCode).where(
+                PhoneVerificationCode.code == code,
+                PhoneVerificationCode.used_at.is_(None),
+                PhoneVerificationCode.expires_at > now,
+            )
+        )
+        if clash is None:
+            return code
+
+
+def issue_login_code(db: Session) -> tuple[PhoneVerificationCode, str]:
+    """Código de "Ya tengo cuenta" (spec A5): no está atado a un perfil hasta que llega el mensaje."""
+    now = _now()
+    claim_token = new_token()
+    entry = PhoneVerificationCode(
+        profile_id=None,
+        purpose="login",
+        code=_unused_code(db, now),
+        expires_at=now + CODE_TTL,
+        claim_token_hash=hash_token(claim_token),
+    )
+    db.add(entry)
+    db.commit()
+    db.refresh(entry)
+    return entry, claim_token
+
+
+def issue_code(db: Session, profile: Profile) -> tuple[PhoneVerificationCode, str]:
     """Genera un código nuevo e invalida los anteriores sin usar del mismo perfil.
 
     Un intento nuevo después de `duplicado_detectado` (ej. con otro número)
@@ -55,23 +87,17 @@ def issue_code(db: Session, profile: Profile) -> PhoneVerificationCode:
     ):
         db.delete(old)
 
-    while True:
-        code = f"{secrets.randbelow(1_000_000):06d}"
-        clash = db.scalar(
-            select(PhoneVerificationCode).where(
-                PhoneVerificationCode.code == code,
-                PhoneVerificationCode.used_at.is_(None),
-                PhoneVerificationCode.expires_at > now,
-            )
-        )
-        if clash is None:
-            break
-
-    entry = PhoneVerificationCode(profile_id=profile.id, code=code, expires_at=now + CODE_TTL)
+    claim_token = new_token()
+    entry = PhoneVerificationCode(
+        profile_id=profile.id,
+        code=_unused_code(db, now),
+        expires_at=now + CODE_TTL,
+        claim_token_hash=hash_token(claim_token),
+    )
     db.add(entry)
     db.commit()
     db.refresh(entry)
-    return entry
+    return entry, claim_token
 
 
 def signature_is_valid(raw_body: bytes, header: str | None) -> bool:
@@ -114,12 +140,22 @@ def process_incoming(db: Session, sender: str, text: str) -> None:
         return
 
     entry.used_at = now
+    phone = normalize_phone(sender)
+
+    if entry.purpose == "login":
+        owner = db.scalar(
+            select(Profile).where(Profile.phone_e164 == phone, Profile.verification_status == "verificado")
+        )
+        entry.result_profile_id = owner.id if owner else None
+        entry.outcome = "listo" if owner else "sin_cuenta"
+        db.commit()
+        return
+
     profile = db.get(Profile, entry.profile_id)
     if profile is None or profile.verification_status == "verificado":
         db.commit()
         return
 
-    phone = normalize_phone(sender)
     owner = db.scalar(select(Profile).where(Profile.phone_e164 == phone, Profile.id != profile.id))
     profile.verification_method = "whatsapp"
     if owner is not None:
@@ -130,4 +166,5 @@ def process_incoming(db: Session, sender: str, text: str) -> None:
     else:
         profile.phone_e164 = phone
         profile.verification_status = "verificado"
+        entry.result_profile_id = profile.id
     db.commit()

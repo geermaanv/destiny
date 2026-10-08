@@ -137,6 +137,7 @@ export type WhatsappCode = {
   wa_link: string;
   expires_at: string;
   mock: boolean;
+  claim_token: string;
 };
 
 export type Mood = "energico" | "tranquilo" | "reflexivo" | "ansioso" | "inspirado";
@@ -274,8 +275,8 @@ export async function getVerification(profileId: string): Promise<VerificationRe
 }
 
 // Tras duplicado_detectado: descarta el perfil nuevo y devuelve el que ya tiene ese número.
-export function continueWithExistingProfile(profileId: string): Promise<{ profile_id: string }> {
-  return postJson(`/profiles/${profileId}/verification/continue-existing`);
+export function continueWithExistingProfile(profileId: string, claimToken: string): Promise<{ profile_id: string }> {
+  return postJson(`/profiles/${profileId}/verification/continue-existing`, { claim_token: claimToken });
 }
 
 // Solo modo mock (sin credenciales de WhatsApp): simula el mensaje que Meta
@@ -285,4 +286,44 @@ export function simulateWhatsappMessage(fromPhone: string, text: string): Promis
     object: "whatsapp_business_account",
     entry: [{ changes: [{ value: { messages: [{ from: fromPhone, type: "text", text: { body: text } }] } }] }],
   });
+}
+
+// Sesión con WhatsApp (spec A5). La cookie la maneja el navegador (HttpOnly).
+export async function getMe(): Promise<Profile | null> {
+  const res = await fetch(`${API_URL}/me`);
+  if (res.status === 401) return null;
+  if (!res.ok) throw new Error("No se pudo consultar la sesión");
+  return res.json();
+}
+
+export async function claimSession(claimToken: string): Promise<void> {
+  const res = await fetch(`${API_URL}/sessions/claim`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ claim_token: claimToken }),
+  });
+  if (!res.ok) throw new Error("No se pudo iniciar la sesión");
+}
+
+export type LoginStart = {
+  login_id: string;
+  code: string;
+  wa_link: string;
+  expires_at: string;
+  claim_token: string;
+  mock: boolean;
+};
+
+export function startLogin(): Promise<LoginStart> {
+  return postJson("/sessions/login");
+}
+
+export async function getLoginStatus(loginId: string): Promise<"pendiente" | "listo" | "sin_cuenta" | "vencido"> {
+  const res = await fetch(`${API_URL}/sessions/login/${loginId}`);
+  if (!res.ok) throw new Error("No se pudo consultar el login");
+  return (await res.json()).status;
+}
+
+export async function logout(): Promise<void> {
+  await fetch(`${API_URL}/sessions/logout`, { method: "POST" });
 }

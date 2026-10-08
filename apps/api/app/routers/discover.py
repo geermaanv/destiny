@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.aspects import aspect_label
 from app.compatibility import compatibility_signals
+from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.explainer import ResonanceExplainer, get_explainer
 from app.models import Profile
@@ -35,7 +36,10 @@ def _chart_payload(profile: Profile) -> dict:
 
 
 @router.get("", response_model=list[DiscoverCandidateOut])
-def list_discover(viewer_id: uuid.UUID = Query(...), db: Session = Depends(get_db)) -> list[DiscoverCandidateOut]:
+def list_discover(
+    viewer_id: uuid.UUID = Query(...), db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> list[DiscoverCandidateOut]:
+    require_self(viewer_id, current)
     viewer = _require_verified_profile(viewer_id, db)
     if viewer.birth_date is None:
         raise HTTPException(status_code=409, detail="Perfil sin datos natales")
@@ -70,7 +74,9 @@ def get_explanation(
     viewer_id: uuid.UUID = Query(...),
     db: Session = Depends(get_db),
     explainer: ResonanceExplainer = Depends(get_explainer),
+    current: uuid.UUID | None = Depends(session_profile_id),
 ) -> ExplanationOut:
+    require_self(viewer_id, current)
     viewer = _require_verified_profile(viewer_id, db)
     candidate = _require_verified_profile(candidate_id, db)
 

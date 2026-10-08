@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import AppNav from "@/components/AppNav";
+import { useSessionProfileId } from "@/lib/session";
 import { getFrequencyCount, getTodayAstroWeather, Mood, submitMoodCheckin } from "@/lib/api";
 
 const MOODS: { value: Mood; label: string }[] = [
@@ -14,15 +14,18 @@ const MOODS: { value: Mood; label: string }[] = [
 ];
 
 function HomeContent() {
-  const profileId = useSearchParams().get("profileId");
+  const profileId = useSessionProfileId();
   const [astroWeather, setAstroWeather] = useState<string | null>(null);
   const [frequencyCount, setFrequencyCount] = useState<number | null>(null);
   const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
 
   useEffect(() => {
     getTodayAstroWeather().then((r) => setAstroWeather(r.astro_weather));
-    getFrequencyCount(profileId ?? undefined).then((r) => setFrequencyCount(r.count));
   }, []);
+
+  useEffect(() => {
+    if (profileId) getFrequencyCount(profileId).then((r) => setFrequencyCount(r.count));
+  }, [profileId]);
 
   async function checkIn(mood: Mood) {
     if (!profileId) return;

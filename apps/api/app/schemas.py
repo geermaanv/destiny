@@ -116,11 +116,30 @@ class ContinueExistingOut(BaseModel):
     profile_id: uuid.UUID
 
 
+# Sesión con WhatsApp (spec A5).
+class ClaimIn(BaseModel):
+    claim_token: str
+
+
+class LoginStartOut(BaseModel):
+    login_id: uuid.UUID
+    code: str
+    wa_link: str
+    expires_at: datetime
+    claim_token: str
+    mock: bool
+
+
+class LoginStatusOut(BaseModel):
+    status: Literal["pendiente", "listo", "sin_cuenta", "vencido"]
+
+
 class WhatsappCodeOut(BaseModel):
     code: str
     wa_link: str
     expires_at: datetime
     mock: bool  # true si no hay credenciales de WhatsApp: la pantalla ofrece "Simular envío (dev)"
+    claim_token: str  # spec A5: con esto el navegador toma la sesión cuando llega el mensaje
 
 
 Mood = Literal["energico", "tranquilo", "reflexivo", "ansioso", "inspirado"]

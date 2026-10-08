@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import {
+  claimSession,
   continueWithExistingProfile,
   getVerification,
   revealInvitation,
@@ -40,6 +41,9 @@ function VerificacionForm() {
   const [reveal, setReveal] = useState<string | null>(null);
   const [devPhone, setDevPhone] = useState(randomDevPhone);
   const [continuing, setContinuing] = useState(false);
+  // Spec A5: al verificarse, este navegador toma la sesión con el comprobante del código.
+  const [sessionReady, setSessionReady] = useState(false);
+  const [claimFailed, setClaimFailed] = useState(false);
   // Evita pedir dos códigos al montar (React StrictMode corre los effects dos
   // veces en dev, y el segundo código invalidaría al que se muestra).
   const started = useRef(false);
@@ -80,17 +84,24 @@ function VerificacionForm() {
   }, [profileId, code, result, expired]);
 
   useEffect(() => {
-    if (result?.status === "verificado" && ref && profileId) {
+    if (result?.status !== "verificado" || !code?.claim_token) return;
+    claimSession(code.claim_token)
+      .then(() => setSessionReady(true))
+      .catch(() => setClaimFailed(true));
+  }, [result, code]);
+
+  useEffect(() => {
+    if (sessionReady && ref && profileId) {
       revealInvitation(ref, profileId).then((r) => setReveal(r.text));
     }
-  }, [result, ref, profileId]);
+  }, [sessionReady, ref, profileId]);
 
   async function continueExisting() {
-    if (!profileId) return;
+    if (!profileId || !code) return;
     setContinuing(true);
     try {
-      const { profile_id } = await continueWithExistingProfile(profileId);
-      router.push(`/home?profileId=${profile_id}`);
+      await continueWithExistingProfile(profileId, code.claim_token);
+      router.push("/home");
     } catch {
       setContinuing(false);
       setError(true);
@@ -110,9 +121,18 @@ function VerificacionForm() {
         <p className="text-slate-400">{STATUS_COPY[result.status] ?? ""}</p>
         {reveal && <p className="rounded-md bg-slate-800 p-3 text-sm text-gold-200">{reveal}</p>}
         {result.status === "verificado" && (
-          <a href={`/home?profileId=${profileId}`} className="inline-block text-violet-400 underline">
-            Ir a Tu Momento
-          </a>
+          sessionReady ? (
+            <a href="/home" className="inline-block text-violet-400 underline">
+              Ir a Tu Momento
+            </a>
+          ) : claimFailed || !code ? (
+            // Ej. recargó la página después de verificarse: entra con "Ya tengo cuenta".
+            <a href="/entrar" className="inline-block text-violet-400 underline">
+              Entrar con tu WhatsApp
+            </a>
+          ) : (
+            <p className="text-sm text-slate-500">Iniciando tu sesión…</p>
+          )
         )}
         {result.status === "duplicado_detectado" && (
           <div className="space-y-3 pt-2">

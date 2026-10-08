@@ -1,13 +1,14 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import AppNav from "@/components/AppNav";
+import { useSessionProfileId } from "@/lib/session";
 import { ChatMessage, getMessages, sendMessage } from "@/lib/api";
 
 function ChatContent() {
   const { matchId } = useParams<{ matchId: string }>();
-  const profileId = useSearchParams().get("profileId");
+  const profileId = useSessionProfileId();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
 
@@ -22,7 +23,7 @@ function ChatContent() {
     setMessages(await getMessages(matchId));
   }
 
-  if (!profileId) return <p className="text-slate-400">Falta el perfil.</p>;
+  if (!profileId) return <p className="text-slate-400">Cargando…</p>;
 
   return (
     <div className="flex w-full max-w-sm flex-col space-y-3">

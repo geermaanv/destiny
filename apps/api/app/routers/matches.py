@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.compatibility import compatibility_signals
+from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
 from app.models import ChatMessage, Match, Profile
@@ -24,12 +25,26 @@ def _get_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     return profile
 
 
+def _get_own_match(match_id: uuid.UUID, current: uuid.UUID | None, db: Session) -> Match:
+    """Un chat solo lo ven sus dos participantes (spec A5)."""
+    match = db.get(Match, match_id)
+    if match is None:
+        raise HTTPException(status_code=404, detail="Match not found")
+    if current is None:
+        raise HTTPException(status_code=401, detail="Necesitás iniciar sesión")
+    if current not in (match.profile_a_id, match.profile_b_id):
+        raise HTTPException(status_code=403, detail="No participás de este chat")
+    return match
+
+
 @router.post("/matches", response_model=MatchOut, status_code=201)
 def create_match(
     payload: MatchIn,
     db: Session = Depends(get_db),
     generator: IcebreakerGenerator = Depends(get_icebreaker_generator),
+    current: uuid.UUID | None = Depends(session_profile_id),
 ) -> MatchOut:
+    require_self(payload.profile_a_id, current)
     profile_a = _get_profile(payload.profile_a_id, db)
     profile_b = _get_profile(payload.profile_b_id, db)
     if profile_a.birth_date is None or profile_b.birth_date is None:
@@ -50,10 +65,10 @@ def create_match(
 
 
 @router.get("/chats/{match_id}/messages", response_model=list[ChatMessageOut])
-def list_messages(match_id: uuid.UUID, db: Session = Depends(get_db)) -> list[ChatMessageOut]:
-    match = db.get(Match, match_id)
-    if match is None:
-        raise HTTPException(status_code=404, detail="Match not found")
+def list_messages(
+    match_id: uuid.UUID, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> list[ChatMessageOut]:
+    match = _get_own_match(match_id, current, db)
 
     messages = db.scalars(
         select(ChatMessage).where(ChatMessage.match_id == match_id).order_by(ChatMessage.created_at)
@@ -62,10 +77,11 @@ def list_messages(match_id: uuid.UUID, db: Session = Depends(get_db)) -> list[Ch
 
 
 @router.post("/chats/{match_id}/messages", response_model=ChatMessageOut, status_code=201)
-def send_message(match_id: uuid.UUID, payload: SendMessageIn, db: Session = Depends(get_db)) -> ChatMessageOut:
-    match = db.get(Match, match_id)
-    if match is None:
-        raise HTTPException(status_code=404, detail="Match not found")
+def send_message(
+    match_id: uuid.UUID, payload: SendMessageIn, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> ChatMessageOut:
+    require_self(payload.profile_id, current)
+    _get_own_match(match_id, current, db)
 
     message = ChatMessage(match_id=match_id, sender=str(payload.profile_id), text=payload.text)
     db.add(message)

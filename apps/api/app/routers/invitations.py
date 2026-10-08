@@ -9,6 +9,7 @@ from app.aspects import angle_between, aspect_sentence, classify_aspect
 from app.astro import approximate_longitude_for_sign
 from app.compatibility import compatibility_signals, sun_longitude
 from app.config import settings
+from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.models import Invitation, Profile
 from app.schemas import InvitationIn, InvitationOut, InvitationPreloadOut, PartialReportOut, RevealOut
@@ -24,7 +25,10 @@ def _get_profile(profile_id: uuid.UUID, db: Session) -> Profile:
 
 
 @router.post("", response_model=InvitationOut, status_code=201)
-def create_invitation(payload: InvitationIn, db: Session = Depends(get_db)) -> InvitationOut:
+def create_invitation(
+    payload: InvitationIn, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> InvitationOut:
+    require_self(payload.inviter_id, current)
     inviter = _get_profile(payload.inviter_id, db)
     if inviter.birth_date is None:
         raise HTTPException(status_code=422, detail="Completá tu carta natal antes de invitar")
@@ -83,7 +87,10 @@ def get_invitation(ref_id: str, db: Session = Depends(get_db)) -> InvitationPrel
 
 
 @router.get("/{ref_id}/reveal", response_model=RevealOut)
-def reveal_invitation(ref_id: str, invitee_id: uuid.UUID, db: Session = Depends(get_db)) -> RevealOut:
+def reveal_invitation(
+    ref_id: str, invitee_id: uuid.UUID, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> RevealOut:
+    require_self(invitee_id, current)
     invitation = db.get(Invitation, ref_id)
     if invitation is None:
         raise HTTPException(status_code=404, detail="Invitation not found")

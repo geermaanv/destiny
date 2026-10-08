@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.models import CalendarAnnotation, Profile
 from app.schemas import AnnotationIn, AnnotationOut, CalendarDayDetailOut, CalendarDayOut, TransitOut
@@ -23,7 +24,10 @@ def _get_profile_or_404(profile_id: uuid.UUID, db: Session) -> Profile:
 
 
 @router.get("/day/{day}", response_model=CalendarDayDetailOut)
-def get_day(day: date, profile_id: uuid.UUID = Query(...), db: Session = Depends(get_db)) -> CalendarDayDetailOut:
+def get_day(
+    day: date, profile_id: uuid.UUID = Query(...), db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> CalendarDayDetailOut:
+    require_self(profile_id, current)
     profile = _get_profile_or_404(profile_id, db)
     transit = day_transit(profile, day)
 
@@ -40,7 +44,10 @@ def get_day(day: date, profile_id: uuid.UUID = Query(...), db: Session = Depends
 
 
 @router.post("/day/{day}/annotations", response_model=AnnotationOut, status_code=201)
-def create_annotation(day: date, payload: AnnotationIn, db: Session = Depends(get_db)) -> AnnotationOut:
+def create_annotation(
+    day: date, payload: AnnotationIn, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> AnnotationOut:
+    require_self(payload.profile_id, current)
     annotation = CalendarAnnotation(profile_id=payload.profile_id, day=day, text=payload.text)
     db.add(annotation)
     db.commit()
@@ -50,8 +57,13 @@ def create_annotation(day: date, payload: AnnotationIn, db: Session = Depends(ge
 
 @router.get("/{year}/{month}", response_model=list[CalendarDayOut])
 def get_month(
-    year: int, month: int, profile_id: uuid.UUID = Query(...), db: Session = Depends(get_db)
+    year: int,
+    month: int,
+    profile_id: uuid.UUID = Query(...),
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
 ) -> list[CalendarDayOut]:
+    require_self(profile_id, current)
     profile = _get_profile_or_404(profile_id, db)
     transits = month_transits(profile, year, month)
     return [CalendarDayOut(date=t["date"], has_key_transit=t["is_major"]) for t in transits]
