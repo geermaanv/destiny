@@ -33,7 +33,7 @@ function ChatContent() {
             key={i}
             className={`rounded-md p-3 text-sm ${
               m.sender === "system_icebreaker"
-                ? "bg-violet-950 text-violet-200"
+                ? "bg-slate-800 text-gold-200"
                 : m.sender === profileId
                   ? "ml-8 bg-violet-600 text-white"
                   : "mr-8 bg-slate-900 text-slate-200"

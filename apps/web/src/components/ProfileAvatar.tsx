@@ -22,7 +22,7 @@ export default function ProfileAvatar({
     <span
       aria-hidden
       style={{ ...style, fontSize: size * 0.5 }}
-      className="flex shrink-0 items-center justify-center rounded-full bg-violet-950 text-violet-200 ring-1 ring-violet-800"
+      className="flex shrink-0 items-center justify-center rounded-full bg-slate-800 text-gold-200 ring-1 ring-gold-400/40"
     >
       {avatarEmoji(avatar, sunSign)}
     </span>

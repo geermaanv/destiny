@@ -72,7 +72,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [ ] Sin mes/año, sin días de la semana, no se puede cambiar de mes, no marca hoy, no explica qué son los días violetas, y la grilla no arranca en el día de la semana correcto.
 
 **Textos y apariencia**
-- [ ] Alinear la paleta de la app con el logo (azul noche `#25225b`, coral de las manos, dorado de los astros); hoy la app usa violeta genérico de Tailwind.
+- [x] Alinear la paleta de la app con el logo (azul noche `#25225b`, coral de las manos, dorado de los astros); **Hecho**: `tailwind.config.ts` redefine `slate` (azul noche), `violet` (coral) y suma `gold`.
 - [x] Jerga astrológica sin traducir ("Sin aspecto mayor solar", "cuadratura"): pasar a lenguaje simple. **Hecho**: `app/aspects.py` tiene etiquetas y frases simples ("Energía parecida", "Polos opuestos", "Por descubrir"…) usadas en Descubrir, la explicación, el rompehielos y la invitación.
 - [ ] Invitar: "Generar reporte" no es claro y falta explicar qué recibe el amigo.
 

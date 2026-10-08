@@ -121,7 +121,7 @@ export default function ProfileForm({
             className="h-20 w-20 rounded-full object-cover"
           />
         ) : (
-          <span className="flex h-20 w-20 items-center justify-center rounded-full bg-violet-950 text-4xl text-violet-200 ring-1 ring-violet-800">
+          <span className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-800 text-4xl text-gold-200 ring-1 ring-gold-400/40">
             {previewEmoji}
           </span>
         )}

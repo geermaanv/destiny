@@ -63,9 +63,9 @@ function DiscoverContent() {
               <span className="block text-xs text-slate-400">
                 {[c.sun_sign, c.neighborhood].filter(Boolean).join(" · ")}
               </span>
-              <span className="block text-xs text-violet-300">{c.preview}</span>
+              <span className="block text-xs text-gold-300">{c.preview}</span>
             </span>
-            <span className="font-semibold text-violet-300">{c.compatibility_pct}%</span>
+            <span className="font-semibold text-gold-300">{c.compatibility_pct}%</span>
           </button>
           {openId === c.profile_id && (
             <>

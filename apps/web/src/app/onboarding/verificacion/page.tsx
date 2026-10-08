@@ -108,7 +108,7 @@ function VerificacionForm() {
           {result.status === "duplicado_detectado" ? "Ya tenés una cuenta" : "Verificado"}
         </h1>
         <p className="text-slate-400">{STATUS_COPY[result.status] ?? ""}</p>
-        {reveal && <p className="rounded-md bg-violet-950 p-3 text-sm text-violet-200">{reveal}</p>}
+        {reveal && <p className="rounded-md bg-slate-800 p-3 text-sm text-gold-200">{reveal}</p>}
         {result.status === "verificado" && (
           <a href={`/home?profileId=${profileId}`} className="inline-block text-violet-400 underline">
             Ir a Tu Momento

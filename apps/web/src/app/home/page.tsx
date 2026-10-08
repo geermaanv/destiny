@@ -38,7 +38,7 @@ function HomeContent() {
           <img src="/logo.png" alt="" width={40} height={40} />
           <h1 className="text-2xl font-semibold">Tu Momento</h1>
         </div>
-        <p className="mt-2 text-lg text-violet-300">{astroWeather ?? "Calculando..."}</p>
+        <p className="mt-2 text-lg text-gold-300">{astroWeather ?? "Calculando..."}</p>
       </div>
 
       <div>

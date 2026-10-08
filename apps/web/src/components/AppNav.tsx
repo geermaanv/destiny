@@ -30,7 +30,7 @@ function NavLinks() {
                 href={`${item.href}?profileId=${profileId}`}
                 aria-current={active ? "page" : undefined}
                 className={`flex flex-col items-center gap-0.5 px-2 py-2 text-xs ${
-                  active ? "text-violet-300" : "text-slate-500 hover:text-slate-300"
+                  active ? "text-gold-300" : "text-slate-500 hover:text-slate-300"
                 }`}
               >
                 <span aria-hidden className="text-lg leading-none">
