@@ -28,9 +28,11 @@ def get_frequency_count(
     # día (ver B4-home-tu-momento.md, "fuera de alcance": agrupación
     # geográfica y afinidad fina de tránsitos quedan para una iteración
     # posterior).
-    # Mismo universo que /discover: verificados con datos natales, sin contarse a uno mismo.
+    # Mismo universo que /discover: verificados con datos natales y nombre, sin contarse a uno mismo.
     query = select(func.count()).select_from(Profile).where(
-        Profile.verification_status == "verificado", Profile.birth_date.is_not(None)
+        Profile.verification_status == "verificado",
+        Profile.birth_date.is_not(None),
+        Profile.display_name.is_not(None),
     )
     if profile_id is not None:
         query = query.where(Profile.id != profile_id)

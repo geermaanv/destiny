@@ -72,6 +72,7 @@ GET  /profiles/{id}/photo
 
 ## Criterios de aceptación
 
+- [x] Los perfiles sin nombre (incompletos) no aparecen en Descubrir ni cuentan en "En tu frecuencia".
 - [x] No se puede avanzar del paso sin nombre/apodo.
 - [x] Descubrir muestra nombre, edad y signo de cada candidato.
 - [x] Ningún endpoint que ven otros usuarios expone teléfono ni datos natales exactos.

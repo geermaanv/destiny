@@ -54,6 +54,8 @@ def list_discover(
             Profile.verification_status == "verificado",
             Profile.id != viewer_id,
             Profile.birth_date.is_not(None),
+            # Perfil incompleto (sin nombre, spec A4) no aparece en Descubrir.
+            Profile.display_name.is_not(None),
         )
     ).all()
 
