@@ -19,6 +19,7 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 - [ ] Proveedor de KYC/verificación para **v2** — Persona, Onfido, Veriff o Didit (spec `A3-verificacion-identidad.md` / ADR 0006). Ya no bloquea v1.
 - [ ] Tonos/copies de notificaciones — "Ritmo Diario" vs. "Pulso del Cosmos" (spec `A2-ritmo-notificaciones.md`).
 - [ ] Decisión PWA vs. nativo para push notifications en iOS (ver ADR 0002 — afecta a `A2-ritmo-notificaciones.md`).
+- [ ] **Motor de sinastría por ejes** (cuadro de German): spec en borrador `B5-motor-sinastria.md`. Faltan las tablas de contenido astrológico (planetas por eje, matrices 12×12, puntos por aspecto, orbes, casas y sistema de casas, lógica del Eje 5, pesos por tipo de relación).
 - [ ] Contexto de relación en Descubrir — **decidido el enfoque**: no va en el perfil, se elige en Descubrir y la lista queda abierta (pareja, amistad, trabajo/jefe, socio…). Falta la spec del selector y de cómo cambia la explicación (`B5-pantalla-descubrir.md`).
 - [ ] Integración de actividades en el calendario de memoria (spec `B6-calendario-memoria.md`, v1 no las incluye).
 - [ ] Tonos/copies del chat y de los rompehielos de IA (spec `B7-chat-rompehielos.md`, v1 usa copy borrador).
@@ -56,7 +57,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 **Gaps de producto (los más importantes)**
 - [x] Los perfiles no tienen **nombre, foto, edad** (spec en borrador: `A4-perfil-liviano.md`, perfil liviano sin tipo de relación ni género): en Descubrir solo se ve "Sin aspecto mayor solar · 60%". Para una app de citas es lo primero que falta.
 - [ ] **Match unilateral**: tocar "Match" crea el chat al instante; la otra persona no se entera y no hay lista de chats/matches para encontrarlo.
-- [ ] **Sin sesión**: el perfil viaja en la URL (`?profileId=`). Si se cierra el navegador se pierde el acceso. La verificación por WhatsApp + "Seguir con mi cuenta" ya sirve como login: falta guardarlo (cookie) y una entrada de "Ya tengo cuenta".
+- [ ] **Sin sesión** (spec en borrador `A5-sesion.md`): el perfil viaja en la URL (`?profileId=`). Si se cierra el navegador se pierde el acceso. La verificación por WhatsApp + "Seguir con mi cuenta" ya sirve como login: falta guardarlo (cookie) y una entrada de "Ya tengo cuenta".
 
 - [x] Idea de German para el perfil: **momento del día en que la persona tiene más energía** (ya está en el perfil; falta usarlo como señal de matching) (madrugador / nocturno). Mucha gente lo asocia a cuándo nació; puede ser un dato de color del perfil y una señal más para el matching. Va con el diseño del perfil básico.
 
