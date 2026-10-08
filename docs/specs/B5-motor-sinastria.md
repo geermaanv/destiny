@@ -1,9 +1,9 @@
 # B5-motor-sinastria — Motor de sinastría por ejes
 
-- **Estado**: draft
+- **Estado**: implemented (tablas v1-provisoria)
 - **Módulo**: B5 (reemplaza el cálculo simplificado Sol-Sol de `B5-pantalla-descubrir.md`)
 - **Owner de decisión de producto**: German Villamarin (por ahora)
-- **Aprobada para implementación por**: —
+- **Aprobada para implementación por**: German Villamarin, 2026-10-08 (pidió completar las tablas y tenerlas como configuración)
 - **Fuente**: cuadro "Flujo de la app — Sinastría astrológica / Arquitectura general del software" que pasó German (2026-10-08). Transcripto acá.
 
 ## Problema
@@ -37,16 +37,34 @@ Hoy la compatibilidad mira solo el aspecto Sol-Sol y devuelve un % genérico. El
 
 Las tablas de contenido astrológico no están en el cuadro; sin ellas el motor no puede dar resultados reales:
 
-- [ ] **Planetas de cada eje**: qué planetas/puntos entran en cada eje (ej. Eje 1 Venus–Marte, Eje 3 Mercurio…).
-- [ ] **Matrices 12×12**: los puntos de cada combinación de signos, por eje (5 × 144 valores).
-- [ ] **Puntos por aspecto**: qué aspectos menores se usan y cuántos puntos suma o resta cada uno, por eje.
-- [ ] **Regla de orbe**: orbe máximo por aspecto y cómo escala el impacto (ej. lineal hasta 0 en el orbe máximo).
-- [ ] **Puntos por casas**: cómo se puntúa "planeta de A cae en casa relevante de B", y **sistema de casas** (Placidus, Casas Iguales, Whole Sign…).
-- [ ] **Lógica del Eje 5**: cómo elementos, polaridades, modalidades y compensatorios ajustan cada eje.
-- [ ] **Pesos por tipo de relación**: la tabla de pesos de cada eje según el tipo (los 4 tipos del cuadro).
-- [ ] **Normalización a 0–100** de cada eje.
-- [ ] **Sin hora exacta**: las casas y el ascendente dependen de la hora; con hora estimada (12:00 o franja del día, A1) definir si el nivel 6 se omite, se reduce su peso o se marca como "aproximado".
-- [ ] ¿La explicación de la IA (pilar "Explain") usa el detalle por eje? Propuesta: sí, la explicación cita los ejes más altos y más bajos.
+- [x] **Planetas de cada eje**: qué planetas/puntos entran en cada eje (ej. Eje 1 Venus–Marte, Eje 3 Mercurio…).
+- [x] **Matrices 12×12**: los puntos de cada combinación de signos, por eje (5 × 144 valores).
+- [x] **Puntos por aspecto**: qué aspectos menores se usan y cuántos puntos suma o resta cada uno, por eje.
+- [x] **Regla de orbe**: orbe máximo por aspecto y cómo escala el impacto (ej. lineal hasta 0 en el orbe máximo).
+- [x] **Puntos por casas**: cómo se puntúa "planeta de A cae en casa relevante de B", y **sistema de casas** (Placidus, Casas Iguales, Whole Sign…).
+- [x] **Lógica del Eje 5**: cómo elementos, polaridades, modalidades y compensatorios ajustan cada eje.
+- [x] **Pesos por tipo de relación**: la tabla de pesos de cada eje según el tipo (los 4 tipos del cuadro).
+- [x] **Normalización a 0–100** de cada eje.
+- [x] **Sin hora exacta**: las casas y el ascendente dependen de la hora; con hora estimada (12:00 o franja del día, A1) definir si el nivel 6 se omite, se reduce su peso o se marca como "aproximado".
+- [x] ¿La explicación de la IA (pilar "Explain") usa el detalle por eje? Propuesta: sí, la explicación cita los ejes más altos y más bajos.
+
+## Cómo se completaron las tablas (2026-10-08)
+
+Todas en `apps/api/app/synastry/config/synastry_v1.json` (ver ADR 0010). Resumen:
+
+| Eje | Planetas (A ↔ B) | Casas | Qué premia la matriz de signos |
+|---|---|---|---|
+| 1 Atracción | Venus–Marte (×3), Marte–Marte, Sol–Marte, Venus–Venus, Luna–Marte, Plutón–Venus/Marte, Asc–Venus/Marte | 8 y 5 | Polaridad y fricción (oposición, cuadratura) |
+| 2 Afecto | Sol–Luna (×3), Luna–Venus, Luna–Luna, Venus–Venus, Sol–Venus, Neptuno–Venus/Luna | 7, 4, 5 y 8 | Armonía (trígono, mismo signo) |
+| 3 Comunicación | Mercurio–Mercurio (×3), Mercurio–Sol, –Luna, –Júpiter, –Urano, –Asc, Sol–Sol | 3, 9 y 11 | Ida y vuelta (sextil, mismo signo) |
+| 4 Compromiso | Saturno–Sol/Luna/Venus, Sol–Luna, Júpiter–Venus/Sol, Sol–Sol, Saturno–Saturno | 7, 4, 10 y 5 | Estabilidad (trígono); castiga cuadraturas |
+| 5 Modificadores | Elementos, polaridades, modalidades y compensatorios de Sol, Luna, Asc, Mercurio, Venus y Marte | — | Ajusta cada eje ×0,85 a ×1,15 |
+
+- **Aspectos**: mayores (conjunción 8°, sextil 6°, cuadratura 7°, trígono 7°, oposición 8°; +2° si interviene Sol o Luna) y menores (semisextil y semicuadratura 2°, sesquicuadratura 2°, quincuncio 3°). En atracción las tensiones suman (chispa); en afecto, comunicación y compromiso restan.
+- **Orbe**: impacto lineal, 100 % exacto y 0 % en el borde.
+- **Pesos por tipo** (atracción / afecto / comunicación / compromiso): ocasional 55/15/20/10 · pareja 25/30/20/25 · amistad 5/35/40/20 · laboral 0/15/45/40.
+- **Normalización**: 50 = pareja promedio, calibrado solo.
+- **Integración**: Descubrir ordena por la compatibilidad total del contexto elegido (selector Pareja / Amistad / Trabajo / Casual), muestra los 4 ejes y la explicación nombra el eje más fuerte y el más flojo entre los que importan para ese contexto. El rompehielos, la invitación y el calendario todavía usan el cálculo simple Sol–Sol / Luna–Sol.
 
 ## Requisitos funcionales / técnicos (propuesta)
 
@@ -65,10 +83,10 @@ GET /discover?viewer_id=...&context=pareja|amistad|laboral|ocasional
 
 ## Criterios de aceptación
 
-- [ ] Dadas dos cartas y un tipo de relación, el motor devuelve 4 puntajes por eje (0–100) y un total (0–100), reproducible.
-- [ ] Cambiar el tipo de relación cambia los pesos y, por lo tanto, el resultado.
-- [ ] Cambiar una tabla de configuración cambia el resultado sin tocar código.
-- [ ] El detalle por nivel queda disponible para la explicación.
+- [x] Dadas dos cartas y un tipo de relación, el motor devuelve 4 puntajes por eje (0–100) y un total (0–100), reproducible.
+- [x] Cambiar el tipo de relación cambia los pesos y, por lo tanto, el resultado.
+- [x] Cambiar una tabla de configuración cambia el resultado sin tocar código.
+- [x] El detalle por nivel queda disponible para la explicación.
 
 ## Fuera de alcance
 

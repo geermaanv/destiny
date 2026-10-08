@@ -163,6 +163,10 @@ class DiscoverCandidateOut(BaseModel):
     profile_id: uuid.UUID
     compatibility_pct: int
     preview: str
+    # Motor de sinastría (spec B5-motor-sinastria.md): puntaje por eje y contexto.
+    axes: dict[str, int] = {}
+    relationship: str | None = None
+    approximate: bool = False
     # Perfil liviano (spec A4): solo datos públicos.
     display_name: str | None = None
     age: int | None = None

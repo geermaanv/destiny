@@ -163,6 +163,9 @@ export type DiscoverCandidate = {
   profile_id: string;
   compatibility_pct: number;
   preview: string;
+  axes: Partial<Record<"atraccion" | "afecto" | "comunicacion" | "compromiso", number>>;
+  relationship: RelationshipContext | null;
+  approximate: boolean;
   display_name: string | null;
   age: number | null;
   sun_sign: string | null;
@@ -174,14 +177,24 @@ export type DiscoverCandidate = {
   neighborhood: string | null;
 };
 
-export async function getDiscoverCandidates(viewerId: string): Promise<DiscoverCandidate[]> {
-  const res = await fetch(`${API_URL}/discover?viewer_id=${viewerId}`);
+// Contexto de relación en Descubrir (spec B5): cambia los pesos de cada eje.
+export type RelationshipContext = "pareja" | "amistad" | "laboral" | "ocasional";
+
+export async function getDiscoverCandidates(
+  viewerId: string,
+  context: RelationshipContext = "pareja"
+): Promise<DiscoverCandidate[]> {
+  const res = await fetch(`${API_URL}/discover?viewer_id=${viewerId}&context=${context}`);
   if (!res.ok) throw new Error(String(res.status));
   return res.json();
 }
 
-export async function getExplanation(viewerId: string, candidateId: string): Promise<{ text: string }> {
-  const res = await fetch(`${API_URL}/discover/${candidateId}/explanation?viewer_id=${viewerId}`);
+export async function getExplanation(
+  viewerId: string,
+  candidateId: string,
+  context: RelationshipContext = "pareja"
+): Promise<{ text: string }> {
+  const res = await fetch(`${API_URL}/discover/${candidateId}/explanation?viewer_id=${viewerId}&context=${context}`);
   if (!res.ok) throw new Error("No se pudo cargar la explicación");
   return res.json();
 }

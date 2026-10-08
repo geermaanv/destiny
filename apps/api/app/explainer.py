@@ -2,6 +2,7 @@ import json
 from typing import Protocol
 
 from app.aspects import aspect_sentence
+from app.synastry import relevant_axes
 from app.config import settings
 
 EDITORIAL_GUIDELINE = (
@@ -25,12 +26,45 @@ class MockResonanceExplainer:
     """
 
     def explain(self, viewer: dict, candidate: dict, signals: dict) -> str:
+        if "ejes" in signals:
+            return self._explain_axes(signals)
         pct = signals["percentage"]
         return (
             f"{aspect_sentence(signals['aspect']).capitalize()}, con un {pct}% de resonancia. "
             "No es una garantía, es una invitación: el momento parece acompañar "
             "el encuentro, vale la pena ver qué pasa cuando se cruzan."
         )
+
+
+    def _explain_axes(self, signals: dict) -> str:
+        # Motor de sinastría (B5): el eje más fuerte y el más flojo, en lenguaje simple.
+        axes = signals["ejes"]
+        relevant = relevant_axes(signals)
+        best = max(relevant, key=axes.get)
+        worst = min(relevant, key=axes.get)
+        context = CONTEXT_PHRASE.get(signals["tipo_de_relacion"], "")
+        text = (
+            f"{context}lo que más los une es {AXIS_PHRASE[best]} ({axes[best]}/100)"
+            f", y lo que más van a tener que trabajar es {AXIS_PHRASE[worst]} ({axes[worst]}/100). "
+            f"En total, {signals['total']}% de resonancia. No es una garantía, es una invitación."
+        )
+        if signals.get("aproximado"):
+            text += " (Aproximado: alguno de los dos no sabe su hora exacta.)"
+        return text[0].upper() + text[1:]
+
+
+AXIS_PHRASE = {
+    "atraccion": "la química",
+    "afecto": "lo emocional",
+    "comunicacion": "la forma de comunicarse",
+    "compromiso": "la capacidad de construir algo estable",
+}
+CONTEXT_PHRASE = {
+    "pareja": "como pareja, ",
+    "amistad": "como amigos, ",
+    "laboral": "para trabajar juntos, ",
+    "ocasional": "para algo casual, ",
+}
 
 
 class ClaudeResonanceExplainer:

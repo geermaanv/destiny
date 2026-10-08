@@ -24,7 +24,7 @@ Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `a
 | [A5-sesion](./A5-sesion.md) | A5 | implemented |
 | [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | implemented |
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | implemented |
-| [B5-motor-sinastria](./B5-motor-sinastria.md) | B5 | draft |
+| [B5-motor-sinastria](./B5-motor-sinastria.md) | B5 | implemented (tablas v1-provisoria) |
 | [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | implemented |
 | [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | implemented (v2 híbrida) |
 | [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | implemented |

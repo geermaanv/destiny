@@ -5,8 +5,28 @@ import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
 import { useSessionProfileId } from "@/lib/session";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import { createMatch, DiscoverCandidate, getDiscoverCandidates, getExplanation } from "@/lib/api";
+import {
+  createMatch,
+  DiscoverCandidate,
+  getDiscoverCandidates,
+  getExplanation,
+  RelationshipContext,
+} from "@/lib/api";
 import { energyLabel, interestLabel } from "@/lib/profile";
+
+const CONTEXTS: { value: RelationshipContext; label: string }[] = [
+  { value: "pareja", label: "Pareja" },
+  { value: "amistad", label: "Amistad" },
+  { value: "laboral", label: "Trabajo" },
+  { value: "ocasional", label: "Casual" },
+];
+
+const AXES: { key: "atraccion" | "afecto" | "comunicacion" | "compromiso"; label: string }[] = [
+  { key: "atraccion", label: "Química" },
+  { key: "afecto", label: "Afecto" },
+  { key: "comunicacion", label: "Comunicación" },
+  { key: "compromiso", label: "Compromiso" },
+];
 
 function DiscoverContent() {
   const router = useRouter();
@@ -16,10 +36,13 @@ function DiscoverContent() {
   const [explanations, setExplanations] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [requested, setRequested] = useState<Record<string, boolean>>({});
+  const [context, setContext] = useState<RelationshipContext>("pareja");
 
   useEffect(() => {
     if (!profileId) return;
-    getDiscoverCandidates(profileId)
+    setCandidates(null);
+    setExplanations({});
+    getDiscoverCandidates(profileId, context)
       .then(setCandidates)
       .catch((e: Error) =>
         setError(
@@ -30,12 +53,12 @@ function DiscoverContent() {
               : "No pudimos cargar Descubrir. Probá de nuevo en un rato."
         )
       );
-  }, [profileId]);
+  }, [profileId, context]);
 
   async function openCandidate(candidateId: string) {
     setOpenId(candidateId);
     if (!profileId || explanations[candidateId]) return;
-    const { text } = await getExplanation(profileId, candidateId);
+    const { text } = await getExplanation(profileId, candidateId, context);
     setExplanations((prev) => ({ ...prev, [candidateId]: text }));
   }
 
@@ -55,6 +78,24 @@ function DiscoverContent() {
   return (
     <div className="w-full max-w-sm space-y-4">
       <h1 className="text-2xl font-semibold">Descubrir</h1>
+      <div className="space-y-1">
+        <p className="text-xs text-slate-400">¿Qué tipo de vínculo querés mirar?</p>
+        <div className="flex gap-2">
+          {CONTEXTS.map((c) => (
+            <button
+              key={c.value}
+              onClick={() => setContext(c.value)}
+              className={`flex-1 rounded-full px-2 py-1.5 text-xs ring-1 ${
+                context === c.value
+                  ? "bg-violet-600 text-white ring-violet-500"
+                  : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-violet-400"
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+      </div>
       {candidates === null && <p className="text-slate-400">Cargando...</p>}
       {candidates?.length === 0 && <p className="text-slate-400">Todavía no hay nadie en tu frecuencia.</p>}
       {candidates?.map((c) => (
@@ -75,6 +116,23 @@ function DiscoverContent() {
           </button>
           {openId === c.profile_id && (
             <>
+              <div className="mt-3 space-y-1.5">
+                {AXES.map((axis) => (
+                  <div key={axis.key} className="flex items-center gap-2 text-xs">
+                    <span className="w-24 text-slate-400">{axis.label}</span>
+                    <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800">
+                      <span
+                        className="block h-full rounded-full bg-gold-400"
+                        style={{ width: `${c.axes[axis.key] ?? 0}%` }}
+                      />
+                    </span>
+                    <span className="w-7 text-right text-slate-300">{c.axes[axis.key] ?? "—"}</span>
+                  </div>
+                ))}
+                {c.approximate && (
+                  <p className="text-xs text-slate-500">Aproximado: sin hora exacta de nacimiento no se usan las casas.</p>
+                )}
+              </div>
               {(c.bio || c.energy_period || c.interests.length > 0) && (
                 <div className="mt-3 space-y-2 text-sm">
                   {c.bio && <p className="text-slate-200">“{c.bio}”</p>}

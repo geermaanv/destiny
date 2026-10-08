@@ -1,0 +1,443 @@
+{
+ "version": "v1-provisoria",
+ "notas": ["Tablas iniciales armadas por Claude a partir de criterios clásicos de sinastría, para que el equipo las revise.", "Nada de esto está validado todavía por un astrólogo: cada número se puede ajustar sin tocar código.", "Para regenerar desde las reglas: .venv/bin/python scripts/build_synastry_config.py (pisa los cambios hechos a mano en las matrices)."],
+ "signos": ["Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo", "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis"],
+ "ejes": {
+  "atraccion": "Atracción / química sexual",
+  "afecto": "Afecto / emoción",
+  "comunicacion": "Comunicación",
+  "compromiso": "Compromiso",
+  "modificadores": "Modificadores"
+ },
+ "nivel_3_matriz_signos": {
+  "descripcion": "Puntos por combinación de signos (fila = signo del planeta de A, columna = signo del planeta de B).",
+  "factor": 0.6,
+  "matrices": {
+   "atraccion": [
+    [3, -1, 3, 3, 3, 1, 5, 1, 3, 3, 3, -1],
+    [-1, 3, -1, 3, 3, 3, 1, 5, 1, 3, 3, 3],
+    [3, -1, 3, -1, 3, 3, 3, 1, 5, 1, 3, 3],
+    [3, 3, -1, 3, -1, 3, 3, 3, 1, 5, 1, 3],
+    [3, 3, 3, -1, 3, -1, 3, 3, 3, 1, 5, 1],
+    [1, 3, 3, 3, -1, 3, -1, 3, 3, 3, 1, 5],
+    [5, 1, 3, 3, 3, -1, 3, -1, 3, 3, 3, 1],
+    [1, 5, 1, 3, 3, 3, -1, 3, -1, 3, 3, 3],
+    [3, 1, 5, 1, 3, 3, 3, -1, 3, -1, 3, 3],
+    [3, 3, 1, 5, 1, 3, 3, 3, -1, 3, -1, 3],
+    [3, 3, 3, 1, 5, 1, 3, 3, 3, -1, 3, -1],
+    [-1, 3, 3, 3, 1, 5, 1, 3, 3, 3, -1, 3]
+   ],
+   "afecto": [
+    [4, 0, 3, -2, 5, -2, 1, -2, 5, -2, 3, 0],
+    [0, 4, 0, 3, -2, 5, -2, 1, -2, 5, -2, 3],
+    [3, 0, 4, 0, 3, -2, 5, -2, 1, -2, 5, -2],
+    [-2, 3, 0, 4, 0, 3, -2, 5, -2, 1, -2, 5],
+    [5, -2, 3, 0, 4, 0, 3, -2, 5, -2, 1, -2],
+    [-2, 5, -2, 3, 0, 4, 0, 3, -2, 5, -2, 1],
+    [1, -2, 5, -2, 3, 0, 4, 0, 3, -2, 5, -2],
+    [-2, 1, -2, 5, -2, 3, 0, 4, 0, 3, -2, 5],
+    [5, -2, 1, -2, 5, -2, 3, 0, 4, 0, 3, -2],
+    [-2, 5, -2, 1, -2, 5, -2, 3, 0, 4, 0, 3],
+    [3, -2, 5, -2, 1, -2, 5, -2, 3, 0, 4, 0],
+    [0, 3, -2, 5, -2, 1, -2, 5, -2, 3, 0, 4]
+   ],
+   "comunicacion": [
+    [4, 1, 5, -2, 4, -2, 1, -2, 4, -2, 5, 1],
+    [1, 4, 1, 5, -2, 4, -2, 1, -2, 4, -2, 5],
+    [5, 1, 4, 1, 5, -2, 4, -2, 1, -2, 4, -2],
+    [-2, 5, 1, 4, 1, 5, -2, 4, -2, 1, -2, 4],
+    [4, -2, 5, 1, 4, 1, 5, -2, 4, -2, 1, -2],
+    [-2, 4, -2, 5, 1, 4, 1, 5, -2, 4, -2, 1],
+    [1, -2, 4, -2, 5, 1, 4, 1, 5, -2, 4, -2],
+    [-2, 1, -2, 4, -2, 5, 1, 4, 1, 5, -2, 4],
+    [4, -2, 1, -2, 4, -2, 5, 1, 4, 1, 5, -2],
+    [-2, 4, -2, 1, -2, 4, -2, 5, 1, 4, 1, 5],
+    [5, -2, 4, -2, 1, -2, 4, -2, 5, 1, 4, 1],
+    [1, 5, -2, 4, -2, 1, -2, 4, -2, 5, 1, 4]
+   ],
+   "compromiso": [
+    [3, 0, 3, -3, 5, -2, 0, -2, 5, -3, 3, 0],
+    [0, 3, 0, 3, -3, 5, -2, 0, -2, 5, -3, 3],
+    [3, 0, 3, 0, 3, -3, 5, -2, 0, -2, 5, -3],
+    [-3, 3, 0, 3, 0, 3, -3, 5, -2, 0, -2, 5],
+    [5, -3, 3, 0, 3, 0, 3, -3, 5, -2, 0, -2],
+    [-2, 5, -3, 3, 0, 3, 0, 3, -3, 5, -2, 0],
+    [0, -2, 5, -3, 3, 0, 3, 0, 3, -3, 5, -2],
+    [-2, 0, -2, 5, -3, 3, 0, 3, 0, 3, -3, 5],
+    [5, -2, 0, -2, 5, -3, 3, 0, 3, 0, 3, -3],
+    [-3, 5, -2, 0, -2, 5, -3, 3, 0, 3, 0, 3],
+    [3, -3, 5, -2, 0, -2, 5, -3, 3, 0, 3, 0],
+    [0, 3, -3, 5, -2, 0, -2, 5, -3, 3, 0, 3]
+   ],
+   "modificadores": [
+    [2, -1, 2, -2, 3, -2, 1, -2, 3, -2, 2, -1],
+    [-1, 2, -1, 2, -2, 3, -2, 1, -2, 3, -2, 2],
+    [2, -1, 2, -1, 2, -2, 3, -2, 1, -2, 3, -2],
+    [-2, 2, -1, 2, -1, 2, -2, 3, -2, 1, -2, 3],
+    [3, -2, 2, -1, 2, -1, 2, -2, 3, -2, 1, -2],
+    [-2, 3, -2, 2, -1, 2, -1, 2, -2, 3, -2, 1],
+    [1, -2, 3, -2, 2, -1, 2, -1, 2, -2, 3, -2],
+    [-2, 1, -2, 3, -2, 2, -1, 2, -1, 2, -2, 3],
+    [3, -2, 1, -2, 3, -2, 2, -1, 2, -1, 2, -2],
+    [-2, 3, -2, 1, -2, 3, -2, 2, -1, 2, -1, 2],
+    [2, -2, 3, -2, 1, -2, 3, -2, 2, -1, 2, -1],
+    [-1, 2, -2, 3, -2, 1, -2, 3, -2, 2, -1, 2]
+   ]
+  },
+  "regla_de_generacion": {
+   "relaciones": ["mismo_signo", "semisextil", "sextil", "cuadratura", "trigono", "quincuncio", "oposicion"],
+   "puntos": {
+    "atraccion": [3, -1, 3, 3, 3, 1, 5],
+    "afecto": [4, 0, 3, -2, 5, -2, 1],
+    "comunicacion": [4, 1, 5, -2, 4, -2, 1],
+    "compromiso": [3, 0, 3, -3, 5, -2, 0],
+    "modificadores": [2, -1, 2, -2, 3, -2, 1]
+   }
+  }
+ },
+ "planetas_por_eje": {
+  "atraccion": [
+   ["venus", "marte", 3.0],
+   ["marte", "marte", 1.5],
+   ["venus", "venus", 1.0],
+   ["sol", "marte", 1.5],
+   ["luna", "marte", 1.0],
+   ["pluton", "venus", 1.0],
+   ["pluton", "marte", 1.0],
+   ["asc", "marte", 1.0],
+   ["asc", "venus", 1.0]
+  ],
+  "afecto": [
+   ["sol", "luna", 3.0],
+   ["luna", "luna", 2.0],
+   ["luna", "venus", 2.5],
+   ["venus", "venus", 1.5],
+   ["sol", "venus", 1.5],
+   ["neptuno", "venus", 0.5],
+   ["neptuno", "luna", 0.5]
+  ],
+  "comunicacion": [
+   ["mercurio", "mercurio", 3.0],
+   ["mercurio", "sol", 2.0],
+   ["mercurio", "luna", 1.5],
+   ["mercurio", "jupiter", 1.5],
+   ["mercurio", "urano", 1.0],
+   ["mercurio", "asc", 1.0],
+   ["sol", "sol", 1.0]
+  ],
+  "compromiso": [
+   ["saturno", "sol", 2.5],
+   ["saturno", "luna", 2.5],
+   ["saturno", "venus", 2.5],
+   ["sol", "luna", 2.0],
+   ["jupiter", "venus", 1.5],
+   ["jupiter", "sol", 1.5],
+   ["sol", "sol", 1.0],
+   ["saturno", "saturno", 1.0]
+  ],
+  "modificadores": [
+   ["sol", "sol", 2.0],
+   ["luna", "luna", 2.0],
+   ["asc", "asc", 1.0]
+  ]
+ },
+ "nivel_4_aspectos": {
+  "conjuncion": {
+   "angulo": 0,
+   "orbe": 8,
+   "mayor": true,
+   "puntos": {
+    "atraccion": 6,
+    "afecto": 5,
+    "comunicacion": 5,
+    "compromiso": 5
+   }
+  },
+  "semisextil": {
+   "angulo": 30,
+   "orbe": 2,
+   "mayor": false,
+   "puntos": {
+    "atraccion": 1,
+    "afecto": 1,
+    "comunicacion": 1,
+    "compromiso": 1
+   }
+  },
+  "semicuadratura": {
+   "angulo": 45,
+   "orbe": 2,
+   "mayor": false,
+   "puntos": {
+    "atraccion": 1,
+    "afecto": -1,
+    "comunicacion": -1,
+    "compromiso": -1
+   }
+  },
+  "sextil": {
+   "angulo": 60,
+   "orbe": 6,
+   "mayor": true,
+   "puntos": {
+    "atraccion": 4,
+    "afecto": 4,
+    "comunicacion": 5,
+    "compromiso": 3
+   }
+  },
+  "cuadratura": {
+   "angulo": 90,
+   "orbe": 7,
+   "mayor": true,
+   "puntos": {
+    "atraccion": 5,
+    "afecto": -3,
+    "comunicacion": -4,
+    "compromiso": -3
+   }
+  },
+  "trigono": {
+   "angulo": 120,
+   "orbe": 7,
+   "mayor": true,
+   "puntos": {
+    "atraccion": 4,
+    "afecto": 6,
+    "comunicacion": 5,
+    "compromiso": 5
+   }
+  },
+  "sesquicuadratura": {
+   "angulo": 135,
+   "orbe": 2,
+   "mayor": false,
+   "puntos": {
+    "atraccion": 1,
+    "afecto": -1,
+    "comunicacion": -1,
+    "compromiso": -1
+   }
+  },
+  "quincuncio": {
+   "angulo": 150,
+   "orbe": 3,
+   "mayor": false,
+   "puntos": {
+    "atraccion": 2,
+    "afecto": -2,
+    "comunicacion": -2,
+    "compromiso": -2
+   }
+  },
+  "oposicion": {
+   "angulo": 180,
+   "orbe": 8,
+   "mayor": true,
+   "puntos": {
+    "atraccion": 5,
+    "afecto": -1,
+    "comunicacion": -2,
+    "compromiso": 0
+   }
+  }
+ },
+ "nivel_5_orbe": {
+  "regla": "lineal",
+  "orbe_extra_luminarias": 2
+ },
+ "nivel_6_casas": {
+  "sistema": "casas_iguales_desde_ascendente",
+  "por_eje": {
+   "atraccion": {
+    "casas": {
+     "8": 4,
+     "5": 4
+    },
+    "planetas": {
+     "venus": 1.5,
+     "marte": 1.5,
+     "sol": 1,
+     "luna": 1,
+     "pluton": 1
+    }
+   },
+   "afecto": {
+    "casas": {
+     "7": 3,
+     "4": 4,
+     "5": 3,
+     "8": 2
+    },
+    "planetas": {
+     "luna": 1.5,
+     "venus": 1.5,
+     "sol": 1
+    }
+   },
+   "comunicacion": {
+    "casas": {
+     "3": 4,
+     "9": 3,
+     "11": 3
+    },
+    "planetas": {
+     "mercurio": 1.5,
+     "sol": 1,
+     "jupiter": 1
+    }
+   },
+   "compromiso": {
+    "casas": {
+     "7": 4,
+     "4": 3,
+     "10": 3,
+     "5": 2
+    },
+    "planetas": {
+     "saturno": 1.5,
+     "sol": 1,
+     "luna": 1,
+     "venus": 1,
+     "jupiter": 1
+    }
+   },
+   "modificadores": {
+    "casas": {},
+    "planetas": {}
+   }
+  },
+  "sin_hora_exacta": "Si la hora de alguna de las dos personas es estimada, el nivel 6 no se aplica (las casas dependen de la hora) y el resultado se marca como aproximado."
+ },
+ "normalizacion": {
+  "descripcion": "Puntaje 0-100 = 50 + 50 * tanh((puntos - centro) / escala). 'centro' y 'escala' se calibran solos con parejas al azar (ver calibrar() en el script): una pareja promedio da 50 y ~2 de cada 3 caen entre 32 y 68.",
+  "centro": {
+   "atraccion": 54.02,
+   "afecto": 27.01,
+   "comunicacion": 25.64,
+   "compromiso": 31.42
+  },
+  "escala": {
+   "atraccion": 34.4,
+   "afecto": 46.25,
+   "comunicacion": 47.43,
+   "compromiso": 52.49
+  }
+ },
+ "nivel_8_eje5": {
+  "descripcion": "El Eje 5 calcula cuatro factores (0 a 1) a partir de los elementos, polaridades y modalidades de las dos cartas, y ajusta cada eje con un multiplicador entre 'minimo' y 'maximo' según cuánto le importa cada factor.",
+  "puntos_que_cuentan": {
+   "sol": 3,
+   "luna": 3,
+   "asc": 2,
+   "mercurio": 1,
+   "venus": 1,
+   "marte": 1
+  },
+  "elementos": ["fuego", "tierra", "aire", "agua"],
+  "afinidad_elementos": {
+   "fuego": {
+    "fuego": 1.0,
+    "tierra": 0.4,
+    "aire": 0.9,
+    "agua": 0.3
+   },
+   "tierra": {
+    "fuego": 0.4,
+    "tierra": 1.0,
+    "aire": 0.4,
+    "agua": 0.9
+   },
+   "aire": {
+    "fuego": 0.9,
+    "tierra": 0.4,
+    "aire": 1.0,
+    "agua": 0.4
+   },
+   "agua": {
+    "fuego": 0.3,
+    "tierra": 0.9,
+    "aire": 0.4,
+    "agua": 1.0
+   }
+  },
+  "factores": {
+   "elementos": "Afinidad entre los elementos predominantes de cada carta.",
+   "polaridades": "Equilibrio activo/receptivo (signos de fuego y aire vs. tierra y agua): 1 = mismo equilibrio.",
+   "modalidades": "Mezcla de cardinal/fijo/mutable: dos cartas muy fijas (o muy cardinales) chocan.",
+   "compensatorios": "Un elemento que le falta a uno y le sobra al otro suma (se complementan)."
+  },
+  "peso_de_cada_factor_por_eje": {
+   "atraccion": {
+    "elementos": 0.3,
+    "polaridades": 0.4,
+    "modalidades": 0.1,
+    "compensatorios": 0.2
+   },
+   "afecto": {
+    "elementos": 0.45,
+    "polaridades": 0.15,
+    "modalidades": 0.15,
+    "compensatorios": 0.25
+   },
+   "comunicacion": {
+    "elementos": 0.4,
+    "polaridades": 0.1,
+    "modalidades": 0.3,
+    "compensatorios": 0.2
+   },
+   "compromiso": {
+    "elementos": 0.35,
+    "polaridades": 0.1,
+    "modalidades": 0.35,
+    "compensatorios": 0.2
+   }
+  },
+  "multiplicador": {
+   "minimo": 0.85,
+   "maximo": 1.15
+  }
+ },
+ "nivel_7_y_10_tipos_de_relacion": {
+  "descripcion": "Peso de cada eje en la compatibilidad total según el tipo de relación. Con pesos iguales es el promedio simple del cuadro.",
+  "tipos": {
+   "ocasional": {
+    "nombre": "Relación sexual ocasional",
+    "pesos": {
+     "atraccion": 0.55,
+     "afecto": 0.15,
+     "comunicacion": 0.2,
+     "compromiso": 0.1
+    }
+   },
+   "pareja": {
+    "nombre": "Pareja formal",
+    "pesos": {
+     "atraccion": 0.25,
+     "afecto": 0.3,
+     "comunicacion": 0.2,
+     "compromiso": 0.25
+    }
+   },
+   "amistad": {
+    "nombre": "Amistad",
+    "pesos": {
+     "atraccion": 0.05,
+     "afecto": 0.35,
+     "comunicacion": 0.4,
+     "compromiso": 0.2
+    }
+   },
+   "laboral": {
+    "nombre": "Profesional / laboral / socios",
+    "pesos": {
+     "atraccion": 0.0,
+     "afecto": 0.15,
+     "comunicacion": 0.45,
+     "compromiso": 0.4
+    }
+   }
+  },
+  "por_defecto": "pareja"
+ }
+}

@@ -19,8 +19,10 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 - [ ] Proveedor de KYC/verificación para **v2** — Persona, Onfido, Veriff o Didit (spec `A3-verificacion-identidad.md` / ADR 0006). Ya no bloquea v1.
 - [ ] Tonos/copies de notificaciones — "Ritmo Diario" vs. "Pulso del Cosmos" (spec `A2-ritmo-notificaciones.md`).
 - [ ] Decisión PWA vs. nativo para push notifications en iOS (ver ADR 0002 — afecta a `A2-ritmo-notificaciones.md`).
-- [ ] **Motor de sinastría por ejes** (cuadro de German): spec en borrador `B5-motor-sinastria.md`. Faltan las tablas de contenido astrológico (planetas por eje, matrices 12×12, puntos por aspecto, orbes, casas y sistema de casas, lógica del Eje 5, pesos por tipo de relación).
-- [ ] Contexto de relación en Descubrir — **decidido el enfoque**: no va en el perfil, se elige en Descubrir y la lista queda abierta (pareja, amistad, trabajo/jefe, socio…). Falta la spec del selector y de cómo cambia la explicación (`B5-pantalla-descubrir.md`).
+- [x] **Motor de sinastría por ejes** (cuadro de German): implementado con tablas `v1-provisoria` en configuración (ADR 0010). Integrado a Descubrir con selector de contexto.
+- [ ] **Validar las tablas de sinastría** con alguien con criterio astrológico (German, Pablo o un astrólogo): `apps/api/app/synastry/config/synastry_v1.json`.
+- [ ] Pasar el rompehielos, la invitación (C8) y el calendario (B6) a la carta completa: hoy usan Sol–Sol / Luna–Sol y además toman la hora de nacimiento como si fuera UTC (`app/compatibility.py::sun_longitude`). El motor nuevo ya usa la zona horaria real.
+- [x] Contexto de relación en Descubrir — **implementado** (selector Pareja / Amistad / Trabajo / Casual, cambia los pesos del motor). Antes: **decidido el enfoque**: no va en el perfil, se elige en Descubrir y la lista queda abierta (pareja, amistad, trabajo/jefe, socio…). Falta la spec del selector y de cómo cambia la explicación (`B5-pantalla-descubrir.md`).
 - [ ] Integración de actividades en el calendario de memoria (spec `B6-calendario-memoria.md`, v1 no las incluye).
 - [ ] Tonos/copies del chat y de los rompehielos de IA (spec `B7-chat-rompehielos.md`, v1 usa copy borrador).
 - [ ] Estética y visuales del Hub en general (transversal, no bloquea ninguna spec).
@@ -82,7 +84,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 
 - [ ] **Onboarding sin progreso ni "atrás"**: 4 pasos (datos natales → perfil → ritmo → verificación) sin indicador de cuánto falta ni forma de volver. Ritmo no explica que es para notificaciones (y que todavía no se envían). Va de la mano con la idea de pantalla única con secciones.
 - [ ] **Home con poco valor diario**: "Luna menguante en Virgo" sin explicar qué significa para el usuario, y el check-in de ánimo no devuelve nada. Usar el tránsito personal del día (ya calculado para el calendario) como frase del día.
-- [ ] **Descubrir da casi todo igual** ("Por descubrir · 60%") porque mira solo el Sol, y no tiene selector de contexto. Se resuelve con el motor de sinastría (`B5-motor-sinastria.md`) + selector de contexto.
+- [x] **Descubrir da casi todo igual** ("Por descubrir · 60%") porque mira solo el Sol, y no tiene selector de contexto. Se resuelve con el motor de sinastría (`B5-motor-sinastria.md`) + selector de contexto.
 - [ ] **Invitar es una pantalla pelada**: "Generar reporte" no se entiende, no explica qué recibe el amigo ni muestra el mensaje antes de mandarlo; el selector dice "Gemini".
 - [ ] **Falta feedback en las acciones**: "Perfil guardado" queda fuera de la vista, el check-in no confirma, el chat no muestra la hora de los mensajes, "Conectar" no muestra que está enviando. Además el ícono "N" de Next.js (solo en modo desarrollo, pero Pablo lo ve por el túnel) tapa "Inicio" en la barra.
 
