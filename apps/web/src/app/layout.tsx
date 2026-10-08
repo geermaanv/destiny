@@ -3,14 +3,14 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Destiny",
-  description: "Dating identity-first con IA + astrología como interfaz de identidad.",
+  description: "Conexiones con astrología e IA: descubrí con quién resonás y por qué.",
   manifest: "/manifest.json",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f0f1a",
+  themeColor: "#25225b",
 };
 
 export default function RootLayout({

@@ -201,6 +201,8 @@ function DatosNatalesForm() {
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-5">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt="Destiny" width={72} height={72} className="mx-auto" />
       <h1 className="text-2xl font-semibold">Tus datos natales</h1>
 
       <div className="space-y-1">

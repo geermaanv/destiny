@@ -33,7 +33,11 @@ function HomeContent() {
   return (
     <div className="w-full max-w-sm space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold">Tu Momento</h1>
+        <div className="flex items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" width={40} height={40} />
+          <h1 className="text-2xl font-semibold">Tu Momento</h1>
+        </div>
         <p className="mt-2 text-lg text-violet-300">{astroWeather ?? "Calculando..."}</p>
       </div>
 
