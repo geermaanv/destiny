@@ -274,7 +274,7 @@ class InvitationIn(BaseModel):
     inviter_id: uuid.UUID
     friend_name: str
     friend_sun_sign: Literal[
-        "Aries", "Tauro", "Gemini", "Cáncer", "Leo", "Virgo",
+        "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo",
         "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis",
     ]
 
@@ -285,6 +285,7 @@ class PartialReportOut(BaseModel):
 
 
 class InvitationOut(BaseModel):
+    message: str = ""  # texto que se manda por WhatsApp (para mostrarlo antes de enviar)
     ref_id: str
     whatsapp_url: str
     partial_report: PartialReportOut

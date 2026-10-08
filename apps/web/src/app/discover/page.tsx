@@ -37,6 +37,7 @@ function DiscoverContent() {
   const [error, setError] = useState<string | null>(null);
   const [requested, setRequested] = useState<Record<string, boolean>>({});
   const [context, setContext] = useState<RelationshipContext>("pareja");
+  const [connecting, setConnecting] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profileId) return;
@@ -63,8 +64,9 @@ function DiscoverContent() {
   }
 
   async function match(candidateId: string) {
-    if (!profileId) return;
-    const { id, status } = await createMatch(profileId, candidateId);
+    if (!profileId || connecting) return;
+    setConnecting(candidateId);
+    const { id, status } = await createMatch(profileId, candidateId).finally(() => setConnecting(null));
     if (status === "aceptada") {
       router.push(`/chat/${id}`);
     } else {
@@ -160,9 +162,10 @@ function DiscoverContent() {
               ) : (
                 <button
                   onClick={() => match(c.profile_id)}
-                  className="mt-3 w-full rounded-md bg-violet-600 px-3 py-1.5 text-sm font-medium text-white"
+                  disabled={connecting === c.profile_id}
+                  className="mt-3 w-full rounded-md bg-violet-600 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-60"
                 >
-                  Conectar
+                  {connecting === c.profile_id ? "Enviando solicitud…" : "Conectar"}
                 </button>
               )}
             </>

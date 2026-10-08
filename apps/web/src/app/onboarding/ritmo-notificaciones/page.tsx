@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import OnboardingSteps, { onboardingHref } from "@/components/OnboardingSteps";
 import { NotificationRhythm, setNotificationPreference } from "@/lib/api";
 
 const OPTIONS: { value: NotificationRhythm; title: string; description: string }[] = [
@@ -43,7 +44,14 @@ function RitmoNotificacionesForm() {
 
   return (
     <div className="w-full max-w-sm space-y-5">
-      <h1 className="text-2xl font-semibold">Elegí tu ritmo</h1>
+      <OnboardingSteps step={3} backHref={onboardingHref("/onboarding/perfil", profileId, ref)} />
+      <div>
+        <h1 className="text-2xl font-semibold">¿Cómo querés que te avisemos?</h1>
+        <p className="mt-1 text-sm text-slate-400">
+          Destiny te va a mandar avisos sobre tu clima astrológico. Elegí con qué frecuencia. Las notificaciones
+          todavía no están activas: por ahora guardamos tu preferencia y la podés cambiar después.
+        </p>
+      </div>
       <div className="space-y-3">
         {OPTIONS.map((option) => (
           <button

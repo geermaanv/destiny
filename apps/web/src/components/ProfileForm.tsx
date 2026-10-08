@@ -42,6 +42,7 @@ export default function ProfileForm({
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photoVersion, setPhotoVersion] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [savedFlash, setSavedFlash] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -99,6 +100,9 @@ export default function ProfileForm({
         neighborhood: neighborhood.trim() || null,
         avatar,
       });
+      setSaving(false);
+      setSavedFlash(true);
+      setTimeout(() => setSavedFlash(false), 2500);
       onSaved(profile);
     } catch {
       setError("No se pudo guardar el perfil. Probá de nuevo.");
@@ -249,7 +253,7 @@ export default function ProfileForm({
         disabled={saving}
         className="w-full rounded-md bg-violet-600 px-3 py-2 font-medium text-white disabled:opacity-50"
       >
-        {saving ? "Guardando…" : submitLabel}
+        {saving ? "Guardando…" : savedFlash ? "Guardado ✓" : submitLabel}
       </button>
     </form>
   );

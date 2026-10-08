@@ -60,10 +60,14 @@ def create_invitation(
     )
 
     link = f"{settings.web_base_url}/onboarding/invitacion?ref={ref_id}"
-    message = f"{teaser} Completá tu carta y mirá qué tan fuerte es la conexión: {link}"
+    # El mensaje lo manda quien invita desde su WhatsApp: le habla al amigo en primera persona.
+    message = (
+        f"¡Hola {payload.friend_name}! Te invito a Destiny ✨ Con tu signo ({payload.friend_sun_sign}) y mi carta, "
+        f"parece que {aspect_sentence(aspect['aspect']).replace('sus soles', 'nuestros soles')}. Completá tu carta acá y vemos los dos la resonancia real: {link}"
+    )
     whatsapp_url = f"https://wa.me/?text={quote(message)}"
 
-    return InvitationOut(ref_id=ref_id, whatsapp_url=whatsapp_url, partial_report=partial_report)
+    return InvitationOut(ref_id=ref_id, whatsapp_url=whatsapp_url, partial_report=partial_report, message=message)
 
 
 @router.get("/{ref_id}", response_model=InvitationPreloadOut)

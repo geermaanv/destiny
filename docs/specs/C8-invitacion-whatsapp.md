@@ -40,6 +40,12 @@ GET /invitations/{ref_id} -> datos para precargar el onboarding del invitado
 3. Botón "Compartir por WhatsApp" → abre WhatsApp con mensaje + link pre-armado.
 4. El amigo abre el link → onboarding pre-cargado, directo a revelación de compatibilidad mutua al completar sus propios datos mínimos.
 
+## Actualización 2026-10-08
+
+- La pantalla explica qué recibe el amigo y muestra **el mensaje exacto** antes de mandarlo ("Así le va a llegar a…"); botón "Enviar por WhatsApp" e "Invitar a otra persona".
+- El mensaje habla en primera persona (lo manda quien invita desde su WhatsApp): "¡Hola Juan! Te invito a Destiny…". La API devuelve `message` además de `whatsapp_url`.
+- El link usa `WEB_BASE_URL` (en `apps/api/.env`): con el túnel, tiene que ser la URL pública.
+
 ## Criterios de aceptación
 
 - [ ] Generar una invitación no requiere hora/lugar de nacimiento del amigo, solo nombre + signo solar.

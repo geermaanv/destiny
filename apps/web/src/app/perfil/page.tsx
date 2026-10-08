@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
 import { useSessionProfileId } from "@/lib/session";
@@ -11,7 +11,6 @@ import { logout } from "@/lib/api";
 function MiPerfil() {
   const router = useRouter();
   const profileId = useSessionProfileId();
-  const [saved, setSaved] = useState(false);
 
   if (!profileId) {
     return <p className="text-slate-400">Cargando…</p>;
@@ -20,8 +19,7 @@ function MiPerfil() {
   return (
     <div className="w-full max-w-sm space-y-6">
       <h1 className="text-2xl font-semibold">Mi perfil</h1>
-      <ProfileForm profileId={profileId} submitLabel="Guardar cambios" onSaved={() => setSaved(true)} />
-      {saved && <p className="text-center text-sm text-emerald-400">Perfil guardado.</p>}
+      <ProfileForm profileId={profileId} submitLabel="Guardar cambios" onSaved={() => null} />
       <button
         onClick={async () => {
           await logout();

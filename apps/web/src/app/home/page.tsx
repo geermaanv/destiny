@@ -68,6 +68,11 @@ function HomeContent() {
             </button>
           ))}
         </div>
+        {selectedMood && (
+          <p className="mt-2 text-sm text-gold-300">
+            Anotado ✓ Gracias por contarnos cómo estás hoy.
+          </p>
+        )}
       </div>
 
       {pendingRequests > 0 && (

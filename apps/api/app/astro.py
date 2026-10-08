@@ -4,7 +4,7 @@ from functools import lru_cache
 import astronomy
 
 ZODIAC_SIGNS = [
-    "Aries", "Tauro", "Gemini", "Cáncer", "Leo", "Virgo",
+    "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo",
     "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis",
 ]
 
@@ -29,7 +29,7 @@ def approximate_longitude_for_sign(sign: str) -> float:
     """Punto medio del signo (15°). Usado cuando solo se conoce el signo
     solar, no la fecha exacta (C8-invitacion-whatsapp.md: fricción mínima
     al invitar — el resultado es necesariamente aproximado/"borroso")."""
-    index = ZODIAC_SIGNS.index(sign)
+    index = ZODIAC_SIGNS.index("Géminis" if sign == "Gemini" else sign)  # "Gemini": invitaciones viejas
     return index * 30 + 15
 
 

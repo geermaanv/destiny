@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import OnboardingSteps, { onboardingHref } from "@/components/OnboardingSteps";
 import ProfileForm from "@/components/ProfileForm";
 
 // Paso del onboarding entre datos natales y ritmo (spec A4).
@@ -23,6 +24,7 @@ function PerfilStep() {
 
   return (
     <div className="w-full max-w-sm space-y-6">
+      <OnboardingSteps step={2} backHref={onboardingHref("/onboarding/datos-natales", profileId, ref)} />
       <div>
         <h1 className="text-2xl font-semibold">Tu perfil</h1>
         <p className="mt-1 text-sm text-slate-400">

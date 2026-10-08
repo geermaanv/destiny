@@ -48,6 +48,10 @@ Las tablas de contenido astrológico no están en el cuadro; sin ellas el motor 
 - [x] **Sin hora exacta**: las casas y el ascendente dependen de la hora; con hora estimada (12:00 o franja del día, A1) definir si el nivel 6 se omite, se reduce su peso o se marca como "aproximado".
 - [x] ¿La explicación de la IA (pilar "Explain") usa el detalle por eje? Propuesta: sí, la explicación cita los ejes más altos y más bajos.
 
+## Cuadro actualizado
+
+Versión visual del cuadro con todas las tablas completadas y un ejemplo real: https://claude.ai/artifact/137AMUTQHNx6hvnVwTtyw5 (privado de German; compartirlo desde el menú Share para que lo vea Pablo).
+
 ## Cómo se completaron las tablas (2026-10-08)
 
 Todas en `apps/api/app/synastry/config/synastry_v1.json` (ver ADR 0010). Resumen:

@@ -297,13 +297,14 @@ export function sendMessage(matchId: string, profileId: string, text: string): P
 }
 
 export const SUN_SIGNS = [
-  "Aries", "Tauro", "Gemini", "Cáncer", "Leo", "Virgo",
+  "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo",
   "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis",
 ] as const;
 
 export type Invitation = {
   ref_id: string;
   whatsapp_url: string;
+  message: string;
   partial_report: { teaser: string; locked_fields: string[] };
 };
 

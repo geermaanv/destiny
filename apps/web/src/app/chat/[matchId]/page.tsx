@@ -138,6 +138,14 @@ function ChatContent() {
               >
                 {m.sender === "system_icebreaker" && <span className="mb-1 block text-xs text-gold-400">✨ Rompehielos de Destiny</span>}
                 {m.text}
+                <span className="mt-1 block text-right text-[10px] opacity-60">
+                  {new Date(m.created_at).toLocaleString("es-AR", {
+                    day: "numeric",
+                    month: "short",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
               </div>
             ))}
             <div ref={bottomRef} />

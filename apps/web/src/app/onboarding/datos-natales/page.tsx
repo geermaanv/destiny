@@ -2,7 +2,8 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BirthTimePeriod, createProfile, Place, searchPlaces, setBirthData } from "@/lib/api";
+import { BirthTimePeriod, createProfile, getProfile, Place, searchPlaces, setBirthData } from "@/lib/api";
+import OnboardingSteps from "@/components/OnboardingSteps";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -46,14 +47,16 @@ const SELECT_CLASS =
 // acepta el texto libre para no bloquear el onboarding.
 function PlaceField({
   selected,
+  initialText,
   onSelect,
   onUnavailable,
 }: {
   selected: Place | null;
+  initialText: string;
   onSelect: (place: Place | null, text: string) => void;
   onUnavailable: (unavailable: boolean) => void;
 }) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(initialText);
   const [options, setOptions] = useState<Place[]>([]);
   const [open, setOpen] = useState(false);
   const [searching, setSearching] = useState(false);
@@ -134,8 +137,12 @@ function PlaceField({
 
 function DatosNatalesForm() {
   const router = useRouter();
-  const ref = useSearchParams().get("ref");
+  const params = useSearchParams();
+  const ref = params.get("ref");
+  const existingProfileId = params.get("profileId");
   const [profileId, setProfileId] = useState<string | null>(null);
+  const [loadedPlace, setLoadedPlace] = useState<string | null>(existingProfileId ? null : "");
+  const started = useRef(false);
   const [birthDay, setBirthDay] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthYear, setBirthYear] = useState("");
@@ -154,10 +161,53 @@ function DatosNatalesForm() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    createProfile()
-      .then((profile) => setProfileId(profile.id))
-      .catch(() => setError("No se pudo conectar con la API."));
-  }, []);
+    if (started.current) return;
+    started.current = true;
+    if (!existingProfileId) {
+      createProfile()
+        .then((profile) => setProfileId(profile.id))
+        .catch(() => setError("No se pudo conectar con la API."));
+      return;
+    }
+    // Volvió desde un paso posterior: se recupera lo cargado en vez de crear otro perfil.
+    getProfile(existingProfileId)
+      .then((p) => {
+        setProfileId(p.id);
+        if (p.birth_date) {
+          const [y, m, d] = p.birth_date.split("-");
+          setBirthYear(y);
+          setBirthMonth(m);
+          setBirthDay(d);
+        }
+        if (p.birth_place_query) {
+          setBirthPlace(p.birth_place_query);
+          if (p.birth_place_lat !== null && p.birth_place_lon !== null && p.birth_place_timezone) {
+            setPlace({
+              label: p.birth_place_query,
+              lat: p.birth_place_lat,
+              lon: p.birth_place_lon,
+              timezone: p.birth_place_timezone,
+            });
+          }
+        }
+        if (p.birth_time) {
+          const [hh, mm] = p.birth_time.split(":");
+          if (p.birth_time_estimated) {
+            setTimeUnknown(true);
+            setTimePeriod(PERIODS.find((x) => x.midpoint === `${hh}:${mm}`)?.value ?? null);
+          } else {
+            setBirthHour(hh);
+            setBirthMinute(mm);
+          }
+        }
+        setLoadedPlace(p.birth_place_query ?? "");
+      })
+      .catch(() => {
+        // El perfil ya no se puede editar (ej. verificado) o no existe: se arranca de cero.
+        setLoadedPlace("");
+        createProfile().then((profile) => setProfileId(profile.id));
+      });
+  }, [existingProfileId]);
 
   function nextStepUrl(id: string) {
     const params = new URLSearchParams({ profileId: id });
@@ -263,14 +313,17 @@ function DatosNatalesForm() {
         <label htmlFor="birth-place" className="block text-sm text-slate-400">
           Lugar de nacimiento
         </label>
+        {loadedPlace !== null && (
         <PlaceField
           selected={place}
+          initialText={loadedPlace}
           onSelect={(selected, text) => {
             setPlace(selected);
             setBirthPlace(text);
           }}
           onUnavailable={setGeocodingDown}
         />
+        )}
       </div>
 
       <div className="space-y-1">
@@ -369,7 +422,10 @@ export default function DatosNatalesPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
       <Suspense>
-        <DatosNatalesForm />
+        <div className="flex w-full flex-col items-center gap-6 py-10">
+          <OnboardingSteps step={1} />
+          <DatosNatalesForm />
+        </div>
       </Suspense>
     </main>
   );
