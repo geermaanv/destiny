@@ -46,6 +46,18 @@ GET /discover/{profile_id}/explanation -> { "text": "..." }
 2. Tap en un perfil → carga la explicación de IA (puede ser async/loading corto).
 3. Nunca se renderiza el % sin posibilidad de ver la explicación.
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_b5_descubrir.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Descubrir exige estar verificado | `test_descubrir_exige_estar_verificado` |
+| 2 | Lista ordenada por compatibilidad con ejes | `test_lista_ordenada_por_compatibilidad_con_ejes` |
+| 3 | Contexto invalido se rechaza | `test_contexto_invalido_se_rechaza` |
+| 4 | No se ve uno mismo | `test_no_se_ve_uno_mismo` |
+| 5 | Explicación nombra los ejes relevantes del contexto | `test_explicacion_nombra_los_ejes_relevantes_del_contexto` |
+
 ## Criterios de aceptación
 
 - [ ] Ningún perfil en la lista muestra % sin que exista una explicación de texto asociada.

@@ -70,6 +70,22 @@ GET  /profiles/{id}/photo
 - Web: `components/ProfileForm.tsx` (onboarding `/onboarding/perfil` y `/perfil`), `components/ProfileAvatar.tsx`, etiquetas en `lib/profile.ts`. Onboarding: datos natales → **perfil** → ritmo → verificación.
 - Intereses (12, máx. 5): música, deporte, arte, tecnología, viajes, espiritualidad, lectura, cine, naturaleza, cocina, emprendimientos, juegos. Avatares: signo (default), luna, sol, estrella, planeta, fuego, ola, hoja, mariposa, rayo.
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_a4_perfil_liviano.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Perfil completo se guarda | `test_perfil_completo_se_guarda` |
+| 2 | Nombre es obligatorio | `test_nombre_es_obligatorio` |
+| 3 | Intereses fuera de la lista o más de 5 se rechazan | `test_intereses_fuera_de_la_lista_o_mas_de_5_se_rechazan` |
+| 4 | Frase hasta 140 caracteres | `test_frase_hasta_140_caracteres` |
+| 5 | Foto subir ver y borrar | `test_foto_subir_ver_y_borrar` |
+| 6 | Foto que no es imagen se rechaza | `test_foto_que_no_es_imagen_se_rechaza` |
+| 7 | Edad y signo se calculan solos | `test_edad_y_signo_se_calculan_solos` |
+| 8 | Perfiles sin nombre no aparecen en Descubrir | `test_perfiles_sin_nombre_no_aparecen_en_descubrir` |
+| 9 | Géminis en castellano | `test_geminis_en_castellano` |
+
 ## Criterios de aceptación
 
 - [x] Los perfiles sin nombre (incompletos) no aparecen en Descubrir ni cuentan en "En tu frecuencia".

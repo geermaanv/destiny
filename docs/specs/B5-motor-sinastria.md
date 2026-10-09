@@ -85,6 +85,24 @@ GET /discover?viewer_id=...&context=pareja|amistad|laboral|ocasional
         "axes": { "atraccion": 80, "afecto": 65, "comunicacion": 70, "compromiso": 73 } }]
 ```
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_b5_motor_sinastria.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Carta coincide con efemérides | `test_carta_coincide_con_efemerides` |
+| 2 | Usa la hora local del lugar | `test_usa_la_hora_local_del_lugar` |
+| 3 | Doce casas desde el ascendente | `test_doce_casas_desde_el_ascendente` |
+| 4 | Sin lugar no hay casas ni ascendente | `test_sin_lugar_no_hay_casas_ni_ascendente` |
+| 5 | Resultado reproducible y en rango | `test_resultado_reproducible_y_en_rango` |
+| 6 | El tipo de relación cambia el total pero no los ejes | `test_el_tipo_de_relacion_cambia_el_total_pero_no_los_ejes` |
+| 7 | Tipo desconocido usa el por defecto | `test_tipo_desconocido_usa_el_por_defecto` |
+| 8 | Sin hora exacta no usa casas y es aproximado | `test_sin_hora_exacta_no_usa_casas_y_es_aproximado` |
+| 9 | Detalle por nivel para explicar | `test_detalle_por_nivel_para_explicar` |
+| 10 | Configuración completa | `test_configuracion_completa` |
+| 11 | Cambiar una tabla cambia el resultado sin tocar código | `test_cambiar_una_tabla_cambia_el_resultado_sin_tocar_codigo` |
+
 ## Criterios de aceptación
 
 - [x] Dadas dos cartas y un tipo de relación, el motor devuelve 4 puntajes por eje (0–100) y un total (0–100), reproducible.

@@ -7,3 +7,5 @@ psycopg[binary]==3.2.3
 python-multipart==0.0.12
 astronomy-engine==2.1.19
 anthropic==0.39.0
+# anthropic 0.39 no es compatible con httpx 0.28 (sacó el parámetro "proxies"): fijado hasta actualizar anthropic.
+httpx==0.27.2

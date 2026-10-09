@@ -41,6 +41,17 @@ POST /calendar/day/{date}/annotations { "text": "..." }
 - Calendario con mes y año, flechas para cambiar de mes, días de la semana (arranca en lunes), hoy destacado y leyenda.
 - API: `GET /calendar/upcoming?profile_id=&from=&limit=10`; el detalle del día suma `title` y `text` del tránsito.
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_b6_calendario.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Mes completo | `test_mes_completo` |
+| 2 | Próximos 10 eventos desde la fecha | `test_proximos_10_eventos_desde_la_fecha` |
+| 3 | Notas del día y marca en eventos | `test_notas_del_dia_y_marca_en_eventos` |
+| 4 | Calendario de otro está prohibido | `test_calendario_de_otro_esta_prohibido` |
+
 ## Criterios de aceptación
 
 - [ ] Los tránsitos mostrados se calculan a partir de la carta natal real del usuario (A1), no son genéricos.

@@ -46,6 +46,17 @@ GET /invitations/{ref_id} -> datos para precargar el onboarding del invitado
 - El mensaje habla en primera persona (lo manda quien invita desde su WhatsApp): "¡Hola Juan! Te invito a Destiny…". La API devuelve `message` además de `whatsapp_url`.
 - El link usa `WEB_BASE_URL` (en `apps/api/.env`): con el túnel, tiene que ser la URL pública.
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_c8_invitacion.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Invitación arma mensaje en primera persona | `test_invitacion_arma_mensaje_en_primera_persona` |
+| 2 | Invitar en nombre de otro está prohibido | `test_invitar_en_nombre_de_otro_esta_prohibido` |
+| 3 | Invitado ve el adelanto y despues la revelación | `test_invitado_ve_el_adelanto_y_despues_la_revelacion` |
+| 4 | Invitaciones viejas con gemini siguen funcionando | `test_invitaciones_viejas_con_gemini_siguen_funcionando` |
+
 ## Criterios de aceptación
 
 - [ ] Generar una invitación no requiere hora/lugar de nacimiento del amigo, solo nombre + signo solar.

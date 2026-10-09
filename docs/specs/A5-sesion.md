@@ -33,6 +33,23 @@ POST /sessions/logout      -> borra la sesión
 
 Modelo: tabla `sessions` (token guardado como hash, `profile_id`, vence a los 90 días). Los códigos de WhatsApp pasan a servir para "verificar" o "entrar".
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_a5_sesion.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Sin sesión me da 401 | `test_sin_sesion_me_da_401` |
+| 2 | Verificarse deja la sesión iniciada | `test_verificarse_deja_la_sesion_iniciada` |
+| 3 | No se toma la sesión antes de que llegue el mensaje | `test_no_se_toma_la_sesion_antes_de_que_llegue_el_mensaje` |
+| 4 | Comprobante falso no sirve | `test_comprobante_falso_no_sirve` |
+| 5 | Comprobante se usa una sola vez | `test_comprobante_se_usa_una_sola_vez` |
+| 6 | Saber el profile id no alcanza para actuar como otro | `test_saber_el_profile_id_no_alcanza_para_actuar_como_otro` |
+| 7 | Ya tengo cuenta entra con el número verificado | `test_ya_tengo_cuenta_entra_con_el_numero_verificado` |
+| 8 | Ya tengo cuenta con número sin cuenta | `test_ya_tengo_cuenta_con_numero_sin_cuenta` |
+| 9 | Cerrar sesión | `test_cerrar_sesion` |
+| 10 | Onboarding funciona sin sesión hasta verificarse | `test_onboarding_funciona_sin_sesion_hasta_verificarse` |
+
 ## Criterios de aceptación
 
 - [x] Después de verificarse, cerrar y abrir el navegador mantiene la sesión.

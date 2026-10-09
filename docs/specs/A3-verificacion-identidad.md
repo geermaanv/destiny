@@ -101,7 +101,27 @@ Mismo patrón que los otros adapters (KYC, explainer, icebreaker): **sin credenc
 
 Particularidad del **número de prueba** de Meta (+1 555…): un usuario no puede iniciar el chat con él (WhatsApp dice que "no está en WhatsApp"). Para probar, primero se manda desde el dashboard (Paso 1) un mensaje de plantilla al celular de prueba, y después se responde en ese chat con el código. Con la línea real no pasa.
 
-### Criterios de aceptación
+### Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_a3_verificacion_whatsapp.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Código valido verifica y guarda el teléfono | `test_codigo_valido_verifica_y_guarda_el_telefono` |
+| 2 | Mensaje sin código o con código inexistente no cambia nada | `test_mensaje_sin_codigo_o_con_codigo_inexistente_no_cambia_nada` |
+| 3 | Código vencido no verifica | `test_codigo_vencido_no_verifica` |
+| 4 | Pedir otro código invalida el anterior | `test_pedir_otro_codigo_invalida_el_anterior` |
+| 5 | Código no se puede reusar desde otro número | `test_codigo_no_se_puede_reusar_desde_otro_numero` |
+| 6 | Número ya verificado en otra cuenta da duplicado | `test_numero_ya_verificado_en_otra_cuenta_da_duplicado` |
+| 7 | Duplicado seguir con mi cuenta entra a la existente y borra la nueva | `test_duplicado_seguir_con_mi_cuenta_entra_a_la_existente_y_borra_la_nueva` |
+| 8 | Duplicado seguir con mi cuenta exige el comprobante | `test_duplicado_seguir_con_mi_cuenta_exige_el_comprobante` |
+| 9 | Duplicado usar otro número vuelve a pendiente | `test_duplicado_usar_otro_numero_vuelve_a_pendiente` |
+| 10 | Sin datos natales no se puede pedir código | `test_sin_datos_natales_no_se_puede_pedir_codigo` |
+| 11 | Webhook rechaza mensajes sin firma o con firma falsa | `test_webhook_rechaza_mensajes_sin_firma_o_con_firma_falsa` |
+| 12 | Handshake de Meta | `test_handshake_de_meta` |
+| 13 | El teléfono nunca se expone | `test_el_telefono_nunca_se_expone` |
+
+## Criterios de aceptación
 
 - [x] Un perfil no `verificado` no puede acceder a `/discover`.
 - [x] Enviar un código válido y vigente verifica el perfil y guarda su teléfono.

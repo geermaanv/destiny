@@ -27,6 +27,14 @@ Forma de los datos de entrada/salida relevantes (JSON de ejemplo, endpoints, mod
 
 Pasos de la pantalla o interacción. Puede ser texto o un link a un diseño.
 
+## Casos de prueba
+
+Se escriben **antes del código** (regla del proyecto: spec → casos de prueba → código). Cada caso en lenguaje simple, con su test automático en `apps/api/tests/test_<spec>.py`.
+
+| # | Caso | Resultado esperado | Test |
+|---|---|---|---|
+| 1 | | | |
+
 ## Criterios de aceptación
 
 Lista chequeable de qué tiene que ser verdad para considerar esto hecho.

@@ -1,13 +1,14 @@
 # Specs
 
-Regla dura del proyecto: **ninguna feature se codifica sin una spec en estado `approved`.**
+Regla dura del proyecto: **spec → casos de prueba → código.** Ninguna feature se codifica sin una spec `approved` y sin sus casos de prueba escritos antes.
 
 ## Workflow
 
 1. Se crea la spec en estado `draft` a partir de `TEMPLATE.md`.
 2. Se resuelven los puntos abiertos que bloqueen (por ahora decide German Villamarin); los que no bloquean se dejan fuera de alcance con un default.
 3. Cuando no quedan puntos abiertos, la spec pasa a `approved`.
-4. Se implementa. Al mergear la implementación, la spec pasa a `implemented`.
+4. **Casos de prueba**: se completa la sección "Casos de prueba" de la spec y se escriben los tests automáticos en `apps/api/tests/test_<spec>.py`. Tienen que fallar antes de programar.
+5. Se implementa hasta que los tests pasen (`cd apps/api && .venv/bin/pytest`). La spec pasa a `implemented`.
 
 ## Convención de nombres
 

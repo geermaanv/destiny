@@ -66,6 +66,24 @@ GET /chats/{match_id}/messages -> incluye el mensaje inicial con sender = "syste
 2. El chat se abre ya con el mensaje rompehielos como primer mensaje.
 3. El usuario responde directamente, sin pantalla de "hola" vacía.
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_b7_conexiones_chat.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Conectar crea solicitud pendiente sin chat | `test_conectar_crea_solicitud_pendiente_sin_chat` |
+| 2 | La otra persona ve la solicitud recibida | `test_la_otra_persona_ve_la_solicitud_recibida` |
+| 3 | Solo quien recibe puede aceptar | `test_solo_quien_recibe_puede_aceptar` |
+| 4 | Si los dos se piden conexión se acepta sola | `test_si_los_dos_se_piden_conexion_se_acepta_sola` |
+| 5 | Chat arranca con rompehielos y se puede escribir | `test_chat_arranca_con_rompehielos_y_se_puede_escribir` |
+| 6 | Un tercero no puede leer el chat | `test_un_tercero_no_puede_leer_el_chat` |
+| 7 | El número aparece solo cuando los dos aceptan WhatsApp | `test_el_numero_aparece_solo_cuando_los_dos_aceptan_whatsapp` |
+| 8 | No se puede pasar a WhatsApp sin conexión aceptada | `test_no_se_puede_pasar_a_whatsapp_sin_conexion_aceptada` |
+| 9 | Bloquear cierra la conexión y no se puede volver a pedir | `test_bloquear_cierra_la_conexion_y_no_se_puede_volver_a_pedir` |
+| 10 | No se puede conectar con uno mismo | `test_no_se_puede_conectar_con_uno_mismo` |
+| 11 | Conectar en nombre de otro está prohibido | `test_conectar_en_nombre_de_otro_esta_prohibido` |
+
 ## Criterios de aceptación
 
 - [ ] Todo chat nuevo arranca con un mensaje generado por IA, nunca vacío.

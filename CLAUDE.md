@@ -9,9 +9,19 @@ Instrucciones de proyecto para Claude Code. Leer también, en este orden, antes 
 5. `docs/decisions/` — ADRs, el detalle y el porqué de cada decisión técnica.
 6. `docs/CHANGELOG.md` — bitácora cronológica de qué se hizo y decidió en cada sesión.
 
-## Regla dura: spec-driven
+## Regla dura: spec → casos de prueba → código
 
-**Ninguna feature se codifica sin una spec en estado `approved` en `docs/specs/`.** Ver `docs/specs/README.md` para el workflow y `docs/specs/TEMPLATE.md` para la plantilla. Por ahora las specs las aprueba German Villamarin; los puntos abiertos que no bloquean se dejan fuera de alcance con un default.
+**Orden obligatorio para todo cambio de comportamiento** (decisión de German, 2026-10-09):
+
+1. **Spec** en estado `approved` en `docs/specs/` (ver `docs/specs/README.md` y `docs/specs/TEMPLATE.md`). Por ahora las aprueba German Villamarin; los puntos abiertos que no bloquean se dejan fuera de alcance con un default.
+2. **Casos de prueba** escritos **antes** del código: la sección "Casos de prueba" de la spec los lista en lenguaje simple, y se implementan como tests automáticos en `apps/api/tests/` (un archivo por spec, ej. `test_a3_verificacion_whatsapp.py`). Primero se ven fallar.
+3. **Recién ahí el código**, hasta que los tests pasen. Un cambio no se commitea con tests en rojo.
+
+Correr los tests (usa la base `destiny_test`, no toca los datos de desarrollo):
+
+```bash
+cd apps/api && .venv/bin/pytest
+```
 
 ## Regla dura: cada commit actualiza la documentación
 

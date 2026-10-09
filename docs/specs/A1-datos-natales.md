@@ -57,6 +57,23 @@ Si `birth_time` es `null`, el backend asigna `"12:00"` y fuerza `birth_time_esti
 - Al marcar "No sé mi hora exacta" se pregunta si recuerda la **franja del día** (madrugada 00–06, mañana 06–12, tarde 12–18, noche 18–24). Se usa el punto medio (03:00 / 09:00 / 15:00 / 21:00): el desvío máximo baja de 12 a 3 horas. Si no la recuerda, 12:00 (punto medio del día). En todos los casos `birth_time_estimated: true`. API: campo opcional `birth_time_period` en `POST /profiles/{id}/birth-data`; si viene la hora exacta, gana la hora exacta.
 - Hora en **formato 24 h** con dos desplegables (hora 00–23 y minutos): el input de hora nativo usa AM/PM según el idioma del navegador y era fácil cargarla mal a mano.
 
+## Casos de prueba
+
+Tests automáticos en `apps/api/tests/test_a1_datos_natales.py` (correr: `cd apps/api && .venv/bin/pytest`).
+
+| # | Caso | Test |
+|---|---|---|
+| 1 | Hora exacta se guarda tal cual | `test_hora_exacta_se_guarda_tal_cual` |
+| 2 | Sin hora se usan las 12 y queda estimada | `test_sin_hora_se_usan_las_12_y_queda_estimada` |
+| 3 | Franja del día usa el punto medio | `test_franja_del_dia_usa_el_punto_medio` |
+| 4 | Hora exacta gana sobre la franja | `test_hora_exacta_gana_sobre_la_franja` |
+| 5 | Menores de 18 se rechazan | `test_menores_de_18_se_rechazan` |
+| 6 | Con 18 años se acepta | `test_con_18_anios_se_acepta` |
+| 7 | Se guardan coordenadas y zona horaria | `test_se_guardan_coordenadas_y_zona_horaria` |
+| 8 | Búsqueda de ciudad devuelve coordenadas y zona horaria | `test_busqueda_de_ciudad_devuelve_coordenadas_y_zona_horaria` |
+| 9 | Búsqueda de ciudad pide al menos 2 letras | `test_busqueda_de_ciudad_pide_al_menos_2_letras` |
+| 10 | Alias CABA se traduce a buenos aires | `test_alias_caba_se_traduce_a_buenos_aires` |
+
 ## Criterios de aceptación
 
 - [x] Perfil sin hora exacta queda con `birth_time_estimated: true` y `birth_time: "12:00"`.
