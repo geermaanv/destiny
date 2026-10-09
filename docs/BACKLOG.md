@@ -89,6 +89,14 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] **Falta feedback en las acciones** (hecho: "Guardado ✓", confirmación del check-in, hora en el chat, "Enviando solicitud…", ícono de Next oculto): "Perfil guardado" queda fuera de la vista, el check-in no confirma, el chat no muestra la hora de los mensajes, "Conectar" no muestra que está enviando. Además el ícono "N" de Next.js (solo en modo desarrollo, pero Pablo lo ve por el túnel) tapa "Inicio" en la barra.
 
 
+## Tests
+
+- [x] Batería de tests automáticos de la API (`apps/api/tests/`, 77 casos, pytest, base `destiny_test`). Cubre A1, A3, A4, A5, B5 (motor y Descubrir), B6, B7 y C8.
+- [ ] Tests de punta a punta en el navegador (Playwright): registro → verificación → Descubrir → conexión → chat.
+- [ ] Tests de la web (componentes): hoy solo se chequean tipos con `tsc`.
+- [ ] Correr los tests automáticamente en cada push (GitHub Actions con un Postgres de servicio).
+
+## Tareas técnicas sueltas
 
 - [ ] Confirmar si Postgres es el motor definitivo (ADR 0001) antes de producción.
 - [x] Esquema de datos: `profiles` (A1-A3), `MoodCheckin`/`CalendarAnnotation` (B4/B6), `Match`/`ChatMessage` (B7). Falta modelar invitaciones (C8).
