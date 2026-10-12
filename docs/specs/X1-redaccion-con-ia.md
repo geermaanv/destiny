@@ -70,7 +70,7 @@ Tests en `apps/api/tests/test_x1_redaccion_con_ia.py` (OpenRouter simulado: no s
 
 ## Resultado de la comparación (2026-10-12)
 
-Ver `docs/referencias/comparacion-modelos-ia.md`. Con los datos ya interpretados por el modelo, todos los modelos eligen bien qué destacar. Costo por cada 1000 textos: qwen3.7-flash USD 0,02 · mistral-small-3.2 0,05 · gemini-2.5-flash-lite 0,06 · claude-haiku-5.5 0,12 · deepseek-v3.2 0,15. `openai/gpt-5-nano` no sirve (exige razonamiento). Mejor redacción en castellano rioplatense: claude-haiku-5.5; opción más económica con buen resultado: gemini-2.5-flash-lite.
+Ver `docs/referencias/comparacion-modelos-ia.md`. Con los datos ya interpretados por el modelo, todos los modelos eligen bien qué destacar. Costo por cada 1000 textos: qwen3.7-flash USD 0,02 · mistral-small-3.2 0,05 · gemini-2.5-flash-lite 0,06 · claude-haiku-5.5 0,12 · deepseek-v3.2 0,15. `openai/gpt-5-nano` no sirve (exige razonamiento). Mejor redacción en castellano rioplatense: claude-haiku-5.5; opción más económica con buen resultado: gemini-2.5-flash-lite. **Elegido por German: `google/gemini-2.5-flash-lite`** (configurado en `apps/api/.env`).
 
 ## Fuera de alcance
 
