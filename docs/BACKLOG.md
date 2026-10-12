@@ -70,7 +70,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 **Navegación / fricción**
 - [x] No hay barra de navegación ni botón "atrás": Home tiene links sueltos y desde chat, calendario o invitar no se vuelve. **Hecho**: barra inferior (Inicio / Descubrir / Calendario / Invitar) en todas las pantallas post-onboarding.
 - [ ] Idea de German: el onboarding como **una sola pantalla con secciones** (datos natales, ritmo, verificación) en vez de pasos separados, para poder volver y cambiar algo fácil.
-- [ ] Ritmo de notificaciones: no explica que es para notificaciones ni que todavía no se envían; sin indicador de paso del onboarding.
+- [x] Ritmo de notificaciones: no explica que es para notificaciones ni que todavía no se envían; sin indicador de paso del onboarding.
 
 **Calendario**
 - [x] Sin mes/año, sin días de la semana, no se puede cambiar de mes, no marca hoy, no explica qué son los días violetas, y la grilla no arranca en el día de la semana correcto. **Hecho** junto con la lista de próximos eventos (idea de German).
@@ -78,7 +78,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 **Textos y apariencia**
 - [x] Alinear la paleta de la app con el logo (azul noche `#25225b`, coral de las manos, dorado de los astros); **Hecho**: `tailwind.config.ts` redefine `slate` (azul noche), `violet` (coral) y suma `gold`.
 - [x] Jerga astrológica sin traducir ("Sin aspecto mayor solar", "cuadratura"): pasar a lenguaje simple. **Hecho**: `app/aspects.py` tiene etiquetas y frases simples ("Energía parecida", "Polos opuestos", "Por descubrir"…) usadas en Descubrir, la explicación, el rompehielos y la invitación.
-- [ ] Invitar: "Generar reporte" no es claro y falta explicar qué recibe el amigo.
+- [x] Invitar: "Generar reporte" no es claro y falta explicar qué recibe el amigo.
 
 ## Top 5 de mejoras (revisión de pantallas, 2026-10-08)
 
@@ -112,9 +112,9 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] Gating real de `/discover` según `verification_status` — implementado en `B5-pantalla-descubrir.md` (`_require_verified_profile`, 403 si no verificado).
 - [ ] Hoy las tablas se crean con `Base.metadata.create_all` al levantar la API (sin migraciones). Evaluar sumar Alembic antes de tocar esquema en un entorno con datos reales — no es necesario mientras solo haya datos de desarrollo.
 - [ ] `ANTHROPIC_API_KEY` no está configurada en ningún entorno todavía — `app/explainer.py` (B5) y `app/icebreaker.py` (B7) corren en modo mock. Cuando se consiga la key, se agrega a `.env` y ambos adapters cambian solo con eso, sin tocar código.
-- [ ] `app/compatibility.py` calcula compatibilidad solo con el aspecto Sol-Sol (simplificación v1, documentada en el código). Una carta completa (Luna, Venus, Marte, ascendente) da una señal más rica — evaluar si vale la pena antes de sumar más signos al cálculo.
+- [x] (Reemplazado por el motor de sinastría para Descubrir y el chat; lo que queda está en "Pasar el rompehielos, la invitación y el calendario a la carta completa".) `app/compatibility.py` calcula compatibilidad solo con el aspecto Sol-Sol (simplificación v1, documentada en el código). Una carta completa (Luna, Venus, Marte, ascendente) da una señal más rica — evaluar si vale la pena antes de sumar más signos al cálculo.
 - [x] Hosting para que Pablo vea el avance — resuelto por ahora: MacBook Air de German + túnel `ngrok`, con proxy de `apps/web` a la API para que un solo túnel alcance (ver ADR `0007-hosting-local-tunel.md`, incluye el runbook). Ejecutarlo requiere una sesión de Claude Code **local** en esa Mac (esta sesión cloud no tiene acceso a esa máquina). No reemplaza una decisión de hosting real para usuarios fuera del equipo.
 - [ ] Las dependencias de `apps/api/requirements.txt` están fijadas a versiones que no soportan Python 3.14 (hoy se usa 3.12). Evaluar actualizarlas o fijar la versión de Python en el repo (`.python-version`).
 - [ ] Las tablas se crean con `create_all`, que **no agrega columnas nuevas** a tablas existentes: una base local anterior a la verificación por WhatsApp necesita recrearse (o `ALTER TABLE profiles ADD COLUMN verification_method varchar, ADD COLUMN phone_e164 varchar UNIQUE, ADD COLUMN duplicate_of_id uuid` las de C8 v2 (`invitations`: `friend_sun_sign` nullable, `kind`, `relationship`, `invitee_profile_id`, `accepted_at`; `matches`: `relationship`, `source`), las de sesión en `phone_verification_codes` (`profile_id` nullable, `purpose`, `claim_token_hash`, `claimed_at`, `result_profile_id`, `outcome`) las de conexión en `matches` (`status` default `aceptada` para filas viejas, `accepted_at`, `whatsapp_a_ok`, `whatsapp_b_ok`, `whatsapp_shared_at`, `blocked_by`) y las columnas del perfil liviano: `display_name`, `bio`, `neighborhood`, `energy_period`, `avatar`, `photo_path` varchar e `interests varchar[] NOT NULL DEFAULT '{}'`). Otro argumento para sumar Alembic.
 - [ ] Rate limiting de `POST /profiles/{id}/verification/whatsapp` antes de abrir a usuarios fuera del equipo (fuera de alcance de A3 v1).
-- [ ] Cuando se corra el runbook de la ADR 0007, setear `WEB_BASE_URL` en `apps/api/.env` a la URL de `ngrok` del momento, para que el link de invitación de `C8-invitacion-whatsapp.md` sea válido desde afuera (si no, sigue apuntando a `localhost:3000`).
+- [x] Cuando se corra el runbook de la ADR 0007, setear `WEB_BASE_URL` en `apps/api/.env` a la URL de `ngrok` del momento, para que el link de invitación de `C8-invitacion-whatsapp.md` sea válido desde afuera (si no, sigue apuntando a `localhost:3000`).
