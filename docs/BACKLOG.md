@@ -94,6 +94,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] Test de personalidad de Pablo dentro del perfil (spec A6), fiel a su código (verificado contra 18 parejas de referencia).
 - [x] Pesos por tipo de relación de la sinastría alineados con los de Pablo.
 - [x] Invitación a comparar el test de personalidad (C8 v2) + panel "Compatibilidad" en todos los chats (B7): astrología y personalidad por separado, con selector de vínculo.
+- [ ] **"Mi carta"**: pantalla para que cada usuario vea su carta natal (rueda zodiacal con planetas, ascendente y casas, más una lista en lenguaje simple: "Sol en Tauro", "Luna en Aries", etc.) y, opcional, la descargue en PDF. Ya se calcula todo en la API (`app/synastry/chart.py`); falta exponerla y dibujarla. Requiere spec + casos de prueba antes del código.
 - [ ] Pantalla de administración para editar pesos y matrices sin tocar el JSON (hoy: editar `config/*.json` + commit).
 - [ ] Que Pablo revise las tablas de sinastría (`synastry_v1.json`) con el mismo criterio que su test.
 
