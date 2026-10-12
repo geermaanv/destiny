@@ -1,0 +1,659 @@
+{
+ "version": "pablo-v4",
+ "source": "docs/referencias/pablo_test_express_v4.html (Pablo Maiztegui). Generado por scripts/import_pablo_test.mjs: no editar a mano lo que viene de Pablo; si cambia el HTML, se vuelve a importar.",
+ "axes": {
+  "E1": {
+   "title": "Atracción y sexualidad",
+   "short": "Atracción",
+   "caption": "Deseo, química, ritmo, contacto y sexualidad"
+  },
+  "E2": {
+   "title": "Afecto y emociones",
+   "short": "Emoción",
+   "caption": "Contención, lenguaje del amor y seguridad afectiva"
+  },
+  "E3": {
+   "title": "Comunicación e intelecto",
+   "short": "Comunicación",
+   "caption": "Ideas, conversaciones, creencias y desacuerdos"
+  },
+  "E4": {
+   "title": "Compromiso y durabilidad",
+   "short": "Compromiso",
+   "caption": "Exclusividad, hijos, convivencia, proyectos y estabilidad"
+  }
+ },
+ "modes": {
+  "formal": {
+   "name": "Pareja formal",
+   "weights": {
+    "E1": 25,
+    "E2": 25,
+    "E3": 25,
+    "E4": 25
+   }
+  },
+  "sexual": {
+   "name": "Relación sexual ocasional",
+   "weights": {
+    "E1": 60,
+    "E2": 10,
+    "E3": 25,
+    "E4": 5
+   }
+  },
+  "amistad": {
+   "name": "Amistad",
+   "weights": {
+    "E1": 10,
+    "E2": 35,
+    "E3": 40,
+    "E4": 15
+   }
+  },
+  "laboral": {
+   "name": "Profesional / laboral",
+   "weights": {
+    "E1": 10,
+    "E2": 10,
+    "E3": 40,
+    "E4": 40
+   }
+  }
+ },
+ "preference_weights": {
+  "one": [1],
+  "two": [0.7, 0.3]
+ },
+ "max_choices": 2,
+ "cross_direction_weight_factor": 0.5,
+ "e4_caps": {
+  "enabled": true,
+  "rule": "Si las respuestas principales de A y B están en extremos opuestos (A y E), el eje E4 no puede superar el tope.",
+  "caps": [
+   {
+    "id": "E4.01",
+    "max": 59,
+    "label": "Intención de relación"
+   },
+   {
+    "id": "E4.02",
+    "max": 59,
+    "label": "Exclusividad"
+   },
+   {
+    "id": "E4.08",
+    "max": 59,
+    "label": "Tener hijos"
+   },
+   {
+    "id": "E4.07",
+    "max": 69,
+    "label": "Convivencia"
+   }
+  ]
+ },
+ "scales": {
+  "ordinal": [100, 75, 45, 20, 0],
+  "ritmo": [100, 70, 35, 10, 0],
+  "frecuencia": [100, 68, 28, 8, 0],
+  "critico": [100, 70, 30, 10, 0],
+  "nominal": {
+   "same": 100,
+   "related": 65,
+   "different": 35
+  }
+ },
+ "questions": [
+  {
+   "id": "E1.01",
+   "axis": "E1",
+   "kind": "nominal",
+   "weight": 7,
+   "question": "¿Qué es lo primero que suele despertar tu atracción física por alguien?",
+   "options": ["Su mirada y expresión facial.", "Su voz y forma de hablar.", "Sus movimientos, gestos y lenguaje corporal.", "Su aspecto físico y estilo personal.", "Su energía, actitud y presencia."],
+   "matrix": [
+    [100, 35, 35, 65, 35],
+    [35, 100, 35, 35, 65],
+    [35, 35, 100, 35, 65],
+    [65, 35, 35, 100, 35],
+    [35, 65, 65, 35, 100]
+   ]
+  },
+  {
+   "id": "E1.02",
+   "axis": "E1",
+   "kind": "nominal",
+   "weight": 10,
+   "question": "¿Qué tipo de actitud seductora te resulta más atractiva?",
+   "options": ["Sutil, reservada y misteriosa.", "Dulce, delicada y romántica.", "Divertida, juguetona y provocadora.", "Directa, segura y decidida.", "Intensa, apasionada y desafiante."],
+   "matrix": [
+    [100, 65, 35, 35, 35],
+    [65, 100, 35, 35, 35],
+    [35, 35, 100, 65, 35],
+    [35, 35, 65, 100, 65],
+    [35, 35, 35, 65, 100]
+   ]
+  },
+  {
+   "id": "E1.05",
+   "axis": "E1",
+   "kind": "ritmo",
+   "weight": 15,
+   "question": "¿A qué ritmo preferís avanzar hacia la intimidad física?",
+   "options": ["Muy lentamente, después de desarrollar confianza emocional.", "Gradualmente, después de varias conversaciones y encuentros.", "De manera equilibrada, dejando que la conexión avance.", "Relativamente rápido, si existe química y comodidad.", "Espontáneamente, cuando ambos lo desean y están de acuerdo."],
+   "matrix": [
+    [100, 70, 35, 10, 0],
+    [70, 100, 70, 35, 10],
+    [35, 70, 100, 70, 35],
+    [10, 35, 70, 100, 70],
+    [0, 10, 35, 70, 100]
+   ]
+  },
+  {
+   "id": "E1.06",
+   "axis": "E1",
+   "kind": "ordinal",
+   "weight": 7,
+   "question": "¿Cómo preferís que la otra persona tome la iniciativa sexual?",
+   "options": ["Prefiero que casi siempre la iniciativa sea mía.", "Me gusta que tome la iniciativa ocasionalmente.", "Prefiero que ambos alternemos la iniciativa.", "Me gusta que tome la iniciativa frecuentemente.", "Me atrae mucho que sea proactiva y tome la iniciativa."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E1.07",
+   "axis": "E1",
+   "kind": "ordinal",
+   "weight": 7,
+   "question": "¿Con qué frecuencia solés tomar vos la iniciativa sexual?",
+   "options": ["Casi nunca; prefiero responder a la iniciativa del otro.", "Ocasionalmente.", "Aproximadamente la mitad de las veces.", "Frecuentemente.", "Casi siempre; disfruto iniciar los encuentros."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E1.12",
+   "axis": "E1",
+   "kind": "ordinal",
+   "weight": 11,
+   "question": "¿Qué lugar ocupa la variedad y la exploración en tu vida sexual?",
+   "options": ["Prefiero experiencias familiares y previsibles.", "Me gusta repetir aquello que sé que disfruto.", "Busco un equilibrio entre lo conocido y lo nuevo.", "Disfruto incorporar novedades con frecuencia.", "La exploración y la variedad son una parte central de mi deseo."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E1.15",
+   "axis": "E1",
+   "kind": "frecuencia",
+   "weight": 18,
+   "question": "Cuando mantenés un vínculo íntimo y existe disponibilidad mutua, ¿qué frecuencia de encuentros sexuales preferís?",
+   "options": ["Menos de una vez por mes.", "Entre una y tres veces por mes.", "Aproximadamente una vez por semana.", "Entre dos y cuatro veces por semana.", "Casi todos los días."],
+   "matrix": [
+    [100, 68, 28, 8, 0],
+    [68, 100, 68, 28, 8],
+    [28, 68, 100, 68, 28],
+    [8, 28, 68, 100, 68],
+    [0, 8, 28, 68, 100]
+   ]
+  },
+  {
+   "id": "E1.20",
+   "axis": "E1",
+   "kind": "nominal",
+   "weight": 7,
+   "question": "Después de un encuentro íntimo, ¿qué disfrutás más?",
+   "options": ["Tener un momento de espacio personal.", "Descansar juntos en tranquilidad y silencio.", "Permanecer abrazados y compartir contacto físico.", "Conversar, reír y prolongar la conexión emocional.", "Compartir alguna actividad o experiencia juntos."],
+   "matrix": [
+    [100, 65, 35, 35, 35],
+    [65, 100, 65, 35, 35],
+    [35, 65, 100, 65, 35],
+    [35, 35, 65, 100, 65],
+    [35, 35, 35, 65, 100]
+   ]
+  },
+  {
+   "id": "E2.01",
+   "axis": "E2",
+   "kind": "nominal",
+   "weight": 10,
+   "question": "Cuando estás pasando por un momento emocional difícil, ¿qué necesitás principalmente de la otra persona?",
+   "options": ["Que respete mi espacio y me permita procesarlo.", "Que me escuche atentamente.", "Que me abrace y me contenga físicamente.", "Que me ayude con acciones concretas.", "Que conversemos y pensemos posibles soluciones."],
+   "matrix": [
+    [100, 35, 35, 35, 35],
+    [35, 100, 65, 35, 65],
+    [35, 65, 100, 35, 35],
+    [35, 35, 35, 100, 65],
+    [35, 65, 35, 65, 100]
+   ]
+  },
+  {
+   "id": "E2.02",
+   "axis": "E2",
+   "kind": "nominal",
+   "weight": 10,
+   "question": "¿Qué forma de recibir amor te hace sentir más querido?",
+   "options": ["Escuchar palabras de amor, reconocimiento y valoración.", "Recibir abrazos, besos y contacto físico.", "Que hagan cosas por mí y me ayuden en lo cotidiano.", "Compartir tiempo de calidad y atención exclusiva.", "Recibir detalles, regalos o gestos simbólicos."],
+   "matrix": [
+    [100, 35, 35, 35, 35],
+    [35, 100, 35, 35, 35],
+    [35, 35, 100, 35, 35],
+    [35, 35, 35, 100, 35],
+    [35, 35, 35, 35, 100]
+   ]
+  },
+  {
+   "id": "E2.03",
+   "axis": "E2",
+   "kind": "nominal",
+   "weight": 5,
+   "question": "¿De qué manera solés demostrar amor a otra persona?",
+   "options": ["Expresando mis sentimientos con palabras.", "Mediante abrazos, besos y contacto físico.", "Ayudando, cuidando y resolviendo necesidades prácticas.", "Dedicando tiempo y atención.", "Con regalos, detalles y sorpresas significativas."],
+   "matrix": [
+    [100, 35, 35, 35, 35],
+    [35, 100, 35, 35, 35],
+    [35, 35, 100, 35, 35],
+    [35, 35, 35, 100, 35],
+    [35, 35, 35, 35, 100]
+   ]
+  },
+  {
+   "id": "E2.07",
+   "axis": "E2",
+   "kind": "nominal",
+   "weight": 5,
+   "question": "Cuando alguien que querés está atravesando un mal momento, ¿qué hacés espontáneamente?",
+   "options": ["Le doy espacio y respeto su necesidad de procesar.", "Me dispongo a escucharlo.", "Ofrezco abrazos, cariño y cercanía física.", "Intento ayudar con acciones concretas.", "Propongo ideas y soluciones a lo que le sucede."],
+   "matrix": [
+    [100, 35, 35, 35, 35],
+    [35, 100, 65, 35, 65],
+    [35, 65, 100, 35, 35],
+    [35, 35, 35, 100, 65],
+    [35, 65, 35, 65, 100]
+   ]
+  },
+  {
+   "id": "E2.08",
+   "axis": "E2",
+   "kind": "ordinal",
+   "weight": 12,
+   "question": "¿Cuánto necesitás que tu pareja reafirme sus sentimientos hacia vos?",
+   "options": ["Muy poco; no necesito confirmaciones frecuentes.", "Ocasionalmente, en momentos especiales.", "Con cierta regularidad.", "Frecuentemente; me hace sentir seguro.", "Muy frecuentemente; las demostraciones continuas son importantes para mí."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E2.10",
+   "axis": "E2",
+   "kind": "ritmo",
+   "weight": 12,
+   "question": "Después de una discusión emocional, ¿cuándo preferís retomar la conversación?",
+   "options": ["Después de varios días, cuando haya procesado todo.", "Al día siguiente.", "Después de algunas horas.", "Durante el mismo día, apenas nos tranquilicemos.", "Lo antes posible; me cuesta dejar una discusión emocional pendiente."],
+   "matrix": [
+    [100, 70, 35, 10, 0],
+    [70, 100, 70, 35, 10],
+    [35, 70, 100, 70, 35],
+    [10, 35, 70, 100, 70],
+    [0, 10, 35, 70, 100]
+   ]
+  },
+  {
+   "id": "E2.15",
+   "axis": "E2",
+   "kind": "ordinal",
+   "weight": 12,
+   "question": "¿Qué equilibrio entre cercanía emocional e independencia preferís?",
+   "options": ["Mucha independencia y espacios personales amplios.", "Bastante independencia, compartiendo momentos significativos.", "Un equilibrio entre cercanía y autonomía.", "Mucha cercanía, aunque conservando ciertos espacios personales.", "Una conexión emocional muy estrecha y cotidiana."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E2.20",
+   "axis": "E2",
+   "kind": "nominal",
+   "weight": 10,
+   "question": "Después de una discusión que afectó tu confianza, ¿qué necesitás para reparar el vínculo?",
+   "options": ["Tiempo para procesar lo sucedido.", "Una disculpa sincera.", "Cambios concretos en el comportamiento.", "Una conversación honesta que permita comprender lo ocurrido.", "Gestos de acercamiento y cariño que ayuden a reconectar."],
+   "matrix": [
+    [100, 35, 35, 35, 35],
+    [35, 100, 35, 65, 35],
+    [35, 35, 100, 65, 35],
+    [35, 65, 65, 100, 65],
+    [35, 35, 35, 65, 100]
+   ]
+  },
+  {
+   "id": "E3.01",
+   "axis": "E3",
+   "kind": "nominal",
+   "weight": 12,
+   "question": "¿Qué tipo de conversaciones te generan mayor conexión con otra persona?",
+   "options": ["Arte, música, literatura y cultura.", "Ciencia, tecnología y descubrimientos.", "Psicología, emociones y relaciones humanas.", "Sociedad, política y actualidad.", "Filosofía, espiritualidad y grandes preguntas sobre la existencia."],
+   "matrix": [
+    [100, 35, 35, 35, 65],
+    [35, 100, 35, 35, 65],
+    [35, 35, 100, 65, 65],
+    [35, 35, 65, 100, 65],
+    [65, 65, 65, 65, 100]
+   ]
+  },
+  {
+   "id": "E3.02",
+   "axis": "E3",
+   "kind": "ordinal",
+   "weight": 10,
+   "question": "¿Qué importancia tienen las conversaciones intelectualmente estimulantes para sentir atracción por alguien?",
+   "options": ["Muy poca; puedo conectar sin conversaciones profundas.", "Poca; disfruto hablar, pero no necesito estimulación intelectual.", "Moderada; valoro una combinación de conversación y otras formas de conexión.", "Alta; necesito admirar y disfrutar la mente del otro.", "Fundamental; la conexión intelectual es una de mis principales fuentes de atracción."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E3.03",
+   "axis": "E3",
+   "kind": "ordinal",
+   "weight": 12,
+   "question": "¿Cuánto disfrutás debatir ideas con otra persona?",
+   "options": ["Muy poco; prefiero conversaciones sin debate.", "Poco; solamente cuando es necesario.", "Moderadamente; depende del tema.", "Mucho; disfruto intercambiar argumentos y puntos de vista.", "Muchísimo; los debates profundos me entusiasman especialmente."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E3.04",
+   "axis": "E3",
+   "kind": "ordinal",
+   "weight": 8,
+   "question": "Cuando no estás de acuerdo con una idea, ¿cómo preferís que la otra persona te lo comunique?",
+   "options": ["De forma sutil y cuidadosa.", "Mediante preguntas que me hagan reflexionar.", "Explicando sus argumentos con tranquilidad.", "De manera directa y clara.", "Con un debate intenso y apasionado, aunque respetuoso."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E3.05",
+   "axis": "E3",
+   "kind": "ordinal",
+   "weight": 6,
+   "question": "¿Cómo solés expresar vos el desacuerdo con las ideas de otra persona?",
+   "options": ["Lo planteo suavemente para evitar tensiones.", "Hago preguntas para explorar su razonamiento.", "Explico mis argumentos de forma gradual.", "Expreso mi desacuerdo directamente.", "Me involucro en un debate profundo y enérgico."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E3.06",
+   "axis": "E3",
+   "kind": "ordinal",
+   "weight": 15,
+   "question": "¿Qué importancia tiene compartir una visión similar del mundo con tu pareja?",
+   "options": ["Ninguna; podemos pensar de maneras completamente diferentes.", "Poca; las diferencias ideológicas no suelen preocuparme.", "Moderada; algunas ideas importantes deberían coincidir.", "Alta; necesito bastante afinidad en nuestras creencias y valores.", "Muy alta; una visión del mundo profundamente compartida es esencial."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E3.10",
+   "axis": "E3",
+   "kind": "ordinal",
+   "weight": 15,
+   "question": "Cuando estás conociendo a alguien, ¿qué frecuencia de intercambio de mensajes preferís?",
+   "options": ["Solamente cuando hay algo concreto que comunicar.", "Cada algunos días.", "Una o dos veces por día.", "Varias conversaciones breves durante el día.", "Comunicación muy frecuente y espontánea a lo largo del día."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E3.19",
+   "axis": "E3",
+   "kind": "nominal",
+   "weight": 10,
+   "question": "¿Qué enfoque influye más en tu manera de interpretar el mundo?",
+   "options": ["La ciencia, la observación y la evidencia.", "La lógica, la filosofía y el razonamiento.", "Las experiencias humanas, las emociones y las relaciones sociales.", "La intuición, la espiritualidad y lo simbólico.", "El pragmatismo y los resultados concretos."],
+   "matrix": [
+    [100, 65, 35, 35, 35],
+    [65, 100, 35, 35, 65],
+    [35, 35, 100, 65, 35],
+    [35, 35, 65, 100, 35],
+    [35, 65, 35, 35, 100]
+   ]
+  },
+  {
+   "id": "E4.01",
+   "axis": "E4",
+   "kind": "critico",
+   "weight": 18,
+   "question": "¿Qué tipo de vínculo estás buscando actualmente?",
+   "options": ["Relaciones ocasionales sin compromiso a largo plazo.", "Relaciones abiertas a explorar, sin una expectativa definida de formalización.", "Conocer personas y decidir según la conexión.", "Una relación estable que pueda evolucionar gradualmente.", "Una relación formal con intención de construir un proyecto duradero."],
+   "matrix": [
+    [100, 70, 30, 10, 0],
+    [70, 100, 70, 30, 10],
+    [30, 70, 100, 70, 30],
+    [10, 30, 70, 100, 70],
+    [0, 10, 30, 70, 100]
+   ]
+  },
+  {
+   "id": "E4.02",
+   "axis": "E4",
+   "kind": "critico",
+   "weight": 18,
+   "question": "¿Qué modelo de exclusividad preferís en una relación?",
+   "options": ["Prefiero relaciones consensualmente no monógamas.", "Prefiero la no exclusividad, pero puedo negociar otros acuerdos.", "Estoy abierto a distintos modelos según la relación y los acuerdos.", "Prefiero una relación exclusiva, aunque puedo conversar las condiciones.", "La exclusividad es una condición indispensable para mí."],
+   "matrix": [
+    [100, 70, 30, 10, 0],
+    [70, 100, 70, 30, 10],
+    [30, 70, 100, 70, 30],
+    [10, 30, 70, 100, 70],
+    [0, 10, 30, 70, 100]
+   ]
+  },
+  {
+   "id": "E4.06",
+   "axis": "E4",
+   "kind": "ordinal",
+   "weight": 10,
+   "question": "¿Qué grado de independencia personal necesitás dentro de una relación?",
+   "options": ["Muy alto; prefiero mantener la mayoría de mis actividades separadas.", "Alto; valoro disponer de bastante tiempo y espacio propios.", "Equilibrado entre autonomía y vida compartida.", "Moderado; prefiero compartir buena parte de mi vida con la pareja.", "Bajo; disfruto integrar profundamente las actividades y rutinas de ambos."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E4.07",
+   "axis": "E4",
+   "kind": "critico",
+   "weight": 12,
+   "question": "¿Qué lugar ocupa la convivencia en tu idea de una relación?",
+   "options": ["No deseo convivir con una pareja.", "Preferiría mantener hogares separados durante mucho tiempo.", "Estoy abierto a convivir si la relación evoluciona hacia eso.", "Me gustaría convivir después de consolidar el vínculo.", "La convivencia es uno de mis objetivos importantes en una relación estable."],
+   "matrix": [
+    [100, 70, 30, 10, 0],
+    [70, 100, 70, 30, 10],
+    [30, 70, 100, 70, 30],
+    [10, 30, 70, 100, 70],
+    [0, 10, 30, 70, 100]
+   ]
+  },
+  {
+   "id": "E4.08",
+   "axis": "E4",
+   "kind": "critico",
+   "weight": 17,
+   "question": "¿Qué posición tenés actualmente respecto de tener hijos o ampliar tu familia con hijos?",
+   "options": ["No quiero tener hijos.", "Me inclino a no tener hijos.", "No lo tengo decidido.", "Me inclino a querer hijos.", "Quiero tener hijos."],
+   "matrix": [
+    [100, 70, 30, 10, 0],
+    [70, 100, 70, 30, 10],
+    [30, 70, 100, 70, 30],
+    [10, 30, 70, 100, 70],
+    [0, 10, 30, 70, 100]
+   ]
+  },
+  {
+   "id": "E4.09",
+   "axis": "E4",
+   "kind": "ordinal",
+   "weight": 8,
+   "question": "¿Cómo preferís organizar las finanzas en una relación estable?",
+   "options": ["Manteniendo las finanzas completamente separadas.", "Principalmente separadas, compartiendo algunos gastos.", "Con finanzas individuales y un fondo común para objetivos compartidos.", "Compartiendo la mayor parte de los ingresos y gastos.", "Administrando las finanzas como una unidad económica común."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "E4.10",
+   "axis": "E4",
+   "kind": "ritmo",
+   "weight": 9,
+   "question": "Cuando aparece un conflicto que afecta la continuidad de la relación, ¿cuándo preferís empezar a resolverlo?",
+   "options": ["Después de varios días de reflexión.", "Cuando ambos hayan tenido al menos un día de espacio.", "Después de algunas horas para ordenar las ideas.", "Durante el mismo día, una vez que baje la tensión.", "Lo antes posible, abordando directamente el problema."],
+   "matrix": [
+    [100, 70, 35, 10, 0],
+    [70, 100, 70, 35, 10],
+    [35, 70, 100, 70, 35],
+    [10, 35, 70, 100, 70],
+    [0, 10, 35, 70, 100]
+   ]
+  },
+  {
+   "id": "E4.12",
+   "axis": "E4",
+   "kind": "ordinal",
+   "weight": 8,
+   "question": "¿Cómo te gustaría integrar los proyectos personales y profesionales dentro de una relación?",
+   "options": ["Cada uno debería desarrollar principalmente sus propios proyectos.", "Prefiero proyectos individuales con apoyo mutuo.", "Una combinación equilibrada de proyectos individuales y compartidos.", "Me gustaría coordinar nuestras principales decisiones y objetivos.", "Aspiro a construir una parte importante de nuestro futuro mediante proyectos conjuntos."],
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  }
+ ],
+ "crosses": [
+  {
+   "id": "X1",
+   "axis": "E1",
+   "kind": "ordinal",
+   "weight": 18,
+   "name": "Iniciativa sexual deseada ↔ iniciativa que se ofrece",
+   "need": "E1.06",
+   "give": "E1.07",
+   "description": "Se cruza el deseo de A con lo que B suele iniciar y viceversa.",
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  },
+  {
+   "id": "X3",
+   "axis": "E2",
+   "kind": "nominal",
+   "weight": 12,
+   "name": "Contención emocional que necesito ↔ la que doy",
+   "need": "E2.01",
+   "give": "E2.07",
+   "description": "Necesidad A ↔ conducta B, y necesidad B ↔ conducta A.",
+   "matrix": [
+    [100, 35, 35, 35, 35],
+    [35, 100, 65, 35, 65],
+    [35, 65, 100, 35, 35],
+    [35, 35, 35, 100, 65],
+    [35, 65, 35, 65, 100]
+   ]
+  },
+  {
+   "id": "X4",
+   "axis": "E2",
+   "kind": "nominal",
+   "weight": 12,
+   "name": "Lenguaje del amor recibido ↔ lenguaje del amor ofrecido",
+   "need": "E2.02",
+   "give": "E2.03",
+   "description": "Preferencia al recibir A ↔ forma de dar B, y viceversa.",
+   "matrix": [
+    [100, 35, 35, 35, 35],
+    [35, 100, 35, 35, 35],
+    [35, 35, 100, 35, 35],
+    [35, 35, 35, 100, 35],
+    [35, 35, 35, 35, 100]
+   ]
+  },
+  {
+   "id": "X5",
+   "axis": "E3",
+   "kind": "ordinal",
+   "weight": 12,
+   "name": "Desacuerdo: cómo prefiero recibirlo ↔ cómo lo expreso",
+   "need": "E3.04",
+   "give": "E3.05",
+   "description": "Preferencia A ↔ estilo que B suele emplear, y viceversa.",
+   "matrix": [
+    [100, 75, 45, 20, 0],
+    [75, 100, 75, 45, 20],
+    [45, 75, 100, 75, 45],
+    [20, 45, 75, 100, 75],
+    [0, 20, 45, 75, 100]
+   ]
+  }
+ ]
+}

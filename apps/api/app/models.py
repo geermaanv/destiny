@@ -2,7 +2,7 @@ import uuid
 from datetime import date, datetime, time
 
 from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, String, Time
-from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
@@ -133,3 +133,13 @@ class ChatMessage(Base):
     sender: Mapped[str] = mapped_column(String, nullable=False)  # profile_id como str, o "system_icebreaker"
     text: Mapped[str] = mapped_column(String, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class PersonalityAnswers(Base):
+    """Respuestas del test de personalidad de Pablo (spec A6). Nunca se muestran a otra persona."""
+
+    __tablename__ = "personality_answers"
+
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), primary_key=True)
+    answers: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)  # {"E1.01": [2], "E1.02": [1, 3]}
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

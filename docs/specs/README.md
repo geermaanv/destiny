@@ -23,6 +23,7 @@ Regla dura del proyecto: **spec → casos de prueba → código.** Ninguna featu
 | [A3-verificacion-identidad](./A3-verificacion-identidad.md) | A3 | implemented (v1 WhatsApp, modo mock; v2 selfie/video pospuesta) |
 | [A4-perfil-liviano](./A4-perfil-liviano.md) | A4 | implemented |
 | [A5-sesion](./A5-sesion.md) | A5 | implemented |
+| [A6-test-personalidad](./A6-test-personalidad.md) | A6 | implemented |
 | [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | implemented |
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | implemented |
 | [B5-motor-sinastria](./B5-motor-sinastria.md) | B5 | implemented (tablas v1-provisoria) |

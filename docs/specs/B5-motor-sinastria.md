@@ -66,7 +66,7 @@ Todas en `apps/api/app/synastry/config/synastry_v1.json` (ver ADR 0010). Resumen
 
 - **Aspectos**: mayores (conjunción 8°, sextil 6°, cuadratura 7°, trígono 7°, oposición 8°; +2° si interviene Sol o Luna) y menores (semisextil y semicuadratura 2°, sesquicuadratura 2°, quincuncio 3°). En atracción las tensiones suman (chispa); en afecto, comunicación y compromiso restan.
 - **Orbe**: impacto lineal, 100 % exacto y 0 % en el borde.
-- **Pesos por tipo** (atracción / afecto / comunicación / compromiso): ocasional 55/15/20/10 · pareja 25/30/20/25 · amistad 5/35/40/20 · laboral 0/15/45/40.
+- **Pesos por tipo** (atracción / afecto / comunicación / compromiso): **los del test de Pablo** (ADR 0011): ocasional 60/10/25/5 · pareja 25/25/25/25 · amistad 10/35/40/15 · laboral 10/10/40/40. La explicación solo nombra ejes que pesan ≥ 15 % (`explicacion.peso_minimo_eje` en la configuración).
 - **Normalización**: 50 = pareja promedio, calibrado solo.
 - **Integración**: Descubrir ordena por la compatibilidad total del contexto elegido (selector Pareja / Amistad / Trabajo / Casual), muestra los 4 ejes y la explicación nombra el eje más fuerte y el más flojo entre los que importan para ese contexto. El rompehielos, la invitación y el calendario todavía usan el cálculo simple Sol–Sol / Luna–Sol.
 

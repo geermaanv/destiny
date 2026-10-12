@@ -1,0 +1,71 @@
+import uuid
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.auth import require_self, session_profile_id
+from app.database import get_db
+from app.models import PersonalityAnswers, Profile
+from app.personality.engine import completed, load_config
+from app.schemas import PersonalityAnswersIn, PersonalityMineOut
+
+# Test de personalidad de Pablo dentro del perfil (spec A6).
+router = APIRouter(tags=["personality"])
+
+
+@router.get("/personality/test")
+def get_test() -> dict:
+    """Preguntas y opciones para mostrar (sin matrices ni pesos)."""
+    cfg = load_config()
+    return {
+        "version": cfg["version"],
+        "max_choices": cfg["max_choices"],
+        "preference_weights": cfg["preference_weights"],
+        "axes": cfg["axes"],
+        "questions": [
+            {"id": q["id"], "axis": q["axis"], "kind": q["kind"], "question": q["question"], "options": q["options"]}
+            for q in cfg["questions"]
+        ],
+    }
+
+
+def _own_profile(profile_id: uuid.UUID, current: uuid.UUID | None, db: Session) -> Profile:
+    require_self(profile_id, current)
+    profile = db.get(Profile, profile_id)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    return profile
+
+
+def _mine(row: PersonalityAnswers | None) -> PersonalityMineOut:
+    answers = row.answers if row else {}
+    return PersonalityMineOut(
+        answers=answers, completed=completed(answers), total_questions=len(load_config()["questions"])
+    )
+
+
+@router.get("/profiles/{profile_id}/personality", response_model=PersonalityMineOut)
+def get_my_answers(
+    profile_id: uuid.UUID, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> PersonalityMineOut:
+    _own_profile(profile_id, current, db)
+    return _mine(db.get(PersonalityAnswers, profile_id))
+
+
+@router.put("/profiles/{profile_id}/personality", response_model=PersonalityMineOut)
+def save_answers(
+    profile_id: uuid.UUID,
+    payload: PersonalityAnswersIn,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> PersonalityMineOut:
+    """Guarda respuestas (parciales): las que vienen reemplazan a las anteriores de esas preguntas."""
+    _own_profile(profile_id, current, db)
+    row = db.get(PersonalityAnswers, profile_id)
+    if row is None:
+        row = PersonalityAnswers(profile_id=profile_id, answers={})
+        db.add(row)
+    row.answers = {**row.answers, **payload.answers}
+    db.commit()
+    db.refresh(row)
+    return _mine(row)

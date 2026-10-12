@@ -8,10 +8,12 @@ from sqlalchemy.orm import Session
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.explainer import ResonanceExplainer, get_explainer
-from app.models import Profile
+from app.models import PersonalityAnswers, Profile
+from app.personality import CONTEXT_TO_MODE
+from app.personality.engine import compare
 from app.public_profile import public_fields
 from app.synastry import headline, profile_synastry
-from app.schemas import DiscoverCandidateOut, ExplanationOut
+from app.schemas import DiscoverCandidateOut, ExplanationOut, PersonalityCompatOut
 
 router = APIRouter(prefix="/discover", tags=["discover"])
 
@@ -59,10 +61,22 @@ def list_discover(
         )
     ).all()
 
+    # Test de personalidad de Pablo (A6): separado de la astrología, solo el resultado.
+    mode = CONTEXT_TO_MODE[context]
+    answers = {
+        row.profile_id: row.answers
+        for row in db.scalars(
+            select(PersonalityAnswers).where(PersonalityAnswers.profile_id.in_([viewer.id, *[c.id for c in candidates]]))
+        )
+    }
+    mine = answers.get(viewer.id)
+
     # Lista curada y chica: los de mayor compatibilidad para el contexto elegido (B5).
     results = []
     for candidate in candidates:
         result = profile_synastry(viewer, candidate, context)
+        theirs = answers.get(candidate.id)
+        personality = PersonalityCompatOut(**compare(mine, theirs, mode)) if mine and theirs else None
         results.append(
             DiscoverCandidateOut(
                 profile_id=candidate.id,
@@ -71,6 +85,7 @@ def list_discover(
                 axes=result["ejes"],
                 relationship=result["tipo_de_relacion"],
                 approximate=result["aproximado"],
+                personality=personality,
                 **public_fields(candidate),
             )
         )

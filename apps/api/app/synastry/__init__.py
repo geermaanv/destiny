@@ -22,11 +22,13 @@ def profile_synastry(viewer, candidate, relationship: str | None = None) -> dict
     return synastry(chart_for_profile(viewer), chart_for_profile(candidate), relationship)
 
 
-def relevant_axes(result: dict, min_weight: float = 0.1) -> list[str]:
-    """Ejes que pesan en el tipo de relación (ej. en amistad la química casi no cuenta)."""
+def relevant_axes(result: dict) -> list[str]:
+    """Ejes que pesan en el tipo de relación (ej. en Trabajo la química casi no cuenta). Umbral en la configuración."""
     from app.synastry.engine import load_config
 
-    weights = load_config()["nivel_7_y_10_tipos_de_relacion"]["tipos"][result["tipo_de_relacion"]]["pesos"]
+    cfg = load_config()
+    min_weight = cfg["explicacion"]["peso_minimo_eje"]
+    weights = cfg["nivel_7_y_10_tipos_de_relacion"]["tipos"][result["tipo_de_relacion"]]["pesos"]
     return [axis for axis in AXIS_LABELS if weights.get(axis, 0) >= min_weight]
 
 

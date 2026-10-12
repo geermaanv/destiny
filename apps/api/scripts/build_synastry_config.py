@@ -162,14 +162,18 @@ CONFIG = {
         "multiplicador": {"minimo": 0.85, "maximo": 1.15},
     },
     "nivel_7_y_10_tipos_de_relacion": {
-        "descripcion": "Peso de cada eje en la compatibilidad total según el tipo de relación. Con pesos iguales es el promedio simple del cuadro.",
+        "descripcion": "Peso de cada eje en la compatibilidad total según el tipo de relación. Son los pesos del test de Pablo (ADR 0011: Pablo es la última palabra); con pesos iguales es el promedio simple del cuadro.",
         "tipos": {
-            "ocasional": {"nombre": "Relación sexual ocasional", "pesos": {"atraccion": 0.55, "afecto": 0.15, "comunicacion": 0.2, "compromiso": 0.1}},
-            "pareja": {"nombre": "Pareja formal", "pesos": {"atraccion": 0.25, "afecto": 0.3, "comunicacion": 0.2, "compromiso": 0.25}},
-            "amistad": {"nombre": "Amistad", "pesos": {"atraccion": 0.05, "afecto": 0.35, "comunicacion": 0.4, "compromiso": 0.2}},
-            "laboral": {"nombre": "Profesional / laboral / socios", "pesos": {"atraccion": 0.0, "afecto": 0.15, "comunicacion": 0.45, "compromiso": 0.4}},
+            "ocasional": {"nombre": "Relación sexual ocasional", "pesos": {"atraccion": 0.60, "afecto": 0.10, "comunicacion": 0.25, "compromiso": 0.05}},
+            "pareja": {"nombre": "Pareja formal", "pesos": {"atraccion": 0.25, "afecto": 0.25, "comunicacion": 0.25, "compromiso": 0.25}},
+            "amistad": {"nombre": "Amistad", "pesos": {"atraccion": 0.10, "afecto": 0.35, "comunicacion": 0.40, "compromiso": 0.15}},
+            "laboral": {"nombre": "Profesional / laboral / socios", "pesos": {"atraccion": 0.10, "afecto": 0.10, "comunicacion": 0.40, "compromiso": 0.40}},
         },
         "por_defecto": "pareja",
+    },
+    "explicacion": {
+        "descripcion": "Para el texto de la explicación solo se nombran los ejes que pesan al menos esto en el tipo de relación (ej. en Trabajo la química pesa 10 % y no se menciona).",
+        "peso_minimo_eje": 0.15,
     },
 }
 

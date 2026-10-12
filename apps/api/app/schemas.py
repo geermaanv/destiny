@@ -159,6 +159,41 @@ class FrequencyCountOut(BaseModel):
     count: int
 
 
+# Test de personalidad de Pablo (spec A6).
+class PersonalityAnswersIn(BaseModel):
+    answers: dict[str, list[int]]
+
+    @field_validator("answers")
+    @classmethod
+    def valid_answers(cls, value: dict[str, list[int]]) -> dict[str, list[int]]:
+        from app.personality.engine import load_config
+
+        cfg = load_config()
+        known = {q["id"] for q in cfg["questions"]}
+        for qid, choices in value.items():
+            if qid not in known:
+                raise ValueError(f"pregunta desconocida: {qid}")
+            if not 1 <= len(choices) <= cfg["max_choices"] or len(set(choices)) != len(choices):
+                raise ValueError(f"{qid}: elegí 1 o {cfg['max_choices']} opciones distintas")
+            if any(not 0 <= c <= 4 for c in choices):
+                raise ValueError(f"{qid}: opción fuera de A-E")
+        return value
+
+
+class PersonalityMineOut(BaseModel):
+    answers: dict[str, list[int]]
+    completed: int
+    total_questions: int
+
+
+class PersonalityCompatOut(BaseModel):
+    axes: dict[str, float | None]
+    coverage: dict[str, float]
+    flags: list[str]
+    total: float | None
+    complete: bool
+
+
 class DiscoverCandidateOut(BaseModel):
     profile_id: uuid.UUID
     compatibility_pct: int
@@ -167,6 +202,8 @@ class DiscoverCandidateOut(BaseModel):
     axes: dict[str, int] = {}
     relationship: str | None = None
     approximate: bool = False
+    # Test de personalidad de Pablo (spec A6): separado de la astrología; None si alguno no respondió nada.
+    personality: PersonalityCompatOut | None = None
     # Perfil liviano (spec A4): solo datos públicos.
     display_name: str | None = None
     age: int | None = None

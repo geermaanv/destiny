@@ -16,3 +16,4 @@ Architecture Decision Records. Cada decisión técnica con peso (elegir una libr
 | [0008](./0008-verificacion-whatsapp.md) | Verificación v1 por WhatsApp; selfie/video en vivo pasa a v2 | aceptada |
 | [0009](./0009-geocoding-open-meteo.md) | Geocodificación del lugar de nacimiento con Open-Meteo | aceptada |
 | [0010](./0010-motor-sinastria-config.md) | Motor de sinastría: tablas en configuración, casas iguales y calibración | aceptada |
+| [0011](./0011-modelo-matematico-pablo.md) | Compatibilidad con modelo matemático; Pablo es la última palabra del modelo | aceptada |

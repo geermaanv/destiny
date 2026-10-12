@@ -166,6 +166,7 @@ export type DiscoverCandidate = {
   axes: Partial<Record<"atraccion" | "afecto" | "comunicacion" | "compromiso", number>>;
   relationship: RelationshipContext | null;
   approximate: boolean;
+  personality: PersonalityCompat | null;
   display_name: string | null;
   age: number | null;
   sun_sign: string | null;
@@ -401,4 +402,43 @@ export async function getLoginStatus(loginId: string): Promise<"pendiente" | "li
 
 export async function logout(): Promise<void> {
   await fetch(`${API_URL}/sessions/logout`, { method: "POST" });
+}
+
+// Test de personalidad de Pablo (spec A6).
+export type PersonalityQuestion = { id: string; axis: "E1" | "E2" | "E3" | "E4"; kind: string; question: string; options: string[] };
+export type PersonalityTest = {
+  version: string;
+  max_choices: number;
+  axes: Record<string, { title: string; short: string; caption: string }>;
+  questions: PersonalityQuestion[];
+};
+export type MyPersonality = { answers: Record<string, number[]>; completed: number; total_questions: number };
+export type PersonalityCompat = {
+  axes: Record<"E1" | "E2" | "E3" | "E4", number | null>;
+  coverage: Record<string, number>;
+  flags: string[];
+  total: number | null;
+  complete: boolean;
+};
+
+export async function getPersonalityTest(): Promise<PersonalityTest> {
+  const res = await fetch(`${API_URL}/personality/test`);
+  if (!res.ok) throw new Error("No se pudo cargar el test");
+  return res.json();
+}
+
+export async function getMyPersonality(profileId: string): Promise<MyPersonality> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/personality`);
+  if (!res.ok) throw new Error("No se pudieron cargar tus respuestas");
+  return res.json();
+}
+
+export async function savePersonality(profileId: string, answers: Record<string, number[]>): Promise<MyPersonality> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/personality`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ answers }),
+  });
+  if (!res.ok) throw new Error("No se pudo guardar la respuesta");
+  return res.json();
 }

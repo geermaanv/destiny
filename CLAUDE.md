@@ -127,6 +127,12 @@ Swiss Ephemeris exige licencia GPL o pago comercial a Astrodienst para uso cerra
 
 Si más adelante se necesita esa precisión (ej. casas astrológicas exactas), evaluar licenciar Swiss Ephemeris aparte — es una **decisión de negocio**, no un default técnico.
 
+### Compatibilidad: modelo matemático, Pablo es la última palabra (ADR 0011)
+
+- **Sinastría** (`app/synastry/`, tablas en `config/synastry_v1.json`, ADR 0010) y **test de personalidad de Pablo** (`app/personality/`, `config/test_v4.json`, spec A6) se calculan con fórmulas y tablas, no con IA. Se muestran **separados**.
+- Todo es parametrizable en esos JSON. El test se importa del HTML de Pablo (`docs/referencias/pablo_test_express_v4.html`) con `node apps/api/scripts/import_pablo_test.mjs`; si Pablo lo cambia, se reimporta y se regeneran las referencias con `node apps/api/scripts/pablo_golden.mjs`.
+- La IA solo redacta explicaciones y rompehielos a partir del resultado ya calculado.
+
 ### Geocodificación: Open-Meteo
 
 Autocomplete de ciudad de nacimiento → lat/lon + timezone, detrás de un adapter (`app/geocoding.py`). Gratis para uso no comercial: revisar términos antes de abrir a usuarios reales (ADR 0009).

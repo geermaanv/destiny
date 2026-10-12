@@ -89,6 +89,13 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] **Falta feedback en las acciones** (hecho: "Guardado ✓", confirmación del check-in, hora en el chat, "Enviando solicitud…", ícono de Next oculto): "Perfil guardado" queda fuera de la vista, el check-in no confirma, el chat no muestra la hora de los mensajes, "Conectar" no muestra que está enviando. Además el ícono "N" de Next.js (solo en modo desarrollo, pero Pablo lo ve por el túnel) tapa "Inicio" en la barra.
 
 
+## Modelo de compatibilidad (Pablo, ADR 0011)
+
+- [x] Test de personalidad de Pablo dentro del perfil (spec A6), fiel a su código (verificado contra 18 parejas de referencia).
+- [x] Pesos por tipo de relación de la sinastría alineados con los de Pablo.
+- [ ] Pantalla de administración para editar pesos y matrices sin tocar el JSON (hoy: editar `config/*.json` + commit).
+- [ ] Que Pablo revise las tablas de sinastría (`synastry_v1.json`) con el mismo criterio que su test.
+
 ## Tests
 
 - [x] Batería de tests automáticos de la API (`apps/api/tests/`, 77 casos, pytest, base `destiny_test`). Cubre A1, A3, A4, A5, B5 (motor y Descubrir), B6, B7 y C8.
