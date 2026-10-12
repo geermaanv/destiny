@@ -83,6 +83,11 @@ Tests en `apps/api/tests/test_c8_invitacion_test.py` (todos en verde).
 | 7 | Aceptar sin sesión, o aceptar la propia invitación | 401 / 409 |
 | 8 | Estado de mis invitaciones | enviada → registrado → test_completo, con el id del chat |
 
+## Corrección 2026-10-12
+
+- El adelanto usa el Sol natal con la hora local real de quien invita (antes la tomaba como UTC).
+- La **revelación** usa el motor de sinastría (el mismo total que Descubrir, con el vínculo de la invitación o Pareja), en vez del cálculo simple Sol–Sol.
+
 ## Actualización 2026-10-08
 
 - La pantalla explica qué recibe el amigo y muestra **el mensaje exacto** antes de mandarlo ("Así le va a llegar a…"); botón "Enviar por WhatsApp" e "Invitar a otra persona".

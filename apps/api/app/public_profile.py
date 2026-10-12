@@ -3,10 +3,9 @@
 Nunca incluye teléfono ni fecha/hora/lugar de nacimiento exactos.
 """
 
-from datetime import date, time
+from datetime import date
 
-from app.astro import zodiac_sign
-from app.compatibility import sun_longitude
+from app.astro import natal_sun_longitude, zodiac_sign
 from app.models import Profile
 
 
@@ -20,7 +19,7 @@ def age(birth_date: date | None) -> int | None:
 def sun_sign(profile: Profile) -> str | None:
     if profile.birth_date is None:
         return None
-    return zodiac_sign(sun_longitude(profile.birth_date, profile.birth_time or time(12, 0)))
+    return zodiac_sign(natal_sun_longitude(profile))
 
 
 def public_fields(profile: Profile) -> dict:

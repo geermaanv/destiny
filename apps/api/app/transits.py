@@ -2,15 +2,14 @@ import calendar
 from datetime import date, timedelta
 
 from app.aspects import angle_between, classify_aspect
-from app.astro import moon_longitude
-from app.compatibility import sun_longitude
+from app.astro import moon_longitude, natal_sun_longitude
 from app.models import Profile
 
 
 def day_transit(profile: Profile, day: date) -> dict:
-    """Tránsito del día: Luna vs. Sol natal del usuario (simplificación v1,
-    ver B6-calendario-memoria.md — una carta completa queda para después)."""
-    aspect = classify_aspect(angle_between(moon_longitude(day), sun_longitude(profile.birth_date, profile.birth_time)))
+    """Tránsito del día: Luna vs. Sol natal del usuario (simplificación v1, ver
+    B6-calendario-memoria.md). El Sol natal usa la hora local de nacimiento."""
+    aspect = classify_aspect(angle_between(moon_longitude(day), natal_sun_longitude(profile)))
     return {"date": day, "aspect": aspect["aspect"], "is_major": aspect["is_major"]}
 
 

@@ -53,3 +53,10 @@ def astro_weather_for_date(day: date) -> str:
 
 def today_astro_weather() -> str:
     return astro_weather_for_date(datetime.now(timezone.utc).date())
+
+
+def natal_sun_longitude(profile) -> float:
+    """Sol natal con la hora LOCAL del lugar de nacimiento (spec A1, corrección 2026-10-12)."""
+    from app.synastry.chart import chart_for_profile
+
+    return chart_for_profile(profile).points["sol"]

@@ -8,8 +8,7 @@ from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session
 
 from app.aspects import angle_between, aspect_sentence, classify_aspect
-from app.astro import approximate_longitude_for_sign
-from app.compatibility import compatibility_signals, sun_longitude
+from app.astro import approximate_longitude_for_sign, natal_sun_longitude
 from app.config import settings
 from app.auth import require_self, session_profile_id
 from app.database import get_db
@@ -17,7 +16,7 @@ from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
 from app.ai_texts import record
 from app.models import ChatMessage, Invitation, Match, PersonalityAnswers, Profile
 from app.personality.engine import completed, load_config
-from app.synastry import ai_facts, profile_synastry
+from app.synastry import ai_facts, headline, profile_synastry
 from app.schemas import (
     InvitationAcceptOut,
     InvitationIn,
@@ -87,7 +86,7 @@ def create_invitation(
     # Resultado necesariamente aproximado: solo tenemos el signo solar del
     # amigo, no su fecha/hora exacta (fricción mínima al invitar).
     friend_lon = approximate_longitude_for_sign(payload.friend_sun_sign)
-    inviter_lon = sun_longitude(inviter.birth_date, inviter.birth_time)
+    inviter_lon = natal_sun_longitude(inviter)
     aspect = classify_aspect(angle_between(inviter_lon, friend_lon))
 
     teaser = (
@@ -224,7 +223,7 @@ def get_invitation(ref_id: str, db: Session = Depends(get_db)) -> InvitationPrel
             ),
         )
     friend_lon = approximate_longitude_for_sign(invitation.friend_sun_sign)
-    aspect = classify_aspect(angle_between(sun_longitude(inviter.birth_date, inviter.birth_time), friend_lon))
+    aspect = classify_aspect(angle_between(natal_sun_longitude(inviter), friend_lon))
 
     return InvitationPreloadOut(
         ref_id=ref_id,
@@ -251,9 +250,11 @@ def reveal_invitation(
     if invitee.birth_date is None:
         raise HTTPException(status_code=422, detail="El invitado necesita completar su carta natal")
 
-    signals = compatibility_signals(inviter, invitee)
+    # Mismo motor que Descubrir (spec C8, corrección 2026-10-12), con el vínculo de la invitación.
+    result = profile_synastry(inviter, invitee, invitation.relationship or "pareja")
+    label = headline(result)
     text = (
         f"Resonancia real revelada entre {invitation.friend_name} y quien lo invitó: "
-        f"{aspect_sentence(signals['aspect'])} ({signals['percentage']}%)."
+        f"{result['total']}% ({label.lower()})."
     )
-    return RevealOut(aspect=signals["aspect"], percentage=signals["percentage"], text=text)
+    return RevealOut(aspect=label, percentage=result["total"], text=text)

@@ -74,6 +74,10 @@ Tests automáticos en `apps/api/tests/test_a1_datos_natales.py` (correr: `cd app
 | 9 | Búsqueda de ciudad pide al menos 2 letras | `test_busqueda_de_ciudad_pide_al_menos_2_letras` |
 | 10 | Alias CABA se traduce a buenos aires | `test_alias_caba_se_traduce_a_buenos_aires` |
 
+## Corrección 2026-10-12: la hora es hora local del lugar de nacimiento
+
+La hora de nacimiento se interpreta **en la zona horaria del lugar de nacimiento** (la que da la geocodificación; si no hay, Buenos Aires). Antes, el signo solar público, el calendario y la invitación astrológica la tomaban como hora UTC: alguien nacido el 21/5/1990 a las 06:00 en Buenos Aires figuraba Tauro en vez de Géminis. Todos los cálculos usan ahora la carta completa (`app/synastry/chart.py`). Tests: `apps/api/tests/test_bug_hora_local.py`.
+
 ## Criterios de aceptación
 
 - [x] Perfil sin hora exacta queda con `birth_time_estimated: true` y `birth_time: "12:00"`.

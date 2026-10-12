@@ -21,7 +21,7 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 - [ ] Decisión PWA vs. nativo para push notifications en iOS (ver ADR 0002 — afecta a `A2-ritmo-notificaciones.md`).
 - [x] **Motor de sinastría por ejes** (cuadro de German): implementado con tablas `v1-provisoria` en configuración (ADR 0010). Integrado a Descubrir con selector de contexto.
 - [ ] **Validar las tablas de sinastría** con alguien con criterio astrológico (German, Pablo o un astrólogo): `apps/api/app/synastry/config/synastry_v1.json`.
-- [ ] Pasar el rompehielos, la invitación (C8) y el calendario (B6) a la carta completa: hoy usan Sol–Sol / Luna–Sol y además toman la hora de nacimiento como si fuera UTC (`app/compatibility.py::sun_longitude`). El motor nuevo ya usa la zona horaria real.
+- [x] (Hecho 2026-10-12) Pasar el rompehielos, la invitación (C8) y el calendario (B6) a la carta completa: hoy usan Sol–Sol / Luna–Sol y además toman la hora de nacimiento como si fuera UTC (`app/compatibility.py::sun_longitude`). El motor nuevo ya usa la zona horaria real.
 - [x] Contexto de relación en Descubrir — **implementado** (selector Pareja / Amistad / Trabajo / Casual, cambia los pesos del motor). Antes: **decidido el enfoque**: no va en el perfil, se elige en Descubrir y la lista queda abierta (pareja, amistad, trabajo/jefe, socio…). Falta la spec del selector y de cómo cambia la explicación (`B5-pantalla-descubrir.md`).
 - [ ] Integración de actividades en el calendario de memoria (spec `B6-calendario-memoria.md`, v1 no las incluye).
 - [ ] Tonos/copies del chat y de los rompehielos de IA (spec `B7-chat-rompehielos.md`, v1 usa copy borrador).
