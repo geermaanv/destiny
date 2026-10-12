@@ -4,7 +4,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://destiny:destiny@localhost:5432/destiny"
     environment: str = "development"
-    anthropic_api_key: str | None = None
+    # Redacción con IA vía OpenRouter (spec X1). Sin key → textos de plantilla.
+    openrouter_api_key: str | None = None
+    openrouter_model: str | None = None
     web_base_url: str = "http://localhost:3000"
     # Fotos de perfil (spec A4): en disco local mientras el hosting sea la Mac del equipo (ADR 0007).
     uploads_dir: str = "uploads"

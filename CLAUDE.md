@@ -115,9 +115,9 @@ Elegido por velocidad de desarrollo y porque el ecosistema Python es natural par
 
 Sugerencia técnica, **no es definitiva** — revisar antes de comprometerse en producción.
 
-### IA para explicaciones de resonancia: Claude API (Anthropic)
+### IA para redactar explicaciones y rompehielos: OpenRouter (spec X1)
 
-Encaja con el principio de producto "nunca caja negra" (ver `docs/VISION.md`, pilar Explain). Claude es fuerte en texto explicativo con tono editorial controlado — necesario para el Módulo B.5 (pantalla "Descubrir").
+La IA **solo redacta** a partir del resultado ya calculado (ADR 0011): el modelo matemático decide qué los une y qué tienen que trabajar. Va por **OpenRouter** (`OPENROUTER_API_KEY` y `OPENROUTER_MODEL` en `apps/api/.env`; el modelo se cambia sin tocar código). Sin key o si falla, textos de plantilla. Nunca se mandan datos personales. Comparación de modelos: `docs/referencias/comparacion-modelos-ia.md` (`apps/api/scripts/compare_llm_models.py`).
 
 ### Motor astrológico: `astronomy-engine` (no Swiss Ephemeris)
 

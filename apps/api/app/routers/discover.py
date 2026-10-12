@@ -12,7 +12,8 @@ from app.models import PersonalityAnswers, Profile
 from app.personality import CONTEXT_TO_MODE
 from app.personality.engine import compare
 from app.public_profile import public_fields
-from app.synastry import headline, profile_synastry
+from app.ai_texts import cached, explanation_key, record
+from app.synastry import ai_facts, headline, profile_synastry
 from app.schemas import DiscoverCandidateOut, ExplanationOut, PersonalityCompatOut
 
 router = APIRouter(prefix="/discover", tags=["discover"])
@@ -28,14 +29,6 @@ def _require_verified_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     if profile.verification_status != "verificado":
         raise HTTPException(status_code=403, detail="Identidad no verificada")
     return profile
-
-
-def _chart_payload(profile: Profile, relationship: str) -> dict:
-    return {
-        "birth_date": str(profile.birth_date),
-        "birth_time": str(profile.birth_time),
-        "intent": relationship,
-    }
 
 
 @router.get("", response_model=list[DiscoverCandidateOut])
@@ -109,6 +102,16 @@ def get_explanation(
     if viewer.birth_date is None or candidate.birth_date is None:
         raise HTTPException(status_code=422, detail="Perfil sin datos natales")
 
-    signals = profile_synastry(viewer, candidate, context)
-    text = explainer.explain(_chart_payload(viewer, context), _chart_payload(candidate, context), signals)
-    return ExplanationOut(text=text)
+    # Cache (spec X1): misma pareja + vínculo + modelo + tablas → no se vuelve a pagar.
+    key = explanation_key(viewer.id, candidate.id, context)
+    if (text := cached(db, key)) is not None:
+        return ExplanationOut(text=text)
+
+    result = profile_synastry(viewer, candidate, context)
+    mine, theirs = db.get(PersonalityAnswers, viewer.id), db.get(PersonalityAnswers, candidate.id)
+    personality = (
+        compare(mine.answers, theirs.answers, CONTEXT_TO_MODE[context]) if mine and theirs and mine.answers and theirs.answers else None
+    )
+    written = explainer.explain(ai_facts(result, personality))
+    record(db, key, "explicacion", written)
+    return ExplanationOut(text=written.text)

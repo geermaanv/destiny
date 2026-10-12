@@ -1,57 +1,29 @@
+"""Explicación de la resonancia en Descubrir (B5), redactada con IA (spec X1).
+
+La IA recibe solo el resultado ya calculado (`ai_facts`), nunca datos personales.
+Sin key o si falla, se usa el texto de plantilla.
+"""
+
 import json
+from dataclasses import dataclass
 from typing import Protocol
 
-from app.aspects import aspect_sentence
+from app.llm import LLMResult, complete, is_configured
 from app.synastry import relevant_axes
-from app.config import settings
+
+MAX_CHARS = 420
 
 EDITORIAL_GUIDELINE = (
-    "Sos la voz editorial de Destiny. Explicá en 2-3 oraciones, en español, "
-    "cálido y cercano, por qué estas dos personas podrían resonar ahora. "
-    "Nunca determinista ni supersticioso: la astrología es una invitación a "
-    "mirar, no una predicción cerrada. Nunca muestres el porcentaje en bruto "
-    "sin esta explicación."
+    "Sos la voz editorial de Destiny, una app argentina de conexiones con astrología. "
+    "Escribí en castellano rioplatense, con voseo, cálido y concreto, sin jerga astrológica difícil. "
+    "Explicá en 2 o 3 oraciones (máximo 60 palabras), para el tipo de vínculo indicado, qué une a estas dos "
+    "personas (el eje 'lo_que_mas_los_une') y qué van a tener que trabajar (el eje 'lo_que_tienen_que_trabajar'). "
+    "Esos dos ejes ya vienen decididos: no los cambies. Usá los 'niveles' (alto, medio, bajo) para describirlos; "
+    "los puntajes van de 0 a 100 y 50 es lo promedio. Ejes: atraccion = química, afecto = lo emocional, "
+    "comunicacion = forma de comunicarse, compromiso = construir algo estable. "
+    "Nada de predicciones ('van a ser felices'), nada de contenido sexual explícito, no menciones que sos una IA. "
+    "Texto plano, sin markdown. Respondé solo con el texto."
 )
-
-
-class ResonanceExplainer(Protocol):
-    def explain(self, viewer: dict, candidate: dict, signals: dict) -> str: ...
-
-
-class MockResonanceExplainer:
-    """Sin ANTHROPIC_API_KEY configurada: texto editorial borrador, no LLM.
-
-    Reemplazable por ClaudeResonanceExplainer sin tocar el router ni el
-    contrato de datos (mismo principio de adapter que ADR 0006 para KYC).
-    """
-
-    def explain(self, viewer: dict, candidate: dict, signals: dict) -> str:
-        if "ejes" in signals:
-            return self._explain_axes(signals)
-        pct = signals["percentage"]
-        return (
-            f"{aspect_sentence(signals['aspect']).capitalize()}, con un {pct}% de resonancia. "
-            "No es una garantía, es una invitación: el momento parece acompañar "
-            "el encuentro, vale la pena ver qué pasa cuando se cruzan."
-        )
-
-
-    def _explain_axes(self, signals: dict) -> str:
-        # Motor de sinastría (B5): el eje más fuerte y el más flojo, en lenguaje simple.
-        axes = signals["ejes"]
-        relevant = relevant_axes(signals)
-        best = max(relevant, key=axes.get)
-        worst = min(relevant, key=axes.get)
-        context = CONTEXT_PHRASE.get(signals["tipo_de_relacion"], "")
-        text = (
-            f"{context}lo que más los une es {AXIS_PHRASE[best]} ({axes[best]}/100)"
-            f", y lo que más van a tener que trabajar es {AXIS_PHRASE[worst]} ({axes[worst]}/100). "
-            f"En total, {signals['total']}% de resonancia. No es una garantía, es una invitación."
-        )
-        if signals.get("aproximado"):
-            text += " (Aproximado: alguno de los dos no sabe su hora exacta.)"
-        return text[0].upper() + text[1:]
-
 
 AXIS_PHRASE = {
     "atraccion": "la química",
@@ -67,28 +39,42 @@ CONTEXT_PHRASE = {
 }
 
 
-class ClaudeResonanceExplainer:
-    def __init__(self, api_key: str) -> None:
-        import anthropic
+@dataclass
+class Written:
+    text: str
+    ai: LLMResult | None  # None = texto de plantilla
 
-        self._client = anthropic.Anthropic(api_key=api_key)
 
-    def explain(self, viewer: dict, candidate: dict, signals: dict) -> str:
-        message = self._client.messages.create(
-            model="claude-sonnet-5-5",
-            max_tokens=300,
-            system=EDITORIAL_GUIDELINE,
-            messages=[
-                {
-                    "role": "user",
-                    "content": json.dumps({"viewer": viewer, "candidate": candidate, "signals": signals}),
-                }
-            ],
-        )
-        return "".join(block.text for block in message.content if block.type == "text")
+class ResonanceExplainer(Protocol):
+    def explain(self, facts: dict) -> Written: ...
+
+
+def template_explanation(facts: dict) -> str:
+    """El eje más fuerte y el más flojo entre los que importan para el vínculo."""
+    axes = facts["ejes"]
+    relevant = relevant_axes(facts)
+    best = max(relevant, key=axes.get)
+    worst = min(relevant, key=axes.get)
+    text = (
+        f"{CONTEXT_PHRASE.get(facts['tipo_de_relacion'], '')}lo que más los une es {AXIS_PHRASE[best]} "
+        f"({axes[best]}/100), y lo que más van a tener que trabajar es {AXIS_PHRASE[worst]} ({axes[worst]}/100). "
+        f"En total, {facts['total']}% de resonancia. No es una garantía, es una invitación."
+    )
+    if facts.get("aproximado"):
+        text += " (Aproximado: alguno de los dos no sabe su hora exacta.)"
+    return text[0].upper() + text[1:]
+
+
+class TemplateResonanceExplainer:
+    def explain(self, facts: dict) -> Written:
+        return Written(template_explanation(facts), None)
+
+
+class OpenRouterResonanceExplainer:
+    def explain(self, facts: dict) -> Written:
+        result = complete(EDITORIAL_GUIDELINE, json.dumps(facts, ensure_ascii=False), MAX_CHARS)
+        return Written(result.text, result) if result else Written(template_explanation(facts), None)
 
 
 def get_explainer() -> ResonanceExplainer:
-    if settings.anthropic_api_key:
-        return ClaudeResonanceExplainer(settings.anthropic_api_key)
-    return MockResonanceExplainer()
+    return OpenRouterResonanceExplainer() if is_configured() else TemplateResonanceExplainer()

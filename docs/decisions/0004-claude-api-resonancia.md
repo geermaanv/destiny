@@ -1,6 +1,6 @@
 # 0004 — Claude API para explicaciones de resonancia
 
-- **Estado**: aceptada.
+- **Estado**: reemplazada (2026-10-12) por la spec `X1-redaccion-con-ia.md`: la redacción va por OpenRouter con modelo configurable (puede ser un modelo de Anthropic u otro). Se sacó la dependencia `anthropic`.
 
 ## Contexto
 

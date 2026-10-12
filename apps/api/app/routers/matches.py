@@ -8,13 +8,13 @@ from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session
 
 from app.auth import require_self, session_profile_id
-from app.compatibility import compatibility_signals
 from app.database import get_db
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
 from app.models import ChatMessage, Match, PersonalityAnswers, Profile
 from app.personality import CONTEXT_TO_MODE
 from app.personality.engine import compare
-from app.synastry import profile_synastry
+from app.ai_texts import record
+from app.synastry import ai_facts, profile_synastry
 from app.public_profile import public_fields
 from app.schemas import (
     ChatMessageOut,
@@ -31,10 +31,6 @@ from app.schemas import (
 
 # Conexión mutua + chat con rompehielos + paso a WhatsApp (spec B7 v2).
 router = APIRouter(tags=["matches"])
-
-
-def _profile_payload(profile: Profile) -> dict:
-    return {"birth_date": str(profile.birth_date), "birth_time": str(profile.birth_time)}
 
 
 def _get_profile(profile_id: uuid.UUID, db: Session) -> Profile:
@@ -138,8 +134,9 @@ def create_match(
     db.add(match)
     db.flush()
 
-    signals = compatibility_signals(profile_a, profile_b)
-    icebreaker_text = generator.generate(_profile_payload(profile_a), _profile_payload(profile_b), signals)
+    written = generator.generate(ai_facts(profile_synastry(profile_a, profile_b, "pareja")))
+    icebreaker_text = written.text
+    record(db, f"rompehielos:{match.id}", "rompehielos", written)
     db.add(ChatMessage(match_id=match.id, sender="system_icebreaker", text=icebreaker_text))
     db.commit()
 

@@ -30,5 +30,6 @@ Regla dura del proyecto: **spec → casos de prueba → código.** Ninguna featu
 | [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | implemented |
 | [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | implemented (v2 híbrida) |
 | [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | implemented |
+| [X1-redaccion-con-ia](./X1-redaccion-con-ia.md) | X1 (transversal) | approved |
 
 Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada spec dice explícitamente qué queda fuera de alcance de v1.

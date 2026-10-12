@@ -15,7 +15,9 @@ os.environ.update(
         "WHATSAPP_APP_SECRET": "test-app-secret",
         "WHATSAPP_VERIFY_TOKEN": "test-verify-token",
         "WHATSAPP_BUSINESS_NUMBER": "15550000000",
-        "ANTHROPIC_API_KEY": "",
+        # Los tests nunca usan la key real de OpenRouter del .env (tests de X1 simulan OpenRouter).
+        "OPENROUTER_API_KEY": "",
+        "OPENROUTER_MODEL": "",
         "WEB_BASE_URL": "https://destiny.test",
         "UPLOADS_DIR": "/tmp/destiny-test-uploads",
     }

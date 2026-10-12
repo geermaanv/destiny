@@ -14,8 +14,10 @@ from app.config import settings
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
+from app.ai_texts import record
 from app.models import ChatMessage, Invitation, Match, PersonalityAnswers, Profile
 from app.personality.engine import completed, load_config
+from app.synastry import ai_facts, profile_synastry
 from app.schemas import (
     InvitationAcceptOut,
     InvitationIn,
@@ -190,10 +192,9 @@ def accept_invitation(
         )
         db.add(match)
         db.flush()
-        signals = compatibility_signals(inviter, invitee)
-        payload = {"birth_date": str(inviter.birth_date), "birth_time": str(inviter.birth_time)}
-        other = {"birth_date": str(invitee.birth_date), "birth_time": str(invitee.birth_time)}
-        db.add(ChatMessage(match_id=match.id, sender="system_icebreaker", text=generator.generate(payload, other, signals)))
+        written = generator.generate(ai_facts(profile_synastry(inviter, invitee, match.relationship)))
+        db.add(ChatMessage(match_id=match.id, sender="system_icebreaker", text=written.text))
+        record(db, f"rompehielos:{match.id}", "rompehielos", written)
         match_id = match.id
     if invitation.invitee_profile_id is None:
         invitation.invitee_profile_id = invitee.id

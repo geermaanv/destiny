@@ -151,3 +151,17 @@ class PersonalityAnswers(Base):
     profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), primary_key=True)
     answers: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)  # {"E1.01": [2], "E1.02": [1, 3]}
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class AIText(Base):
+    """Textos redactados por la IA (spec X1): cache de explicaciones y registro de uso (modelo, tokens)."""
+
+    __tablename__ = "ai_texts"
+
+    key: Mapped[str] = mapped_column(String, primary_key=True)  # hash de pareja + vínculo + modelo + versión
+    kind: Mapped[str] = mapped_column(String, nullable=False)  # explicacion | rompehielos
+    text: Mapped[str] = mapped_column(String, nullable=False)
+    model: Mapped[str] = mapped_column(String, nullable=False)
+    prompt_tokens: Mapped[int | None] = mapped_column(nullable=True)
+    completion_tokens: Mapped[int | None] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
