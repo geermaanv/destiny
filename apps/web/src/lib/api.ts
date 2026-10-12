@@ -498,3 +498,12 @@ export async function savePersonality(profileId: string, answers: Record<string,
   if (!res.ok) throw new Error("No se pudo guardar la respuesta");
   return res.json();
 }
+
+// "Tu día" (spec B4 v2): tránsito personal de hoy, texto de la biblioteca fija.
+export type MyDay = { date: string; aspect: string; is_major: boolean; moon_sign: string; title: string; text: string; reviewed: boolean };
+
+export async function getMyDay(profileId: string, date: string): Promise<MyDay> {
+  const res = await fetch(`${API_URL}/home/my-day?profile_id=${profileId}&date=${date}`);
+  if (!res.ok) throw new Error("No se pudo cargar tu día");
+  return res.json();
+}

@@ -19,6 +19,29 @@ Pantalla de entrada diaria: contexto astrológico del día en lenguaje claro, mo
 - Mood check-in de un toque: selección simple de un estado de ánimo (set fijo de opciones), persistido con timestamp.
 - Contador **"N en tu frecuencia"**: cantidad de perfiles verificados con tránsitos afines, agrupados geográficamente (radio configurable, default razonable a definir en implementación).
 
+## v2 — "Tu día": tránsito personal en Inicio (aprobado por German, 2026-10-12, implementado)
+
+- Inicio muestra una tarjeta **"Tu día"** con el tránsito personal de hoy: la Luna del día respecto de **tu** Sol natal (con la hora local de nacimiento, ver corrección en A1). Título + 1 o 2 oraciones en lenguaje simple, y link "Ver tu calendario".
+- **El modelo calcula, el texto sale de una biblioteca fija** (ADR 0011 / spec X1): `apps/api/app/content/transitos_v1.json`, con un texto por **tipo de tránsito** (conjunción, sextil, cuadratura, trígono, oposición, o "sin tránsito fuerte") × **signo por el que pasa la Luna** (12) = 72 textos. Se generan **una sola vez** con la IA (`scripts/generate_transit_texts.py`) y quedan marcados "pendiente de revisión de Pablo"; se pueden editar a mano. **Abrir Inicio no llama a la IA.**
+- "Hoy" es la fecha local del usuario (la manda la app).
+- Si falta un texto en la biblioteca, se usa el texto genérico del tipo de tránsito (el del calendario).
+
+```
+GET /home/my-day?profile_id=&date=YYYY-MM-DD
+  -> { "date", "aspect", "moon_sign", "title", "text", "is_major", "reviewed": false }
+```
+
+### Casos de prueba v2 (`apps/api/tests/test_b4_tu_dia.py`)
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 1 | La biblioteca está completa | 6 tipos × 12 signos, todos con título y texto (máx. 280 caracteres) |
+| 2 | "Tu día" para una fecha | Tránsito y signo lunar calculados con el Sol natal en hora local; título y texto de la biblioteca para esa combinación |
+| 3 | Es el mismo tránsito que el calendario ese día | Mismo aspecto que `GET /calendar/day/{fecha}` |
+| 4 | Sin sesión o con el perfil de otro | 401 / 403 |
+| 5 | Abrir "Tu día" | No llama a la IA |
+| 6 | Falta un texto en la biblioteca | Usa el texto genérico del tipo de tránsito |
+
 ## Contrato de datos / API
 
 ```

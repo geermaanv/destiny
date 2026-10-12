@@ -40,6 +40,7 @@ POST /calendar/day/{date}/annotations { "text": "..." }
 - Debajo del calendario, **"Próximos eventos"**: los próximos 10 tránsitos importantes desde hoy, sin tener que tocar cada día. Los días seguidos con el mismo tránsito se agrupan en un evento. Cada evento tiene un título y una frase en lenguaje simple (ej. "Día armónico — Todo fluye más fácil…") y marca si el usuario tiene notas. Tocarlo abre el día.
 - Calendario con mes y año, flechas para cambiar de mes, días de la semana (arranca en lunes), hoy destacado y leyenda.
 - API: `GET /calendar/upcoming?profile_id=&from=&limit=10`; el detalle del día suma `title` y `text` del tránsito.
+- **Corrección 2026-10-12 (reportada por German):** al pasar a otro mes, la lista seguía mostrando los eventos desde hoy. Ahora **sigue al mes que se está mirando**: en el mes actual, desde hoy; en otro mes, desde el día 1 de ese mes ("Eventos desde el 1 de noviembre"). Caso de prueba: `test_proximos_eventos_desde_el_mes_elegido` (los eventos arrancan en ese mes y están ordenados).
 
 ## Casos de prueba
 

@@ -155,6 +155,18 @@ class AstroWeatherOut(BaseModel):
     date: date
 
 
+class MyDayOut(BaseModel):
+    """ "Tu día" (spec B4 v2)."""
+
+    date: date
+    aspect: str
+    is_major: bool
+    moon_sign: str
+    title: str
+    text: str
+    reviewed: bool  # la biblioteca ya la revisó Pablo
+
+
 class FrequencyCountOut(BaseModel):
     count: int
 

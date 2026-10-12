@@ -7,9 +7,11 @@ import Link from "next/link";
 import {
   getConnections,
   getFrequencyCount,
+  getMyDay,
   getMyInvitations,
   getTodayAstroWeather,
   Mood,
+  MyDay,
   MyInvitation,
   submitMoodCheckin,
 } from "@/lib/api";
@@ -34,10 +36,14 @@ function HomeContent() {
 
   const [pendingRequests, setPendingRequests] = useState(0);
   const [invitations, setInvitations] = useState<MyInvitation[]>([]);
+  const [myDay, setMyDay] = useState<MyDay | null>(null);
 
   useEffect(() => {
     if (!profileId) return;
     getFrequencyCount(profileId).then((r) => setFrequencyCount(r.count));
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    getMyDay(profileId, today).then(setMyDay).catch(() => null);
     getConnections(profileId)
       .then((cs) => setPendingRequests(cs.filter((c) => c.status === "pendiente" && c.direction === "recibida").length))
       .catch(() => null);
@@ -62,6 +68,15 @@ function HomeContent() {
         </div>
         <p className="mt-2 text-lg text-gold-300">{astroWeather ?? "Calculando..."}</p>
       </div>
+
+      {myDay && (
+        <Link href="/calendario" className="block space-y-1 rounded-md bg-slate-900 p-4 ring-1 ring-gold-400/40 hover:ring-gold-400">
+          <p className="text-xs uppercase tracking-wide text-slate-400">Tu día · Luna en {myDay.moon_sign}</p>
+          <p className="font-medium text-gold-300">{myDay.title}</p>
+          <p className="text-sm text-slate-300">{myDay.text}</p>
+          <p className="pt-1 text-xs text-violet-400">Ver tu calendario →</p>
+        </Link>
+      )}
 
       <div>
         <p className="mb-2 text-sm text-slate-400">¿Cómo estás hoy?</p>

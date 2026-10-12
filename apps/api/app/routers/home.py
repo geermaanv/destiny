@@ -1,16 +1,18 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import uuid
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.astro import today_astro_weather
+from app.astro import moon_longitude, today_astro_weather, zodiac_sign
 from app.auth import require_self, session_profile_id
+from app.content.transits import reviewed, text_for
 from app.database import get_db
 from app.models import MoodCheckin, Profile
-from app.schemas import AstroWeatherOut, FrequencyCountOut, MoodCheckinIn
+from app.schemas import AstroWeatherOut, FrequencyCountOut, MoodCheckinIn, MyDayOut
+from app.transits import day_transit
 
 router = APIRouter(prefix="/home", tags=["home"])
 
@@ -38,6 +40,32 @@ def get_frequency_count(
         query = query.where(Profile.id != profile_id)
     count = db.scalar(query)
     return FrequencyCountOut(count=count or 0)
+
+
+@router.get("/my-day", response_model=MyDayOut)
+def get_my_day(
+    profile_id: uuid.UUID = Query(...),
+    day: date = Query(alias="date"),
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> MyDayOut:
+    """"Tu día" (spec B4 v2): el modelo calcula el tránsito; el texto sale de la biblioteca fija (sin IA)."""
+    require_self(profile_id, current)
+    profile = db.get(Profile, profile_id)
+    if profile is None or profile.birth_date is None:
+        raise HTTPException(status_code=409, detail="Perfil sin datos natales")
+    transit = day_transit(profile, day)
+    moon_sign = zodiac_sign(moon_longitude(day))
+    title, text = text_for(transit["aspect"], moon_sign)
+    return MyDayOut(
+        date=day,
+        aspect=transit["aspect"],
+        is_major=transit["is_major"],
+        moon_sign=moon_sign,
+        title=title,
+        text=text,
+        reviewed=reviewed(),
+    )
 
 
 mood_router = APIRouter(tags=["home"])

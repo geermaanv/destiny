@@ -58,9 +58,16 @@ function CalendarioContent() {
     getMonth(profileId, cursor.year, cursor.month).then(setDays);
   }, [profileId, cursor]);
 
+  // La lista sigue al mes que se está mirando (B6, corrección 2026-10-12):
+  // en el mes actual, desde hoy; en otro mes, desde el día 1 de ese mes.
+  const isCurrentMonth = today.startsWith(`${cursor.year}-${pad(cursor.month)}`);
+  const listFrom = isCurrentMonth ? today : `${cursor.year}-${pad(cursor.month)}-01`;
+
   useEffect(() => {
-    if (profileId) getUpcoming(profileId, today).then(setUpcoming);
-  }, [profileId, today]);
+    if (!profileId) return;
+    setUpcoming(null);
+    getUpcoming(profileId, listFrom).then(setUpcoming);
+  }, [profileId, listFrom]);
 
   function moveMonth(delta: number) {
     setCursor(({ year, month }) => {
@@ -87,7 +94,7 @@ function CalendarioContent() {
     await addAnnotation(profileId, selectedDay, note.trim());
     setNote("");
     setDetail(await getDay(profileId, selectedDay));
-    getUpcoming(profileId, today).then(setUpcoming);
+    getUpcoming(profileId, listFrom).then(setUpcoming);
   }
 
   if (!profileId) return <p className="text-slate-400">Cargando…</p>;
@@ -195,7 +202,9 @@ function CalendarioContent() {
       )}
 
       <section className="space-y-2">
-        <h2 className="text-lg font-semibold">Próximos eventos</h2>
+        <h2 className="text-lg font-semibold">
+          {isCurrentMonth ? "Próximos eventos" : `Eventos desde el 1 de ${MONTH_NAMES[cursor.month - 1].toLowerCase()}`}
+        </h2>
         {upcoming === null && <p className="text-sm text-slate-400">Cargando…</p>}
         {upcoming?.length === 0 && <p className="text-sm text-slate-400">No hay tránsitos importantes por ahora.</p>}
         <ul className="space-y-2">

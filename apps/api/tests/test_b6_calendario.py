@@ -36,3 +36,11 @@ def test_calendario_de_otro_esta_prohibido(new_client):
     pid_a = verified_user(a, "5491111111111")
     verified_user(b, "5492222222222")
     assert b.get("/calendar/upcoming", params={"profile_id": pid_a}).status_code == 403
+
+
+def test_proximos_eventos_desde_el_mes_elegido(client):
+    pid = verified_user(client, "5491111111111")
+    eventos = client.get("/calendar/upcoming", params={"profile_id": pid, "from": "2026-11-01"}).json()
+    assert eventos and eventos[0]["start"] >= "2026-11-01"
+    assert eventos[0]["start"] < "2026-11-08"  # la Luna hace un aspecto mayor cada pocos días
+    assert [e["start"] for e in eventos] == sorted(e["start"] for e in eventos)
