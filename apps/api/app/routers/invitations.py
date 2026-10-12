@@ -1,8 +1,10 @@
 import secrets
 import uuid
+from datetime import datetime, timezone
 from urllib.parse import quote
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session
 
 from app.aspects import angle_between, aspect_sentence, classify_aspect
@@ -11,8 +13,18 @@ from app.compatibility import compatibility_signals, sun_longitude
 from app.config import settings
 from app.auth import require_self, session_profile_id
 from app.database import get_db
-from app.models import Invitation, Profile
-from app.schemas import InvitationIn, InvitationOut, InvitationPreloadOut, PartialReportOut, RevealOut
+from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
+from app.models import ChatMessage, Invitation, Match, PersonalityAnswers, Profile
+from app.personality.engine import completed, load_config
+from app.schemas import (
+    InvitationAcceptOut,
+    InvitationIn,
+    InvitationOut,
+    InvitationPreloadOut,
+    MyInvitationOut,
+    PartialReportOut,
+    RevealOut,
+)
 
 router = APIRouter(prefix="/invitations", tags=["invitations"])
 
@@ -34,11 +46,38 @@ def create_invitation(
         raise HTTPException(status_code=422, detail="Completá tu carta natal antes de invitar")
 
     ref_id = secrets.token_urlsafe(6)
+    link = f"{settings.web_base_url}/onboarding/invitacion?ref={ref_id}"
+
+    if payload.kind == "test":
+        # C8 v2: comparar el test de personalidad. Solo con mi test completo (el mensaje lo dice).
+        mine = db.get(PersonalityAnswers, inviter.id)
+        if completed(mine.answers if mine else {}) < len(load_config()["questions"]):
+            raise HTTPException(status_code=409, detail="Completá tu test de personalidad antes de invitar a compararlo")
+        db.add(
+            Invitation(
+                ref_id=ref_id,
+                inviter_profile_id=inviter.id,
+                friend_name=payload.friend_name,
+                kind="test",
+                relationship=payload.relationship or "pareja",
+            )
+        )
+        db.commit()
+        message = (
+            f"¡Hola {payload.friend_name}! Ya completé mi test de personalidad en Destiny ✨ Hacelo vos "
+            "(son 32 preguntas) y vemos qué tan compatibles somos en atracción, afecto, comunicación y "
+            f"compromiso: {link}"
+        )
+        return InvitationOut(
+            ref_id=ref_id, kind="test", message=message, whatsapp_url=f"https://wa.me/?text={quote(message)}"
+        )
+
     invitation = Invitation(
         ref_id=ref_id,
         inviter_profile_id=inviter.id,
         friend_name=payload.friend_name,
         friend_sun_sign=payload.friend_sun_sign,
+        relationship=payload.relationship,
     )
     db.add(invitation)
     db.commit()
@@ -59,7 +98,6 @@ def create_invitation(
         locked_fields=["hora_de_nacimiento", "ascendente", "compatibilidad_exacta"],
     )
 
-    link = f"{settings.web_base_url}/onboarding/invitacion?ref={ref_id}"
     # El mensaje lo manda quien invita desde su WhatsApp: le habla al amigo en primera persona.
     message = (
         f"¡Hola {payload.friend_name}! Te invito a Destiny ✨ Con tu signo ({payload.friend_sun_sign}) y mi carta, "
@@ -70,6 +108,100 @@ def create_invitation(
     return InvitationOut(ref_id=ref_id, whatsapp_url=whatsapp_url, partial_report=partial_report, message=message)
 
 
+@router.get("/mine", response_model=list[MyInvitationOut])
+def my_invitations(
+    profile_id: uuid.UUID = Query(...),
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> list[MyInvitationOut]:
+    """Mis invitaciones con su estado (C8 v2): enviada → registrado → test_completo."""
+    require_self(profile_id, current)
+    invitations = db.scalars(
+        select(Invitation).where(Invitation.inviter_profile_id == profile_id).order_by(Invitation.created_at.desc())
+    ).all()
+    total_questions = len(load_config()["questions"])
+    out = []
+    for inv in invitations:
+        status, match_id = "enviada", None
+        if inv.invitee_profile_id:
+            status = "registrado"
+            match_id = _match_between(db, inv.inviter_profile_id, inv.invitee_profile_id)
+            theirs = db.get(PersonalityAnswers, inv.invitee_profile_id)
+            if completed(theirs.answers if theirs else {}) == total_questions:
+                status = "test_completo"
+        out.append(
+            MyInvitationOut(
+                ref_id=inv.ref_id,
+                friend_name=inv.friend_name,
+                kind=inv.kind,
+                relationship=inv.relationship,
+                status=status,
+                match_id=match_id,
+                created_at=inv.created_at,
+            )
+        )
+    return out
+
+
+def _match_between(db: Session, a: uuid.UUID, b: uuid.UUID) -> uuid.UUID | None:
+    match = db.scalars(
+        select(Match).where(
+            or_(
+                and_(Match.profile_a_id == a, Match.profile_b_id == b),
+                and_(Match.profile_a_id == b, Match.profile_b_id == a),
+            )
+        )
+    ).first()
+    return match.id if match else None
+
+
+@router.post("/{ref_id}/accept", response_model=InvitationAcceptOut)
+def accept_invitation(
+    ref_id: str,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+    generator: IcebreakerGenerator = Depends(get_icebreaker_generator),
+) -> InvitationAcceptOut:
+    """El invitado (ya verificado, con sesión) queda conectado con quien lo invitó (C8 v2). Idempotente."""
+    if current is None:
+        raise HTTPException(status_code=401, detail="Necesitás iniciar sesión")
+    invitation = db.get(Invitation, ref_id)
+    if invitation is None:
+        raise HTTPException(status_code=404, detail="Invitation not found")
+    if invitation.inviter_profile_id == current:
+        raise HTTPException(status_code=409, detail="No podés aceptar tu propia invitación")
+    if invitation.invitee_profile_id not in (None, current):
+        raise HTTPException(status_code=409, detail="Esta invitación ya la usó otra persona")
+
+    inviter = _get_profile(invitation.inviter_profile_id, db)
+    invitee = _get_profile(current, db)
+    if invitee.verification_status != "verificado":
+        raise HTTPException(status_code=403, detail="Verificá tu identidad antes de aceptar")
+
+    match_id = _match_between(db, inviter.id, invitee.id)
+    if match_id is None:
+        match = Match(
+            profile_a_id=inviter.id,
+            profile_b_id=invitee.id,
+            status="aceptada",
+            accepted_at=datetime.now(timezone.utc),
+            relationship=invitation.relationship or "pareja",
+            source="invitacion",
+        )
+        db.add(match)
+        db.flush()
+        signals = compatibility_signals(inviter, invitee)
+        payload = {"birth_date": str(inviter.birth_date), "birth_time": str(inviter.birth_time)}
+        other = {"birth_date": str(invitee.birth_date), "birth_time": str(invitee.birth_time)}
+        db.add(ChatMessage(match_id=match.id, sender="system_icebreaker", text=generator.generate(payload, other, signals)))
+        match_id = match.id
+    if invitation.invitee_profile_id is None:
+        invitation.invitee_profile_id = invitee.id
+        invitation.accepted_at = datetime.now(timezone.utc)
+    db.commit()
+    return InvitationAcceptOut(match_id=match_id)
+
+
 @router.get("/{ref_id}", response_model=InvitationPreloadOut)
 def get_invitation(ref_id: str, db: Session = Depends(get_db)) -> InvitationPreloadOut:
     invitation = db.get(Invitation, ref_id)
@@ -77,12 +209,26 @@ def get_invitation(ref_id: str, db: Session = Depends(get_db)) -> InvitationPrel
         raise HTTPException(status_code=404, detail="Invitation not found")
 
     inviter = db.get(Profile, invitation.inviter_profile_id)
+    if invitation.kind == "test":
+        name = inviter.display_name or "Alguien"
+        return InvitationPreloadOut(
+            ref_id=ref_id,
+            friend_name=invitation.friend_name,
+            kind="test",
+            inviter_name=inviter.display_name,
+            relationship=invitation.relationship,
+            teaser=(
+                f"{name} completó su test de personalidad en Destiny y quiere ver qué tan compatibles son. "
+                "Registrate, hacé el test (32 preguntas) y lo descubren juntos."
+            ),
+        )
     friend_lon = approximate_longitude_for_sign(invitation.friend_sun_sign)
     aspect = classify_aspect(angle_between(sun_longitude(inviter.birth_date, inviter.birth_time), friend_lon))
 
     return InvitationPreloadOut(
         ref_id=ref_id,
         friend_name=invitation.friend_name,
+        inviter_name=inviter.display_name,
         teaser=(
             f"Alguien te invitó a Destiny. Con tu signo, puede que {aspect_sentence(aspect['aspect'])}. "
             "Completá tu carta para la revelación real."

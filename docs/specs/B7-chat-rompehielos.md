@@ -29,6 +29,23 @@ POST /matches/{id}/whatsapp                       -> "quiero pasar a WhatsApp"; 
 
 Implementación: `app/routers/matches.py` (estados, `/connections`, accept/reject/block/whatsapp), `Match` suma `status`, `accepted_at`, `whatsapp_a_ok`/`whatsapp_b_ok`, `whatsapp_shared_at`, `blocked_by`. Web: botón "Conectar" en Descubrir, pantalla `/conexiones`, chat con encabezado, actualización cada 4 s, panel "Pasar a WhatsApp" y "Bloquear"; aviso de solicitudes y tarjeta "Invitá a un amigo" en Inicio. Los mensajes se cortan a 1000 caracteres.
 
+### Panel "Compatibilidad" en todos los chats (aprobado por German, 2026-10-12, implementado)
+
+En el chat, un panel "Compatibilidad" muestra **astrología y personalidad por separado** (como en Descubrir), con selector de vínculo (por defecto el de la conexión: el elegido en la invitación, o Pareja). Solo lo ven los dos participantes.
+
+```
+GET /matches/{id}/compatibility?context=   -> { relationship, astrology: { total, axes, approximate }, personality: { axes, coverage, flags, total, complete } | null }
+```
+
+Casos de prueba del panel (`tests/test_b7_conexiones_chat.py`):
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 1 | Un participante pide la compatibilidad | Astrología con 4 ejes y total; personalidad null si alguno no respondió |
+| 2 | Con los dos tests completos | Personalidad con total y `complete: true` |
+| 3 | Sin contexto | Usa el vínculo de la conexión |
+| 4 | Un tercero la pide | 401 / 403 |
+
 Criterios v2:
 
 - [x] "Conectar" no abre chat hasta que la otra persona acepta.

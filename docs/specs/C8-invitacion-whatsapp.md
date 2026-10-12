@@ -40,6 +40,49 @@ GET /invitations/{ref_id} -> datos para precargar el onboarding del invitado
 3. Botón "Compartir por WhatsApp" → abre WhatsApp con mensaje + link pre-armado.
 4. El amigo abre el link → onboarding pre-cargado, directo a revelación de compatibilidad mutua al completar sus propios datos mínimos.
 
+## v2 — Invitación a comparar el test de personalidad (aprobada por German, 2026-10-12, implementada)
+
+Segundo tipo de invitación, para **alguien que ya conocés** (pareja, amigo, socio, jefe).
+
+Decisiones:
+1. Al registrarse y verificarse por esta invitación, **quedan conectados automáticamente** (conexión aceptada; el invitado ya aceptó al entrar por el link).
+2. Solo se puede mandar con **tu test de personalidad completo** (32/32): el mensaje dice "ya completé mi test".
+3. El panel "Compatibilidad" está **en todos los chats** (ver `B7-chat-rompehielos.md`).
+
+Flujo:
+1. En Invitar se elige el tipo: **"Adelanto astrológico"** (v1, con su signo) o **"Comparar test de personalidad"** (sin signo).
+2. Para el test se elige el **vínculo a mirar**: pareja, amistad, trabajo o casual (define los pesos de la comparación y queda guardado en la conexión).
+3. Mensaje: "¡Hola Juan! Ya completé mi test de personalidad en Destiny ✨ Hacelo vos (son 32 preguntas) y vemos qué tan compatibles somos en atracción, afecto, comunicación y compromiso: <link>".
+4. El invitado entra, se registra y se verifica → queda conectado con quien invitó → se le propone completar su test.
+5. Quien invitó ve en Inicio el estado de sus invitaciones: enviada → se sumó (N/32) → completó el test (link al chat).
+
+API v2:
+
+```
+POST /invitations { inviter_id, friend_name, kind: "astro" | "test", relationship?: pareja|amistad|laboral|ocasional, friend_sun_sign? }
+     kind=test: 409 si mi test no está completo; no pide signo.
+GET  /invitations/{ref}                -> suma kind, inviter_name, relationship
+POST /invitations/{ref}/accept         -> (sesión del invitado) crea la conexión aceptada con quien invitó; idempotente
+GET  /invitations/mine?profile_id=     -> mis invitaciones con estado: enviada | registrado | test_completo (+ match_id)
+```
+
+Modelo: `Invitation` suma `kind`, `relationship`, `invitee_profile_id`, `accepted_at`; `friend_sun_sign` pasa a opcional. `Match` suma `relationship` y `source` (`descubrir` | `invitacion`).
+
+### Casos de prueba v2
+
+Tests en `apps/api/tests/test_c8_invitacion_test.py` (todos en verde).
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 1 | Invitar a comparar el test sin tener el test completo | 409 |
+| 2 | Invitar a comparar el test con el test completo | 201, mensaje "Ya completé mi test…", sin pedir signo |
+| 3 | Invitación astrológica sin signo | 422 (el signo sigue siendo obligatorio para ese tipo) |
+| 4 | Vínculo inválido | 422 |
+| 5 | El link muestra quién invita, el tipo y el vínculo | `kind`, `inviter_name`, `relationship` |
+| 6 | El invitado verificado acepta | Conexión aceptada entre los dos con el vínculo elegido; repetir no duplica |
+| 7 | Aceptar sin sesión, o aceptar la propia invitación | 401 / 409 |
+| 8 | Estado de mis invitaciones | enviada → registrado → test_completo, con el id del chat |
+
 ## Actualización 2026-10-08
 
 - La pantalla explica qué recibe el amigo y muestra **el mensaje exacto** antes de mandarlo ("Así le va a llegar a…"); botón "Enviar por WhatsApp" e "Invitar a otra persona".

@@ -5,7 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import OnboardingSteps, { onboardingHref } from "@/components/OnboardingSteps";
 import {
+  acceptInvitation,
   claimSession,
+  getInvitation,
   continueWithExistingProfile,
   getVerification,
   revealInvitation,
@@ -91,10 +93,22 @@ function VerificacionForm() {
       .catch(() => setClaimFailed(true));
   }, [result, code]);
 
+  // Con la sesión iniciada, la invitación: si es para comparar el test (C8 v2) quedan
+  // conectados con quien invitó; si es astrológica, se revela la resonancia real.
+  const [invitedBy, setInvitedBy] = useState<{ name: string; matchId: string } | null>(null);
   useEffect(() => {
-    if (sessionReady && ref && profileId) {
-      revealInvitation(ref, profileId).then((r) => setReveal(r.text));
-    }
+    if (!sessionReady || !ref || !profileId) return;
+    getInvitation(ref)
+      .then(async (inv) => {
+        if (inv.kind === "test") {
+          const { match_id } = await acceptInvitation(ref);
+          setInvitedBy({ name: inv.inviter_name ?? "quien te invitó", matchId: match_id });
+        } else {
+          const r = await revealInvitation(ref, profileId);
+          setReveal(r.text);
+        }
+      })
+      .catch(() => null);
   }, [sessionReady, ref, profileId]);
 
   async function continueExisting() {
@@ -121,6 +135,19 @@ function VerificacionForm() {
         </h1>
         <p className="text-slate-400">{STATUS_COPY[result.status] ?? ""}</p>
         {reveal && <p className="rounded-md bg-slate-800 p-3 text-sm text-gold-200">{reveal}</p>}
+        {invitedBy && (
+          <div className="space-y-3 rounded-md bg-slate-800 p-4 text-left">
+            <p className="text-sm text-gold-200">
+              Ya estás conectado con {invitedBy.name}. Completá tu test de personalidad para ver qué tan compatibles son.
+            </p>
+            <a href="/perfil/test" className="block rounded-md bg-violet-600 px-3 py-2 text-center text-sm font-medium text-white">
+              Hacer el test (32 preguntas)
+            </a>
+            <a href={`/chat/${invitedBy.matchId}`} className="block text-center text-xs text-slate-400 underline">
+              Ir al chat con {invitedBy.name}
+            </a>
+          </div>
+        )}
         {result.status === "verificado" && (
           sessionReady ? (
             <a href="/home" className="inline-block text-violet-400 underline">

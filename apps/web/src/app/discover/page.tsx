@@ -1,10 +1,10 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
 import { useSessionProfileId } from "@/lib/session";
+import { PersonalityBlock } from "@/components/CompatibilityView";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import {
   createMatch,
@@ -28,53 +28,6 @@ const AXES: { key: "atraccion" | "afecto" | "comunicacion" | "compromiso"; label
   { key: "comunicacion", label: "Comunicación" },
   { key: "compromiso", label: "Compromiso" },
 ];
-
-// Test de personalidad de Pablo (spec A6): separado de la astrología.
-const PERSONALITY_AXES: { key: "E1" | "E2" | "E3" | "E4"; label: string }[] = [
-  { key: "E1", label: "Atracción" },
-  { key: "E2", label: "Afecto" },
-  { key: "E3", label: "Comunicación" },
-  { key: "E4", label: "Compromiso" },
-];
-
-function PersonalityBlock({ p }: { p: DiscoverCandidate["personality"] }) {
-  if (!p) {
-    return (
-      <p className="mt-3 rounded-md bg-slate-950 p-2.5 text-xs text-slate-400">
-        ◉ Personalidad: aparece cuando los dos completen el{" "}
-        <Link href="/perfil/test" className="text-violet-400 underline">
-          test de personalidad
-        </Link>
-        .
-      </p>
-    );
-  }
-  return (
-    <div className="mt-3 space-y-1.5">
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-        ◉ Personalidad · {p.total !== null ? `${Math.round(p.total)}%` : "provisorio"}
-      </p>
-      {PERSONALITY_AXES.map((axis) => {
-        const value = p.axes[axis.key];
-        return (
-          <div key={axis.key} className="flex items-center gap-2 text-xs">
-            <span className="w-24 text-slate-400">{axis.label}</span>
-            <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800">
-              <span className="block h-full rounded-full bg-violet-400" style={{ width: `${value ?? 0}%` }} />
-            </span>
-            <span className="w-7 text-right text-slate-300">{value === null ? "—" : Math.round(value)}</span>
-          </div>
-        );
-      })}
-      {!p.complete && (
-        <p className="text-xs text-slate-500">Provisorio: alguno de los dos todavía no completó las 32 preguntas.</p>
-      )}
-      {p.flags.length > 0 && (
-        <p className="text-xs text-gold-300">Diferencia importante en: {p.flags.join(", ").toLowerCase()}.</p>
-      )}
-    </div>
-  );
-}
 
 function DiscoverContent() {
   const router = useRouter();
@@ -184,7 +137,9 @@ function DiscoverContent() {
                   <p className="text-xs text-slate-500">Aproximado: sin hora exacta de nacimiento no se usan las casas.</p>
                 )}
               </div>
-              <PersonalityBlock p={c.personality} />
+              <div className="mt-3">
+                <PersonalityBlock p={c.personality} />
+              </div>
               {(c.bio || c.energy_period || c.interests.length > 0) && (
                 <div className="mt-3 space-y-2 text-sm">
                   {c.bio && <p className="text-slate-200">“{c.bio}”</p>}

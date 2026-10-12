@@ -4,7 +4,15 @@ import { Suspense, useEffect, useState } from "react";
 import AppNav from "@/components/AppNav";
 import { useSessionProfileId } from "@/lib/session";
 import Link from "next/link";
-import { getConnections, getFrequencyCount, getTodayAstroWeather, Mood, submitMoodCheckin } from "@/lib/api";
+import {
+  getConnections,
+  getFrequencyCount,
+  getMyInvitations,
+  getTodayAstroWeather,
+  Mood,
+  MyInvitation,
+  submitMoodCheckin,
+} from "@/lib/api";
 
 const MOODS: { value: Mood; label: string }[] = [
   { value: "energico", label: "Enérgico" },
@@ -25,12 +33,16 @@ function HomeContent() {
   }, []);
 
   const [pendingRequests, setPendingRequests] = useState(0);
+  const [invitations, setInvitations] = useState<MyInvitation[]>([]);
 
   useEffect(() => {
     if (!profileId) return;
     getFrequencyCount(profileId).then((r) => setFrequencyCount(r.count));
     getConnections(profileId)
       .then((cs) => setPendingRequests(cs.filter((c) => c.status === "pendiente" && c.direction === "recibida").length))
+      .catch(() => null);
+    getMyInvitations(profileId)
+      .then((all) => setInvitations(all.filter((i) => i.kind === "test").slice(0, 3)))
       .catch(() => null);
   }, [profileId]);
 
@@ -89,9 +101,33 @@ function HomeContent() {
         <p className="text-xl font-semibold">{frequencyCount ?? "—"} personas</p>
       </div>
 
+      {invitations.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm text-slate-400">Tus invitaciones a comparar el test</p>
+          {invitations.map((inv) => {
+            const text =
+              inv.status === "test_completo"
+                ? `${inv.friend_name} completó el test: mirá su compatibilidad →`
+                : inv.status === "registrado"
+                  ? `${inv.friend_name} se sumó y está haciendo el test`
+                  : `Esperando que ${inv.friend_name} se sume`;
+            const style = inv.status === "test_completo" ? "ring-gold-400/60 text-gold-300" : "ring-slate-800 text-slate-300";
+            return inv.match_id ? (
+              <Link key={inv.ref_id} href={`/chat/${inv.match_id}`} className={`block rounded-md bg-slate-900 p-3 text-sm ring-1 ${style}`}>
+                {text}
+              </Link>
+            ) : (
+              <p key={inv.ref_id} className={`rounded-md bg-slate-900 p-3 text-sm ring-1 ${style}`}>
+                {text}
+              </p>
+            );
+          })}
+        </div>
+      )}
+
       <Link href="/invitar" className="block rounded-md bg-slate-900 p-4 ring-1 ring-slate-700 hover:ring-violet-400">
-        <p className="font-medium">Invitá a un amigo</p>
-        <p className="text-sm text-slate-400">Mandale por WhatsApp un adelanto de su resonancia con vos →</p>
+        <p className="font-medium">Invitá a alguien</p>
+        <p className="text-sm text-slate-400">A comparar el test de personalidad, o con un adelanto astrológico →</p>
       </Link>
     </div>
   );

@@ -2,7 +2,7 @@ import uuid
 from datetime import date, datetime, time
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
 
@@ -288,6 +288,12 @@ class WhatsappHandoffOut(BaseModel):
     link: str | None = None  # solo cuando los dos aceptaron
 
 
+class CompatibilityOut(BaseModel):
+    relationship: str
+    astrology: dict
+    personality: "PersonalityCompatOut | None"
+
+
 class ConnectionOut(BaseModel):
     match_id: uuid.UUID
     status: str
@@ -307,13 +313,27 @@ class SendMessageIn(BaseModel):
     text: str
 
 
+Relationship = Literal["pareja", "amistad", "laboral", "ocasional"]
+
+
 class InvitationIn(BaseModel):
     inviter_id: uuid.UUID
-    friend_name: str
-    friend_sun_sign: Literal[
-        "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo",
-        "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis",
-    ]
+    friend_name: str = Field(min_length=1, max_length=40)
+    kind: Literal["astro", "test"] = "astro"  # C8 v2
+    relationship: Relationship | None = None
+    friend_sun_sign: (
+        Literal[
+            "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo",
+            "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis",
+        ]
+        | None
+    ) = None
+
+    @model_validator(mode="after")
+    def sign_for_astro(self) -> "InvitationIn":
+        if self.kind == "astro" and self.friend_sun_sign is None:
+            raise ValueError("la invitación astrológica necesita el signo del amigo")
+        return self
 
 
 class PartialReportOut(BaseModel):
@@ -325,16 +345,37 @@ class InvitationOut(BaseModel):
     message: str = ""  # texto que se manda por WhatsApp (para mostrarlo antes de enviar)
     ref_id: str
     whatsapp_url: str
-    partial_report: PartialReportOut
+    partial_report: PartialReportOut | None = None  # solo en kind="astro"
+    kind: str = "astro"
+
+
+class InvitationAcceptOut(BaseModel):
+    match_id: uuid.UUID
+
+
+class MyInvitationOut(BaseModel):
+    ref_id: str
+    friend_name: str
+    kind: str
+    relationship: str | None
+    status: Literal["enviada", "registrado", "test_completo"]
+    match_id: uuid.UUID | None
+    created_at: datetime
 
 
 class InvitationPreloadOut(BaseModel):
     ref_id: str
     friend_name: str
     teaser: str
+    kind: str = "astro"
+    inviter_name: str | None = None
+    relationship: str | None = None
 
 
 class RevealOut(BaseModel):
     aspect: str
     percentage: int
     text: str
+
+
+CompatibilityOut.model_rebuild()

@@ -1,4 +1,5 @@
 import uuid
+from typing import Literal
 from datetime import datetime, timezone
 from urllib.parse import quote
 
@@ -10,13 +11,18 @@ from app.auth import require_self, session_profile_id
 from app.compatibility import compatibility_signals
 from app.database import get_db
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
-from app.models import ChatMessage, Match, Profile
+from app.models import ChatMessage, Match, PersonalityAnswers, Profile
+from app.personality import CONTEXT_TO_MODE
+from app.personality.engine import compare
+from app.synastry import profile_synastry
 from app.public_profile import public_fields
 from app.schemas import (
     ChatMessageOut,
+    CompatibilityOut,
     ConnectionOut,
     MatchIn,
     MatchOut,
+    PersonalityCompatOut,
     ProfileRefIn,
     PublicProfileOut,
     SendMessageIn,
@@ -176,6 +182,31 @@ def _respond(match_id: uuid.UUID, payload: ProfileRefIn, current: uuid.UUID | No
         match.accepted_at = datetime.now(timezone.utc)
     db.commit()
     return _connection_out(match, current, db)
+
+
+@router.get("/matches/{match_id}/compatibility", response_model=CompatibilityOut)
+def match_compatibility(
+    match_id: uuid.UUID,
+    context: Literal["pareja", "amistad", "laboral", "ocasional"] | None = Query(default=None),
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> CompatibilityOut:
+    """Panel "Compatibilidad" del chat (B7): astrología y personalidad por separado."""
+    match = _get_own_match(match_id, current, db)
+    relationship = context or match.relationship or "pareja"
+    me, other = db.get(Profile, current), db.get(Profile, _other_id(match, current))
+    result = profile_synastry(me, other, relationship)
+    mine, theirs = db.get(PersonalityAnswers, me.id), db.get(PersonalityAnswers, other.id)
+    personality = (
+        PersonalityCompatOut(**compare(mine.answers, theirs.answers, CONTEXT_TO_MODE[relationship]))
+        if mine and theirs and mine.answers and theirs.answers
+        else None
+    )
+    return CompatibilityOut(
+        relationship=relationship,
+        astrology={"total": result["total"], "axes": result["ejes"], "approximate": result["aproximado"]},
+        personality=personality,
+    )
 
 
 @router.post("/matches/{match_id}/accept", response_model=ConnectionOut)

@@ -5,7 +5,18 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import { ChatMessage, Connection, getConnection, getMessages, respondConnection, sendMessage } from "@/lib/api";
+import { AstrologyBlock, CONTEXTS, PersonalityBlock } from "@/components/CompatibilityView";
+import {
+  ChatMessage,
+  Compatibility,
+  Connection,
+  getCompatibility,
+  getConnection,
+  getMessages,
+  RelationshipContext,
+  respondConnection,
+  sendMessage,
+} from "@/lib/api";
 import { useSessionProfileId } from "@/lib/session";
 
 // Chat híbrido (spec B7 v2): primer contacto en Destiny y, cuando los dos
@@ -20,6 +31,15 @@ function ChatContent() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [showMenu, setShowMenu] = useState(false);
+  // Panel "Compatibilidad" (B7): astrología y personalidad por separado, con selector de vínculo.
+  const [showCompat, setShowCompat] = useState(false);
+  const [compat, setCompat] = useState<Compatibility | null>(null);
+  const [compatContext, setCompatContext] = useState<RelationshipContext | undefined>(undefined);
+
+  useEffect(() => {
+    if (!profileId || !showCompat || connection?.status !== "aceptada") return;
+    getCompatibility(matchId, compatContext).then(setCompat).catch(() => null);
+  }, [profileId, showCompat, matchId, compatContext, connection?.status]);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -97,6 +117,47 @@ function ChatContent() {
         </p>
       ) : (
         <>
+          <div className="rounded-md bg-slate-900 p-3 ring-1 ring-slate-800">
+            <button
+              onClick={() => setShowCompat((v) => !v)}
+              className="flex w-full items-center justify-between text-sm font-medium"
+            >
+              <span>Compatibilidad</span>
+              <span className="text-slate-400">{showCompat ? "▴" : "▾"}</span>
+            </button>
+            {showCompat && (
+              <div className="mt-3 space-y-3">
+                <div className="grid grid-cols-4 gap-1.5">
+                  {CONTEXTS.map((c) => (
+                    <button
+                      key={c.value}
+                      onClick={() => setCompatContext(c.value)}
+                      className={`rounded-full px-2 py-1 text-xs ring-1 ${
+                        (compat?.relationship ?? compatContext) === c.value
+                          ? "bg-violet-600 text-white ring-violet-500"
+                          : "bg-slate-950 text-slate-300 ring-slate-700"
+                      }`}
+                    >
+                      {c.label}
+                    </button>
+                  ))}
+                </div>
+                {compat ? (
+                  <>
+                    <AstrologyBlock
+                      total={compat.astrology.total}
+                      axes={compat.astrology.axes}
+                      approximate={compat.astrology.approximate}
+                    />
+                    <PersonalityBlock p={compat.personality} />
+                  </>
+                ) : (
+                  <p className="text-xs text-slate-400">Calculando…</p>
+                )}
+              </div>
+            )}
+          </div>
+
           <div className="rounded-md bg-slate-900 p-3 text-sm ring-1 ring-slate-800">
             {wa.link ? (
               <a

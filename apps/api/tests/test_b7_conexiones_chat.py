@@ -101,3 +101,42 @@ def test_no_se_puede_conectar_con_uno_mismo(pareja):
 def test_conectar_en_nombre_de_otro_esta_prohibido(pareja):
     a, pid_a, b, pid_b = pareja
     assert a.post("/matches", json={"profile_a_id": pid_b, "profile_b_id": pid_a}).status_code == 403
+
+
+# --- Panel "Compatibilidad" en todos los chats ---------------------------------
+
+
+def _aceptada(a, pid_a, b, pid_b):
+    m = _conectar(a, pid_a, pid_b)
+    b.post(f"/matches/{m['id']}/accept", json={"profile_id": pid_b})
+    return m["id"]
+
+
+def test_compatibilidad_del_chat_astrologia_y_personalidad_separadas(pareja):
+    a, pid_a, b, pid_b = pareja
+    mid = _aceptada(a, pid_a, b, pid_b)
+    c = a.get(f"/matches/{mid}/compatibility").json()
+    assert set(c["astrology"]["axes"]) == {"atraccion", "afecto", "comunicacion", "compromiso"}
+    assert 0 <= c["astrology"]["total"] <= 100
+    assert c["personality"] is None and c["relationship"] == "pareja"
+
+
+def test_compatibilidad_del_chat_con_los_dos_tests(pareja):
+    from tests.helpers import complete_personality
+
+    a, pid_a, b, pid_b = pareja
+    mid = _aceptada(a, pid_a, b, pid_b)
+    complete_personality(a, pid_a)
+    complete_personality(b, pid_b)
+    p = b.get(f"/matches/{mid}/compatibility", params={"context": "amistad"}).json()
+    assert p["relationship"] == "amistad"
+    assert p["personality"]["complete"] is True and p["personality"]["total"] == 100
+
+
+def test_compatibilidad_del_chat_solo_para_los_participantes(pareja, new_client):
+    a, pid_a, b, pid_b = pareja
+    mid = _aceptada(a, pid_a, b, pid_b)
+    tercero = new_client()
+    assert tercero.get(f"/matches/{mid}/compatibility").status_code == 401
+    verified_user(tercero, "5493333333333", name="Caro")
+    assert tercero.get(f"/matches/{mid}/compatibility").status_code == 403

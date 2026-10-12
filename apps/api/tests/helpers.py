@@ -65,3 +65,11 @@ def verified_user(client: TestClient, phone: str, name: str = "Test", **kwargs) 
     verify(client, profile_id, phone)
     assert client.get("/me").status_code == 200
     return profile_id
+
+
+def complete_personality(client: TestClient, profile_id: str, choice: int = 2) -> None:
+    """Responde las 32 preguntas del test de personalidad de Pablo con la misma opción."""
+    from app.personality.engine import load_config
+
+    answers = {q["id"]: [choice] for q in load_config()["questions"]}
+    assert client.put(f"/profiles/{profile_id}/personality", json={"answers": answers}).status_code == 200

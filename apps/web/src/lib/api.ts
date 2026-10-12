@@ -302,18 +302,74 @@ export const SUN_SIGNS = [
   "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis",
 ] as const;
 
+export type InvitationKind = "astro" | "test";
+
 export type Invitation = {
   ref_id: string;
+  kind: InvitationKind;
   whatsapp_url: string;
   message: string;
-  partial_report: { teaser: string; locked_fields: string[] };
+  partial_report: { teaser: string; locked_fields: string[] } | null;
 };
 
-export function createInvitation(inviterId: string, friendName: string, friendSunSign: string): Promise<Invitation> {
-  return postJson("/invitations", { inviter_id: inviterId, friend_name: friendName, friend_sun_sign: friendSunSign });
+export function createInvitation(
+  inviterId: string,
+  friendName: string,
+  options: { kind: InvitationKind; friendSunSign?: string; relationship?: RelationshipContext }
+): Promise<Invitation> {
+  return postJson("/invitations", {
+    inviter_id: inviterId,
+    friend_name: friendName,
+    kind: options.kind,
+    friend_sun_sign: options.friendSunSign,
+    relationship: options.relationship,
+  });
 }
 
-export async function getInvitation(refId: string): Promise<{ ref_id: string; friend_name: string; teaser: string }> {
+export type InvitationPreload = {
+  ref_id: string;
+  friend_name: string;
+  teaser: string;
+  kind: InvitationKind;
+  inviter_name: string | null;
+  relationship: RelationshipContext | null;
+};
+
+// C8 v2: el invitado (ya con sesión) queda conectado con quien lo invitó.
+export function acceptInvitation(refId: string): Promise<{ match_id: string }> {
+  return postJson(`/invitations/${refId}/accept`);
+}
+
+export type MyInvitation = {
+  ref_id: string;
+  friend_name: string;
+  kind: InvitationKind;
+  relationship: RelationshipContext | null;
+  status: "enviada" | "registrado" | "test_completo";
+  match_id: string | null;
+  created_at: string;
+};
+
+export async function getMyInvitations(profileId: string): Promise<MyInvitation[]> {
+  const res = await fetch(`${API_URL}/invitations/mine?profile_id=${profileId}`);
+  if (!res.ok) throw new Error("No se pudieron cargar tus invitaciones");
+  return res.json();
+}
+
+// Panel "Compatibilidad" del chat (B7): astrología y personalidad por separado.
+export type Compatibility = {
+  relationship: RelationshipContext;
+  astrology: { total: number; axes: Record<"atraccion" | "afecto" | "comunicacion" | "compromiso", number>; approximate: boolean };
+  personality: PersonalityCompat | null;
+};
+
+export async function getCompatibility(matchId: string, context?: RelationshipContext): Promise<Compatibility> {
+  const res = await fetch(`${API_URL}/matches/${matchId}/compatibility${context ? `?context=${context}` : ""}`);
+  if (!res.ok) throw new Error("No se pudo cargar la compatibilidad");
+  return res.json();
+}
+
+export async function getInvitation(refId: string): Promise<InvitationPreload> {
   const res = await fetch(`${API_URL}/invitations/${refId}`);
   if (!res.ok) throw new Error("No se pudo cargar la invitación");
   return res.json();

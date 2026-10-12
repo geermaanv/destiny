@@ -104,8 +104,13 @@ class Invitation(Base):
     ref_id: Mapped[str] = mapped_column(String, primary_key=True)
     inviter_profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     friend_name: Mapped[str] = mapped_column(String, nullable=False)
-    friend_sun_sign: Mapped[str] = mapped_column(String, nullable=False)
+    friend_sun_sign: Mapped[str | None] = mapped_column(String, nullable=True)  # solo en kind="astro"
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    # C8 v2: "astro" (adelanto por signo) | "test" (comparar test de personalidad).
+    kind: Mapped[str] = mapped_column(String, default="astro", nullable=False)
+    relationship: Mapped[str | None] = mapped_column(String, nullable=True)
+    invitee_profile_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class Match(Base):
@@ -123,6 +128,9 @@ class Match(Base):
     whatsapp_b_ok: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     whatsapp_shared_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     blocked_by: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    # Vínculo con el que se mira la compatibilidad (C8 v2) y de dónde salió la conexión.
+    relationship: Mapped[str | None] = mapped_column(String, nullable=True)
+    source: Mapped[str] = mapped_column(String, default="descubrir", nullable=False)  # descubrir | invitacion
 
 
 class ChatMessage(Base):
