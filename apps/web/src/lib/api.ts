@@ -535,3 +535,37 @@ export async function setStyle(profileId: string, registro: Registro | null): Pr
   if (!res.ok) throw new Error("No se pudo guardar tu estilo");
   return res.json();
 }
+
+// Mi carta por dimensiones (spec A8).
+export type NatalFoundation = {
+  tipo: "signo" | "casa" | "aspecto";
+  punto: string;
+  signo?: string | null;
+  casa?: number | null;
+  otro?: string | null;
+  aspecto?: string | null;
+  texto: string;
+};
+
+export type NatalDimension = {
+  clave: string;
+  nombre: string;
+  pregunta: string;
+  fundamentos: NatalFoundation[];
+  preguntas: string[];
+  faltan_por_hora: string[];
+};
+
+export type NatalDimensions = { aproximado: boolean; dimensiones: NatalDimension[] };
+
+export async function getNatalDimensions(profileId: string): Promise<NatalDimensions> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/natal/dimensions`);
+  if (!res.ok) throw new Error("No se pudo cargar tu carta");
+  return res.json();
+}
+
+export async function getNatalSynthesis(profileId: string, clave: string): Promise<{ texto: string; ia: boolean }> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/natal/dimensions/${clave}/synthesis`);
+  if (!res.ok) throw new Error("No se pudo cargar la síntesis");
+  return res.json();
+}

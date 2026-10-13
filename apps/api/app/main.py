@@ -15,6 +15,7 @@ from app.routers import (
     profiles,
     sessions,
     style,
+    natal,
     whatsapp,
 )
 
@@ -46,6 +47,7 @@ app.include_router(geocoding.router)
 app.include_router(sessions.router)
 app.include_router(personality.router)
 app.include_router(style.router)
+app.include_router(natal.router)
 
 
 @app.get("/health")

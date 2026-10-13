@@ -1,0 +1,76 @@
+{
+ "version": "v1",
+ "notas": "Mi carta por dimensiones (spec A8). Matriz dimensión → indicadores propuesta por Destiny; la revisa Pablo (ADR 0011). Editable sin tocar código.",
+ "dimensiones": {
+  "identidad": {
+   "nombre": "Identidad y propósito",
+   "pregunta": "¿Quién soy y qué me mueve?",
+   "indicadores": [{"punto": "sol", "signo": true, "casa": true}, {"punto": "asc", "signo": true}],
+   "aspectos_a": ["sol"],
+   "preguntas": [
+    "¿En qué momentos sentís que estás siendo más vos?",
+    "¿Qué te da energía y qué te la saca?",
+    "¿Qué te gustaría que la gente note de vos sin que lo tengas que decir?"
+   ]
+  },
+  "amor": {
+   "nombre": "Amor y vínculos",
+   "pregunta": "¿Cómo amo y me vinculo?",
+   "indicadores": [{"punto": "venus", "signo": true, "casa": true}, {"punto": "desc", "signo": true}],
+   "aspectos_a": ["venus"],
+   "preguntas": [
+    "¿Cómo te das cuenta de que alguien te importa?",
+    "¿Qué necesitás de otra persona para sentirte en confianza?",
+    "¿Qué patrón se repite en tus vínculos?"
+   ]
+  },
+  "vocacion": {
+   "nombre": "Vocación y carrera",
+   "pregunta": "¿Dónde puedo desarrollarme?",
+   "indicadores": [{"punto": "mc", "signo": true}, {"punto": "saturno", "signo": true, "casa": true}],
+   "aspectos_a": ["mc", "saturno"],
+   "preguntas": [
+    "¿Qué harías aunque no te pagaran?",
+    "¿Qué responsabilidad te cuesta pero te hace crecer?",
+    "¿Cómo te gustaría que te reconozcan por tu trabajo?"
+   ]
+  },
+  "emociones": {
+   "nombre": "Seguridad emocional",
+   "pregunta": "¿Qué me da estabilidad?",
+   "indicadores": [{"punto": "luna", "signo": true, "casa": true}, {"punto": "ic", "signo": true}],
+   "aspectos_a": ["luna"],
+   "preguntas": [
+    "¿Qué te calma cuando estás mal?",
+    "¿Dónde o con quién te sentís en casa?",
+    "¿Qué necesitás pedir más seguido?"
+   ]
+  }
+ },
+ "puntos_de_aspecto": ["sol", "luna", "mercurio", "venus", "marte", "jupiter", "saturno", "urano", "neptuno", "pluton", "asc", "mc"],
+ "aspectos": {
+  "conjuncion": {"nombre": "conjunción", "angulo": 0, "orbe": 8, "significado": "se funden e intensifican"},
+  "sextil": {"nombre": "sextil", "angulo": 60, "orbe": 5, "significado": "se dan oportunidades"},
+  "cuadratura": {"nombre": "cuadratura", "angulo": 90, "orbe": 7, "significado": "se tensionan y empujan a crecer"},
+  "trigono": {"nombre": "trígono", "angulo": 120, "orbe": 7, "significado": "fluyen con naturalidad"},
+  "oposicion": {"nombre": "oposición", "angulo": 180, "orbe": 8, "significado": "buscan un equilibrio"}
+ },
+ "puntos": {
+  "sol": {"nombre": "Sol", "palabra": "tu identidad"},
+  "luna": {"nombre": "Luna", "palabra": "tus emociones"},
+  "mercurio": {"nombre": "Mercurio", "palabra": "tu forma de pensar"},
+  "venus": {"nombre": "Venus", "palabra": "tu forma de amar"},
+  "marte": {"nombre": "Marte", "palabra": "tu impulso"},
+  "jupiter": {"nombre": "Júpiter", "palabra": "tu confianza"},
+  "saturno": {"nombre": "Saturno", "palabra": "tu responsabilidad"},
+  "urano": {"nombre": "Urano", "palabra": "tu necesidad de libertad"},
+  "neptuno": {"nombre": "Neptuno", "palabra": "tu sensibilidad"},
+  "pluton": {"nombre": "Plutón", "palabra": "tu intensidad"},
+  "asc": {"nombre": "Ascendente", "palabra": "cómo te mostrás"},
+  "mc": {"nombre": "Medio Cielo", "palabra": "tu rumbo profesional"},
+  "desc": {"nombre": "Descendente", "palabra": "lo que buscás en el otro"},
+  "ic": {"nombre": "Fondo de Cielo", "palabra": "tus raíces"}
+ },
+ "necesitan_hora": ["asc", "mc", "desc", "ic"],
+ "sintesis": {"max_caracteres": 500}
+}

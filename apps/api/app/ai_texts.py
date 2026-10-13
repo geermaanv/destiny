@@ -28,6 +28,15 @@ def explanation_key(viewer: Profile, candidate: Profile, context: str, style: di
     return hashlib.sha256(raw.encode()).hexdigest()
 
 
+def carta_key(profile: Profile, dimension: str, style: dict, versions: str) -> str:
+    """Síntesis de Mi carta (spec A8): cambia si cambian los datos natales, el estilo, el modelo o los textos."""
+    raw = (
+        f"carta:{profile.id}:{_chart_fingerprint(profile)}:{dimension}:"
+        f"{style['registro']}/{style['tono']}/{style['formato']}:{settings.openrouter_model}:{versions}"
+    )
+    return hashlib.sha256(raw.encode()).hexdigest()
+
+
 def cached(db: Session, key: str) -> str | None:
     row = db.get(AIText, key)
     return row.text if row else None

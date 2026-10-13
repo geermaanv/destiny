@@ -94,7 +94,9 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 ## Autoconocimiento primero, matchmaking después (decisión de German, 2026-10-13)
 
 Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usuarios crece; el matchmaking sigue. Prioridad tomada del MVP 1 del whitepaper (`docs/referencias/whitepaper-producto-v1.md`), sobre lo que ya existe:
-- [ ] **Mi carta por dimensiones**: las 4 del MVP (identidad, amor, vocación, emociones), cada una con síntesis, los indicadores astrológicos que la explican (planetas, casas, aspectos) y preguntas de reflexión. Necesita la matriz dimensión → indicadores (propuesta nuestra, revisión de Pablo).
+- [x] **Mi carta por dimensiones** (spec A8): identidad, amor, vocación y emociones, con síntesis en el estilo de la persona, fundamentos trazables y preguntas para pensar. Pantalla `/perfil/carta`, acceso desde Mi perfil.
+- [ ] Que Pablo revise la matriz de indicadores de Mi carta (`apps/api/app/natal/config/dimensiones_v1.json`) y los 144 textos (`apps/api/app/content/carta_v1.json`, `revisado_por_pablo: false`).
+- [ ] Mi carta v2: las otras 12 dimensiones del whitepaper, guardar respuestas a las preguntas (Destiny Mirror), regentes de casas.
 - [ ] **Astrochat** con los 4 modos del whitepaper (Explorador, Mentor, Astrólogo técnico, Acompañante), consultando cálculos reales (carta, tránsitos), nunca inventados. Reutiliza los estilos de X2. Costo de IA por uso → se conecta con los créditos.
 - [ ] **Mi cielo**: tránsitos de todos los planetas sobre los puntos natales (orbe, exactitud, período activo), filtros por área de vida. Extiende el calendario y "Tu día".
 - [ ] **Consentimientos y datos**: aceptar privacidad al empezar, ver/exportar/borrar mis datos, memoria del chat opcional.

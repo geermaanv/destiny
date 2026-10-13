@@ -29,6 +29,15 @@ function MiPerfil() {
   return (
     <div className="w-full max-w-sm space-y-6">
       <h1 className="text-2xl font-semibold">Mi perfil</h1>
+      {me?.birth_date && (
+        <Link href="/perfil/carta" className="block space-y-1 rounded-md bg-slate-900 p-4 ring-1 ring-gold-400/40 hover:ring-gold-400">
+          <span className="block font-medium text-gold-300">Mi carta</span>
+          <span className="block text-sm text-slate-400">
+            Identidad, amor, vocación y emociones: lo que dice tu carta natal sobre vos.
+          </span>
+          <span className="block text-sm text-violet-400">Ver mi carta →</span>
+        </Link>
+      )}
       <Link href="/perfil/test" className="block space-y-2 rounded-md bg-slate-900 p-4 ring-1 ring-gold-400/40 hover:ring-gold-400">
         <span className="flex items-center justify-between">
           <span className="font-medium text-gold-300">Test de personalidad</span>

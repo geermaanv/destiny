@@ -157,6 +157,37 @@ class AstroWeatherOut(BaseModel):
     date: date
 
 
+class NatalFoundationOut(BaseModel):
+    """Un indicador de la carta que explica una dimensión (spec A8)."""
+
+    tipo: Literal["signo", "casa", "aspecto"]
+    punto: str
+    signo: str | None = None
+    casa: int | None = None
+    otro: str | None = None
+    aspecto: str | None = None
+    texto: str
+
+
+class NatalDimensionOut(BaseModel):
+    clave: str
+    nombre: str
+    pregunta: str
+    fundamentos: list[NatalFoundationOut]
+    preguntas: list[str]
+    faltan_por_hora: list[str]
+
+
+class NatalDimensionsOut(BaseModel):
+    aproximado: bool
+    dimensiones: list[NatalDimensionOut]
+
+
+class NatalSynthesisOut(BaseModel):
+    texto: str
+    ia: bool
+
+
 class StyleOut(BaseModel):
     """Estilo de redacción (spec X2)."""
 
