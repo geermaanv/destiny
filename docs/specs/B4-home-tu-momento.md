@@ -63,7 +63,7 @@ GET /home/frequency-count -> { "count": 134 }
 
 ## v3 — Tu día completo (German, 2026-10-13: "poder ir a un análisis más completo, más extenso")
 
-Desde Hoy, el botón **"Leé tu día completo"** abre **Tu día completo** (`/dia`). Es la primera versión de "Mi cielo" del whitepaper. Todo lo astrológico lo **calcula el motor** (determinístico, ADR 0011); la IA solo **redacta** la lectura, en el estilo de la persona (X2), una vez por día.
+Desde Hoy, el link **"Leer más →"** abre **Tu día completo** (`/dia`). Es la primera versión de "Mi cielo" del whitepaper. Todo lo astrológico lo **calcula el motor** (determinístico, ADR 0011); la IA solo **redacta** la lectura, en el estilo de la persona (X2), una vez por día.
 
 **Contenido**
 1. **El clima del día**: signo y fase de la Luna, y por qué **casa de tu carta** pasa (casas por signo entero; solo con hora exacta), con el tema de esa casa.

@@ -77,12 +77,11 @@ function HomeContent() {
       {myDay && (
         <section className="space-y-3">
           <p className="leading-relaxed text-slate-200">{myDay.text}</p>
-          <Link
-            href="/dia"
-            className="block w-full rounded-xl bg-violet-600 px-4 py-3 text-center font-medium text-white hover:bg-violet-500"
-          >
-            Leé tu día completo
-          </Link>
+          <div className="text-right text-sm">
+            <Link href="/dia" className="text-violet-400">
+              Leer más →
+            </Link>
+          </div>
         </section>
       )}
 
