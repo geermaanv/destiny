@@ -204,6 +204,12 @@ class StyleOut(BaseModel):
     tema_por_que: str
     elementos: dict[str, int]
     paleta: dict[str, dict[str, str]]
+    # v3
+    modo: Literal["oscuro", "claro"]
+    acento: str
+    tipografia: str
+    fondo: bool
+    cielo: list[dict[str, str | float]]
 
 
 class StyleIn(BaseModel):
@@ -211,6 +217,8 @@ class StyleIn(BaseModel):
 
     registro: Literal["directo", "practico", "analitico", "intuitivo"] | None = None
     tema: Literal["fuego", "tierra", "aire", "agua", "clasico"] | None = None
+    modo: Literal["oscuro", "claro"] | None = None
+    fondo: bool | None = None
 
 
 class MyDayOut(BaseModel):

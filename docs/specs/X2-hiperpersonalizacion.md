@@ -1,6 +1,6 @@
 # X2-hiperpersonalizacion — v1: estilo de redacción según la carta
 
-- **Estado**: v1 implemented (falta el ok de Pablo al verlo en la app) · v2 (tema visual) implemented
+- **Estado**: v1 implemented (falta el ok de Pablo al verlo en la app) · v2 (tema visual) implemented · v3 implemented
 - **Módulo**: X2 (transversal)
 - **Owner de decisión de producto**: German Villamarin (por ahora). El **mapeo carta → estilo** es parte del modelo: Pablo es la última palabra (ADR 0011) y lo ajusta en la configuración.
 - **Aprobada para implementación por**: German Villamarin, 2026-10-13
@@ -93,6 +93,27 @@ Mi perfil → tarjeta **"Cómo te hablamos"**: el estilo actual en palabras ("Di
 | 15 | Contraste | Cada tema mantiene la luminosidad de la paleta clásica en cada tono (± 2 %) |
 | 16 | Cambiar los pesos en la configuración | Cambia el tema sin tocar código |
 
-## Fuera de alcance (v3 en adelante)
+## v3 — Acento, modo claro, tipografía y cielo de nacimiento (aprobada por German, 2026-10-13: "seguí con la v3")
 
-Modo claro, tipografía, fondo con el cielo de nacimiento, acento por Venus y aprendizaje por uso (👍/👎).
+- **Acento por Venus**: si el tema lo decide la carta, el color de acento (escala `gold`) es el del elemento de Venus (lo que te atrae y te gusta). Si la persona eligió un tema, el acento es el de ese tema.
+- **Modo claro u oscuro** (`modo`, por defecto oscuro). El claro invierte la luminosidad de fondos, textos y acento (el dorado se oscurece más: tiene mucha luminancia) y deja igual los botones; se genera con `scripts/build_theme_palettes.py` (`paleta_claro`). Los controles nativos siguen el modo (`color-scheme`).
+- **Contraste WCAG medido** en los 5 temas × 2 modos, con las combinaciones que usa la app: texto principal ≥ 7 (slate-100 sobre slate-950); texto secundario ≥ 4,5 (slate-300 sobre 900, slate-400 sobre 950, violet-400 y gold-300); texto tenue ≥ 3,5 (slate-500); texto blanco en botones ≥ 3 (violet-600, texto grande/negrita).
+- **Tipografía de títulos por tema** (la de lectura no cambia, como pide el whitepaper): Fuego Sora, Tierra Lora, Aire Josefin Sans, Agua Cormorant Garamond, Clásico la de siempre.
+- **Fondo con el cielo de nacimiento**: una rueda zodiacal muy tenue detrás de la app con los planetas donde estaban al nacer (y el Ascendente si hay hora exacta). Se puede apagar (`fondo`, por defecto prendido). Es estático: no suma movimiento.
+
+**API**: `GET /profiles/{id}/style` suma `modo`, `acento` (elemento de Venus), `tipografia`, `fondo` y `cielo` (`[{punto, lon}]`, solo para la propia persona). `PUT` acepta `modo` (`oscuro`|`claro`) y `fondo` (bool). Modelo: `Profile.style_modo`, `Profile.style_fondo` (nullables).
+
+### Casos de prueba v3 (`apps/api/tests/test_x2_v3.py`)
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 17 | Acento | Con el tema de la carta, `gold` es el del tema del elemento de Venus; con un tema elegido, el de ese tema |
+| 18 | Modo claro | `paleta` pasa a la clara del tema (con el acento de Venus en su versión clara) y vuelve |
+| 19 | Contraste | Las combinaciones de arriba cumplen sus mínimos en los 5 temas × 2 modos |
+| 20 | Tipografía | Es la del tema actual |
+| 21 | Cielo | Los puntos y longitudes son los de la carta; sin hora exacta no hay Ascendente; `fondo` se puede apagar y prender |
+| 22 | Modo inválido | 422 |
+
+## Fuera de alcance (v4 en adelante)
+
+Aprendizaje por uso (👍/👎), animaciones del cielo y reducir movimiento (hoy no hay animaciones).

@@ -22,13 +22,13 @@ CLASSIC = {
 }
 # (matiz en grados, factor de saturación) por escala: slate = fondo y neutros, violet = acción, gold = acento.
 THEMES = {
-    "fuego": {"nombre": "Fuego", "descripcion": "rojo profundo, terracota y dorado",
+    "fuego": {"tipografia": "sora", "nombre": "Fuego", "descripcion": "rojo profundo, terracota y dorado",
               "slate": (345, 0.9), "violet": (16, 0.85), "gold": (40, 1.0)},
-    "tierra": {"nombre": "Tierra", "descripcion": "verde bosque, arena y cobre",
+    "tierra": {"tipografia": "lora", "nombre": "Tierra", "descripcion": "verde bosque, arena y cobre",
                "slate": (152, 0.55), "violet": (24, 0.7), "gold": (38, 0.55)},
-    "aire": {"nombre": "Aire", "descripcion": "azul claro, plata y lavanda",
+    "aire": {"tipografia": "josefin", "nombre": "Aire", "descripcion": "azul claro, plata y lavanda",
              "slate": (212, 0.6), "violet": (262, 0.75), "gold": (195, 0.55)},
-    "agua": {"nombre": "Agua", "descripcion": "índigo, océano y violeta",
+    "agua": {"tipografia": "cormorant", "nombre": "Agua", "descripcion": "índigo, océano y violeta",
              "slate": (222, 1.0), "violet": (276, 0.8), "gold": (172, 0.7)},
 }
 
@@ -40,14 +40,41 @@ def shift(hex_color: str, hue: float, sat_factor: float) -> str:
     return "#" + "".join(f"{round(x * 255):02x}" for x in (r, g, b))
 
 
+def invert(hex_color: str, factor: float = 1.0) -> str:
+    """Modo claro: mismo matiz y saturación, luminosidad invertida (L → (1 − L) × factor)."""
+    r, g, b = (int(hex_color[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    hue, light, sat = colorsys.rgb_to_hls(r, g, b)
+    r, g, b = colorsys.hls_to_rgb(hue, (1 - light) * factor, sat)
+    return "#" + "".join(f"{round(x * 255):02x}" for x in (r, g, b))
+
+
+# Modo claro: se invierten fondos/textos (slate), el acento (gold) y los tonos de acción que se usan como
+# texto o fondo suave (violet 50-400 y 950); los botones (violet 500-900, con texto blanco) quedan iguales.
+LIGHT_INVERTED = {"slate": "all", "gold": "all", "violet": {"50", "100", "200", "300", "400", "950"}}
+# Los amarillos/dorados tienen mucha luminancia: invertidos quedan claros sobre fondo claro; se oscurecen más.
+LIGHT_FACTOR = {"slate": 1.0, "violet": 1.0, "gold": 0.6}
+
+
+def light(palette: dict) -> dict:
+    out = {}
+    for scale, steps in palette.items():
+        rule = LIGHT_INVERTED[scale]
+        out[scale] = {s: invert(c, LIGHT_FACTOR[scale]) if rule == "all" or s in rule else c for s, c in steps.items()}
+    return out
+
+
 def main():
     config = json.loads(CONFIG.read_text())
-    temas = {"clasico": {"nombre": "Clásico", "descripcion": "los colores del logo: azul noche, coral y dorado", "paleta": CLASSIC}}
+    temas = {"clasico": {"nombre": "Clásico", "descripcion": "los colores del logo: azul noche, coral y dorado",
+                         "tipografia": "clasica", "paleta": CLASSIC, "paleta_claro": light(CLASSIC)}}
     for key, t in THEMES.items():
+        palette = {scale: {step: shift(c, *t[scale]) for step, c in steps.items()} for scale, steps in CLASSIC.items()}
         temas[key] = {
             "nombre": t["nombre"],
             "descripcion": t["descripcion"],
-            "paleta": {scale: {step: shift(c, *t[scale]) for step, c in steps.items()} for scale, steps in CLASSIC.items()},
+            "tipografia": t["tipografia"],
+            "paleta": palette,
+            "paleta_claro": light(palette),
         }
     config["tema"] = {
         "que_define": "los colores de la app",
@@ -56,6 +83,18 @@ def main():
         "desempate": "sol",
         "por_elemento": {"fuego": "fuego", "tierra": "tierra", "aire": "aire", "agua": "agua"},
         "temas": temas,
+        # v3: el acento (escala gold) sale del elemento de Venus cuando el tema lo decide la carta.
+        "acento": {"planeta": "venus", "descripcion": "Venus define lo que te atrae y te gusta: le da el color de acento."},
+        "modos": ["oscuro", "claro"],
+        "modo_por_defecto": "oscuro",
+        # Tipografía solo para títulos: la de lectura queda igual en todos los temas (whitepaper §3.2).
+        "tipografias": {
+            "clasica": "la de siempre",
+            "sora": "Sora: expresiva y con fuerza",
+            "lora": "Lora: serif orgánica y sobria",
+            "josefin": "Josefin Sans: liviana y geométrica",
+            "cormorant": "Cormorant Garamond: fluida y contemplativa",
+        },
     }
     CONFIG.write_text(json.dumps(config, ensure_ascii=False, indent=1) + "\n")
     print(f"Escrito {CONFIG}: temas {list(temas)}")

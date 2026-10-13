@@ -37,3 +37,9 @@
   --gold-400: 245 197 66;
   --gold-500: 224 170 31;
 }
+
+/* Títulos con la tipografía del tema (spec X2 v3); la de lectura no cambia. */
+h1,
+h2 {
+  font-family: var(--font-display, inherit);
+}

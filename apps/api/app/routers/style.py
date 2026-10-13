@@ -40,6 +40,10 @@ def set_style(
         profile.style_registro = payload.registro
     if "tema" in payload.model_fields_set:
         profile.style_tema = payload.tema
+    if "modo" in payload.model_fields_set:
+        profile.style_modo = payload.modo
+    if "fondo" in payload.model_fields_set:
+        profile.style_fondo = payload.fondo
     db.commit()
     db.refresh(profile)
     return StyleOut(**style_for(profile))

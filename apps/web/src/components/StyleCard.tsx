@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getStyle, Registro, setStyle, Style, Tema } from "@/lib/api";
-import { applyPalette } from "@/lib/theme";
+import { getStyle, Registro, setStyle, Style, StyleChange, Tema } from "@/lib/api";
+import { applyLook } from "@/lib/theme";
 
 // "Tu estilo" (spec X2): cómo te hablamos y los colores de la app salen de tu
 // carta, y los podés cambiar. Mismos nombres que app/personalization/config/estilos_v1.json.
@@ -31,12 +31,12 @@ export default function StyleCard({ profileId }: { profileId: string }) {
 
   if (!style) return null;
 
-  const save = async (change: { registro?: Registro | null; tema?: Tema | null }) => {
+  const save = async (change: StyleChange) => {
     setSaving(true);
     try {
       const updated = await setStyle(profileId, change);
       setCurrent(updated);
-      applyPalette(updated.paleta);
+      applyLook(updated);
     } finally {
       setSaving(false);
     }
@@ -81,7 +81,9 @@ export default function StyleCard({ profileId }: { profileId: string }) {
           <span className="text-gold-300">{currentTheme?.label}</span>: {currentTheme?.description}.
         </p>
         <p className="text-xs text-slate-400">
-          {style.tema_source === "carta" ? style.tema_por_que : "Lo elegiste vos. Tu carta sugiere otros colores."}
+          {style.tema_source === "carta"
+            ? `${style.tema_por_que} El acento sale de tu Venus, en ${style.acento}.`
+            : "Lo elegiste vos. Tu carta sugiere otros colores."}
         </p>
       </div>
       <div className="grid grid-cols-2 gap-2">
@@ -101,6 +103,27 @@ export default function StyleCard({ profileId }: { profileId: string }) {
             {t.value === style.tema_carta && <span className="block text-xs opacity-70">el de tu carta</span>}
           </button>
         ))}
+      </div>
+      <div className="flex items-center justify-between gap-3 pt-2">
+        <div className="flex gap-2">
+          {(["oscuro", "claro"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              disabled={saving}
+              onClick={() => save({ modo: m })}
+              className={`rounded-md px-3 py-1 text-sm ring-1 disabled:opacity-60 ${
+                style.modo === m ? "bg-violet-600 text-white ring-violet-500" : "bg-slate-950 text-slate-300 ring-slate-700"
+              }`}
+            >
+              {m === "oscuro" ? "Oscuro" : "Claro"}
+            </button>
+          ))}
+        </div>
+        <label className="flex items-center gap-2 text-sm text-slate-300">
+          <input type="checkbox" checked={style.fondo} disabled={saving} onChange={(e) => save({ fondo: e.target.checked })} />
+          Tu cielo de fondo
+        </label>
       </div>
     </div>
   );

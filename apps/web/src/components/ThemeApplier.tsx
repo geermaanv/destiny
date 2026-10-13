@@ -1,18 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import BirthSky from "@/components/BirthSky";
 import { getMe, getStyle } from "@/lib/api";
-import { applyPalette, applySavedPalette } from "@/lib/theme";
+import { applyLook, Look, onLookChange, savedLook } from "@/lib/theme";
 
-// Aplica el tema de la persona con sesión (spec X2 v2). Primero el recordado en el
-// dispositivo (sin parpadeo), después el de la API por si cambió.
+// Aplica el estilo visual de la persona con sesión (spec X2 v2 y v3): primero el
+// recordado en el dispositivo (sin parpadeo), después el de la API por si cambió.
 export default function ThemeApplier() {
+  const [look, setLook] = useState<Look | null>(null);
+
   useEffect(() => {
-    applySavedPalette();
+    const off = onLookChange(setLook);
+    const saved = savedLook();
+    if (saved) applyLook(saved, false);
     getMe()
       .then((me) => (me ? getStyle(me.id) : null))
-      .then((style) => style && applyPalette(style.paleta))
+      .then((style) => style && applyLook(style))
       .catch(() => null);
+    return off;
   }, []);
-  return null;
+
+  return look?.fondo && look.cielo?.length ? <BirthSky cielo={look.cielo} /> : null;
 }

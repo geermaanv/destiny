@@ -1,4 +1,4 @@
-import { resetPalette } from "@/lib/theme";
+import { resetLook } from "@/lib/theme";
 // "/api" en vez de una URL absoluta: Next.js la proxea server-side a
 // API_INTERNAL_URL (ver next.config.ts). Así el browser solo necesita
 // llegar al origen de Next — un solo túnel alcanza para hostear
@@ -459,7 +459,7 @@ export async function getLoginStatus(loginId: string): Promise<"pendiente" | "li
 
 export async function logout(): Promise<void> {
   await fetch(`${API_URL}/sessions/logout`, { method: "POST" });
-  resetPalette(); // el tema es de la persona: al salir vuelve el clásico (spec X2 v2)
+  resetLook(); // el estilo es de la persona: al salir vuelve el clásico (spec X2 v2)
 }
 
 // Test de personalidad de Pablo (spec A6).
@@ -526,6 +526,11 @@ export type Style = {
   tema_por_que: string;
   elementos: Record<string, number>;
   paleta: Record<string, Record<string, string>>;
+  modo: "oscuro" | "claro";
+  acento: string;
+  tipografia: string;
+  fondo: boolean;
+  cielo: { punto: string; lon: number }[];
 };
 
 export type Tema = "fuego" | "tierra" | "aire" | "agua" | "clasico";
@@ -536,8 +541,15 @@ export async function getStyle(profileId: string): Promise<Style> {
   return res.json();
 }
 
-// Solo cambia lo que se manda: { registro } o { tema }; null = que decida la carta.
-export async function setStyle(profileId: string, change: { registro?: Registro | null; tema?: Tema | null }): Promise<Style> {
+// Solo cambia lo que se manda; null en registro o tema = que decida la carta.
+export type StyleChange = {
+  registro?: Registro | null;
+  tema?: Tema | null;
+  modo?: "oscuro" | "claro";
+  fondo?: boolean;
+};
+
+export async function setStyle(profileId: string, change: StyleChange): Promise<Style> {
   const res = await fetch(`${API_URL}/profiles/${profileId}/style`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

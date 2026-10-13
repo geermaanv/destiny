@@ -137,7 +137,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [x] **v1 — estilo de redacción** (spec X2): estilo por carta, `GET/PUT /profiles/{id}/style`, explicaciones y 288 textos de "Tu día" por registro, tarjeta "Cómo te hablamos" en Mi perfil. Se queda con los 4 registros definidos (no los modos del whitepaper; decisión de German).
 - [ ] Ok de Pablo a la hiperpersonalización cuando la vea en la app (mapeo y textos).
 - [x] v2 — tema visual (spec X2 v2): paleta por elemento predominante de la carta (Fuego, Tierra, Aire, Agua o Clásico), con opción manual en "Tu estilo" de Mi perfil. Pendiente: ok de Pablo y modo claro / acento por Venus (v3).
-- [ ] v3 — fondo con el cielo de nacimiento, tipografías, modo claro y acento por Venus.
+- [x] v3 (spec X2 v3): acento por Venus, modo claro/oscuro (contraste WCAG medido en los 5 temas × 2 modos), tipografía de títulos por tema y fondo con el cielo de nacimiento (se puede apagar). Pendiente: ok de Pablo.
 - [ ] v4 — aprender del uso (👍/👎 en cada texto).
 
 **Créditos en vez de Premium (idea de German y Pablo, 2026-10-13)** — una moneda propia (nombre de marca, no "tokens") para pagar por uso lo que tiene costo variable (AstroChat, informes, consultas, eventos), con el núcleo siempre gratis, créditos que se ganan con acciones (test, invitar, rachas de check-in) y paquetes para comprar (Mercado Pago, sin la comisión de las tiendas mientras sea app web). Libro de movimientos por usuario, todo parametrizable.
