@@ -3,8 +3,9 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import AppNav from "@/components/AppNav";
+import { SkyWheel } from "@/components/BirthSky";
 import { useSessionProfileId } from "@/lib/session";
-import { getNatalDimensions, getNatalSynthesis, NatalDimension, NatalDimensions, NatalFoundation } from "@/lib/api";
+import { getNatalDimensions, getNatalSynthesis, getStyle, NatalDimension, NatalDimensions, NatalFoundation, Style } from "@/lib/api";
 
 // Nombres para mostrar los fundamentos (los textos vienen de la API).
 const POINT_NAMES: Record<string, string> = {
@@ -76,10 +77,12 @@ function MiCarta() {
   const profileId = useSessionProfileId();
   const [data, setData] = useState<NatalDimensions | null>(null);
   const [error, setError] = useState(false);
+  const [style, setStyle] = useState<Style | null>(null);
 
   useEffect(() => {
     if (!profileId) return;
     getNatalDimensions(profileId).then(setData).catch(() => setError(true));
+    getStyle(profileId).then(setStyle).catch(() => null);
   }, [profileId]);
 
   if (error) return <p className="text-slate-400">No pudimos leer tu carta. Revisá tus datos de nacimiento.</p>;
@@ -105,6 +108,7 @@ function MiCarta() {
           </p>
         )}
       </div>
+      {style && <SkyWheel cielo={style.cielo} leyenda={style.cielo_leyenda} />}
       {data.dimensiones.map((d) => (
         <DimensionCard key={d.clave} profileId={profileId} dimension={d} />
       ))}

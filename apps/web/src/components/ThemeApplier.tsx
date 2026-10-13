@@ -27,5 +27,5 @@ export default function ThemeApplier() {
     document.documentElement.classList.toggle("sky-on", sky);
   }, [sky]);
 
-  return sky && look ? <BirthSky cielo={look.cielo} modo={look.modo} leyenda={look.cielo_leyenda} /> : null;
+  return sky && look ? <BirthSky cielo={look.cielo} modo={look.modo} /> : null;
 }
