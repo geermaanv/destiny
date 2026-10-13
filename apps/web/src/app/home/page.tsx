@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { Card, ListCard, ListRow, Page, SectionTitle } from "@/components/ui";
+import { ListCard, ListRow, Page, SectionTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import {
   getConnections,
@@ -62,23 +62,29 @@ function HomeContent() {
 
   return (
     <>
-      <header className="flex items-center gap-3">
+      {/* Encabezado según el boceto de German: Hoy + título del día, la Luna abajo y el texto. */}
+      <header className="flex items-start gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="" width={40} height={40} />
-        <div>
-          <h1 className="text-2xl font-semibold">Hoy</h1>
+        <img src="/logo.png" alt="" width={44} height={44} className="shrink-0" />
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold">
+            Hoy {myDay && <span className="text-gold-300">{myDay.title}</span>}
+          </h1>
           <p className="text-sm text-gold-300">{astroWeather ?? "Leyendo el cielo…"}</p>
         </div>
       </header>
 
       {myDay && (
-        <Card highlight className="space-y-2">
-          <p className="text-xs uppercase tracking-wide text-slate-400">Tu día · Luna en {myDay.moon_sign}</p>
-          <p className="text-xl font-medium text-gold-300">{myDay.title}</p>
+        <section className="space-y-3">
           <p className="leading-relaxed text-slate-200">{myDay.text}</p>
-        </Card>
+          <Link
+            href="/dia"
+            className="inline-flex items-center gap-2 rounded-full bg-violet-600/15 px-4 py-2 text-sm font-medium text-violet-400 ring-1 ring-violet-400/60 hover:bg-violet-600/25"
+          >
+            Leé tu día completo <span aria-hidden>✦</span>
+          </Link>
+        </section>
       )}
-
 
       <section className="space-y-2">
         <SectionTitle action={<Link href="/calendario" className="text-violet-400">Ver el mes →</Link>}>
@@ -87,7 +93,7 @@ function HomeContent() {
         {upcoming.length > 0 ? (
           <ListCard>
             {upcoming.map((e) => (
-              <ListRow key={e.start} href="/calendario" title={e.title} detail={`${shortDate(e.start)} · ${e.text}`} />
+              <ListRow key={e.start} href="/calendario" title={`${shortDate(e.start)} · ${e.title}`} detail={e.text} />
             ))}
           </ListCard>
         ) : (

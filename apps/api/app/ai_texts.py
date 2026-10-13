@@ -37,6 +37,15 @@ def carta_key(profile: Profile, dimension: str, style: dict, versions: str) -> s
     return hashlib.sha256(raw.encode()).hexdigest()
 
 
+def day_key(profile: Profile, day, style: dict, version: str) -> str:
+    """Lectura de Tu día completo (spec B4 v3): una por persona y día, por estilo y modelo."""
+    raw = (
+        f"dia:{profile.id}:{_chart_fingerprint(profile)}:{day}:{style['registro']}/{style['tono']}/{style['formato']}:"
+        f"{settings.openrouter_model}:{version}"
+    )
+    return hashlib.sha256(raw.encode()).hexdigest()
+
+
 def cached(db: Session, key: str) -> str | None:
     row = db.get(AIText, key)
     return row.text if row else None

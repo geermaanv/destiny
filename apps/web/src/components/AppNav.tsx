@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 // Spec U1-A: Hoy · Mi carta · Descubrir · Conexiones · Perfil. `also` = rutas que
 // cuentan como esa pestaña (el calendario es parte de Hoy, el chat de Conexiones).
 const ITEMS = [
-  { href: "/home", label: "Hoy", icon: "☾", also: ["/calendario"] },
+  { href: "/home", label: "Hoy", icon: "☾", also: ["/calendario", "/dia"] },
   { href: "/carta", label: "Mi carta", icon: "☉", also: [] },
   { href: "/discover", label: "Descubrir", icon: "✦", also: [] },
   { href: "/conexiones", label: "Conexiones", icon: "✉", also: ["/chat"] },

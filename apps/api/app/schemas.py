@@ -251,6 +251,47 @@ class StyleIn(BaseModel):
     fondo: Literal["constelacion", "aura", "elemental", "horizonte", "ninguno"] | None = None
 
 
+class DayMoonOut(BaseModel):
+    signo: str
+    fase: str
+    casa: int | None = None
+    tema_casa: str | None = None
+
+
+class DayTransitOut(BaseModel):
+    planeta: str
+    punto: str
+    aspecto: str
+    orbe: float
+    fuerza: float
+    exacto: date | None = None
+    texto: str
+
+
+class DayAreaOut(BaseModel):
+    clave: str
+    nombre: str
+    estado: Literal["fluye", "cuidado", "tranquilo"]
+    motivo: str | None = None
+
+
+class DayReadingOut(BaseModel):
+    texto: str
+    ia: bool
+
+
+class MyDayDetailOut(BaseModel):
+    """Tu día completo (spec B4 v3)."""
+
+    date: date
+    luna: DayMoonOut
+    transitos: list[DayTransitOut]
+    areas: list[DayAreaOut]
+    lectura: DayReadingOut
+    pregunta: str
+    aproximado: bool
+
+
 class MyDayOut(BaseModel):
     """ "Tu día" (spec B4 v2)."""
 

@@ -1,0 +1,54 @@
+{
+ "version": "v1",
+ "notas": "Tu día completo (spec B4 v3). Orbes, pesos, áreas, temas de casas y preguntas. Parte del modelo: Pablo puede ajustarlo (ADR 0011).",
+ "planetas_del_dia": ["sol", "luna", "mercurio", "venus", "marte", "jupiter", "saturno", "urano", "neptuno", "pluton"],
+ "puntos_natales": ["sol", "luna", "mercurio", "venus", "marte", "jupiter", "saturno", "asc", "mc"],
+ "orbes": {"sol": 3, "luna": 5, "mercurio": 3, "venus": 3, "marte": 3, "jupiter": 2, "saturno": 2, "urano": 1.5, "neptuno": 1.5, "pluton": 1.5},
+ "peso_planeta": {"sol": 2, "luna": 1, "mercurio": 1.5, "venus": 2, "marte": 2, "jupiter": 3, "saturno": 4, "urano": 4, "neptuno": 4, "pluton": 5},
+ "peso_punto": {"sol": 3, "luna": 3, "asc": 3, "mc": 2, "venus": 2, "marte": 2, "mercurio": 1.5, "saturno": 1.5, "jupiter": 1},
+ "maximo_transitos": 3,
+ "ventana_exacto_dias": 15,
+ "aspectos": {
+  "conjuncion": {"nombre": "conjunción", "angulo": 0, "tono": 0, "verbo": "se junta con"},
+  "sextil": {"nombre": "sextil", "angulo": 60, "tono": 1, "verbo": "le abre una puerta a"},
+  "cuadratura": {"nombre": "cuadratura", "angulo": 90, "tono": -1, "verbo": "tensiona"},
+  "trigono": {"nombre": "trígono", "angulo": 120, "tono": 1, "verbo": "acompaña"},
+  "oposicion": {"nombre": "oposición", "angulo": 180, "tono": -1, "verbo": "se enfrenta con"}
+ },
+ "conjuncion_por_planeta": {"venus": 1, "jupiter": 1, "sol": 1, "saturno": -1, "marte": -1, "pluton": -1, "neptuno": -1},
+ "nombres": {
+  "sol": {"planeta": "El Sol", "punto": "tu Sol", "palabra": "tu identidad"},
+  "luna": {"planeta": "La Luna", "punto": "tu Luna", "palabra": "tus emociones"},
+  "mercurio": {"planeta": "Mercurio", "punto": "tu Mercurio", "palabra": "tu forma de pensar"},
+  "venus": {"planeta": "Venus", "punto": "tu Venus", "palabra": "tus vínculos y lo que disfrutás"},
+  "marte": {"planeta": "Marte", "punto": "tu Marte", "palabra": "tu energía y tu impulso"},
+  "jupiter": {"planeta": "Júpiter", "punto": "tu Júpiter", "palabra": "tu confianza"},
+  "saturno": {"planeta": "Saturno", "punto": "tu Saturno", "palabra": "tus responsabilidades"},
+  "urano": {"planeta": "Urano", "palabra": "los cambios"},
+  "neptuno": {"planeta": "Neptuno", "palabra": "la intuición"},
+  "pluton": {"planeta": "Plutón", "palabra": "las transformaciones profundas"},
+  "asc": {"punto": "tu Ascendente", "palabra": "cómo te mostrás"},
+  "mc": {"punto": "tu Medio Cielo", "palabra": "tu rumbo profesional"}
+ },
+ "areas": {
+  "amor": {"nombre": "Amor y vínculos", "puntos": ["venus", "luna"], "planetas": ["venus"]},
+  "trabajo": {"nombre": "Trabajo", "puntos": ["mc", "saturno", "sol"], "planetas": ["saturno", "jupiter"]},
+  "emociones": {"nombre": "Emociones", "puntos": ["luna"], "planetas": ["luna", "neptuno"]},
+  "energia": {"nombre": "Energía", "puntos": ["marte", "sol"], "planetas": ["marte", "sol"]}
+ },
+ "umbral_estado": 0.5,
+ "temas_casas": {
+  "1": "vos misma/o y cómo te mostrás", "2": "tus recursos y lo que valorás", "3": "conversaciones, trámites y tu entorno cercano",
+  "4": "tu casa y tu familia", "5": "el disfrute, la creatividad y el romance", "6": "la rutina, el trabajo diario y la salud",
+  "7": "los vínculos de a dos", "8": "la intimidad y lo compartido", "9": "aprender, viajar y lo que creés",
+  "10": "tu carrera y tus metas", "11": "amistades, grupos y proyectos", "12": "el descanso y tu mundo interior"
+ },
+ "preguntas": {
+  "amor": "¿Qué gesto chico podés tener hoy con alguien que te importa?",
+  "trabajo": "¿Cuál es el paso más concreto que podés dar hoy en lo tuyo?",
+  "emociones": "¿Qué estás sintiendo hoy que todavía no le pusiste nombre?",
+  "energia": "¿En qué vas a poner tu energía hoy, y en qué no?",
+  "tranquilo": "¿Qué querés que haya pasado al final de este día?"
+ },
+ "lectura": {"max_caracteres": 600}
+}

@@ -98,7 +98,8 @@ Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usua
 - [ ] Que Pablo revise la matriz de indicadores de Mi carta (`apps/api/app/natal/config/dimensiones_v1.json`) y los 144 textos (`apps/api/app/content/carta_v1.json`, `revisado_por_pablo: false`).
 - [ ] Mi carta v2: las otras 12 dimensiones del whitepaper, guardar respuestas a las preguntas (Destiny Mirror), regentes de casas.
 - [ ] **Astrochat** con los 4 modos del whitepaper (Explorador, Mentor, Astrólogo técnico, Acompañante), consultando cálculos reales (carta, tránsitos), nunca inventados. Reutiliza los estilos de X2. Costo de IA por uso → se conecta con los créditos.
-- [ ] **Mi cielo**: tránsitos de todos los planetas sobre los puntos natales (orbe, exactitud, período activo), filtros por área de vida. Extiende el calendario y "Tu día".
+- [x] **Tu día completo** (spec B4 v3), primera versión de "Mi cielo": clima del día (Luna, fase y casa), los 3 tránsitos más fuertes de todos los planetas sobre la carta (con cuándo son exactos), estado por área y lectura con IA en el estilo de la persona.
+- [ ] Mi cielo v2: "hoy fluye con…" (tránsitos cruzados con tus conexiones), filtros por área en el calendario, tránsitos de varios meses.
 - [ ] **Consentimientos y datos**: aceptar privacidad al empezar, ver/exportar/borrar mis datos, memoria del chat opcional.
 - [ ] Timeline / Diario cósmico (fase 2 del whitepaper). Incluye volver a pedir el ánimo del día **con devolución** (una línea en "Tu día" según ánimo y tránsito, y patrones con el tiempo); el check-in se sacó de Hoy el 2026-10-13 porque no devolvía nada (endpoint y tabla quedan).
 - [x] Navegación reorganizada (spec U1): Hoy · Mi carta · Descubrir · Conexiones · Perfil; Perfil corto; Hoy con jerarquía; Mi carta en pestañas; sistema visual común. Cuando lleguen Astrochat y Mi cielo, se suman a esta estructura.

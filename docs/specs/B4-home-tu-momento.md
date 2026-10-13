@@ -60,3 +60,27 @@ GET /home/frequency-count -> { "count": 134 }
 
 - Personalización visual/estética final del Hub (iteración posterior).
 - Algoritmo fino de "afinidad de tránsitos" para agrupar usuarios (versión inicial puede ser una heurística simple: mismos aspectos mayores del día).
+
+## v3 — Tu día completo (German, 2026-10-13: "poder ir a un análisis más completo, más extenso")
+
+Desde Hoy, el botón **"Leé tu día completo ✦"** abre **Tu día completo** (`/dia`). Es la primera versión de "Mi cielo" del whitepaper. Todo lo astrológico lo **calcula el motor** (determinístico, ADR 0011); la IA solo **redacta** la lectura, en el estilo de la persona (X2), una vez por día.
+
+**Contenido**
+1. **El clima del día**: signo y fase de la Luna, y por qué **casa de tu carta** pasa (casas por signo entero; solo con hora exacta), con el tema de esa casa.
+2. **Tus tránsitos activos**: los 3 más fuertes de hoy de los planetas del día (Sol a Plutón) sobre tus puntos natales (Sol, Luna, Mercurio, Venus, Marte, Júpiter, Saturno, y Ascendente y Medio Cielo si hay hora exacta). Aspectos mayores con orbe por planeta; fuerza = peso del planeta × peso del punto × cercanía al exacto. Cuando el aspecto se hace exacto dentro de ±15 días, se dice el día ("exacto el 16/10").
+3. **Tu día por área**: amor, trabajo, emociones y energía, cada una "fluye", "pide cuidado" o "tranquilo", según los tránsitos que tocan sus puntos (armónicos suman, tensos restan).
+4. **La lectura**: 3 a 5 oraciones en tu estilo que integran lo anterior, y una **pregunta para el día** (fija en la configuración, según el área más activa).
+
+Configuración en `app/day/config/dia_v1.json` (orbes, pesos, áreas y sus puntos, temas de las casas, preguntas). Posiciones del día a las 12:00 UTC, como "Tu día".
+
+**API**: `GET /home/my-day/detail?profile_id&date` (solo la propia persona) → `{date, luna: {signo, fase, casa?, tema_casa?}, transitos: [{planeta, punto, aspecto, orbe, exacto?, texto}], areas: [{clave, nombre, estado, motivo?}], lectura: {texto, ia}, pregunta, aproximado}`. La lectura se cachea por persona + día + datos natales + estilo + modelo (`ai_texts`, tipo `dia`); sin key, plantilla.
+
+### Casos de prueba v3 (`apps/api/tests/test_b4_dia_completo.py`)
+
+1. Solo la propia persona (otra → 403, sin sesión → 401).
+2. Signo y fase de la Luna iguales a los calculados para esa fecha.
+3. La casa de la Luna es la de la carta (signo entero desde el Ascendente); sin hora exacta no hay casa y `aproximado` es true.
+4. Hasta 3 tránsitos, ordenados por fuerza, cada uno con un aspecto real dentro de su orbe; sin hora exacta no aparecen Ascendente ni Medio Cielo.
+5. Las 4 áreas, cada una con un estado válido.
+6. Sin key, la lectura es la plantilla (sin llamar a la red); con IA, el prompt lleva el estilo de la persona, no lleva datos personales y la segunda vez sale de la cache.
+7. Cambiar los orbes en la configuración cambia los tránsitos sin tocar código.

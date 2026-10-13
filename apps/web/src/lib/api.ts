@@ -621,3 +621,20 @@ export async function getShare(profileId: string): Promise<ShareStatus> {
 export async function deleteShare(profileId: string): Promise<void> {
   await fetch(`${API_URL}/profiles/${profileId}/share`, { method: "DELETE" });
 }
+
+// Tu día completo (spec B4 v3).
+export type DayDetail = {
+  date: string;
+  luna: { signo: string; fase: string; casa?: number | null; tema_casa?: string | null };
+  transitos: { planeta: string; punto: string; aspecto: string; orbe: number; fuerza: number; exacto?: string | null; texto: string }[];
+  areas: { clave: string; nombre: string; estado: "fluye" | "cuidado" | "tranquilo"; motivo?: string | null }[];
+  lectura: { texto: string; ia: boolean };
+  pregunta: string;
+  aproximado: boolean;
+};
+
+export async function getMyDayDetail(profileId: string, date: string): Promise<DayDetail> {
+  const res = await fetch(`${API_URL}/home/my-day/detail?profile_id=${profileId}&date=${date}`);
+  if (!res.ok) throw new Error("No se pudo cargar tu día");
+  return res.json();
+}

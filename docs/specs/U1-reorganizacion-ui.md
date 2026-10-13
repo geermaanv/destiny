@@ -37,3 +37,9 @@ Rediseño de Descubrir, Conexiones, chat y onboarding (solo pasan a usar `Page`/
 5. Hoy muestra Tu día primero, los próximos 3 días con "Ver el mes" y la tarjeta social con link a Descubrir.
 6. Mi carta muestra la rueda y una dimensión por pestaña; "Leer más" despliega la síntesis completa.
 7. Los tests de la API siguen en verde y la web compila sin errores de tipos.
+
+## Ajustes de Hoy (German, 2026-10-13, con boceto)
+
+- Encabezado: "Hoy" + el título del día en dorado, la fase de la Luna abajo y el texto del día debajo, sin repetir "Tu día · Luna en…" ni recuadro.
+- El llamado a la lectura completa es un botón destacado, "Leé tu día completo ✦" (en vez de "Ver detalle").
+- Próximos días: arriba el día y la descripción ("Vie 16 oct · Día fluido"), abajo el detalle.

@@ -14,6 +14,10 @@ from app.database import get_db
 from app.models import MoodCheckin, Profile
 from app.schemas import AstroWeatherOut, FrequencyCountOut, MoodCheckinIn, MyDayOut
 from app.transits import day_transit
+from app.ai_texts import cached, day_key, record
+from app.day.detail import day_detail, load_config as day_config, write_reading
+from app.personalization.style import prompt_instructions
+from app.schemas import MyDayDetailOut
 
 router = APIRouter(prefix="/home", tags=["home"])
 
@@ -67,6 +71,30 @@ def get_my_day(
         text=text,
         reviewed=reviewed(),
     )
+
+
+@router.get("/my-day/detail", response_model=MyDayDetailOut)
+def get_my_day_detail(
+    profile_id: uuid.UUID = Query(...),
+    day: date = Query(alias="date"),
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> MyDayDetailOut:
+    """Tu día completo (spec B4 v3): el motor calcula; la IA redacta la lectura una vez por día."""
+    require_self(profile_id, current)
+    profile = db.get(Profile, profile_id)
+    if profile is None or profile.birth_date is None:
+        raise HTTPException(status_code=409, detail="Perfil sin datos natales")
+    detail = day_detail(profile, day)
+    style = style_for(profile)
+    key = day_key(profile, day, style, day_config()["version"])
+    if (text := cached(db, key)) is not None:
+        detail["lectura"] = {"texto": text, "ia": True}
+    else:
+        written = write_reading(detail, prompt_instructions(style))
+        record(db, key, "dia", written)
+        detail["lectura"] = {"texto": written.text, "ia": written.ai is not None}
+    return MyDayDetailOut(**detail)
 
 
 mood_router = APIRouter(tags=["home"])
