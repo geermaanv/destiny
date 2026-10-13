@@ -122,6 +122,11 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Destiny Passport: tarjeta compartible del perfil con QR.
 - [ ] Informe de vínculo descargable (PDF con ejes y sugerencias de conversación).
 
+**Ideas del análisis de competencia (NeoHumanCode, 2026-10-13; `docs/referencias/Analisis-NeoHumanCode.pdf`)**
+- [ ] Informe descargable de Mi carta ("Tu Carta Destiny") y de vínculo, como primer producto pago con tokens (después de los 6 meses gratis). Preguntado a Pablo.
+- [ ] Mensaje de entrada que arranque por el problema ("¿Por qué con algunas personas fluye y con otras no?") y diga de entrada lo que no somos. Preguntado a Pablo.
+- [ ] Canal de profesionales (Destiny Studio): referencia de precios de la competencia (~$11.100 por informe en suscripción). Post-MVP.
+
 **Post-MVP**
 - [ ] ~~AstroChat IA~~ → sube a prioridad en "Autoconocimiento primero" (arriba).
 - [ ] Marketplace de astrólogos por zona + Destiny Studio (software para astrólogos) + AstroAcademy.
