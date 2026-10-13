@@ -16,7 +16,7 @@ Pantalla de entrada diaria: contexto astrológico del día en lenguaje claro, mo
 ## Requisitos funcionales
 
 - Clima astrológico del día en texto claro, generado a partir de los tránsitos del día (ej. "Luna llena en Libra"). No requiere personalización por usuario en v1 (es el clima general del día, no el de la carta personal — eso es `B5`/calendario).
-- Mood check-in de un toque: selección simple de un estado de ánimo (set fijo de opciones), persistido con timestamp.
+- ~~Mood check-in de un toque~~ — **sacado de la pantalla** (German, 2026-10-13): se guardaba pero no se usaba en nada ni le devolvía algo a la persona. El endpoint `POST /mood-checkins` y la tabla quedan sin uso, para retomarlos con el Diario cósmico (ánimo + tránsito del día, con una devolución).
 - Contador **"N en tu frecuencia"**: cantidad de perfiles verificados con tránsitos afines, agrupados geográficamente (radio configurable, default razonable a definir en implementación).
 
 ## v2 — "Tu día": tránsito personal en Inicio (aprobado por German, 2026-10-12, implementado)

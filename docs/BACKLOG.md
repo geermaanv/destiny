@@ -100,7 +100,7 @@ Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usua
 - [ ] **Astrochat** con los 4 modos del whitepaper (Explorador, Mentor, Astrólogo técnico, Acompañante), consultando cálculos reales (carta, tránsitos), nunca inventados. Reutiliza los estilos de X2. Costo de IA por uso → se conecta con los créditos.
 - [ ] **Mi cielo**: tránsitos de todos los planetas sobre los puntos natales (orbe, exactitud, período activo), filtros por área de vida. Extiende el calendario y "Tu día".
 - [ ] **Consentimientos y datos**: aceptar privacidad al empezar, ver/exportar/borrar mis datos, memoria del chat opcional.
-- [ ] Timeline / Diario cósmico (fase 2 del whitepaper).
+- [ ] Timeline / Diario cósmico (fase 2 del whitepaper). Incluye volver a pedir el ánimo del día **con devolución** (una línea en "Tu día" según ánimo y tránsito, y patrones con el tiempo); el check-in se sacó de Hoy el 2026-10-13 porque no devolvía nada (endpoint y tabla quedan).
 - [x] Navegación reorganizada (spec U1): Hoy · Mi carta · Descubrir · Conexiones · Perfil; Perfil corto; Hoy con jerarquía; Mi carta en pestañas; sistema visual común. Cuando lleguen Astrochat y Mi cielo, se suman a esta estructura.
 
 ## Roadmap de producto (Pablo, octubre 2026)

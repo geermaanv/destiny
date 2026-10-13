@@ -11,23 +11,13 @@ import {
   getMyInvitations,
   getTodayAstroWeather,
   getUpcoming,
-  Mood,
   MyDay,
   MyInvitation,
-  submitMoodCheckin,
   UpcomingEvent,
 } from "@/lib/api";
 
-// Hoy (spec U1-C): Tu día como protagonista, el ánimo, los próximos días importantes
-// y lo social en una sola tarjeta.
-const MOODS: { value: Mood; label: string }[] = [
-  { value: "energico", label: "Enérgico" },
-  { value: "tranquilo", label: "Tranquilo" },
-  { value: "reflexivo", label: "Reflexivo" },
-  { value: "ansioso", label: "Ansioso" },
-  { value: "inspirado", label: "Inspirado" },
-];
-
+// Hoy (spec U1-C): Tu día como protagonista, los próximos días importantes y lo
+// social en una sola tarjeta. (El check-in de ánimo se sacó: no devolvía nada.)
 const pad = (n: number) => String(n).padStart(2, "0");
 const isoLocal = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const shortDate = (iso: string) => {
@@ -47,7 +37,6 @@ function HomeContent() {
   const [astroWeather, setAstroWeather] = useState<string | null>(null);
   const [myDay, setMyDay] = useState<MyDay | null>(null);
   const [upcoming, setUpcoming] = useState<UpcomingEvent[]>([]);
-  const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
   const [frequencyCount, setFrequencyCount] = useState<number | null>(null);
   const [pendingRequests, setPendingRequests] = useState(0);
   const [invitations, setInvitations] = useState<MyInvitation[]>([]);
@@ -71,12 +60,6 @@ function HomeContent() {
       .catch(() => null);
   }, [profileId]);
 
-  async function checkIn(mood: Mood) {
-    if (!profileId) return;
-    await submitMoodCheckin(profileId, mood);
-    setSelectedMood(mood);
-  }
-
   return (
     <>
       <header className="flex items-center gap-3">
@@ -96,23 +79,6 @@ function HomeContent() {
         </Card>
       )}
 
-      <section className="space-y-2">
-        <SectionTitle>¿Cómo estás hoy?</SectionTitle>
-        <div className="flex flex-wrap gap-2">
-          {MOODS.map((m) => (
-            <button
-              key={m.value}
-              onClick={() => checkIn(m.value)}
-              className={`rounded-full px-3 py-1.5 text-sm ring-1 ${
-                selectedMood === m.value ? "bg-violet-600 text-white ring-violet-600" : "bg-slate-900 ring-slate-700 hover:ring-violet-400"
-              }`}
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
-        {selectedMood && <p className="text-sm text-gold-300">Anotado ✓ Gracias por contarnos.</p>}
-      </section>
 
       <section className="space-y-2">
         <SectionTitle action={<Link href="/calendario" className="text-violet-400">Ver el mes →</Link>}>
