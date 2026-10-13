@@ -10,7 +10,7 @@ Dating es la puerta de entrada ("wedge"), no el techo del producto. Una vez vali
 
 Alineados 100% con el whitepaper de producto (`docs/referencias/whitepaper-producto-v1.md`): **el autoconocimiento da valor desde el primer día**, aunque todavía haya pocos usuarios. El matchmaking **sigue** siendo parte del producto, pero un match necesita masa crítica de gente cerca y compatible; hasta tener una base amplia, lo que retiene es lo que Destiny le dice a cada persona sobre sí misma (su carta, su cielo, su día, cómo le hablamos). Las dos cosas usan el mismo motor natal: cada usuario que llega por autoconocimiento suma a la base para el matchmaking.
 
-## Gancho de comunicación (German, 2026-10-13)
+## Gancho de comunicación (German, 2026-10-13; aprobado por Pablo)
 
 **"¿Por qué con algunas personas fluye y con otras no?"** — arranca por el problema (no por la técnica) y une autoconocimiento y vínculos. Se acompaña de lo que no somos: "no predice el futuro ni decide por vos". Surgió del análisis de competencia (`docs/referencias/Analisis-NeoHumanCode.pdf`).
 
