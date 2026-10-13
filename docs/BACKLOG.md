@@ -128,7 +128,8 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Compartir mi carta v2: que quien se registra desde el link quede conectado con quien lo compartió; imagen de vista previa generada (rueda y nombre); informe de vínculo compartible (con consentimiento de las dos personas).
 - [x] Mensaje de entrada que arranca por el problema: **"¿Por qué con algunas personas fluye y con otras no?"** (elegido por German, **aprobado por Pablo**) en la pantalla de entrada y en los mensajes de invitación por WhatsApp (C8 v3). Falta un video.
 - [x] "Tu carta" en el registro (spec A8 v2): la rueda y la lectura de Identidad apenas se cargan los datos de nacimiento, antes de perfil y verificación.
-- [ ] Canal de profesionales (Destiny Studio): referencia de precios de la competencia (~$11.100 por informe en suscripción). Post-MVP.
+- [ ] Canal de profesionales (Destiny Studio): referencia de precios de la competencia (~$11.100 por informe en suscripción). Post-MVP. **En pausa**: German decidió no planteárselo a Pablo por ahora.
+- [ ] Cobrar con tokens un informe (de Mi carta o de vínculo). **En pausa**, mismo motivo; hoy compartir la carta es gratis (spec A9).
 
 **Post-MVP**
 - [ ] ~~AstroChat IA~~ → sube a prioridad en "Autoconocimiento primero" (arriba).

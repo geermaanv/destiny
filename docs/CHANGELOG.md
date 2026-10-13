@@ -103,4 +103,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - Hoy (feedback de German): "Hoy:" separado del título del día, el título en el color del texto (no amarillo) y "Leé tu día completo" como botón lleno de ancho completo, para no mezclarse con "Ver el mes".
 - Hoy: el botón lleno vuelve a ser un link, "Leer más →", con el mismo estilo que "Ver el mes" (preferencia de German).
 - Hoy: "Ver el mes →" pasa al final, adentro del recuadro de Próximos días (pedido de German), separado del "Leer más →" de Tu día.
-- **Pablo aprobó el gancho** "¿Por qué con algunas personas fluye y con otras no?" (German le pasó el PDF del análisis de NeoHumanCode). Quedan sus respuestas sobre el informe con tokens y Destiny Studio.
+- **Pablo aprobó el gancho** "¿Por qué con algunas personas fluye y con otras no?" (German le pasó el PDF del análisis de NeoHumanCode). Las otras dos preguntas del PDF (informe con tokens y Destiny Studio) German decidió no planteárselas por ahora: quedan en pausa en el BACKLOG.
