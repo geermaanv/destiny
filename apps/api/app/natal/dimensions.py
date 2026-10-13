@@ -95,5 +95,7 @@ def natal_dimensions(profile) -> dict:
     library = load_library()
     return {
         "aproximado": not chart.time_known,
+        # Para dibujar la rueda en el registro (spec A8 v2); solo lo ve la propia persona.
+        "cielo": [{"punto": p, "lon": chart.points[p]} for p in cfg["puntos_de_aspecto"] if p in chart.points],
         "dimensiones": [dimension_result(k, d, chart, cfg, library) for k, d in cfg["dimensiones"].items()],
     }

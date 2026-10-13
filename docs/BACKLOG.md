@@ -125,7 +125,8 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 **Ideas del análisis de competencia (NeoHumanCode, 2026-10-13; `docs/referencias/Analisis-NeoHumanCode.pdf`)**
 - [x] **Compartir mi carta con un link** (spec A9): botón en Mi carta, link `/c/{token}` con vista previa para WhatsApp, Destiny filtra los datos, contador de vistas y "Dejar de compartir".
 - [ ] Compartir mi carta v2: que quien se registra desde el link quede conectado con quien lo compartió; imagen de vista previa generada (rueda y nombre); informe de vínculo compartible (con consentimiento de las dos personas).
-- [x] Mensaje de entrada que arranca por el problema: **"¿Por qué con algunas personas fluye y con otras no?"** (elegido por German) en la pantalla de entrada, con "no predice el futuro ni decide por vos". Falta llevarlo a la invitación por WhatsApp y a un video.
+- [x] Mensaje de entrada que arranca por el problema: **"¿Por qué con algunas personas fluye y con otras no?"** (elegido por German) en la pantalla de entrada y en los mensajes de invitación por WhatsApp (C8 v3). Falta un video.
+- [x] "Tu carta" en el registro (spec A8 v2): la rueda y la lectura de Identidad apenas se cargan los datos de nacimiento, antes de perfil y verificación.
 - [ ] Canal de profesionales (Destiny Studio): referencia de precios de la competencia (~$11.100 por informe en suscripción). Post-MVP.
 
 **Post-MVP**

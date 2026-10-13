@@ -8,7 +8,8 @@ def test_invitacion_arma_mensaje_en_primera_persona(client):
     r = client.post("/invitations", json={"inviter_id": pid, "friend_name": "Juan", "friend_sun_sign": "Géminis"})
     body = r.json()
     assert r.status_code == 201
-    assert body["message"].startswith("¡Hola Juan! Te invito a Destiny")
+    assert body["message"].startswith("¡Hola Juan! ¿Por qué con algunas personas fluye y con otras no?")
+    assert "Te invito a Destiny" in body["message"]
     assert "(Géminis)" in body["message"]
     assert "sus soles" not in body["message"]
     assert "https://destiny.test/onboarding/invitacion?ref=" in body["message"]

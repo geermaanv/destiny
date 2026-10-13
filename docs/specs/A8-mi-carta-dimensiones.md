@@ -41,6 +41,12 @@ Cada dimensión tiene:
 
 Pantalla **Mi carta** (`/perfil/carta`), con acceso desde Mi perfil: una tarjeta por dimensión con la pregunta, la síntesis (carga aparte), "En qué se basa" desplegable con los fundamentos y las preguntas de reflexión. Si falta la hora: aviso con link a editar los datos de nacimiento.
 
+## v2 — Tu carta en el registro (German, 2026-10-13: "el momento wow antes de pedir nada")
+
+- Después de cargar los datos de nacimiento, el registro muestra un paso **"Tu carta"** (`/onboarding/tu-carta`): la rueda y la lectura completa de **Identidad**, y las otras tres áreas como adelanto ("Amor, Vocación y Emociones: las ves al terminar"). Recién después siguen perfil, ritmo y verificación.
+- Para eso, `GET /profiles/{id}/natal/dimensions` y la síntesis funcionan como el resto del registro (`require_owner_if_verified`): un perfil todavía no verificado se puede leer sin sesión (su id es un UUID imposible de adivinar); uno verificado, solo su dueño.
+- La respuesta suma `cielo` (`[{punto, lon}]`) para dibujar la rueda sin pedir el estilo.
+
 ## Fuera de alcance v1
 
 - Las otras 12 dimensiones del whitepaper (fase 2), guardar respuestas a las preguntas de reflexión (Destiny Mirror), regentes de casas, aspectos menores, cuerpos extra.
@@ -58,3 +64,4 @@ En `apps/api/tests/test_a8_mi_carta.py`:
 7. Síntesis con IA: el system prompt incluye las instrucciones del estilo de la persona; lo que se manda no tiene nombre ni fecha de nacimiento; la segunda vez sale de la cache; si cambia el estilo, se vuelve a redactar.
 8. Otra persona → 403; sin sesión → 401; dimensión inexistente → 404.
 9. Cambiar los indicadores de una dimensión en la configuración cambia los fundamentos sin tocar código.
+10. (v2) Un perfil todavía no verificado puede leer sus dimensiones y la síntesis sin sesión; la respuesta trae `cielo`. Un perfil verificado sigue siendo solo de su dueño.

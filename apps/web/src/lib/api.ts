@@ -580,7 +580,7 @@ export type NatalDimension = {
   faltan_por_hora: string[];
 };
 
-export type NatalDimensions = { aproximado: boolean; dimensiones: NatalDimension[] };
+export type NatalDimensions = { aproximado: boolean; cielo: { punto: string; lon: number }[]; dimensiones: NatalDimension[] };
 
 export async function getNatalDimensions(profileId: string): Promise<NatalDimensions> {
   const res = await fetch(`${API_URL}/profiles/${profileId}/natal/dimensions`);

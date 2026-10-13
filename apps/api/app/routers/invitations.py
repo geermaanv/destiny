@@ -29,6 +29,9 @@ from app.schemas import (
 
 router = APIRouter(prefix="/invitations", tags=["invitations"])
 
+# Gancho de Destiny (VISION.md, spec C8 v3): va después del saludo en los dos mensajes.
+HOOK = "¿Por qué con algunas personas fluye y con otras no?"
+
 
 def _get_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     profile = db.get(Profile, profile_id)
@@ -65,7 +68,7 @@ def create_invitation(
         )
         db.commit()
         message = (
-            f"¡Hola {payload.friend_name}! Ya completé mi test de personalidad en Destiny ✨ Hacelo vos "
+            f"¡Hola {payload.friend_name}! {HOOK} Ya completé mi test de personalidad en Destiny ✨ Hacelo vos "
             "(son 32 preguntas) y vemos qué tan compatibles somos en atracción, afecto, comunicación y "
             f"compromiso: {link}"
         )
@@ -101,7 +104,7 @@ def create_invitation(
 
     # El mensaje lo manda quien invita desde su WhatsApp: le habla al amigo en primera persona.
     message = (
-        f"¡Hola {payload.friend_name}! Te invito a Destiny ✨ Con tu signo ({payload.friend_sun_sign}) y mi carta, "
+        f"¡Hola {payload.friend_name}! {HOOK} Te invito a Destiny a descubrirlo ✨ Con tu signo ({payload.friend_sun_sign}) y mi carta, "
         f"parece que {aspect_sentence(aspect['aspect']).replace('sus soles', 'nuestros soles')}. Completá tu carta acá y vemos los dos la resonancia real: {link}"
     )
     whatsapp_url = f"https://wa.me/?text={quote(message)}"

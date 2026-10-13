@@ -20,7 +20,8 @@ def test_con_test_completo_arma_el_mensaje_sin_pedir_signo(client):
     complete_personality(client, pid)
     r = _invite(client, pid)
     assert r.status_code == 201
-    assert r.json()["message"].startswith("¡Hola Juan! Ya completé mi test de personalidad en Destiny")
+    assert r.json()["message"].startswith("¡Hola Juan! ¿Por qué con algunas personas fluye y con otras no?")
+    assert "Ya completé mi test de personalidad en Destiny" in r.json()["message"]
     assert "https://destiny.test/onboarding/invitacion?ref=" in r.json()["message"]
 
 

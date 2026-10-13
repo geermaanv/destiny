@@ -180,6 +180,7 @@ class NatalDimensionOut(BaseModel):
 
 class NatalDimensionsOut(BaseModel):
     aproximado: bool
+    cielo: list[dict[str, str | float]] = []
     dimensiones: list[NatalDimensionOut]
 
 

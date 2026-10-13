@@ -215,7 +215,7 @@ function DatosNatalesForm() {
   function nextStepUrl(id: string) {
     const params = new URLSearchParams({ profileId: id });
     if (ref) params.set("ref", ref);
-    return `/onboarding/perfil?${params.toString()}`;
+    return `/onboarding/tu-carta?${params.toString()}`; // spec A8 v2: primero tu carta
   }
 
   async function handleSubmit(e: React.FormEvent) {

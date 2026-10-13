@@ -176,3 +176,23 @@ def test_indicadores_parametrizables(client, monkeypatch):
     monkeypatch.setitem(load_config()["dimensiones"]["identidad"], "aspectos_a", [])
     fundamentos = _by_key(_dims(client, pid))["identidad"]["fundamentos"]
     assert [(f["tipo"], f["punto"]) for f in fundamentos] == [("signo", "luna")]
+
+
+# 10 (v2): Tu carta en el registro, antes de verificar
+def test_perfil_sin_verificar_ve_su_carta_sin_sesion(new_client, sin_key):  # noqa: F811
+    from tests.helpers import create_profile
+
+    onboarding = new_client()
+    pid = create_profile(onboarding, birth_date=BIRTH[0], birth_time=BIRTH[1])
+    r = onboarding.get(f"/profiles/{pid}/natal/dimensions")
+    assert r.status_code == 200, r.text
+    c = _chart()
+    sky = {p["punto"]: p["lon"] for p in r.json()["cielo"]}
+    assert sky["sol"] == pytest.approx(c.points["sol"]) and "asc" in sky
+    assert onboarding.get(f"/profiles/{pid}/natal/dimensions/identidad/synthesis").status_code == 200
+
+
+def test_perfil_verificado_sigue_siendo_solo_del_duenio(new_client):
+    owner, anon = new_client(), new_client()
+    pid = verified_user(owner, "5491111111111")
+    assert anon.get(f"/profiles/{pid}/natal/dimensions").status_code == 401

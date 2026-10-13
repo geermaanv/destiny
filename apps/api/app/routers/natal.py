@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.ai_texts import cached, carta_key, record
-from app.auth import require_self, session_profile_id
+from app.auth import require_owner_if_verified, session_profile_id
 from app.content.carta import load_library
 from app.database import get_db
 from app.models import Profile
@@ -18,9 +18,12 @@ router = APIRouter(tags=["natal"])
 
 
 def _own(profile_id: uuid.UUID, current: uuid.UUID | None, db: Session) -> Profile:
-    require_self(profile_id, current)
+    """Como el resto del registro (spec A8 v2): sin verificar se lee sin sesión; verificado, solo su dueño."""
     profile = db.get(Profile, profile_id)
-    if profile is None or profile.birth_date is None:
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Perfil inexistente")
+    require_owner_if_verified(profile, current)
+    if profile.birth_date is None:
         raise HTTPException(status_code=409, detail="Perfil sin datos natales")
     return profile
 

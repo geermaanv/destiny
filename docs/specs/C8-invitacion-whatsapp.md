@@ -114,3 +114,7 @@ Tests automáticos en `apps/api/tests/test_c8_invitacion.py` (correr: `cd apps/a
 ## Fuera de alcance
 
 - Diseño visual final del reporte parcial (hereda el punto general de estética del Hub, iterable).
+
+## v3 — Gancho en el mensaje (German, 2026-10-13)
+
+Los dos mensajes de invitación arrancan con el gancho de Destiny después del saludo: "¡Hola {nombre}! ¿Por qué con algunas personas fluye y con otras no? …" (ver `VISION.md`). Caso de prueba: los dos mensajes empiezan con el saludo y el gancho, y mantienen el resto (signo o test, y el link).
