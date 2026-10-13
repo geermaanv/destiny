@@ -15,5 +15,6 @@ Architecture Decision Records. Cada decisión técnica con peso (elegir una libr
 | [0007](./0007-hosting-local-tunel.md) | Hosting: máquina local del equipo + túnel | aceptada |
 | [0008](./0008-verificacion-whatsapp.md) | Verificación v1 por WhatsApp; selfie/video en vivo pasa a v2 | aceptada |
 | [0009](./0009-geocoding-open-meteo.md) | Geocodificación del lugar de nacimiento con Open-Meteo | aceptada |
-| [0010](./0010-motor-sinastria-config.md) | Motor de sinastría: tablas en configuración, casas iguales y calibración | aceptada |
+| [0010](./0010-motor-sinastria-config.md) | Motor de sinastría: tablas en configuración, casas iguales y calibración | reemplazada por 0012 |
 | [0011](./0011-modelo-matematico-pablo.md) | Compatibilidad con modelo matemático; Pablo es la última palabra del modelo | aceptada |
+| [0012](./0012-motor-oficial-destiny-1-0.md) | Motor oficial Destiny 1.0 (calculadoras de Pablo), tablas generadas desde los Excel | aceptada |

@@ -129,7 +129,8 @@ Si más adelante se necesita esa precisión (ej. casas astrológicas exactas), e
 
 ### Compatibilidad: modelo matemático, Pablo es la última palabra (ADR 0011)
 
-- **Sinastría** (`app/synastry/`, tablas en `config/synastry_v1.json`, ADR 0010) y **test de personalidad de Pablo** (`app/personality/`, `config/test_v4.json`, spec A6) se calculan con fórmulas y tablas, no con IA. Se muestran **separados**.
+- **Sinastría**: motor oficial Destiny 1.0 de Pablo (`app/synastry/`, spec A7, ADR 0012). Tablas en `config/synastry_v2.json`, generadas con `scripts/build_synastry_v2.py` desde los Excel de Pablo, que **no van al repo** (`~/proyectos/destiny-fuentes/`). Los tests comparan contra las auditorías de Pablo (`tests/fixtures/motor_oficial_casos.json`, generado con `scripts/build_motor_fixtures.py`).
+- **Test de personalidad de Pablo** (`app/personality/`, `config/test_v4.json`, spec A6). Sinastría y test se calculan con fórmulas y tablas, no con IA, y se muestran **separados**.
 - Todo es parametrizable en esos JSON. El test se importa del HTML de Pablo (`docs/referencias/pablo_test_express_v4.html`) con `node apps/api/scripts/import_pablo_test.mjs`; si Pablo lo cambia, se reimporta y se regeneran las referencias con `node apps/api/scripts/pablo_golden.mjs`.
 - La IA solo redacta explicaciones y rompehielos a partir del resultado ya calculado.
 

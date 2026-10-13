@@ -1,9 +1,10 @@
-"""Carta natal completa para la sinastría (spec B5-motor-sinastria.md).
+"""Carta natal completa para el motor oficial (spec A7).
 
-Posiciones eclípticas geocéntricas con astronomy-engine (ADR 0005), ascendente
-y medio cielo a partir de la hora sideral local, y casas iguales desde el
-ascendente (sistema configurable a futuro; Placidus no está definido por
-encima de ~66° de latitud).
+Posiciones eclípticas geocéntricas con astronomy-engine (ADR 0005), Nodo Norte
+verdadero (osculante) y medio, ascendente y medio cielo a partir de la hora
+sideral local, y casas por signo entero (las de las calculadoras de Pablo).
+Sin hora exacta (franja o desconocida) NO hay ascendente, medio cielo ni casas:
+el motor de Pablo prohíbe inventarlos.
 """
 
 import math
@@ -30,9 +31,9 @@ BODIES = {
 
 @dataclass(frozen=True)
 class Chart:
-    points: dict[str, float]  # longitud eclíptica 0-360 de cada planeta (y "asc"/"mc" si se conoce el lugar)
-    houses: tuple[float, ...] | None  # 12 cúspides; None sin lugar de nacimiento
-    time_known: bool  # False si la hora es estimada (12:00 o franja del día, spec A1)
+    points: dict[str, float]  # longitud 0-360 de planetas y nodos (y "asc"/"mc" con hora exacta y lugar)
+    houses: tuple[float, ...] | None  # 12 cúspides por signo entero; None sin hora exacta o sin lugar
+    time_known: bool  # False si la hora es estimada (franja del día o desconocida → mediodía, spec A7)
 
     def sign(self, point: str) -> int | None:
         lon = self.points.get(point)
@@ -52,6 +53,20 @@ class Chart:
 
 def _norm(deg: float) -> float:
     return deg % 360
+
+
+def _true_node(t: astronomy.Time) -> float:
+    """Nodo Norte verdadero (osculante): nodo ascendente del plano de la órbita lunar instantánea."""
+    s = astronomy.RotateState(astronomy.Rotation_EQJ_ECT(t), astronomy.GeoMoonState(t))
+    hx = s.y * s.vz - s.z * s.vy
+    hy = s.z * s.vx - s.x * s.vz
+    return _norm(math.degrees(math.atan2(hx, -hy)))
+
+
+def _mean_node(t: astronomy.Time) -> float:
+    """Nodo Norte medio (Meeus, cap. 47)."""
+    c = t.tt / 36525.0
+    return _norm(125.0445479 - 1934.1362891 * c + 0.0020754 * c**2 + c**3 / 467441 - c**4 / 60616000)
 
 
 def _obliquity(t: astronomy.Time) -> float:
@@ -89,13 +104,16 @@ def compute_chart(
     }
     for name, body in BODIES.items():
         points[name] = _norm(astronomy.Ecliptic(astronomy.GeoVector(body, t, True)).elon)
+    points["nodo_norte"] = _true_node(t)
+    points["nodo_sur"] = _norm(points["nodo_norte"] + 180)
+    points["nodo_medio"] = _mean_node(t)
 
     houses = None
-    if lat is not None and lon is not None:
+    if time_known and lat is not None and lon is not None:
         asc, mc = _ascendant_mc(t, lat, lon)
         points["asc"] = asc
         points["mc"] = mc
-        houses = tuple(_norm(asc + 30 * i) for i in range(12))  # casas iguales
+        houses = tuple(30.0 * ((int(asc // 30) + i) % 12) for i in range(12))  # signo entero
 
     return Chart(points=points, houses=houses, time_known=time_known)
 
@@ -103,7 +121,7 @@ def compute_chart(
 def chart_for_profile(profile) -> Chart:
     return compute_chart(
         profile.birth_date,
-        profile.birth_time or time(12, 0),
+        profile.birth_time or time(12, 30),  # sin hora ni franja: franja mediodía (spec A7)
         not profile.birth_time_estimated,
         profile.birth_place_lat,
         profile.birth_place_lon,

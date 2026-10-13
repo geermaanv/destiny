@@ -1,4 +1,4 @@
-"""Spec B5-motor-sinastria: carta completa y los 10 niveles del cuadro, con tablas en configuración."""
+"""Carta natal y resultado del motor para la app (spec B5, motor reemplazado por el oficial de la spec A7)."""
 
 from datetime import date, time
 
@@ -37,11 +37,11 @@ def test_usa_la_hora_local_del_lugar(cartas):
     assert abs(a.points["luna"] - utc_como_si_fuera_local.points["luna"]) > 1  # 3 h de diferencia mueven la Luna
 
 
-def test_doce_casas_desde_el_ascendente(cartas):
+def test_doce_casas_por_signo_entero(cartas):
     a, _ = cartas
     assert len(a.houses) == 12
-    assert a.houses[0] == pytest.approx(a.points["asc"])
-    assert a.house_of(a.points["asc"] + 1) == 1
+    assert a.houses[0] == 30 * int(a.points["asc"] // 30)  # la casa 1 es el signo entero del ascendente
+    assert a.house_of(a.points["asc"]) == 1
 
 
 def test_sin_lugar_no_hay_casas_ni_ascendente():
@@ -67,37 +67,19 @@ def test_el_tipo_de_relacion_cambia_el_total_pero_no_los_ejes(cartas):
 
 def test_tipo_desconocido_usa_el_por_defecto(cartas):
     a, b = cartas
-    assert synastry(a, b, "cualquiera")["tipo_de_relacion"] == load_config()["nivel_7_y_10_tipos_de_relacion"]["por_defecto"]
+    assert synastry(a, b, "cualquiera")["tipo_de_relacion"] == load_config()["tipos_de_relacion"]["por_defecto"]
 
 
 def test_sin_hora_exacta_no_usa_casas_y_es_aproximado(cartas):
     _, b = cartas
-    estimada = compute_chart(date(1990, 5, 20), time(12, 0), False, -34.6131, -58.3772, "America/Argentina/Buenos_Aires")
+    estimada = compute_chart(date(1990, 5, 20), time(12, 30), False, -34.6131, -58.3772, "America/Argentina/Buenos_Aires")
+    assert estimada.houses is None and "asc" not in estimada.points
     r = synastry(estimada, b, "pareja")
-    assert r["aproximado"] is True
-    assert all(r["detalle"][eje]["casas"] is None for eje in SCORED_AXES)
+    assert r["aproximado"] is True and r["modalidad"] == "completa_aproximada"
 
 
 def test_detalle_por_nivel_para_explicar(cartas):
     a, b = cartas
     d = synastry(a, b, "pareja")["detalle"]["atraccion"]
-    assert {"matriz_signos", "aspectos", "casas", "puntaje_base", "multiplicador_eje5", "aspectos_encontrados"} <= set(d)
-    assert 0.85 <= d["multiplicador_eje5"] <= 1.15
-
-
-def test_configuracion_completa():
-    cfg = load_config()
-    for eje, matriz in cfg["nivel_3_matriz_signos"]["matrices"].items():
-        assert len(matriz) == 12 and all(len(fila) == 12 for fila in matriz), eje
-    for tipo in cfg["nivel_7_y_10_tipos_de_relacion"]["tipos"].values():
-        assert sum(tipo["pesos"].values()) == pytest.approx(1.0)
-    assert set(cfg["normalizacion"]["centro"]) == set(SCORED_AXES)
-
-
-def test_cambiar_una_tabla_cambia_el_resultado_sin_tocar_codigo(cartas, monkeypatch):
-    a, b = cartas
-    antes = synastry(a, b, "pareja")["ejes"]["comunicacion"]
-    cfg = load_config()
-    original = cfg["nivel_4_aspectos"]["trigono"]["puntos"]["comunicacion"]
-    monkeypatch.setitem(cfg["nivel_4_aspectos"]["trigono"]["puntos"], "comunicacion", original + 20)
-    assert synastry(a, b, "pareja")["ejes"]["comunicacion"] != antes
+    assert {"puntaje_base", "modificador_e5", "aspectos_encontrados"} <= set(d)
+    assert -10 <= d["modificador_e5"] <= 10

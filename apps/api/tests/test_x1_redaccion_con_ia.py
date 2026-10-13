@@ -170,7 +170,7 @@ def test_la_ia_recibe_fortalezas_y_debilidades_ya_calculadas(openrouter, pareja)
     from app.synastry.engine import load_config
 
     cfg = load_config()
-    pesos = cfg["nivel_7_y_10_tipos_de_relacion"]["tipos"]["laboral"]["pesos"]
+    pesos = cfg["tipos_de_relacion"]["tipos"]["laboral"]["pesos"]
     relevantes = [e for e in ejes if pesos[e] >= cfg["explicacion"]["peso_minimo_eje"]]
     assert facts["lo_que_mas_los_une"] == max(relevantes, key=ejes.get)
     assert facts["lo_que_tienen_que_trabajar"] == min(relevantes, key=ejes.get)

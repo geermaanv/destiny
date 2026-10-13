@@ -31,12 +31,13 @@ function isAdult(isoDate: string): boolean {
 }
 
 // Si no sabe la hora exacta pero recuerda la franja, usamos el punto medio de
-// esa franja (desvío máximo de 3 h en vez de 12 h). Mismos valores que la API.
+// esa franja. Son las 5 franjas del motor de Pablo (spec A7). Mismos valores que la API.
 const PERIODS: { value: BirthTimePeriod; label: string; range: string; midpoint: string }[] = [
-  { value: "madrugada", label: "Madrugada", range: "00 a 06 hs", midpoint: "03:00" },
-  { value: "manana", label: "Mañana", range: "06 a 12 hs", midpoint: "09:00" },
-  { value: "tarde", label: "Tarde", range: "12 a 18 hs", midpoint: "15:00" },
-  { value: "noche", label: "Noche", range: "18 a 24 hs", midpoint: "21:00" },
+  { value: "madrugada", label: "Madrugada", range: "00 a 05 hs", midpoint: "02:30" },
+  { value: "manana", label: "Mañana", range: "05 a 11 hs", midpoint: "08:00" },
+  { value: "mediodia", label: "Mediodía", range: "11 a 14 hs", midpoint: "12:30" },
+  { value: "tarde", label: "Tarde", range: "14 a 19 hs", midpoint: "16:30" },
+  { value: "noche", label: "Noche", range: "19 a 24 hs", midpoint: "21:30" },
 ];
 
 const SELECT_CLASS =
@@ -379,8 +380,8 @@ function DatosNatalesForm() {
         </label>
         {timeUnknown && (
           <div className="space-y-2 rounded-md bg-slate-900 px-3 py-3">
-            <p className="text-sm text-slate-300">¿Te acordás si fue de madrugada, a la mañana, a la tarde o a la noche?</p>
-            <div className="grid grid-cols-2 gap-2">
+            <p className="text-sm text-slate-300">¿Te acordás en qué momento del día fue?</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {PERIODS.map((p) => (
                 <button
                   key={p.value}
@@ -400,13 +401,14 @@ function DatosNatalesForm() {
             <p className="text-xs text-slate-400">
               {chosenPeriod ? (
                 <>
-                  Tomamos las <span className="text-slate-200">{chosenPeriod.midpoint}</span>, el medio de la{" "}
-                  {chosenPeriod.label.toLowerCase()}: así el desvío del cálculo es como mucho de 3 horas.
+                  Tomamos las <span className="text-slate-200">{chosenPeriod.midpoint}</span>, el medio de la franja.
+                  Sin la hora exacta no calculamos tu Ascendente ni tus casas, y tu compatibilidad queda como
+                  aproximada.
                 </>
               ) : (
                 <>
-                  Si no te acordás, no pasa nada: tomamos las <span className="text-slate-200">12:00</span>, el
-                  mediodía, porque es el punto medio del día y así el desvío del cálculo es el menor posible.
+                  Si no te acordás, no pasa nada: tomamos las <span className="text-slate-200">12:30</span> (mediodía)
+                  y tu compatibilidad queda como aproximada, sin Ascendente ni casas.
                 </>
               )}
             </p>

@@ -1,6 +1,6 @@
 # 0010 — Motor de sinastría: tablas en configuración, casas iguales y calibración automática
 
-- **Estado**: aceptada (German Villamarin, 2026-10-08). Tablas `v1-provisoria`, pendientes de validación astrológica.
+- **Estado**: reemplazada por la [0012](./0012-motor-oficial-destiny-1-0.md) (motor oficial de Pablo, 2026-10-13). Era: aceptada (German Villamarin, 2026-10-08), tablas `v1-provisoria`.
 
 ## Contexto
 

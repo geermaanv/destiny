@@ -26,7 +26,7 @@ Regla dura del proyecto: **spec → casos de prueba → código.** Ninguna featu
 | [A6-test-personalidad](./A6-test-personalidad.md) | A6 | implemented |
 | [B4-home-tu-momento](./B4-home-tu-momento.md) | B4 | implemented |
 | [B5-pantalla-descubrir](./B5-pantalla-descubrir.md) | B5 | implemented |
-| [B5-motor-sinastria](./B5-motor-sinastria.md) | B5 | implemented (tablas v1-provisoria) |
+| [B5-motor-sinastria](./B5-motor-sinastria.md) | B5 | superseded por A7 |
 | [B6-calendario-memoria](./B6-calendario-memoria.md) | B6 | implemented |
 | [B7-chat-rompehielos](./B7-chat-rompehielos.md) | B7 | implemented (v2 híbrida) |
 | [C8-invitacion-whatsapp](./C8-invitacion-whatsapp.md) | C8 | implemented |
@@ -34,3 +34,4 @@ Regla dura del proyecto: **spec → casos de prueba → código.** Ninguna featu
 
 Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada spec dice explícitamente qué queda fuera de alcance de v1.
 | [X2-hiperpersonalizacion](./X2-hiperpersonalizacion.md) | X2 (transversal) | approved |
+| [A7-motor-oficial-destiny-1-0](./A7-motor-oficial-destiny-1-0.md) | B5 (motor) | implemented |

@@ -18,14 +18,16 @@ def test_hora_exacta_se_guarda_tal_cual(client):
     assert r.json()["birth_time_estimated"] is False
 
 
-def test_sin_hora_se_usan_las_12_y_queda_estimada(client):
+def test_sin_hora_se_usa_el_mediodia_y_queda_estimada(client):
+    # Spec A7: sin hora ni franja se calcula como franja mediodía (12:30).
     r = _birth(client, birth_date="1990-05-20")
-    assert r.json()["birth_time"] == "12:00:00"
+    assert r.json()["birth_time"] == "12:30:00"
     assert r.json()["birth_time_estimated"] is True
 
 
 def test_franja_del_dia_usa_el_punto_medio(client):
-    esperados = {"madrugada": "03:00:00", "manana": "09:00:00", "tarde": "15:00:00", "noche": "21:00:00"}
+    # Las 5 franjas de Pablo (spec A7).
+    esperados = {"madrugada": "02:30:00", "manana": "08:00:00", "mediodia": "12:30:00", "tarde": "16:30:00", "noche": "21:30:00"}
     for franja, hora in esperados.items():
         r = _birth(client, birth_date="1990-05-20", birth_time_period=franja)
         assert r.json()["birth_time"] == hora, franja

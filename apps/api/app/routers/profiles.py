@@ -15,6 +15,7 @@ from app.database import get_db
 from app.models import PhoneVerificationCode, Profile
 from app.schemas import (
     PERIOD_MIDPOINTS,
+    UNKNOWN_TIME,
     BasicInfoIn,
     ClaimIn,
     BirthDataIn,
@@ -66,9 +67,9 @@ def set_birth_data(
     profile.birth_date = payload.birth_date
     if payload.birth_time is None:
         # "No sé mi hora exacta" -> punto medio de la franja si la recuerda
-        # (madrugada/mañana/tarde/noche), si no 12:00; flag de estimada. Derivado
+        # (5 franjas de Pablo, spec A7), si no 12:30 (mediodía); flag de estimada. Derivado
         # server-side: no se confía en un flag de estimada mandado por el cliente.
-        profile.birth_time = PERIOD_MIDPOINTS.get(payload.birth_time_period or "", time(12, 0))
+        profile.birth_time = PERIOD_MIDPOINTS.get(payload.birth_time_period or "", UNKNOWN_TIME)
         profile.birth_time_estimated = True
     else:
         profile.birth_time = payload.birth_time

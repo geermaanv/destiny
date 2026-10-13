@@ -1,6 +1,6 @@
 # B5-motor-sinastria — Motor de sinastría por ejes
 
-- **Estado**: implemented (tablas v1-provisoria)
+- **Estado**: superseded — el motor se reemplazó por el oficial de Pablo ([A7](./A7-motor-oficial-destiny-1-0.md)). Se conserva como historia del diagrama.
 - **Módulo**: B5 (reemplaza el cálculo simplificado Sol-Sol de `B5-pantalla-descubrir.md`)
 - **Owner de decisión de producto**: German Villamarin (por ahora)
 - **Aprobada para implementación por**: German Villamarin, 2026-10-08 (pidió completar las tablas y tenerlas como configuración)

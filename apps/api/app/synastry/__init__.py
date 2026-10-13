@@ -1,8 +1,8 @@
-"""Motor de sinastría por ejes (spec B5-motor-sinastria.md).
+"""Motor oficial de compatibilidad Destiny 1.0 (spec A7, calculadoras de Pablo).
 
-- chart.py: carta natal completa (planetas, ascendente, casas).
-- engine.py: los 10 niveles del cuadro, leyendo todas las tablas de
-  config/synastry_v1.json (nada de contenido astrológico en el código).
+- chart.py: carta natal completa (planetas, nodos, ascendente, casas por signo entero).
+- engine.py: E1–E4 y modificadores E5, leyendo todas las tablas de
+  config/synastry_v2.json (generado desde los Excel; nada de contenido astrológico en el código).
 """
 
 AXIS_LABELS = {
@@ -15,7 +15,7 @@ RELATIONSHIP_TYPES = ("pareja", "amistad", "laboral", "ocasional")
 
 
 def profile_synastry(viewer, candidate, relationship: str | None = None) -> dict:
-    """Sinastría completa entre dos perfiles (spec B5-motor-sinastria.md)."""
+    """Sinastría completa entre dos perfiles (spec A7)."""
     from app.synastry.chart import chart_for_profile
     from app.synastry.engine import synastry
 
@@ -28,7 +28,7 @@ def relevant_axes(result: dict) -> list[str]:
 
     cfg = load_config()
     min_weight = cfg["explicacion"]["peso_minimo_eje"]
-    weights = cfg["nivel_7_y_10_tipos_de_relacion"]["tipos"][result["tipo_de_relacion"]]["pesos"]
+    weights = cfg["tipos_de_relacion"]["tipos"][result["tipo_de_relacion"]]["pesos"]
     return [axis for axis in AXIS_LABELS if weights.get(axis, 0) >= min_weight]
 
 
@@ -41,11 +41,12 @@ def headline(result: dict) -> str:
 ASPECT_NAMES = {
     "conjuncion": "conjunción", "semisextil": "semisextil", "semicuadratura": "semicuadratura", "sextil": "sextil",
     "cuadratura": "cuadratura", "trigono": "trígono", "sesquicuadratura": "sesquicuadratura",
-    "quincuncio": "quincuncio", "oposicion": "oposición",
+    "quincuncio": "quincuncio", "oposicion": "oposición", "quintil": "quintil", "biquintil": "biquintil",
 }
 POINT_NAMES = {
     "sol": "Sol", "luna": "Luna", "mercurio": "Mercurio", "venus": "Venus", "marte": "Marte", "jupiter": "Júpiter",
     "saturno": "Saturno", "urano": "Urano", "neptuno": "Neptuno", "pluton": "Plutón", "asc": "Ascendente",
+    "mc": "Medio Cielo", "nodo_norte": "Nodo Norte",
 }
 
 

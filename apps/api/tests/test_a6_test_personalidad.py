@@ -83,17 +83,8 @@ def test_cambiar_la_configuracion_cambia_el_resultado(monkeypatch):
     assert compare(a, b, "formal")["axes"]["E1"] != antes
 
 
-def test_pesos_por_tipo_de_la_sinastria_iguales_a_los_de_pablo():
-    from app.personality.engine import load_config as personality
-    from app.synastry.engine import load_config as synastry
-
-    equivalencia = {"pareja": "formal", "ocasional": "sexual", "amistad": "amistad", "laboral": "laboral"}
-    ejes = {"atraccion": "E1", "afecto": "E2", "comunicacion": "E3", "compromiso": "E4"}
-    tipos = synastry()["nivel_7_y_10_tipos_de_relacion"]["tipos"]
-    for destiny, pablo in equivalencia.items():
-        esperado = personality()["modes"][pablo]["weights"]
-        for eje, e in ejes.items():
-            assert tipos[destiny]["pesos"][eje] == pytest.approx(esperado[e] / 100), (destiny, eje)
+# Los pesos por tipo de la sinastría ya no se copian del test: son los del motor oficial
+# Destiny 1.0 de Pablo (spec A7, tests/test_a7_motor_oficial.py).
 
 
 # --- La API -----------------------------------------------------------------

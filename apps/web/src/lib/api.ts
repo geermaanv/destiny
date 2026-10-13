@@ -25,7 +25,7 @@ export async function searchPlaces(query: string): Promise<Place[]> {
   return res.json();
 }
 
-export type BirthTimePeriod = "madrugada" | "manana" | "tarde" | "noche";
+export type BirthTimePeriod = "madrugada" | "manana" | "mediodia" | "tarde" | "noche";
 
 export type BirthDataPayload = {
   birth_date: string;
