@@ -154,8 +154,8 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [x] Invitación a comparar el test de personalidad (C8 v2) + panel "Compatibilidad" en todos los chats (B7): astrología y personalidad por separado, con selector de vínculo.
 - [ ] **"Mi carta"**: pantalla para que cada usuario vea su carta natal (rueda zodiacal con planetas, ascendente y casas, más una lista en lenguaje simple: "Sol en Tauro", "Luna en Aries", etc.) y, opcional, la descargue en PDF. Ya se calcula todo en la API (`app/synastry/chart.py`); falta exponerla y dibujarla. Requiere spec + casos de prueba antes del código.
 - [ ] Pantalla de administración para editar pesos y matrices sin tocar el JSON (hoy: editar `config/*.json` + commit).
-- [ ] Que Pablo revise los 72 textos de "Tu día" (`apps/api/app/content/transitos_v1.json`, hoy `revisado_por_pablo: false`).
-- [ ] Que Pablo revise las tablas de sinastría (`synastry_v1.json`) con el mismo criterio que su test.
+- [ ] Que Pablo revise los textos de "Tu día" (`apps/api/app/content/transitos_v1.json`: 72 generales + 288 por estilo, hoy `revisado_por_pablo: false`). Pedido por WhatsApp el 2026-10-13.
+- [x] ~~Que Pablo revise las tablas de sinastría provisorias~~ → reemplazadas por su motor oficial 1.0 (spec A7).
 
 ## Tests
 
