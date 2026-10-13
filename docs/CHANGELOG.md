@@ -102,3 +102,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - **Hoy, ajustes según el boceto de German**: "Hoy" + el título del día en el encabezado, el texto sin recuadro, el botón destacado "Leé tu día completo ✦" y en Próximos días el día y la descripción arriba. 231 tests en verde.
 - Hoy (feedback de German): "Hoy:" separado del título del día, el título en el color del texto (no amarillo) y "Leé tu día completo" como botón lleno de ancho completo, para no mezclarse con "Ver el mes".
 - Hoy: el botón lleno vuelve a ser un link, "Leer más →", con el mismo estilo que "Ver el mes" (preferencia de German).
+- Hoy: "Ver el mes →" pasa al final, adentro del recuadro de Próximos días (pedido de German), separado del "Leer más →" de Tu día.

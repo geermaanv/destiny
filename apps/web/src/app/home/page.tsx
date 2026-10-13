@@ -86,18 +86,19 @@ function HomeContent() {
       )}
 
       <section className="space-y-2">
-        <SectionTitle action={<Link href="/calendario" className="text-violet-400">Ver el mes →</Link>}>
-          Próximos días
-        </SectionTitle>
-        {upcoming.length > 0 ? (
-          <ListCard>
-            {upcoming.map((e) => (
+        <SectionTitle>Próximos días</SectionTitle>
+        <ListCard>
+          {upcoming.length > 0 ? (
+            upcoming.map((e) => (
               <ListRow key={e.start} href="/calendario" title={`${shortDate(e.start)} · ${e.title}`} detail={e.text} />
-            ))}
-          </ListCard>
-        ) : (
-          <p className="text-sm text-slate-400">Sin tránsitos fuertes en los próximos días.</p>
-        )}
+            ))
+          ) : (
+            <p className="px-4 py-3 text-sm text-slate-400">Sin tránsitos fuertes en los próximos días.</p>
+          )}
+          <Link href="/calendario" className="block px-4 py-3 text-right text-sm text-violet-400 hover:bg-slate-800/60">
+            Ver el mes →
+          </Link>
+        </ListCard>
       </section>
 
       <section className="space-y-2">
