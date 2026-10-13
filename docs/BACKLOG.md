@@ -115,6 +115,21 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Destiny Pro (cofounder, mentores, networking).
 - [ ] Monetización (Premium, Duo, informes, comisiones) — **después de los 6 meses gratis** (`ALCANCE_MVP.md`).
 
+**Hiperpersonalización (idea de German y Pablo, 2026-10-13)** — aprovechar lo que Destiny sabe de cada persona para hablarle y mostrarse a su manera. Los estilos salen de **la astrología**, cada dimensión de un punto de la carta (parametrizable para que Pablo lo ajuste; la persona siempre puede cambiarlo y se le explica por qué):
+- Cómo procesa la información (registro) → **Mercurio**: fuego directo, tierra práctico, aire analítico, agua intuitivo.
+- Cuánta contención necesita (tono) → **Luna**.
+- Qué formato le sirve → **modalidad dominante**: cardinal acciones, fija profundidad, mutable opciones.
+- Estética → **Venus**; color principal del tema → **Ascendente** (o Sol sin hora exacta).
+- [ ] **v1 — estilo de redacción** (explicaciones con IA y textos de "Tu día" según el estilo; "Cómo te hablamos" en Mi perfil). *En curso.*
+- [ ] v2 — tema visual: paleta por Ascendente/elemento y acento por Venus, con opción manual.
+- [ ] v3 — fondo con el cielo de nacimiento y tipografías.
+- [ ] v4 — aprender del uso (👍/👎 en cada texto).
+
+**Créditos en vez de Premium (idea de German y Pablo, 2026-10-13)** — una moneda propia (nombre de marca, no "tokens") para pagar por uso lo que tiene costo variable (AstroChat, informes, consultas, eventos), con el núcleo siempre gratis, créditos que se ganan con acciones (test, invitar, rachas de check-in) y paquetes para comprar (Mercado Pago, sin la comisión de las tiendas mientras sea app web). Libro de movimientos por usuario, todo parametrizable.
+- [ ] Decidir con Pablo: créditos como modelo principal; nombre de la moneda; qué cuesta y qué es siempre gratis.
+- [ ] Propuesta para respetar los 6 meses gratis: lanzar primero solo **ganar y gastar** créditos (sin venta) para aprender qué valora la gente.
+- [ ] Revisión legal del saldo prepago (Defensa del Consumidor: vencimiento, devoluciones, información de precios).
+
 **Decisiones pendientes para Pablo**
 - [ ] Confirmar que la monetización queda para después del MVP 100 % gratis (regla de `ALCANCE_MVP.md`).
 - [ ] **RRHH con la carta natal**: usar la carta para seleccionar o descartar candidatos tiene riesgo legal (discriminación, datos personales sensibles; sin evidencia de que prediga desempeño). Propuesta: Destiny Pro como networking y autoconocimiento voluntario, no selección de personal. Validar con un abogado.
