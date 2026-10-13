@@ -11,7 +11,7 @@ const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["600"], vari
 
 export const metadata: Metadata = {
   title: "Destiny",
-  description: "Conexiones con astrología e IA: descubrí con quién resonás y por qué.",
+  description: "¿Por qué con algunas personas fluye y con otras no? Destiny lee tu carta natal para entenderte a vos y a tus vínculos.",
   manifest: "/manifest.json",
 };
 
