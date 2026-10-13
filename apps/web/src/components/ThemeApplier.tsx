@@ -21,5 +21,5 @@ export default function ThemeApplier() {
     return off;
   }, []);
 
-  return look?.fondo && look.cielo?.length ? <BirthSky cielo={look.cielo} /> : null;
+  return look?.fondo && look.cielo?.length ? <BirthSky cielo={look.cielo} modo={look.modo} /> : null;
 }
