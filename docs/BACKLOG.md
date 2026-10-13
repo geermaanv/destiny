@@ -89,7 +89,38 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] **Falta feedback en las acciones** (hecho: "Guardado ✓", confirmación del check-in, hora en el chat, "Enviando solicitud…", ícono de Next oculto): "Perfil guardado" queda fuera de la vista, el check-in no confirma, el chat no muestra la hora de los mensajes, "Conectar" no muestra que está enviando. Además el ícono "N" de Next.js (solo en modo desarrollo, pero Pablo lo ve por el túnel) tapa "Inicio" en la barra.
 
 
-## Modelo de compatibilidad (Pablo, ADR 0011)
+## Roadmap de producto (Pablo, octubre 2026)
+
+Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + ampliación de 37 iniciativas). Clasificación (2026-10-12):
+
+**Ya hecho (total o en parte)**
+- [x] Matchmaking por afinidad en los 5 ejes (motor de sinastría, B5).
+- [x] Cuestionario de compatibilidad por eje (test de Pablo, A6).
+- [x] Tres sistemas numéricos separados (astrología, test, tránsitos sin porcentaje — ADR 0011).
+- [x] Invitaciones virales (C8 v1 y v2).
+- [ ] Calendario astrológico / Destiny Today — **en parte**: calendario + "Tu día" (Luna vs. Sol natal). Falta: tránsitos de todos los planetas y casas activadas.
+- [ ] Destiny Duo — **base hecha** (conexión, chat, panel de compatibilidad). Falta: historial, fechas significativas, cuestionarios de pareja.
+
+**Candidatos para la próxima tanda (MVP: retención y viralidad, sin cobrar)**
+- [ ] AstroRadar: pronóstico personal de 7 y 30 días (extiende el calendario).
+- [ ] Diario cósmico: unir check-in de ánimo y notas con el tránsito del día.
+- [ ] "Mi carta" / autoconocimiento (ya anotado más abajo).
+- [ ] Destiny Passport: tarjeta compartible del perfil con QR.
+- [ ] Informe de vínculo descargable (PDF con ejes y sugerencias de conversación).
+
+**Post-MVP**
+- [ ] AstroChat IA (consultando el motor matemático; memoria, privacidad y costos a definir).
+- [ ] Marketplace de astrólogos por zona + Destiny Studio (software para astrólogos) + AstroAcademy.
+- [ ] Eventos tipo "Time left" (Cosmic Tables, speed dating, tribus, hosts).
+- [ ] Destiny Pro (cofounder, mentores, networking).
+- [ ] Monetización (Premium, Duo, informes, comisiones) — **después de los 6 meses gratis** (`ALCANCE_MVP.md`).
+
+**Decisiones pendientes para Pablo**
+- [ ] Confirmar que la monetización queda para después del MVP 100 % gratis (regla de `ALCANCE_MVP.md`).
+- [ ] **RRHH con la carta natal**: usar la carta para seleccionar o descartar candidatos tiene riesgo legal (discriminación, datos personales sensibles; sin evidencia de que prediga desempeño). Propuesta: Destiny Pro como networking y autoconocimiento voluntario, no selección de personal. Validar con un abogado.
+- [ ] Privacidad en comparaciones con terceros (Circle, constelación de amigos): siempre con consentimiento de la otra persona.
+
+
 
 - [x] Test de personalidad de Pablo dentro del perfil (spec A6), fiel a su código (verificado contra 18 parejas de referencia).
 - [x] Pesos por tipo de relación de la sinastría alineados con los de Pablo.
