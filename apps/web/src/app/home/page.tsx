@@ -1,21 +1,25 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import AppNav from "@/components/AppNav";
-import { useSessionProfileId } from "@/lib/session";
 import Link from "next/link";
+import { Card, ListCard, ListRow, Page, SectionTitle } from "@/components/ui";
+import { useSessionProfileId } from "@/lib/session";
 import {
   getConnections,
   getFrequencyCount,
   getMyDay,
   getMyInvitations,
   getTodayAstroWeather,
+  getUpcoming,
   Mood,
   MyDay,
   MyInvitation,
   submitMoodCheckin,
+  UpcomingEvent,
 } from "@/lib/api";
 
+// Hoy (spec U1-C): Tu día como protagonista, el ánimo, los próximos días importantes
+// y lo social en una sola tarjeta.
 const MOODS: { value: Mood; label: string }[] = [
   { value: "energico", label: "Enérgico" },
   { value: "tranquilo", label: "Tranquilo" },
@@ -24,26 +28,41 @@ const MOODS: { value: Mood; label: string }[] = [
   { value: "inspirado", label: "Inspirado" },
 ];
 
+const pad = (n: number) => String(n).padStart(2, "0");
+const isoLocal = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const shortDate = (iso: string) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  const s = new Date(y, m - 1, d).toLocaleDateString("es-AR", { weekday: "short", day: "numeric", month: "short" });
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
+function invitationText(inv: MyInvitation): string {
+  if (inv.status === "test_completo") return `${inv.friend_name} completó el test: mirá su compatibilidad`;
+  if (inv.status === "registrado") return `${inv.friend_name} se sumó y está haciendo el test`;
+  return `Esperando que ${inv.friend_name} se sume`;
+}
+
 function HomeContent() {
   const profileId = useSessionProfileId();
   const [astroWeather, setAstroWeather] = useState<string | null>(null);
-  const [frequencyCount, setFrequencyCount] = useState<number | null>(null);
+  const [myDay, setMyDay] = useState<MyDay | null>(null);
+  const [upcoming, setUpcoming] = useState<UpcomingEvent[]>([]);
   const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
-
-  useEffect(() => {
-    getTodayAstroWeather().then((r) => setAstroWeather(r.astro_weather));
-  }, []);
-
+  const [frequencyCount, setFrequencyCount] = useState<number | null>(null);
   const [pendingRequests, setPendingRequests] = useState(0);
   const [invitations, setInvitations] = useState<MyInvitation[]>([]);
-  const [myDay, setMyDay] = useState<MyDay | null>(null);
+
+  useEffect(() => {
+    getTodayAstroWeather().then((r) => setAstroWeather(r.astro_weather)).catch(() => null);
+  }, []);
 
   useEffect(() => {
     if (!profileId) return;
-    getFrequencyCount(profileId).then((r) => setFrequencyCount(r.count));
-    const now = new Date();
-    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const today = isoLocal(new Date());
+    const tomorrow = isoLocal(new Date(Date.now() + 86400000));
     getMyDay(profileId, today).then(setMyDay).catch(() => null);
+    getUpcoming(profileId, tomorrow, 3).then(setUpcoming).catch(() => null);
+    getFrequencyCount(profileId).then((r) => setFrequencyCount(r.count)).catch(() => null);
     getConnections(profileId)
       .then((cs) => setPendingRequests(cs.filter((c) => c.status === "pendiente" && c.direction === "recibida").length))
       .catch(() => null);
@@ -59,102 +78,98 @@ function HomeContent() {
   }
 
   return (
-    <div className="w-full max-w-sm space-y-8">
-      <div>
-        <div className="flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="" width={40} height={40} />
-          <h1 className="text-2xl font-semibold">Tu Momento</h1>
+    <>
+      <header className="flex items-center gap-3">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="" width={40} height={40} />
+        <div>
+          <h1 className="text-2xl font-semibold">Hoy</h1>
+          <p className="text-sm text-gold-300">{astroWeather ?? "Leyendo el cielo…"}</p>
         </div>
-        <p className="mt-2 text-lg text-gold-300">{astroWeather ?? "Calculando..."}</p>
-      </div>
+      </header>
 
       {myDay && (
-        <Link href="/calendario" className="block space-y-1 rounded-md bg-slate-900 p-4 ring-1 ring-gold-400/40 hover:ring-gold-400">
+        <Card highlight className="space-y-2">
           <p className="text-xs uppercase tracking-wide text-slate-400">Tu día · Luna en {myDay.moon_sign}</p>
-          <p className="font-medium text-gold-300">{myDay.title}</p>
-          <p className="text-sm text-slate-300">{myDay.text}</p>
-          <p className="pt-1 text-xs text-violet-400">Ver tu calendario →</p>
-        </Link>
+          <p className="text-xl font-medium text-gold-300">{myDay.title}</p>
+          <p className="leading-relaxed text-slate-200">{myDay.text}</p>
+        </Card>
       )}
 
-      <div>
-        <p className="mb-2 text-sm text-slate-400">¿Cómo estás hoy?</p>
+      <section className="space-y-2">
+        <SectionTitle>¿Cómo estás hoy?</SectionTitle>
         <div className="flex flex-wrap gap-2">
           {MOODS.map((m) => (
             <button
               key={m.value}
               onClick={() => checkIn(m.value)}
               className={`rounded-full px-3 py-1.5 text-sm ring-1 ${
-                selectedMood === m.value
-                  ? "bg-violet-600 ring-violet-600"
-                  : "bg-slate-900 ring-slate-700 hover:ring-violet-400"
+                selectedMood === m.value ? "bg-violet-600 text-white ring-violet-600" : "bg-slate-900 ring-slate-700 hover:ring-violet-400"
               }`}
             >
               {m.label}
             </button>
           ))}
         </div>
-        {selectedMood && (
-          <p className="mt-2 text-sm text-gold-300">
-            Anotado ✓ Gracias por contarnos cómo estás hoy.
-          </p>
+        {selectedMood && <p className="text-sm text-gold-300">Anotado ✓ Gracias por contarnos.</p>}
+      </section>
+
+      <section className="space-y-2">
+        <SectionTitle action={<Link href="/calendario" className="text-violet-400">Ver el mes →</Link>}>
+          Próximos días
+        </SectionTitle>
+        {upcoming.length > 0 ? (
+          <ListCard>
+            {upcoming.map((e) => (
+              <ListRow key={e.start} href="/calendario" title={e.title} detail={`${shortDate(e.start)} · ${e.text}`} />
+            ))}
+          </ListCard>
+        ) : (
+          <p className="text-sm text-slate-400">Sin tránsitos fuertes en los próximos días.</p>
         )}
-      </div>
+      </section>
 
-      {pendingRequests > 0 && (
-        <Link href="/conexiones" className="block rounded-md bg-slate-900 p-4 ring-1 ring-gold-400/60">
-          <p className="font-medium text-gold-300">
-            {pendingRequests === 1 ? "1 persona quiere conectar con vos" : `${pendingRequests} personas quieren conectar con vos`}
-          </p>
-          <p className="text-sm text-slate-400">Ver en Conexiones →</p>
-        </Link>
-      )}
+      <section className="space-y-2">
+        <SectionTitle>Tu gente</SectionTitle>
+        <ListCard>
+          {pendingRequests > 0 && (
+            <ListRow
+              href="/conexiones"
+              icon="✉"
+              title={pendingRequests === 1 ? "1 persona quiere conectar con vos" : `${pendingRequests} personas quieren conectar con vos`}
+            />
+          )}
+          {invitations.map((inv) => (
+            <ListRow
+              key={inv.ref_id}
+              href={inv.match_id ? `/chat/${inv.match_id}` : "/invitar"}
+              icon="✓"
+              title={invitationText(inv)}
+            />
+          ))}
+          <ListRow
+            href="/discover"
+            icon="✦"
+            title={frequencyCount === null ? "Gente en tu frecuencia" : `${frequencyCount} personas en tu frecuencia`}
+            detail="Descubrí con quién resonás"
+          />
+          <ListRow href="/invitar" icon="+" title="Invitá a alguien" detail="A comparar el test o con un adelanto astrológico" />
+        </ListCard>
+      </section>
 
-      <div className="rounded-md bg-slate-900 p-4 ring-1 ring-slate-700">
-        <p className="text-sm text-slate-400">En tu frecuencia</p>
-        <p className="text-xl font-semibold">{frequencyCount ?? "—"} personas</p>
-      </div>
-
-      {invitations.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm text-slate-400">Tus invitaciones a comparar el test</p>
-          {invitations.map((inv) => {
-            const text =
-              inv.status === "test_completo"
-                ? `${inv.friend_name} completó el test: mirá su compatibilidad →`
-                : inv.status === "registrado"
-                  ? `${inv.friend_name} se sumó y está haciendo el test`
-                  : `Esperando que ${inv.friend_name} se sume`;
-            const style = inv.status === "test_completo" ? "ring-gold-400/60 text-gold-300" : "ring-slate-800 text-slate-300";
-            return inv.match_id ? (
-              <Link key={inv.ref_id} href={`/chat/${inv.match_id}`} className={`block rounded-md bg-slate-900 p-3 text-sm ring-1 ${style}`}>
-                {text}
-              </Link>
-            ) : (
-              <p key={inv.ref_id} className={`rounded-md bg-slate-900 p-3 text-sm ring-1 ${style}`}>
-                {text}
-              </p>
-            );
-          })}
-        </div>
-      )}
-
-      <Link href="/invitar" className="block rounded-md bg-slate-900 p-4 ring-1 ring-slate-700 hover:ring-violet-400">
-        <p className="font-medium">Invitá a alguien</p>
-        <p className="text-sm text-slate-400">A comparar el test de personalidad, o con un adelanto astrológico →</p>
-      </Link>
-    </div>
+      <ListCard>
+        <ListRow href="/carta" icon="☉" title="Mi carta" detail="Identidad, amor, vocación y emociones" />
+      </ListCard>
+    </>
   );
 }
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
+    <Page>
       <Suspense>
         <HomeContent />
       </Suspense>
-      <AppNav />
-    </main>
+    </Page>
   );
 }

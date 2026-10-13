@@ -498,6 +498,14 @@
    "oscuro",
    "claro"
   ],
+  "fondos": [
+   "constelacion",
+   "aura",
+   "elemental",
+   "horizonte",
+   "ninguno"
+  ],
+  "fondo_por_defecto": "constelacion",
   "modo_por_defecto": "oscuro",
   "tipografias": {
    "clasica": "la de siempre",

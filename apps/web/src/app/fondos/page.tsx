@@ -8,12 +8,17 @@ import { getMe, getStyle, Style } from "@/lib/api";
 // de la persona con sesión y una tarjeta de ejemplo encima.
 export default function FondosPage() {
   const [style, setStyle] = useState<Style | null>(null);
+  const [problem, setProblem] = useState<string | null>(null);
   useEffect(() => {
     getMe()
-      .then((me) => (me ? getStyle(me.id) : null))
+      .then((me) => {
+        if (!me) throw new Error("Entrá con tu cuenta en esta misma dirección para ver los fondos con tu carta.");
+        return getStyle(me.id);
+      })
       .then(setStyle)
-      .catch(() => null);
+      .catch((e: Error) => setProblem(e.message || "No pudimos cargar tu carta."));
   }, []);
+  if (problem) return <main className="p-6 text-slate-300">{problem}</main>;
   if (!style) return <main className="p-6 text-slate-400">Cargando…</main>;
 
   return (

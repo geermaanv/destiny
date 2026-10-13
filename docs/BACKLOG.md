@@ -101,7 +101,7 @@ Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usua
 - [ ] **Mi cielo**: tránsitos de todos los planetas sobre los puntos natales (orbe, exactitud, período activo), filtros por área de vida. Extiende el calendario y "Tu día".
 - [ ] **Consentimientos y datos**: aceptar privacidad al empezar, ver/exportar/borrar mis datos, memoria del chat opcional.
 - [ ] Timeline / Diario cósmico (fase 2 del whitepaper).
-- [ ] Inicio y navegación centrados en autoconocimiento (Mi perfil · Mi cielo · Astrochat · Mi evolución), con Descubrir como sección.
+- [x] Navegación reorganizada (spec U1): Hoy · Mi carta · Descubrir · Conexiones · Perfil; Perfil corto; Hoy con jerarquía; Mi carta en pestañas; sistema visual común. Cuando lleguen Astrochat y Mi cielo, se suman a esta estructura.
 
 ## Roadmap de producto (Pablo, octubre 2026)
 
@@ -138,7 +138,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Ok de Pablo a la hiperpersonalización cuando la vea en la app (mapeo y textos).
 - [x] v2 — tema visual (spec X2 v2): paleta por elemento predominante de la carta (Fuego, Tierra, Aire, Agua o Clásico), con opción manual en "Tu estilo" de Mi perfil. Pendiente: ok de Pablo y modo claro / acento por Venus (v3).
 - [x] v3 (spec X2 v3): acento por Venus, modo claro/oscuro (contraste WCAG medido en los 5 temas × 2 modos), tipografía de títulos por tema y fondo con el cielo de nacimiento (se puede apagar). Pendiente: ok de Pablo.
-- [ ] Elegir el fondo de la app entre las 4 variantes de `/fondos` (German) y sacar la página de prueba.
+- [x] Fondo de la app: German eligió la constelación por defecto y que la persona pueda elegir entre los 4 (o ninguno) en Tu estilo.
 - [ ] v4 — aprender del uso (👍/👎 en cada texto).
 
 **Créditos en vez de Premium (idea de German y Pablo, 2026-10-13)** — una moneda propia (nombre de marca, no "tokens") para pagar por uso lo que tiene costo variable (AstroChat, informes, consultas, eventos), con el núcleo siempre gratis, créditos que se ganan con acciones (test, invitar, rachas de check-in) y paquetes para comprar (Mercado Pago, sin la comisión de las tiendas mientras sea app web). Libro de movimientos por usuario, todo parametrizable.

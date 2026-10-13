@@ -1,0 +1,39 @@
+# U1-reorganizacion-ui — Reorganización de la interfaz
+
+- **Estado**: implemented
+- **Módulo**: transversal (web)
+- **Aprobada para implementación por**: German Villamarin, 2026-10-13 ("hacer todo", sobre la revisión de UI).
+
+## Problema
+
+Con todo lo que se agregó la app quedó amontonada: Mi carta (lo central del autoconocimiento) escondida en Perfil, Calendario ocupando una pestaña, Mi perfil con seis cosas en un scroll larguísimo, Inicio con bloques sin jerarquía, Mi carta con textos largos y estilos de tarjeta distintos en cada pantalla.
+
+## Cambios
+
+**A. Navegación (5 pestañas)**: **Hoy** (`/home`) · **Mi carta** (`/carta`) · **Descubrir** · **Conexiones** · **Perfil**. Calendario deja de ser pestaña: se abre desde Hoy ("ver el mes") y queda marcado como Hoy. `/perfil/carta` redirige a `/carta`.
+
+**B. Perfil corto** (`/perfil`): encabezado con avatar, nombre y "☉ signo · ☽ signo · AC signo" (sin hora exacta, sin AC) y una lista de filas, cada una a su pantalla: Editar perfil (`/perfil/editar`), Datos de nacimiento (edición existente), Tu estilo (`/perfil/estilo`), Test de personalidad (`/perfil/test`), Invitar a alguien (`/invitar`), Cerrar sesión.
+
+**C. Hoy con jerarquía**: 1) Tu día (protagonista); 2) ánimo en una fila de botones; 3) los próximos 3 días importantes con "Ver el mes →"; 4) lo social en una tarjeta: solicitudes de conexión, invitaciones y "N personas en tu frecuencia → Descubrir"; 5) acceso a Mi carta si todavía no la abrió (no se recuerda: se muestra siempre como fila corta).
+
+**D. Mi carta** (`/carta`): Tu cielo (rueda + leyenda) arriba, las 4 dimensiones en **pestañas** (Identidad · Amor · Vocación · Emociones), síntesis con 3 líneas y "Leer más", "En qué se basa" desplegable, y el test de personalidad como fila al final.
+
+**E. Sistema visual común** (`src/components/ui.tsx`): `Page` (contenedor + barra), `PageTitle`, `Card`, `SectionTitle`, `ListRow`. Un único estilo de tarjeta (`bg-slate-900` con borde `slate-700`; el borde dorado solo para lo destacado del día) y el mismo espaciado. Las pantallas de las pestañas lo usan.
+
+## Sumado durante la implementación (German)
+
+- **Fondos a elección**: la constelación por defecto y los 4 fondos (y "sin fondo") para elegir en Tu estilo; tarjetas semitransparentes con desenfoque para que el fondo se asome; "Ver fondo" oculta el contenido hasta tocar la pantalla (spec X2 v3). Se sacó la página de prueba `/fondos`.
+
+## Fuera de alcance
+
+Rediseño de Descubrir, Conexiones, chat y onboarding (solo pasan a usar `Page`/`PageTitle` si es directo). 
+
+## Casos de prueba (manuales, en el navegador en tamaño celular; no hay cambios de API)
+
+1. La barra muestra Hoy, Mi carta, Descubrir, Conexiones, Perfil; en `/calendario` queda marcada Hoy; en `/perfil/*` queda marcado Perfil.
+2. `/perfil/carta` lleva a `/carta`.
+3. Perfil muestra el encabezado con los signos y las 6 filas; cada fila abre su pantalla y "Cerrar sesión" sale.
+4. `/perfil/editar` guarda el perfil como antes; `/perfil/estilo` cambia estilo, colores, modo y fondo como antes.
+5. Hoy muestra Tu día primero, el ánimo, los próximos 3 días con "Ver el mes" y la tarjeta social con link a Descubrir.
+6. Mi carta muestra la rueda y una dimensión por pestaña; "Leer más" despliega la síntesis completa.
+7. Los tests de la API siguen en verde y la web compila sin errores de tipos.

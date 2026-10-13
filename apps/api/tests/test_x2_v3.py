@@ -101,9 +101,10 @@ def test_cielo_de_nacimiento(client):
     sky = {p["punto"]: p["lon"] for p in body["cielo"]}
     for point in ("sol", "luna", "mercurio", "venus", "marte", "jupiter", "saturno", "urano", "neptuno", "pluton", "asc"):
         assert sky[point] == pytest.approx(c.points[point], abs=1e-6)
-    assert body["fondo"] is True
-    assert client.put(f"/profiles/{pid}/style", json={"fondo": False}).json()["fondo"] is False
-    assert client.put(f"/profiles/{pid}/style", json={"fondo": True}).json()["fondo"] is True
+    assert body["fondo"] == "constelacion"
+    for fondo in ("aura", "elemental", "horizonte", "ninguno", "constelacion"):
+        assert client.put(f"/profiles/{pid}/style", json={"fondo": fondo}).json()["fondo"] == fondo
+    assert client.put(f"/profiles/{pid}/style", json={"fondo": "glitter"}).status_code == 422
 
 
 def test_cielo_sin_hora_exacta_no_tiene_ascendente(client):

@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import AppNav from "@/components/AppNav";
+import { Page } from "@/components/ui";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { Connection, getConnections, respondConnection } from "@/lib/api";
 import { useSessionProfileId } from "@/lib/session";
@@ -44,7 +44,7 @@ function ConexionesContent() {
   const sent = connections.filter((c) => c.status === "pendiente" && c.direction === "enviada");
 
   return (
-    <div className="w-full max-w-sm space-y-6">
+    <div className="w-full space-y-6">
       <h1 className="text-2xl font-semibold">Conexiones</h1>
 
       {connections.length === 0 && (
@@ -115,11 +115,10 @@ function ConexionesContent() {
 
 export default function ConexionesPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
+    <Page>
       <Suspense>
         <ConexionesContent />
       </Suspense>
-      <AppNav />
-    </main>
+    </Page>
   );
 }

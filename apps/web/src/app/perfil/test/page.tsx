@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import AppNav from "@/components/AppNav";
+import { Page } from "@/components/ui";
 import { getMyPersonality, getPersonalityTest, PersonalityTest, savePersonality } from "@/lib/api";
 import { useSessionProfileId } from "@/lib/session";
 
@@ -51,7 +51,7 @@ function TestContent() {
   const axisIndex = AXES.indexOf(axis);
 
   return (
-    <div className="w-full max-w-sm space-y-5">
+    <div className="w-full space-y-5">
       <div className="flex items-center justify-between text-xs">
         <Link href="/perfil" className="text-slate-300">
           ‹ Mi perfil
@@ -164,11 +164,10 @@ function TestContent() {
 
 export default function TestPersonalidadPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
+    <Page>
       <Suspense>
         <TestContent />
       </Suspense>
-      <AppNav />
-    </main>
+    </Page>
   );
 }

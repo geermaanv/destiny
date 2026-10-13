@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import AppNav from "@/components/AppNav";
+import { Page } from "@/components/ui";
 import { CONTEXTS } from "@/components/CompatibilityView";
 import { useSessionProfileId } from "@/lib/session";
 import {
@@ -70,7 +70,7 @@ function InvitarForm() {
   if (invitation) {
     const locked = invitation.partial_report?.locked_fields.map((f) => LOCKED_LABELS[f] ?? f) ?? [];
     return (
-      <div className="w-full max-w-sm space-y-5">
+      <div className="w-full space-y-5">
         <h1 className="text-2xl font-semibold">Así le va a llegar a {name}</h1>
         <div className="rounded-lg rounded-tl-none bg-emerald-950/60 p-4 text-sm text-slate-100 ring-1 ring-emerald-800">
           {invitation.message}
@@ -96,7 +96,7 @@ function InvitarForm() {
   }
 
   return (
-    <form onSubmit={submit} className="w-full max-w-sm space-y-5">
+    <form onSubmit={submit} className="w-full space-y-5">
       <div>
         <h1 className="text-2xl font-semibold">Invitá a alguien</h1>
         <p className="mt-1 text-sm text-slate-400">Se lo mandás por WhatsApp desde tu celular.</p>
@@ -205,11 +205,10 @@ function InvitarForm() {
 
 export default function InvitarPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
+    <Page>
       <Suspense>
         <InvitarForm />
       </Suspense>
-      <AppNav />
-    </main>
+    </Page>
   );
 }

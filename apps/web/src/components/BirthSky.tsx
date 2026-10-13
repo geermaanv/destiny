@@ -1,4 +1,5 @@
-import { AuraSutil } from "@/components/Backgrounds";
+import { BACKGROUNDS } from "@/components/Backgrounds";
+import type { Fondo } from "@/lib/theme";
 // Cielo de nacimiento (spec X2 v3). Dos piezas:
 // - BirthSky (default): fondo de la app generado con la carta (variantes en
 //   Backgrounds.tsx, en prueba en /fondos), detrás del contenido.
@@ -15,11 +16,13 @@ const HIGHLIGHT = new Set(["sol", "luna"]);
 
 type Sky = { punto: string; lon: number }[];
 
-// Fondo provisorio: variante A (Aura sutil) hasta que German elija en /fondos.
-export default function BirthSky({ cielo, elementos }: { cielo: Sky; modo: "oscuro" | "claro"; elementos?: Record<string, number> }) {
+// Fondo de la app: el que eligió la persona (por defecto, su constelación).
+export default function BirthSky({ cielo, elementos, fondo }: { cielo: Sky; elementos?: Record<string, number>; fondo: Fondo }) {
+  if (fondo === "ninguno") return null;
+  const { Component } = BACKGROUNDS[fondo] ?? BACKGROUNDS.constelacion;
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <AuraSutil cielo={cielo} elementos={elementos} />
+      <Component cielo={cielo} elementos={elementos} />
     </div>
   );
 }

@@ -49,9 +49,9 @@ class Profile(Base):
     style_registro: Mapped[str | None] = mapped_column(String, nullable=True)
     # Tema visual elegido a mano (spec X2 v2); None = lo decide la carta.
     style_tema: Mapped[str | None] = mapped_column(String, nullable=True)
-    # v3: modo claro/oscuro y fondo con el cielo de nacimiento (None = por defecto).
+    # v3: modo claro/oscuro y fondo generado con la carta (None = por defecto).
     style_modo: Mapped[str | None] = mapped_column(String, nullable=True)
-    style_fondo: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    style_fondo_tipo: Mapped[str | None] = mapped_column(String, nullable=True)
 
     # Si la verificación dio duplicado_detectado: el perfil que ya tiene ese número.
     duplicate_of_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)

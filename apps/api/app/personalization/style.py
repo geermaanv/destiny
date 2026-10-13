@@ -13,6 +13,7 @@ from app.models import Profile
 from app.synastry.chart import Chart, chart_for_profile
 
 CONFIG_PATH = Path(__file__).parent / "config" / "estilos_v1.json"
+ARTICLE = {"fuego": "el", "tierra": "la", "aire": "el", "agua": "el"}
 SKY_POINTS = ("sol", "luna", "mercurio", "venus", "marte", "jupiter", "saturno", "urano", "neptuno", "pluton", "asc", "mc")
 PLANET_NAMES = {"mercurio": "Mercurio", "luna": "Luna"}
 
@@ -75,7 +76,7 @@ def theme_from_chart(chart: Chart) -> dict:
     return {
         "tema_carta": theme_cfg["por_elemento"][element],
         "elementos": pct,
-        "tema_por_que": f"En tu carta predomina el {element} ({pct[element]} %).",
+        "tema_por_que": f"En tu carta predomina {ARTICLE[element]} {element} ({pct[element]} %).",
     }
 
 
@@ -99,7 +100,7 @@ def style_for(profile: Profile) -> dict:
     accent_theme = style["acento"] if style["tema_source"] == "carta" else style["tema"]
     style["paleta"] = theme_cfg["temas"][style["tema"]][key] | {"gold": theme_cfg["temas"][accent_theme][key]["gold"]}
     style["tipografia"] = theme_cfg["temas"][style["tema"]]["tipografia"]
-    style["fondo"] = True if profile.style_fondo is None else profile.style_fondo
+    style["fondo"] = profile.style_fondo_tipo or theme_cfg["fondo_por_defecto"]
     style["cielo"] = [{"punto": p, "lon": chart.points[p]} for p in SKY_POINTS if p in chart.points]
     style["cielo_leyenda"] = sky_legend(profile, chart)
     return style

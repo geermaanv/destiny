@@ -208,7 +208,7 @@ class StyleOut(BaseModel):
     modo: Literal["oscuro", "claro"]
     acento: str
     tipografia: str
-    fondo: bool
+    fondo: Literal["constelacion", "aura", "elemental", "horizonte", "ninguno"]
     cielo: list[dict[str, str | float]]
     cielo_leyenda: str
 
@@ -219,7 +219,7 @@ class StyleIn(BaseModel):
     registro: Literal["directo", "practico", "analitico", "intuitivo"] | None = None
     tema: Literal["fuego", "tierra", "aire", "agua", "clasico"] | None = None
     modo: Literal["oscuro", "claro"] | None = None
-    fondo: bool | None = None
+    fondo: Literal["constelacion", "aura", "elemental", "horizonte", "ninguno"] | None = None
 
 
 class MyDayOut(BaseModel):

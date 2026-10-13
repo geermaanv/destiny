@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getStyle, Registro, setStyle, Style, StyleChange, Tema } from "@/lib/api";
-import { applyLook } from "@/lib/theme";
+import { applyLook, Fondo, peekBackground } from "@/lib/theme";
 
 // "Tu estilo" (spec X2): cómo te hablamos y los colores de la app salen de tu
 // carta, y los podés cambiar. Mismos nombres que app/personalization/config/estilos_v1.json.
@@ -11,6 +11,14 @@ const REGISTROS: { value: Registro; label: string; description: string }[] = [
   { value: "practico", label: "Práctico", description: "concreto y accionable" },
   { value: "analitico", label: "Analítico", description: "con el porqué y las ideas detrás" },
   { value: "intuitivo", label: "Intuitivo", description: "emocional, con imágenes" },
+];
+
+const FONDOS: { value: Fondo; label: string; description: string }[] = [
+  { value: "constelacion", label: "Tu constelación", description: "tus planetas como estrellas" },
+  { value: "aura", label: "Aura", description: "brillos suaves de tu Sol y tu Luna" },
+  { value: "elemental", label: "Elementos", description: "el peso de cada elemento en tu carta" },
+  { value: "horizonte", label: "Horizonte", description: "con la luna del día en que naciste" },
+  { value: "ninguno", label: "Sin fondo", description: "liso" },
 ];
 
 const TEMAS: { value: Tema; label: string; description: string }[] = [
@@ -47,7 +55,6 @@ export default function StyleCard({ profileId }: { profileId: string }) {
   return (
     <div className="space-y-3 rounded-md bg-slate-900 p-4 ring-1 ring-slate-700">
       <div className="space-y-1">
-        <span className="font-medium">Tu estilo</span>
         <p className="text-xs uppercase tracking-wide text-slate-500">Cómo te hablamos</p>
         <p className="text-sm text-slate-300">
           <span className="text-gold-300">{current?.label}</span>: {current?.description}. Lo usamos en tus explicaciones y en
@@ -120,10 +127,35 @@ export default function StyleCard({ profileId }: { profileId: string }) {
             </button>
           ))}
         </div>
-        <label className="flex items-center gap-2 text-sm text-slate-300">
-          <input type="checkbox" checked={style.fondo} disabled={saving} onChange={(e) => save({ fondo: e.target.checked })} />
-          Tu cielo de fondo
-        </label>
+      </div>
+      <div className="space-y-1 pt-2">
+        <div className="flex items-baseline justify-between">
+          <p className="text-xs uppercase tracking-wide text-slate-500">Tu fondo</p>
+          {style.fondo !== "ninguno" && (
+            <button type="button" onClick={peekBackground} className="text-sm text-violet-400">
+              Ver fondo
+            </button>
+          )}
+        </div>
+        <p className="text-xs text-slate-400">Se genera con tu carta: no hay dos iguales.</p>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {FONDOS.map((f) => (
+          <button
+            key={f.value}
+            type="button"
+            disabled={saving}
+            onClick={() => save({ fondo: f.value })}
+            className={`rounded-md px-2 py-1.5 text-left text-sm ring-1 disabled:opacity-60 ${
+              style.fondo === f.value
+                ? "bg-violet-600 text-white ring-violet-500"
+                : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-violet-400"
+            }`}
+          >
+            {f.label}
+            <span className="block text-xs opacity-70">{f.description}</span>
+          </button>
+        ))}
       </div>
     </div>
   );

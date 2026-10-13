@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AppNav from "@/components/AppNav";
+import { Page } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import { PersonalityBlock } from "@/components/CompatibilityView";
 import ProfileAvatar from "@/components/ProfileAvatar";
@@ -79,7 +79,7 @@ function DiscoverContent() {
   if (error) return <p className="text-red-400">{error}</p>;
 
   return (
-    <div className="w-full max-w-sm space-y-4">
+    <div className="w-full space-y-4">
       <h1 className="text-2xl font-semibold">Descubrir</h1>
       <div className="space-y-1">
         <p className="text-xs text-slate-400">¿Qué tipo de vínculo querés mirar?</p>
@@ -183,11 +183,10 @@ function DiscoverContent() {
 
 export default function DiscoverPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
+    <Page>
       <Suspense>
         <DiscoverContent />
       </Suspense>
-      <AppNav />
-    </main>
+    </Page>
   );
 }

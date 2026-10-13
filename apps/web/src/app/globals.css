@@ -53,3 +53,13 @@ body {
 .sky-on main {
   background-color: transparent;
 }
+/* Tarjetas semitransparentes para que el fondo se asome (spec X2 v3). */
+.sky-on .bg-slate-900 {
+  background-color: rgb(var(--slate-900) / 0.72);
+  backdrop-filter: blur(6px);
+}
+/* "Ver fondo": se oculta el contenido (y la barra) hasta tocar la pantalla. */
+.peek main,
+.peek nav {
+  visibility: hidden;
+}

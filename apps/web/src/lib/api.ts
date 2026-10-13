@@ -1,4 +1,4 @@
-import { resetLook } from "@/lib/theme";
+import { Fondo, resetLook } from "@/lib/theme";
 // "/api" en vez de una URL absoluta: Next.js la proxea server-side a
 // API_INTERNAL_URL (ver next.config.ts). Así el browser solo necesita
 // llegar al origen de Next — un solo túnel alcanza para hostear
@@ -529,7 +529,7 @@ export type Style = {
   modo: "oscuro" | "claro";
   acento: string;
   tipografia: string;
-  fondo: boolean;
+  fondo: Fondo;
   cielo: { punto: string; lon: number }[];
   cielo_leyenda: string;
 };
@@ -547,7 +547,7 @@ export type StyleChange = {
   registro?: Registro | null;
   tema?: Tema | null;
   modo?: "oscuro" | "claro";
-  fondo?: boolean;
+  fondo?: Fondo;
 };
 
 export async function setStyle(profileId: string, change: StyleChange): Promise<Style> {

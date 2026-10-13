@@ -101,7 +101,7 @@ Mi perfil → tarjeta **"Cómo te hablamos"**: el estilo actual en palabras ("Di
 - **Tipografía de títulos por tema** (la de lectura no cambia, como pide el whitepaper): Fuego Sora, Tierra Lora, Aire Josefin Sans, Agua Cormorant Garamond, Clásico la de siempre.
 - **Fondo con el cielo de nacimiento**: una rueda zodiacal muy tenue detrás de la app con los planetas donde estaban al nacer (y el Ascendente si hay hora exacta). Se puede apagar (`fondo`, por defecto prendido). Es estático: no suma movimiento. **Rediseño (feedback de German: "no se ve nada")**: como fondo de toda la app va un **aura de color única por persona** (idea de German: "colores personalizados, invenciones según el perfil"): manchas de luz difusa con los colores de su tema, ubicadas según la longitud del Sol (color de acción), la Luna (acento de Venus) y el Ascendente (o Venus sin hora), con tamaño según el peso del elemento de cada punto, más algunas estrellas tenues; estático y detrás del contenido; la **rueda** pasa a ser una pieza visible arriba de **Mi carta** ("Tu cielo"), con la **leyenda** debajo (nombre, fecha, ciudad, Sol, Luna y Ascendente) y esos puntos **destacados** en la rueda (Sol y Luna más grandes, Ascendente marcado "AC"). Detrás de las tarjetas la rueda quedaba tapada y en los formularios ensuciaba.
 
-**API**: `GET /profiles/{id}/style` suma `modo`, `acento` (elemento de Venus), `tipografia`, `fondo`, `cielo` (`[{punto, lon}]`) y `cielo_leyenda` (texto: nombre · fecha · ciudad · Sol en … · Luna en … · Asc. en …; sin hora exacta, sin Ascendente). Solo para la propia persona. `PUT` acepta `modo` (`oscuro`|`claro`) y `fondo` (bool). Modelo: `Profile.style_modo`, `Profile.style_fondo` (nullables).
+**API**: `GET /profiles/{id}/style` suma `modo`, `acento` (elemento de Venus), `tipografia`, `fondo` (`constelacion` por defecto · `aura` · `elemental` · `horizonte` · `ninguno`; elegido por German el 2026-10-13: la constelación por defecto y los 4 a elección), `cielo` (`[{punto, lon}]`) y `cielo_leyenda` (texto: nombre · fecha · ciudad · Sol en … · Luna en … · Asc. en …; sin hora exacta, sin Ascendente). Solo para la propia persona. `PUT` acepta `modo` (`oscuro`|`claro`) y `fondo` (uno de los de arriba). Modelo: `Profile.style_modo`, `Profile.style_fondo_tipo` (nullables). **Fondos** (se compararon en una página de prueba, ya eliminada): A · Aura sutil, B · Tu constelación (planetas como estrellas unidas en orden zodiacal), C · Degradado elemental, D · Horizonte con tu luna. Las tarjetas son **semitransparentes** con desenfoque para que el fondo se asome, y "Tu estilo" tiene **"Ver fondo"** (oculta el contenido hasta tocar la pantalla).
 
 ### Casos de prueba v3 (`apps/api/tests/test_x2_v3.py`)
 
@@ -111,7 +111,7 @@ Mi perfil → tarjeta **"Cómo te hablamos"**: el estilo actual en palabras ("Di
 | 18 | Modo claro | `paleta` pasa a la clara del tema (con el acento de Venus en su versión clara) y vuelve |
 | 19 | Contraste | Las combinaciones de arriba cumplen sus mínimos en los 5 temas × 2 modos |
 | 20 | Tipografía | Es la del tema actual |
-| 21 | Cielo | Los puntos y longitudes son los de la carta; sin hora exacta no hay Ascendente; `fondo` se puede apagar y prender |
+| 21 | Cielo | Los puntos y longitudes son los de la carta; sin hora exacta no hay Ascendente; `fondo` es `constelacion` por defecto, se puede elegir otro o `ninguno`, y uno inexistente da 422 |
 | 22 | Modo inválido | 422 |
 | 23 | Leyenda del cielo | Nombre, fecha, ciudad y los signos de Sol, Luna y Ascendente de la carta; sin hora exacta no menciona el Ascendente |
 

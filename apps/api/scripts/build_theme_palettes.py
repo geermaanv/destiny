@@ -86,6 +86,9 @@ def main():
         # v3: el acento (escala gold) sale del elemento de Venus cuando el tema lo decide la carta.
         "acento": {"planeta": "venus", "descripcion": "Venus define lo que te atrae y te gusta: le da el color de acento."},
         "modos": ["oscuro", "claro"],
+        # Fondo generado con la carta: la persona elige (spec X2 v3; German eligió la constelación por defecto).
+        "fondos": ["constelacion", "aura", "elemental", "horizonte", "ninguno"],
+        "fondo_por_defecto": "constelacion",
         "modo_por_defecto": "oscuro",
         # Tipografía solo para títulos: la de lectura queda igual en todos los temas (whitepaper §3.2).
         "tipografias": {

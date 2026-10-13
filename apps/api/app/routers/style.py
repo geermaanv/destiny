@@ -43,7 +43,7 @@ def set_style(
     if "modo" in payload.model_fields_set:
         profile.style_modo = payload.modo
     if "fondo" in payload.model_fields_set:
-        profile.style_fondo = payload.fondo
+        profile.style_fondo_tipo = payload.fondo
     db.commit()
     db.refresh(profile)
     return StyleOut(**style_for(profile))

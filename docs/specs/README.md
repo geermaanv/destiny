@@ -36,3 +36,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [X2-hiperpersonalizacion](./X2-hiperpersonalizacion.md) | X2 (transversal) | implemented |
 | [A7-motor-oficial-destiny-1-0](./A7-motor-oficial-destiny-1-0.md) | B5 (motor) | implemented |
 | [A8-mi-carta-dimensiones](./A8-mi-carta-dimensiones.md) | A (autoconocimiento) | implemented |
+| [U1-reorganizacion-ui](./U1-reorganizacion-ui.md) | transversal (web) | implemented |

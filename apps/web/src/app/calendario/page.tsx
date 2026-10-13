@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
-import AppNav from "@/components/AppNav";
+import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import {
   addAnnotation,
@@ -103,8 +103,8 @@ function CalendarioContent() {
   const firstWeekday = (new Date(cursor.year, cursor.month - 1, 1).getDay() + 6) % 7;
 
   return (
-    <div className="w-full max-w-sm space-y-6">
-      <h1 className="text-2xl font-semibold">Calendario</h1>
+    <div className="w-full space-y-6">
+      <PageTitle title="Calendario" back={{ href: "/home", label: "Hoy" }} />
 
       <section className="space-y-3">
         <div className="flex items-center justify-between">
@@ -233,11 +233,10 @@ function CalendarioContent() {
 
 export default function CalendarioPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
+    <Page>
       <Suspense>
         <CalendarioContent />
       </Suspense>
-      <AppNav />
-    </main>
+    </Page>
   );
 }

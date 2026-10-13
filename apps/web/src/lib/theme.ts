@@ -3,12 +3,13 @@
 // aplica como variables CSS en toda la app y se recuerda en el dispositivo
 // para que no parpadee al abrir.
 export type Palette = Record<string, Record<string, string>>;
+export type Fondo = "constelacion" | "aura" | "elemental" | "horizonte" | "ninguno";
 
 export type Look = {
   paleta: Palette;
   modo: "oscuro" | "claro";
   tipografia: string;
-  fondo: boolean;
+  fondo: Fondo;
   cielo: { punto: string; lon: number }[];
   cielo_leyenda?: string;
   elementos?: Record<string, number>;
@@ -65,4 +66,9 @@ export function resetLook(): void {
     // nada que borrar
   }
   window.dispatchEvent(new CustomEvent(EVENT, { detail: null }));
+}
+
+// "Ver fondo" (spec X2 v3): oculta el contenido hasta tocar la pantalla.
+export function peekBackground(): void {
+  window.dispatchEvent(new CustomEvent("destiny-peek"));
 }
