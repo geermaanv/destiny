@@ -115,3 +115,20 @@ def test_cielo_sin_hora_exacta_no_tiene_ascendente(client):
 def test_modo_invalido(client):
     pid = verified_user(client, "5491111111111")
     assert client.put(f"/profiles/{pid}/style", json={"modo": "sepia"}).status_code == 422
+
+
+def test_leyenda_del_cielo(client):
+    from app.astro import ZODIAC_SIGNS
+
+    pid = verified_user(client, "5491111111111", name="Ana", birth_date=BIRTH[0], birth_time=BIRTH[1])
+    c = _chart()
+    sign = lambda p: ZODIAC_SIGNS[int(c.points[p] // 30)]  # noqa: E731
+    leyenda = client.get(f"/profiles/{pid}/style").json()["cielo_leyenda"]
+    for piece in ("Ana", "20/05/1990", "Buenos Aires", f"Sol en {sign('sol')}", f"Luna en {sign('luna')}", f"Asc. en {sign('asc')}"):
+        assert piece in leyenda, (piece, leyenda)
+
+
+def test_leyenda_sin_hora_exacta(client):
+    pid = verified_user(client, "5491111111111", name="Ana", birth_date=BIRTH[0], birth_time=None)
+    leyenda = client.get(f"/profiles/{pid}/style").json()["cielo_leyenda"]
+    assert "Asc." not in leyenda and "Sol en" in leyenda

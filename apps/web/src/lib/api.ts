@@ -531,6 +531,7 @@ export type Style = {
   tipografia: string;
   fondo: boolean;
   cielo: { punto: string; lon: number }[];
+  cielo_leyenda: string;
 };
 
 export type Tema = "fuego" | "tierra" | "aire" | "agua" | "clasico";

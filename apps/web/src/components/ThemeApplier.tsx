@@ -21,5 +21,11 @@ export default function ThemeApplier() {
     return off;
   }, []);
 
-  return look?.fondo && look.cielo?.length ? <BirthSky cielo={look.cielo} modo={look.modo} /> : null;
+  const sky = Boolean(look?.fondo && look.cielo?.length);
+  // Con cielo, el fondo de color pasa al <body> y las pantallas quedan transparentes (globals.css).
+  useEffect(() => {
+    document.documentElement.classList.toggle("sky-on", sky);
+  }, [sky]);
+
+  return sky && look ? <BirthSky cielo={look.cielo} modo={look.modo} leyenda={look.cielo_leyenda} /> : null;
 }

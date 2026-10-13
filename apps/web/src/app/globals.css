@@ -43,3 +43,13 @@ h1,
 h2 {
   font-family: var(--font-display, inherit);
 }
+
+/* Cielo de nacimiento de fondo (spec X2 v3): el color de fondo pasa al body y el
+   <main> de cada pantalla queda transparente, así la rueda se ve detrás del
+   contenido (las tarjetas, con fondo propio, la tapan). */
+body {
+  background-color: rgb(var(--slate-950));
+}
+.sky-on main {
+  background-color: transparent;
+}

@@ -210,6 +210,7 @@ class StyleOut(BaseModel):
     tipografia: str
     fondo: bool
     cielo: list[dict[str, str | float]]
+    cielo_leyenda: str
 
 
 class StyleIn(BaseModel):

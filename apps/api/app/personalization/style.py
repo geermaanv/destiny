@@ -101,7 +101,22 @@ def style_for(profile: Profile) -> dict:
     style["tipografia"] = theme_cfg["temas"][style["tema"]]["tipografia"]
     style["fondo"] = True if profile.style_fondo is None else profile.style_fondo
     style["cielo"] = [{"punto": p, "lon": chart.points[p]} for p in SKY_POINTS if p in chart.points]
+    style["cielo_leyenda"] = sky_legend(profile, chart)
     return style
+
+
+def sky_legend(profile: Profile, chart: Chart) -> str:
+    """Leyenda del cielo de fondo: nombre y datos principales de la carta (spec X2 v3)."""
+    sign = lambda point: ZODIAC_SIGNS[_sign(chart, point)]  # noqa: E731
+    parts = [
+        profile.display_name,
+        profile.birth_date.strftime("%d/%m/%Y") if profile.birth_date else None,
+        (profile.birth_place_query or "").split(",")[0].strip() or None,
+        f"Sol en {sign('sol')}",
+        f"Luna en {sign('luna')}",
+        f"Asc. en {sign('asc')}" if "asc" in chart.points else None,
+    ]
+    return " · ".join(p for p in parts if p)
 
 
 def prompt_instructions(style: dict) -> str:

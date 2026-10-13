@@ -10,6 +10,7 @@ export type Look = {
   tipografia: string;
   fondo: boolean;
   cielo: { punto: string; lon: number }[];
+  cielo_leyenda?: string;
 };
 
 const STORAGE_KEY = "destiny-look";

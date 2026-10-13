@@ -99,9 +99,9 @@ Mi perfil → tarjeta **"Cómo te hablamos"**: el estilo actual en palabras ("Di
 - **Modo claro u oscuro** (`modo`, por defecto oscuro). El claro invierte la luminosidad de fondos, textos y acento (el dorado se oscurece más: tiene mucha luminancia) y deja igual los botones; se genera con `scripts/build_theme_palettes.py` (`paleta_claro`). Los controles nativos siguen el modo (`color-scheme`).
 - **Contraste WCAG medido** en los 5 temas × 2 modos, con las combinaciones que usa la app: texto principal ≥ 7 (slate-100 sobre slate-950); texto secundario ≥ 4,5 (slate-300 sobre 900, slate-400 sobre 950, violet-400 y gold-300); texto tenue ≥ 3,5 (slate-500); texto blanco en botones ≥ 3 (violet-600, texto grande/negrita).
 - **Tipografía de títulos por tema** (la de lectura no cambia, como pide el whitepaper): Fuego Sora, Tierra Lora, Aire Josefin Sans, Agua Cormorant Garamond, Clásico la de siempre.
-- **Fondo con el cielo de nacimiento**: una rueda zodiacal muy tenue detrás de la app con los planetas donde estaban al nacer (y el Ascendente si hay hora exacta). Se puede apagar (`fondo`, por defecto prendido). Es estático: no suma movimiento. Visibilidad (ajustada a pedido de German): opacidad ~0,22, mezclado con el fondo (aclara en modo oscuro, oscurece en claro) para que se vea sin tapar el texto.
+- **Fondo con el cielo de nacimiento**: una rueda zodiacal muy tenue detrás de la app con los planetas donde estaban al nacer (y el Ascendente si hay hora exacta). Se puede apagar (`fondo`, por defecto prendido). Es estático: no suma movimiento. Va **detrás** del contenido (las tarjetas la tapan, nunca queda sobre el texto), la rueda entra entera en la pantalla (lado más corto) y las estrellas tienen tamaño fijo. Alrededor de la rueda, escrita en círculo, una **leyenda** con el nombre y los datos principales de la carta (fecha, ciudad, Sol, Luna y Ascendente), y esos mismos puntos se **destacan** en la rueda (Sol y Luna más grandes, Ascendente marcado "AC") — pedido de German.
 
-**API**: `GET /profiles/{id}/style` suma `modo`, `acento` (elemento de Venus), `tipografia`, `fondo` y `cielo` (`[{punto, lon}]`, solo para la propia persona). `PUT` acepta `modo` (`oscuro`|`claro`) y `fondo` (bool). Modelo: `Profile.style_modo`, `Profile.style_fondo` (nullables).
+**API**: `GET /profiles/{id}/style` suma `modo`, `acento` (elemento de Venus), `tipografia`, `fondo`, `cielo` (`[{punto, lon}]`) y `cielo_leyenda` (texto: nombre · fecha · ciudad · Sol en … · Luna en … · Asc. en …; sin hora exacta, sin Ascendente). Solo para la propia persona. `PUT` acepta `modo` (`oscuro`|`claro`) y `fondo` (bool). Modelo: `Profile.style_modo`, `Profile.style_fondo` (nullables).
 
 ### Casos de prueba v3 (`apps/api/tests/test_x2_v3.py`)
 
@@ -113,6 +113,7 @@ Mi perfil → tarjeta **"Cómo te hablamos"**: el estilo actual en palabras ("Di
 | 20 | Tipografía | Es la del tema actual |
 | 21 | Cielo | Los puntos y longitudes son los de la carta; sin hora exacta no hay Ascendente; `fondo` se puede apagar y prender |
 | 22 | Modo inválido | 422 |
+| 23 | Leyenda del cielo | Nombre, fecha, ciudad y los signos de Sol, Luna y Ascendente de la carta; sin hora exacta no menciona el Ascendente |
 
 ## Fuera de alcance (v4 en adelante)
 
