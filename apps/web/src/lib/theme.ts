@@ -11,6 +11,7 @@ export type Look = {
   fondo: boolean;
   cielo: { punto: string; lon: number }[];
   cielo_leyenda?: string;
+  elementos?: Record<string, number>;
 };
 
 const STORAGE_KEY = "destiny-look";
