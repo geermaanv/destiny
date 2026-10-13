@@ -6,16 +6,19 @@ import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
 import { useSessionProfileId } from "@/lib/session";
 import ProfileForm from "@/components/ProfileForm";
-import { getMyPersonality, logout, MyPersonality } from "@/lib/api";
+import { getMyPersonality, getProfile, logout, MyPersonality, Profile } from "@/lib/api";
 
 // "Mi perfil": editar el perfil liviano después del onboarding (spec A4).
 function MiPerfil() {
   const router = useRouter();
   const profileId = useSessionProfileId();
   const [personality, setPersonality] = useState<MyPersonality | null>(null);
+  const [me, setMe] = useState<Profile | null>(null);
 
   useEffect(() => {
-    if (profileId) getMyPersonality(profileId).then(setPersonality).catch(() => null);
+    if (!profileId) return;
+    getMyPersonality(profileId).then(setPersonality).catch(() => null);
+    getProfile(profileId).then(setMe).catch(() => null);
   }, [profileId]);
 
   if (!profileId) {
@@ -52,6 +55,28 @@ function MiPerfil() {
               : "Ver o cambiar respuestas →"}
         </span>
       </Link>
+      {me && (
+        <div className="space-y-2 rounded-md bg-slate-900 p-4 ring-1 ring-slate-700">
+          <div className="flex items-center justify-between">
+            <span className="font-medium">Mis datos de nacimiento</span>
+            <Link href={`/onboarding/datos-natales?profileId=${profileId}&editar=1`} className="text-sm text-violet-400">
+              Editar
+            </Link>
+          </div>
+          <p className="text-sm text-slate-300">
+            {me.birth_date ? me.birth_date.split("-").reverse().join("/") : "—"} ·{" "}
+            {me.birth_time_estimated ? `hora estimada (${me.birth_time?.slice(0, 5)})` : `${me.birth_time?.slice(0, 5)} hs`}
+          </p>
+          <p className="text-sm text-slate-300">{me.birth_place_query ?? "—"}</p>
+          {me.sun_sign && <p className="text-xs text-slate-400">Sol en {me.sun_sign}</p>}
+          {me.birth_place_lat === null && (
+            <p className="text-xs text-gold-300">
+              Tu ciudad no está elegida del buscador: no podemos calcular tu Ascendente ni tus casas. Tocá Editar y elegila
+              de la lista.
+            </p>
+          )}
+        </div>
+      )}
       <ProfileForm profileId={profileId} submitLabel="Guardar cambios" onSaved={() => null} />
       <button
         onClick={async () => {

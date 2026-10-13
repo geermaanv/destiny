@@ -74,6 +74,24 @@ Tests automáticos en `apps/api/tests/test_a1_datos_natales.py` (correr: `cd app
 | 9 | Búsqueda de ciudad pide al menos 2 letras | `test_busqueda_de_ciudad_pide_al_menos_2_letras` |
 | 10 | Alias CABA se traduce a buenos aires | `test_alias_caba_se_traduce_a_buenos_aires` |
 
+## v2 — Editar los datos de nacimiento desde "Mi perfil" (pedido de German, 2026-10-13)
+
+Hasta ahora fecha, hora y ciudad solo se cargaban en el registro y no se podían cambiar. Ahora:
+
+- "Mi perfil" muestra una tarjeta **"Mis datos de nacimiento"** (fecha, hora o franja/estimada, ciudad, y si falta la ciudad con coordenadas: "sin ciudad del buscador → no hay Ascendente ni casas").
+- "Editar" abre el mismo formulario del registro, precargado, **sin el indicador de pasos**; "Guardar cambios" vuelve a Mi perfil.
+- Al guardar, todo se recalcula con la carta nueva (signo, Descubrir, calendario, "Tu día", chat). Las **explicaciones guardadas en cache** de esa persona dejan de usarse (la clave de la cache incluye los datos natales de los dos).
+- Solo la persona puede editar sus datos (sesión), y sigue valiendo el mínimo de 18 años.
+
+Casos de prueba (`apps/api/tests/test_a1_editar_datos_natales.py`):
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 1 | Editar fecha, hora y ciudad con la propia sesión | Se guardan; cambian signo y coordenadas |
+| 2 | Editar los datos de otra persona | 403 (y 401 sin sesión) |
+| 3 | Editar con una fecha de menor de edad | 422 |
+| 4 | Explicación pedida antes y después de cambiar la fecha | La segunda se vuelve a redactar (no usa la cache vieja) |
+
 ## Corrección 2026-10-12: la hora es hora local del lugar de nacimiento
 
 La hora de nacimiento se interpreta **en la zona horaria del lugar de nacimiento** (la que da la geocodificación; si no hay, Buenos Aires). Antes, el signo solar público, el calendario y la invitación astrológica la tomaban como hora UTC: alguien nacido el 21/5/1990 a las 06:00 en Buenos Aires figuraba Tauro en vez de Géminis. Todos los cálculos usan ahora la carta completa (`app/synastry/chart.py`). Tests: `apps/api/tests/test_bug_hora_local.py`.

@@ -103,7 +103,7 @@ def get_explanation(
         raise HTTPException(status_code=422, detail="Perfil sin datos natales")
 
     # Cache (spec X1): misma pareja + vínculo + modelo + tablas → no se vuelve a pagar.
-    key = explanation_key(viewer.id, candidate.id, context)
+    key = explanation_key(viewer, candidate, context)
     if (text := cached(db, key)) is not None:
         return ExplanationOut(text=text)
 

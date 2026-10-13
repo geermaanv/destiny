@@ -140,6 +140,8 @@ function DatosNatalesForm() {
   const params = useSearchParams();
   const ref = params.get("ref");
   const existingProfileId = params.get("profileId");
+  // Modo edición desde "Mi perfil" (spec A1 v2): sin pasos, vuelve a /perfil al guardar.
+  const editing = params.get("editar") === "1";
   const [profileId, setProfileId] = useState<string | null>(null);
   const [loadedPlace, setLoadedPlace] = useState<string | null>(existingProfileId ? null : "");
   const started = useRef(false);
@@ -242,7 +244,7 @@ function DatosNatalesForm() {
           : { query: birthPlace },
       });
       setStatus("done");
-      router.push(nextStepUrl(profileId));
+      router.push(editing ? "/perfil" : nextStepUrl(profileId));
     } catch {
       setError("No se pudieron guardar los datos. Probá de nuevo.");
       setStatus("error");
@@ -253,7 +255,14 @@ function DatosNatalesForm() {
     <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-5">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/logo.png" alt="Destiny" width={72} height={72} className="mx-auto" />
-      <h1 className="text-2xl font-semibold">Tus datos natales</h1>
+      {editing ? (
+        <a href="/perfil" className="text-xs text-slate-300">
+          ‹ Mi perfil
+        </a>
+      ) : (
+        <OnboardingSteps step={1} />
+      )}
+      <h1 className="text-2xl font-semibold">{editing ? "Mis datos de nacimiento" : "Tus datos natales"}</h1>
 
       <div className="space-y-1">
         <label htmlFor="birth-day" className="block text-sm text-slate-400">
@@ -412,7 +421,7 @@ function DatosNatalesForm() {
         disabled={!profileId || status === "submitting"}
         className="w-full rounded-md bg-violet-600 px-3 py-2 font-medium text-white disabled:opacity-50"
       >
-        {status === "submitting" ? "Guardando..." : "Continuar"}
+        {status === "submitting" ? "Guardando..." : editing ? "Guardar cambios" : "Continuar"}
       </button>
     </form>
   );
@@ -423,7 +432,6 @@ export default function DatosNatalesPage() {
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-6 text-slate-100">
       <Suspense>
         <div className="flex w-full flex-col items-center gap-6 py-10">
-          <OnboardingSteps step={1} />
           <DatosNatalesForm />
         </div>
       </Suspense>

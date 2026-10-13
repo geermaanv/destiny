@@ -1,18 +1,28 @@
 """Cache y registro de uso de los textos de IA (spec X1)."""
 
 import hashlib
-import uuid
 
 from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.explainer import Written
-from app.models import AIText
+from app.models import AIText, Profile
 from app.synastry.engine import load_config
 
 
-def explanation_key(viewer: uuid.UUID, candidate: uuid.UUID, context: str) -> str:
-    raw = f"explicacion:{viewer}:{candidate}:{context}:{settings.openrouter_model}:{load_config()['version']}"
+def _chart_fingerprint(profile: Profile) -> str:
+    """Si cambian los datos natales, cambia la clave y no se usa la explicación vieja (spec A1 v2)."""
+    return (
+        f"{profile.birth_date}|{profile.birth_time}|{profile.birth_time_estimated}|"
+        f"{profile.birth_place_lat}|{profile.birth_place_lon}|{profile.birth_place_timezone}"
+    )
+
+
+def explanation_key(viewer: Profile, candidate: Profile, context: str) -> str:
+    raw = (
+        f"explicacion:{viewer.id}:{_chart_fingerprint(viewer)}:{candidate.id}:{_chart_fingerprint(candidate)}:"
+        f"{context}:{settings.openrouter_model}:{load_config()['version']}"
+    )
     return hashlib.sha256(raw.encode()).hexdigest()
 
 
