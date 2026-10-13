@@ -507,3 +507,31 @@ export async function getMyDay(profileId: string, date: string): Promise<MyDay> 
   if (!res.ok) throw new Error("No se pudo cargar tu día");
   return res.json();
 }
+
+// Hiperpersonalización (spec X2): cómo le habla Destiny a cada persona, según su carta.
+export type Registro = "directo" | "practico" | "analitico" | "intuitivo";
+
+export type Style = {
+  registro: Registro;
+  tono: "contenedor" | "liviano";
+  formato: "acciones" | "profundidad" | "opciones";
+  source: "carta" | "elegido";
+  por_que: string;
+  registro_carta: Registro;
+};
+
+export async function getStyle(profileId: string): Promise<Style> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/style`);
+  if (!res.ok) throw new Error("No se pudo cargar tu estilo");
+  return res.json();
+}
+
+export async function setStyle(profileId: string, registro: Registro | null): Promise<Style> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/style`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ registro }),
+  });
+  if (!res.ok) throw new Error("No se pudo guardar tu estilo");
+  return res.json();
+}

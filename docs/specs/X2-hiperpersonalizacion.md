@@ -1,6 +1,6 @@
 # X2-hiperpersonalizacion — v1: estilo de redacción según la carta
 
-- **Estado**: approved
+- **Estado**: implemented (falta el ok de Pablo al verlo en la app)
 - **Módulo**: X2 (transversal)
 - **Owner de decisión de producto**: German Villamarin (por ahora). El **mapeo carta → estilo** es parte del modelo: Pablo es la última palabra (ADR 0011) y lo ajusta en la configuración.
 - **Aprobada para implementación por**: German Villamarin, 2026-10-13

@@ -132,20 +132,22 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - Cuánta contención necesita (tono) → **Luna**.
 - Qué formato le sirve → **modalidad dominante**: cardinal acciones, fija profundidad, mutable opciones.
 - Estética → **Venus**; color principal del tema → **Ascendente** (o Sol sin hora exacta).
-- [ ] **v1 — estilo de redacción** (spec X2). Backend hecho: estilo por carta, `GET/PUT /profiles/{id}/style`, explicaciones y 288 textos de "Tu día" por registro. Falta: tarjeta "Cómo te hablamos" en Mi perfil (esperando alinear nombres con los 4 modos del whitepaper) y que Pablo revise el mapeo y los textos.
+- [x] **v1 — estilo de redacción** (spec X2): estilo por carta, `GET/PUT /profiles/{id}/style`, explicaciones y 288 textos de "Tu día" por registro, tarjeta "Cómo te hablamos" en Mi perfil. Se queda con los 4 registros definidos (no los modos del whitepaper; decisión de German).
+- [ ] Ok de Pablo a la hiperpersonalización cuando la vea en la app (mapeo y textos).
 - [ ] v2 — tema visual: paleta por Ascendente/elemento y acento por Venus, con opción manual.
 - [ ] v3 — fondo con el cielo de nacimiento y tipografías.
 - [ ] v4 — aprender del uso (👍/👎 en cada texto).
 
 **Créditos en vez de Premium (idea de German y Pablo, 2026-10-13)** — una moneda propia (nombre de marca, no "tokens") para pagar por uso lo que tiene costo variable (AstroChat, informes, consultas, eventos), con el núcleo siempre gratis, créditos que se ganan con acciones (test, invitar, rachas de check-in) y paquetes para comprar (Mercado Pago, sin la comisión de las tiendas mientras sea app web). Libro de movimientos por usuario, todo parametrizable.
-- [ ] Decidir con Pablo: créditos como modelo principal; nombre de la moneda; qué cuesta y qué es siempre gratis.
+- [ ] Créditos: por ahora la moneda se llama **"token"** (decisión de German, 2026-10-13). **No es prioridad.** Falta definir qué cuesta y qué es siempre gratis.
 - [ ] Propuesta para respetar los 6 meses gratis: lanzar primero solo **ganar y gastar** créditos (sin venta) para aprender qué valora la gente.
 - [ ] Revisión legal del saldo prepago (Defensa del Consumidor: vencimiento, devoluciones, información de precios).
 
 **Decisiones pendientes para Pablo**
 - [ ] Confirmar que la monetización queda para después del MVP 100 % gratis (regla de `ALCANCE_MVP.md`).
-- [ ] **RRHH con la carta natal**: usar la carta para seleccionar o descartar candidatos tiene riesgo legal (discriminación, datos personales sensibles; sin evidencia de que prediga desempeño). Propuesta: Destiny Pro como networking y autoconocimiento voluntario, no selección de personal. Validar con un abogado.
-- [ ] Privacidad en comparaciones con terceros (Circle, constelación de amigos): siempre con consentimiento de la otra persona.
+- [x] **RRHH con la carta natal** — **queda afuera por ahora** (decisión de German, 2026-10-13). Contexto: usar la carta para seleccionar o descartar candidatos tiene riesgo legal (discriminación, datos personales sensibles; sin evidencia de que prediga desempeño). Propuesta: Destiny Pro como networking y autoconocimiento voluntario, no selección de personal. Validar con un abogado.
+- [x] Privacidad en comparaciones con terceros — **decidido: se pide consentimiento** de la otra persona (German, 2026-10-13).
+- [ ] Implementar ese consentimiento: hoy la invitación astrológica (C8) calcula un adelanto con el signo que carga quien invita, antes de que el invitado acepte. Definir en la spec C8 cómo se pide el consentimiento (ej. mostrar el adelanto recién cuando el invitado acepta) y aplicarlo también a futuras comparaciones (Circle, constelación).
 
 
 

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
 import { useSessionProfileId } from "@/lib/session";
 import ProfileForm from "@/components/ProfileForm";
+import StyleCard from "@/components/StyleCard";
 import { getMyPersonality, getProfile, logout, MyPersonality, Profile } from "@/lib/api";
 
 // "Mi perfil": editar el perfil liviano después del onboarding (spec A4).
@@ -77,6 +78,7 @@ function MiPerfil() {
           )}
         </div>
       )}
+      {me?.birth_date && <StyleCard profileId={profileId} />}
       <ProfileForm profileId={profileId} submitLabel="Guardar cambios" onSaved={() => null} />
       <button
         onClick={async () => {
