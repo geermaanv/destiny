@@ -123,7 +123,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Informe de vínculo descargable (PDF con ejes y sugerencias de conversación).
 
 **Ideas del análisis de competencia (NeoHumanCode, 2026-10-13; `docs/referencias/Analisis-NeoHumanCode.pdf`)**
-- [ ] Informe descargable de Mi carta ("Tu Carta Destiny") y de vínculo, como primer producto pago con tokens (después de los 6 meses gratis). Preguntado a Pablo.
+- [ ] **Compartir mi carta con un link** (spec A9, approved; reemplaza la idea del PDF por decisión de German): un toque, Destiny filtra los datos. Spec y casos de prueba escritos (`apps/api/tests/test_a9_compartir_carta.py`, sin commitear porque todavía fallan); falta el código (tabla `share_links`, endpoints, página `/c/{token}`, botón en Mi carta).
 - [x] Mensaje de entrada que arranca por el problema: **"¿Por qué con algunas personas fluye y con otras no?"** (elegido por German) en la pantalla de entrada, con "no predice el futuro ni decide por vos". Falta llevarlo a la invitación por WhatsApp y a un video.
 - [ ] Canal de profesionales (Destiny Studio): referencia de precios de la competencia (~$11.100 por informe en suscripción). Post-MVP.
 
