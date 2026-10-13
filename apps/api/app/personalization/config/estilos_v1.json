@@ -1,0 +1,37 @@
+{
+ "version": "v1",
+ "notas": "Mapeo carta → estilo de redacción (spec X2). Parte del modelo: Pablo es la última palabra (ADR 0011). Se puede editar sin tocar código.",
+ "elementos": ["fuego", "tierra", "aire", "agua"],
+ "modalidades": ["cardinal", "fijo", "mutable"],
+ "registro": {
+  "planeta": "mercurio",
+  "que_define": "cómo procesás la información",
+  "por_elemento": {"fuego": "directo", "tierra": "practico", "aire": "analitico", "agua": "intuitivo"},
+  "estilos": {
+   "directo": {"nombre": "Directo", "descripcion": "al grano, franco y motivador", "instruccion": "Estilo DIRECTO: andá al grano, frases cortas y francas, con energía; nada de rodeos."},
+   "practico": {"nombre": "Práctico", "descripcion": "concreto y accionable", "instruccion": "Estilo PRÁCTICO: concreto y accionable; decí qué conviene hacer, sin abstracciones."},
+   "analitico": {"nombre": "Analítico", "descripcion": "con el porqué y las ideas detrás", "instruccion": "Estilo ANALÍTICO: explicá el porqué con claridad, podés mencionar el aspecto o el eje que lo explica; ordenado y preciso."},
+   "intuitivo": {"nombre": "Intuitivo", "descripcion": "emocional, con imágenes", "instruccion": "Estilo INTUITIVO: hablale a lo que siente, con alguna imagen o metáfora simple; cálido y evocador."}
+  }
+ },
+ "tono": {
+  "planeta": "luna",
+  "que_define": "cuánta contención necesitás",
+  "por_elemento": {"fuego": "liviano", "tierra": "contenedor", "aire": "liviano", "agua": "contenedor"},
+  "estilos": {
+   "contenedor": {"nombre": "contenedor", "instruccion": "Tono CONTENEDOR: cuidadoso, que acompañe; si hay algo difícil, decilo con suavidad."},
+   "liviano": {"nombre": "liviano", "instruccion": "Tono LIVIANO: relajado, con algo de humor si cabe; sin dramatizar."}
+  }
+ },
+ "formato": {
+  "que_define": "qué formato te sirve",
+  "pesos": {"sol": 3, "luna": 3, "asc": 2, "mercurio": 1, "venus": 1, "marte": 1},
+  "desempate": "mercurio",
+  "por_modalidad": {"cardinal": "acciones", "fijo": "profundidad", "mutable": "opciones"},
+  "estilos": {
+   "acciones": {"nombre": "con acciones", "instruccion": "Formato ACCIONES: cerrá con una acción concreta para hacer."},
+   "profundidad": {"nombre": "en profundidad", "instruccion": "Formato PROFUNDIDAD: una sola idea central, bien desarrollada."},
+   "opciones": {"nombre": "con opciones", "instruccion": "Formato OPCIONES: ofrecé un par de caminos posibles, breve."}
+  }
+ }
+}

@@ -45,6 +45,9 @@ class Profile(Base):
     def has_photo(self) -> bool:
         return self.photo_path is not None
 
+    # Hiperpersonalización (spec X2): registro elegido a mano; None = lo decide la carta.
+    style_registro: Mapped[str | None] = mapped_column(String, nullable=True)
+
     # Si la verificación dio duplicado_detectado: el perfil que ya tiene ese número.
     duplicate_of_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
 

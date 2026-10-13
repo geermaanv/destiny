@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from app.astro import moon_longitude, today_astro_weather, zodiac_sign
 from app.auth import require_self, session_profile_id
 from app.content.transits import reviewed, text_for
+from app.personalization.style import style_for
 from app.database import get_db
 from app.models import MoodCheckin, Profile
 from app.schemas import AstroWeatherOut, FrequencyCountOut, MoodCheckinIn, MyDayOut
@@ -56,7 +57,7 @@ def get_my_day(
         raise HTTPException(status_code=409, detail="Perfil sin datos natales")
     transit = day_transit(profile, day)
     moon_sign = zodiac_sign(moon_longitude(day))
-    title, text = text_for(transit["aspect"], moon_sign)
+    title, text = text_for(transit["aspect"], moon_sign, style_for(profile)["registro"])
     return MyDayOut(
         date=day,
         aspect=transit["aspect"],

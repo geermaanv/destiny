@@ -13,6 +13,7 @@ from app.personality import CONTEXT_TO_MODE
 from app.personality.engine import compare
 from app.public_profile import public_fields
 from app.ai_texts import cached, explanation_key, record
+from app.personalization.style import prompt_instructions, style_for
 from app.synastry import ai_facts, headline, profile_synastry
 from app.schemas import DiscoverCandidateOut, ExplanationOut, PersonalityCompatOut
 
@@ -103,7 +104,9 @@ def get_explanation(
         raise HTTPException(status_code=422, detail="Perfil sin datos natales")
 
     # Cache (spec X1): misma pareja + vínculo + modelo + tablas → no se vuelve a pagar.
-    key = explanation_key(viewer, candidate, context)
+    # Hiperpersonalización (spec X2): se redacta en el estilo de quien lee.
+    style = style_for(viewer)
+    key = explanation_key(viewer, candidate, context, style)
     if (text := cached(db, key)) is not None:
         return ExplanationOut(text=text)
 
@@ -112,6 +115,6 @@ def get_explanation(
     personality = (
         compare(mine.answers, theirs.answers, CONTEXT_TO_MODE[context]) if mine and theirs and mine.answers and theirs.answers else None
     )
-    written = explainer.explain(ai_facts(result, personality))
+    written = explainer.explain(ai_facts(result, personality), prompt_instructions(style))
     record(db, key, "explicacion", written)
     return ExplanationOut(text=written.text)

@@ -42,7 +42,9 @@ def test_tu_dia_usa_el_sol_natal_y_la_biblioteca(client):
     body = r.json()
     aspect, moon_sign = _expected()
     assert (body["aspect"], body["moon_sign"], body["date"]) == (aspect, moon_sign, DAY)
-    entry = load_library()["textos"][aspect][moon_sign]
+    # Spec X2: el texto sale de la versión en el registro de la persona (lo decide su carta).
+    registro = client.get(f"/profiles/{pid}/style").json()["registro"]
+    entry = load_library()["por_registro"][registro][aspect][moon_sign]
     assert (body["title"], body["text"]) == (entry["titulo"], entry["texto"])
     assert body["reviewed"] is False
 

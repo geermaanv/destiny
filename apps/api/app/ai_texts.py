@@ -18,10 +18,12 @@ def _chart_fingerprint(profile: Profile) -> str:
     )
 
 
-def explanation_key(viewer: Profile, candidate: Profile, context: str) -> str:
+def explanation_key(viewer: Profile, candidate: Profile, context: str, style: dict | None = None) -> str:
+    """`style` (spec X2): si cambia el estilo de quien lee, se vuelve a redactar."""
+    style_part = f"{style['registro']}/{style['tono']}/{style['formato']}" if style else "-"
     raw = (
         f"explicacion:{viewer.id}:{_chart_fingerprint(viewer)}:{candidate.id}:{_chart_fingerprint(candidate)}:"
-        f"{context}:{settings.openrouter_model}:{load_config()['version']}"
+        f"{context}:{style_part}:{settings.openrouter_model}:{load_config()['version']}"
     )
     return hashlib.sha256(raw.encode()).hexdigest()
 

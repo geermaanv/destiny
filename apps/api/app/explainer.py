@@ -46,7 +46,7 @@ class Written:
 
 
 class ResonanceExplainer(Protocol):
-    def explain(self, facts: dict) -> Written: ...
+    def explain(self, facts: dict, style: str = "") -> Written: ...
 
 
 def template_explanation(facts: dict) -> str:
@@ -66,13 +66,15 @@ def template_explanation(facts: dict) -> str:
 
 
 class TemplateResonanceExplainer:
-    def explain(self, facts: dict) -> Written:
+    def explain(self, facts: dict, style: str = "") -> Written:
         return Written(template_explanation(facts), None)
 
 
 class OpenRouterResonanceExplainer:
-    def explain(self, facts: dict) -> Written:
-        result = complete(EDITORIAL_GUIDELINE, json.dumps(facts, ensure_ascii=False), MAX_CHARS)
+    def explain(self, facts: dict, style: str = "") -> Written:
+        """`style`: instrucciones del estilo de quien lee (spec X2), se suman a la guía editorial."""
+        system = f"{EDITORIAL_GUIDELINE} {style}".strip()
+        result = complete(system, json.dumps(facts, ensure_ascii=False), MAX_CHARS)
         return Written(result.text, result) if result else Written(template_explanation(facts), None)
 
 

@@ -155,6 +155,21 @@ class AstroWeatherOut(BaseModel):
     date: date
 
 
+class StyleOut(BaseModel):
+    """Estilo de redacción (spec X2)."""
+
+    registro: str
+    tono: str
+    formato: str
+    source: Literal["carta", "elegido"]
+    por_que: str
+    registro_carta: str
+
+
+class StyleIn(BaseModel):
+    registro: Literal["directo", "practico", "analitico", "intuitivo"] | None = None
+
+
 class MyDayOut(BaseModel):
     """ "Tu día" (spec B4 v2)."""
 

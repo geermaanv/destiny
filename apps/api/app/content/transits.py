@@ -21,8 +21,12 @@ def load_library() -> dict:
     return json.loads(LIBRARY_PATH.read_text())
 
 
-def text_for(aspect: str, moon_sign: str) -> tuple[str, str]:
-    entry = load_library()["textos"].get(aspect, {}).get(moon_sign)
+def text_for(aspect: str, moon_sign: str, registro: str | None = None) -> tuple[str, str]:
+    """Primero la versión en el registro de la persona (spec X2), si no la general."""
+    library = load_library()
+    entry = library.get("por_registro", {}).get(registro or "", {}).get(aspect, {}).get(moon_sign)
+    if not (entry and entry.get("titulo") and entry.get("texto")):
+        entry = library["textos"].get(aspect, {}).get(moon_sign)
     if entry and entry.get("titulo") and entry.get("texto"):
         return entry["titulo"], entry["texto"]
     return TRANSIT_TEXT.get(aspect, GENERIC_QUIET)

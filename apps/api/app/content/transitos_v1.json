@@ -305,5 +305,1216 @@
     "texto": "Hoy la Luna en Piscis te invita a conectar con tu intuición. Dejá que tus sentimientos te guíen, confiá en tu instinto y date permiso para soñar despierta."
    }
   }
- }
+ },
+ "por_registro": {
+  "directo": {
+   "conjunción": {
+    "Aries": {
+     "titulo": "Energía yVos",
+     "texto": "Hoy tu fuerza interior y tus emociones están a flor de piel, ¡aprovechá para lanzarte a lo que querés sin dudar!"
+    },
+    "Tauro": {
+     "titulo": "Energía y vos",
+     "texto": "Hoy sentís que todo fluye, aprovechá esta fuerza para concretar eso que venís pensando. Dale tu toque personal, que hoy sale bárbaro."
+    },
+    "Géminis": {
+     "titulo": "Energía en Géminis",
+     "texto": "Hoy tu energía y tus emociones están a tono. Comunicá tus ideas con claridad, que tu voz se escuche y conectá con gente copada."
+    },
+    "Cáncer": {
+     "titulo": "Tu día brilla",
+     "texto": "Hoy tus emociones y tu energía están sincronizadas. Aprovechá esta fuerza para cuidar de vos y de quienes querés, ¡sentite plena!"
+    },
+    "Leo": {
+     "titulo": "Tu fuego interior",
+     "texto": "Hoy la Luna en Leo te ilumina. Sentís todo a flor de piel y con ganas de brillar. Animate a expresar lo que te mueve, ¡tu energía es contagiosa!"
+    },
+    "Virgo": {
+     "titulo": "Virgo: Limpieza Interior",
+     "texto": "Hoy, con la Luna en Virgo, sentís la energía a flor de piel. Aprovechá para ordenar tus ideas y tus espacios, ¡te vas a sentir liviana y enfocada!"
+    },
+    "Libra": {
+     "titulo": "Conexión y Armonía",
+     "texto": "Hoy, con la Luna en Libra, sentís todo con más intensidad y buscando el equilibrio. Buscá momentos de conexión genuina con otros, donde reine la paz y la fair play."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Vos",
+     "texto": "Hoy, con la Luna en Escorpio, tus emociones son profundas y poderosas. Conectá con esa intensidad para tomar decisiones importantes, sin miedo a ir al fondo de las cosas."
+    },
+    "Sagitario": {
+     "titulo": "Fuego Sagitariano",
+     "texto": "Hoy tu energía y tus emociones están alineadas, ¡aprovechá para ir por eso que te entusiasma! Dale para adelante con confianza y buena onda."
+    },
+    "Capricornio": {
+     "titulo": "Tu mejor versión",
+     "texto": "Hoy sentís todo con fuerza, aprovechá esta energía para encarar lo que te propongas. Ponete metas claras y vas a ver cómo las cumplís."
+    },
+    "Acuario": {
+     "titulo": "Tu momento es hoy",
+     "texto": "La Luna en Acuario te da un impulso único. Aprovechá esta energía para conectar con lo que te hace libre y diferente."
+    },
+    "Piscis": {
+     "titulo": "Sentir con todo",
+     "texto": "Hoy la Luna en Piscis te invita a conectar con tu lado más sensible. Dejá que tus emociones te guíen y confía en tu intuición para tomar decisiones."
+    }
+   },
+   "sextil": {
+    "Aries": {
+     "titulo": "Energía para arrancar",
+     "texto": "Con la Luna en Aries, aprovechá este sextil para encarar lo que te propongas con impulso. ¡Dale para adelante sin miedo!"
+    },
+    "Tauro": {
+     "titulo": "Placer y concreción",
+     "texto": "Con la Luna en Tauro, hoy conectá con lo que te hace bien. Aprovechá esta energía para disfrutar de las cosas simples y avanzar en tus proyectos con calma."
+    },
+    "Géminis": {
+     "titulo": "Aire y Conexión",
+     "texto": "Hoy, con la Luna en Géminis, tus ideas fluyen. Aprovechá esta energía para charlar, compartir y conectar con gente que te inspira. ¡Proponé algo nuevo!"
+    },
+    "Cáncer": {
+     "titulo": "Tu hogar te llama",
+     "texto": "Hoy la Luna en Cáncer te invita a mimarte en casa. Aprovechá esta energía para ordenar tus espacios y sentirte más vos."
+    },
+    "Leo": {
+     "titulo": "Soltate y brillá",
+     "texto": "Hoy la Luna en Leo te invita a ser vos mismo. Aprovechá esta energía para mostrar tu luz y compartir tus ideas con confianza."
+    },
+    "Virgo": {
+     "titulo": "Conexión y orden",
+     "texto": "Tu Luna en Virgo te pide pulir tus ideas. Aprovechá la fluidez del sextil para organizar tus pensamientos y compartir lo que tenés en mente con confianza."
+    },
+    "Libra": {
+     "titulo": "Amor y Conexión",
+     "texto": "Hoy, con la Luna en Libra, buscá el diálogo. Aprovechá este sextil para poner las cartas sobre la mesa y limar asperezas con buena onda."
+    },
+    "Escorpio": {
+     "titulo": "Conexión profunda",
+     "texto": "Hoy la Luna en Escorpio te invita a ir al fondo de las cosas. Aprovechá esta energía para charlar sin filtros y entender qué hay detrás de tus vínculos."
+    },
+    "Sagitario": {
+     "titulo": "Aventurate y Conectá",
+     "texto": "Hoy la Luna en Sagitario te invita a expandir tus horizontes. Proponete algo nuevo, charlá con gente que te inspire y sentite libre."
+    },
+    "Capricornio": {
+     "titulo": "Capricornio y tu Sol",
+     "texto": "La Luna en Capricornio te pide que seas práctico y organizado. Aprovechá esta energía para poner en marcha tus proyectos y avanzar con paso firme."
+    },
+    "Acuario": {
+     "titulo": "Conexión y originalidad",
+     "texto": "Hoy la Luna en Acuario te impulsa a conectar de forma diferente. Dale lugar a tus ideas más locas y compartilas sin miedo, vas a inspirar."
+    },
+    "Piscis": {
+     "titulo": "Conexión y Fluir",
+     "texto": "Hoy la Luna en Piscis te invita a conectar con tu intuición y la de los demás. Aprovechá esta energía para proponer ideas con empatía y dejate llevar por lo que sentís."
+    }
+   },
+   "cuadratura": {
+    "Aries": {
+     "titulo": "Fuerza y Emoción",
+     "texto": "Hoy tu energía está a full, pero tus emociones te piden atención. Conectate con tu fuerza interior, pero no te olvides de escuchar lo que sentís."
+    },
+    "Tauro": {
+     "titulo": "Emociones estables",
+     "texto": "Hoy, con la Luna en Tauro, buscá la calma en lo tangible. Canalizá la tensión del día en algo que te dé seguridad, como cocinar o darte un gusto simple."
+    },
+    "Géminis": {
+     "titulo": "Mente y Corazón",
+     "texto": "Hoy, tu cabeza y tus sentimientos pueden andar a las patadas. Respirá hondo y buscá un equilibrio entre lo que pensás y lo que sentís para que el día fluya."
+    },
+    "Cáncer": {
+     "titulo": "Emoción y acción",
+     "texto": "Hoy la Luna en Cáncer te pide que escuches tu corazón. Si sentís que algo te frena, respirá profundo y buscá un punto medio entre lo que querés hacer y lo que necesitás sentir."
+    },
+    "Leo": {
+     "titulo": "Fuerza y corazón",
+     "texto": "Hoy, la Luna en Leo te pide que seas valiente con lo que sentís. Tu impulso y tus emociones pueden estar un poco jugados, así que respirá hondo y buscá el equilibrio."
+    },
+    "Virgo": {
+     "titulo": "Ordená tus emociones",
+     "texto": "Hoy la Luna en Virgo te pide que pongas orden en tus sentimientos. Canalizá la tensión del día en organizar tus pensamientos y ver las cosas con más claridad."
+    },
+    "Libra": {
+     "titulo": "Paz y acción",
+     "texto": "Hoy la Luna en Libra te pide equilibrio. Si sentís que tus emociones chocan con tus planes, buscá un punto medio. Conectar con otros te va a ayudar a encontrar la armonía."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y claridad",
+     "texto": "Tu Sol y la Luna en Escorpio se tensionan. Conectá con tus emociones profundas para entender qué necesitás realmente y avanzá con convicción."
+    },
+    "Sagitario": {
+     "titulo": "Fuerza y libertad",
+     "texto": "Hoy, tu energía te pide espacio para ser vos. Conectá con tu lado aventurero y no te frenes ante nada. ¡A mover el alma!"
+    },
+    "Capricornio": {
+     "titulo": "Tensión y Enfoque",
+     "texto": "Hoy tus emociones y tu fuerza de voluntad pueden estar en conflicto. Canalizá esa energía en organizar tus prioridades y avanzar con determinación en tus metas."
+    },
+    "Acuario": {
+     "titulo": "Espacio y libertad",
+     "texto": "Hoy, tu energía te pide un respiro. Buscá momentos para vos, pensá distinto y conectá con lo que te inspira."
+    },
+    "Piscis": {
+     "titulo": "Emoción y Acción",
+     "texto": "Hoy la Luna en Piscis te pide que escuches tu intuición. Si sentís que algo no va, dalo por hecho. Conectá con tu deseo real, no con lo que creés que tenés que hacer."
+    }
+   },
+   "trígono": {
+    "Aries": {
+     "titulo": "Aries: Energía a pleno",
+     "texto": "Hoy la Luna en Aries te regala un impulso de energía. Aprovechá para arrancar esos proyectos que tenías en pausa, ¡vas a sentir que todo te sale sobre ruedas!"
+    },
+    "Tauro": {
+     "titulo": "Conectate con tu ritmo",
+     "texto": "Hoy todo fluye, Tauro. Aprovechá la calma para mimarte y disfrutar de las cosas simples que te hacen bien."
+    },
+    "Géminis": {
+     "titulo": "Mente ágil, día genial",
+     "texto": "Hoy tenés chispa, aprovechala para charlar, aprender o resolver cosas. ¡La comunicación es tu aliada!"
+    },
+    "Cáncer": {
+     "titulo": "Día para conectar",
+     "texto": "Con la Luna en Cáncer, sentís todo más a flor de piel. Es un día ideal para estar cerca de quienes querés y ocuparte de tu hogar."
+    },
+    "Leo": {
+     "titulo": "Brillá con Leo",
+     "texto": "Hoy la Luna en Leo te regala chispa y carisma. Animáte a ser el centro de atención, tus ideas van a contagiar alegría."
+    },
+    "Virgo": {
+     "titulo": "Armonía y orden",
+     "texto": "Hoy la Luna en Virgo te da chispa para organizar todo. Aprovechá esta energía para poner tus ideas en orden y que todo salga redondo."
+    },
+    "Libra": {
+     "titulo": "Conectá en armonía",
+     "texto": "Hoy la Luna en Libra te pide que busques el equilibrio en tus relaciones. Aprovechá esta energía para charlar, negociar y encontrar puntos en común. ¡La diplomacia es tu aliada!"
+    },
+    "Escorpio": {
+     "titulo": "Intensidad que suma",
+     "texto": "Hoy la Luna en Escorpio te pide conectar con tu poder interior. Aprovechá esta armonía para indagar en lo profundo y transformar lo que necesites."
+    },
+    "Sagitario": {
+     "titulo": "Aventura y expansión",
+     "texto": "Hoy la vida te sonríe y te invita a explorar. Animate a salir de tu zona de confort y probá algo nuevo, ¡la suerte te acompaña!"
+    },
+    "Capricornio": {
+     "titulo": "Capricornio: Fluir y Orden",
+     "texto": "Hoy la Luna en Capricornio te invita a poner orden en tus cosas. Aprovechá esta energía para organizar tu día y sentirte más liviano."
+    },
+    "Acuario": {
+     "titulo": "Conexión y originalidad",
+     "texto": "Hoy la energía te acompaña para conectar con vos y los demás de forma auténtica. Animáte a ser vos mismo y compartí tus ideas."
+    },
+    "Piscis": {
+     "titulo": "Fluyes con el corazón",
+     "texto": "Hoy la Luna en Piscis te regala empatía y sensibilidad. Conectá con tu intuición y dejate llevar por lo que te haga sentir bien."
+    }
+   },
+   "oposición": {
+    "Aries": {
+     "titulo": "Conectá con vos",
+     "texto": "Hoy tus emociones están a flor de piel. Prestá atención a lo que te piden los demás, pero no te olvides de escuchar tu propia voz interior para equilibrar."
+    },
+    "Tauro": {
+     "titulo": "Oposición Tauro",
+     "texto": "Hoy, con la Luna en Tauro opuesta a tu Sol, sacá a relucir tu lado más sensible. Conectá con los demás sin perder tu centro. ¡Dale espacio a lo que sentís!"
+    },
+    "Géminis": {
+     "titulo": "Vos y los demás",
+     "texto": "Hoy sentís todo a flor de piel. Es un momento para escuchar a los otros, pero sin olvidarte de vos. ¿Qué necesitás para estar bien?"
+    },
+    "Cáncer": {
+     "titulo": "Emociones a flor de piel",
+     "texto": "Hoy, con la Luna en Cáncer, tus emociones están a flor de piel. Es un día para escuchar a los demás y buscar el equilibrio en tus relaciones. ¡Conectá con tu intuición y compartí lo que sentís!"
+    },
+    "Leo": {
+     "titulo": "Foco en vos",
+     "texto": "Hoy la Luna en Leo te pide que te mires al espejo. Aunque los demás necesiten tu atención, recordá que tu brillo personal es lo más importante."
+    },
+    "Virgo": {
+     "titulo": "Conectate con vos",
+     "texto": "Hoy, con la Luna en Virgo, sentís todo a flor de piel. Prestale atención a lo que te dicen tus emociones, te dan una señal importante para tu bienestar."
+    },
+    "Libra": {
+     "titulo": "Conectá con otros",
+     "texto": "Hoy, con la Luna en Libra, tus emociones están a flor de piel. Aprovechá esta energía para conectar de verdad con la gente, escuchando y buscando el equilibrio en tus relaciones."
+    },
+    "Escorpio": {
+     "titulo": "Desafío emocional",
+     "texto": "Hoy, con la Luna en Escorpio, tus emociones están a flor de piel. Buscá un equilibrio entre lo que sentís y lo que necesitás, sin descuidar a los demás."
+    },
+    "Sagitario": {
+     "titulo": "Sagitario: Conexión total",
+     "texto": "Hoy sentís todo a flor de piel. Aprovechá para conectar con otros, compartir tus ideas y buscar acuerdos. ¡La energía está para expandirse juntos!"
+    },
+    "Capricornio": {
+     "titulo": "Tu momento de conectar",
+     "texto": "Hoy sentís todo a flor de piel. Aprovechá para mirar a los demás con empatía y buscar un equilibrio genuino en tus vínculos. ¡Es tiempo de dar y recibir!"
+    },
+    "Acuario": {
+     "titulo": "Conexión y Soltar",
+     "texto": "Hoy la Luna en Acuario te pide soltar lo que no te sirve. Conectá con vos mismo, confiá en tu instinto y abríte a nuevas formas de sentir."
+    },
+    "Piscis": {
+     "titulo": "Emoción y Conexión",
+     "texto": "Hoy tu corazón late fuerte por los demás. Conectate con tu intuición y dejate llevar por la empatía. ¡Un gesto amable puede cambiarlo todo!"
+    }
+   },
+   "sin aspecto mayor": {
+    "Aries": {
+     "titulo": "Energía y acción",
+     "texto": "Tu Luna en Aries te pide moverte. Aprovechá la calma para hacer eso que venís posponiendo. ¡Dale para adelante!"
+    },
+    "Tauro": {
+     "titulo": "Pausa Taurina",
+     "texto": "Hoy la Luna en Tauro te invita a bajar un cambio. Conectá con lo simple: un buen café, música que te guste o un paseo tranquilo. Disfrutá el momento sin apuro."
+    },
+    "Géminis": {
+     "titulo": "Mente ágil",
+     "texto": "Hoy la Luna en Géminis te invita a conectar con tu curiosidad. Animate a aprender algo nuevo, charlar con gente interesante o explorar ideas."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y emociones",
+     "texto": "Hoy la Luna en Cáncer te invita a conectar con tu mundo interior y tu hogar. Prestale atención a tus sensaciones y date mimos."
+    },
+    "Leo": {
+     "titulo": "Soltá la risa",
+     "texto": "Hoy la Luna en Leo te pide que brilles. Sacate el peso de encima y disfrutá el momento, dale rienda suelta a tu buen humor."
+    },
+    "Virgo": {
+     "titulo": "Orden y calma",
+     "texto": "Hoy la Luna en Virgo te pide poner las cosas en su lugar. Aprovechá la serenidad para organizar tus ideas y tu espacio."
+    },
+    "Libra": {
+     "titulo": "Equilibrio y relaciones",
+     "texto": "Hoy, con la Luna en Libra, buscá armonía en tus vínculos. Un gesto amable o una charla sincera te ayudarán a conectar mejor con los demás."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad serena",
+     "texto": "Hoy la Luna en Escorpio te pide ir a fondo. Aprovechá esta calma para conectar con tus emociones más profundas y salir fortalecida."
+    },
+    "Sagitario": {
+     "titulo": "Aventura y expansión",
+     "texto": "Hoy la Luna en Sagitario te invita a buscar nuevos horizontes. Animate a probar algo distinto, aunque sea chiquito, para sentirte más libre."
+    },
+    "Capricornio": {
+     "titulo": "Foco y disciplina",
+     "texto": "Hoy la Luna en Capricornio te pide orden. Aprovechá la calma para organizar tus tareas y avanzar con paso firme hacia tus metas."
+    },
+    "Acuario": {
+     "titulo": "Día de Amigos",
+     "texto": "La Luna en Acuario te invita a conectar con tu gente. Compartí tus ideas y disfrutá de conversaciones genuinas que te inspiren."
+    },
+    "Piscis": {
+     "titulo": "Fluyendo con Piscis",
+     "texto": "La Luna en Piscis te invita a conectar con tu intuición. Confiá en tu instinto y dejate llevar por las sensaciones del día."
+    }
+   }
+  },
+  "practico": {
+   "conjunción": {
+    "Aries": {
+     "titulo": "Tu energía a flor de piel",
+     "texto": "Hoy la Luna en Aries te pone a mil. Aprovechá esta fogosidad para encarar eso que venís postergando, ¡dale para adelante con todo!"
+    },
+    "Tauro": {
+     "titulo": "Tu día en Tauro",
+     "texto": "Hoy sentís que todo fluye. Aprovechá esta conexión para disfrutar de los placeres simples: una buena comida, tu música favorita o un momento de relax."
+    },
+    "Géminis": {
+     "titulo": "Vos y tu energía",
+     "texto": "Hoy, con la Luna en Géminis, tus emociones y tu energía se alinean. Aprovechá para comunicarte con claridad y conectar con la gente que te inspira."
+    },
+    "Cáncer": {
+     "titulo": "Tu energía se alinea",
+     "texto": "Hoy la Luna en Cáncer te conecta con tu fuerza interior. Aprovechá para expresar lo que sentís y hacer cosas que te nutran el alma."
+    },
+    "Leo": {
+     "titulo": "Vos y tu Sol",
+     "texto": "Hoy tu energía y tus emociones están súper alineadas. Usá esta fuerza para brillar y hacer lo que te haga feliz de verdad."
+    },
+    "Virgo": {
+     "titulo": "Conexión interna y acción",
+     "texto": "Hoy, con la Luna en Virgo, tu energía y emociones se alinean. Aprovechá para organizar algo práctico que te dé paz, como ordenar tu espacio o planificar tu semana."
+    },
+    "Libra": {
+     "titulo": "Equilibrio y Conexión",
+     "texto": "Hoy sentís todo a flor de piel, especialmente las ganas de conectar. Buscá momentos de armonía, charlá con gente que te inspire y disfrutá de un lindo momento compartido."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Conexión",
+     "texto": "Hoy la Luna en Escorpio te regala intensidad emocional. Aprovechá para conectar a fondo con tus sentimientos y los de quienes te importan."
+    },
+    "Sagitario": {
+     "titulo": "Tu brújula interior",
+     "texto": "Hoy la energía y tus emociones vibran en la misma sintonía sagitariana. Aprovechá para animarte a esa aventura que tenés en mente, ¡tu instinto te guía!"
+    },
+    "Capricornio": {
+     "titulo": "Enfocate y avanzá",
+     "texto": "Con la Luna en tu signo, la energía y las emociones están a flor de piel. Aprovechá para ponerle garra a esas metas que te ilusionan y dar un paso firme hacia adelante."
+    },
+    "Acuario": {
+     "titulo": "Tu energía se alinea",
+     "texto": "Hoy sentís tu impulso vital a pleno. Aprovechalo para encarar eso que venís postergando, con audacia y originalidad."
+    },
+    "Piscis": {
+     "titulo": "Tu mundo interior",
+     "texto": "Hoy las emociones te invitan a conectar con tu lado más sensible y soñador. Dale espacio a tu intuición, te guiará en decisiones importantes."
+    }
+   },
+   "sextil": {
+    "Aries": {
+     "titulo": "Impulso y Claridad",
+     "texto": "Con la Luna en Aries, este sextil te da la chispa para avanzar. Es un buen momento para encarar eso que tenés en mente y poner tu energía en movimiento."
+    },
+    "Tauro": {
+     "titulo": "Placer y concreción",
+     "texto": "Hoy la Luna en Tauro te invita a disfrutar de lo simple y a ponerle buena energía a tus proyectos. Dale forma a eso que tenés en mente, ¡vas a poder concretarlo!"
+    },
+    "Géminis": {
+     "titulo": "Conectá y compartí",
+     "texto": "Hoy la Luna en Géminis te invita a charlar y a intercambiar ideas. Aprovechá este sextil para contarle a alguien lo que tenés en mente o para proponer algo nuevo."
+    },
+    "Cáncer": {
+     "titulo": "Conectá con tu hogar",
+     "texto": "Hoy la Luna en Cáncer te invita a mimarte y a conectar con quienes más querés. Aprovechá para armar algo rico en casa o charlar tranqui con tu gente."
+    },
+    "Leo": {
+     "titulo": "Brillá y compartí",
+     "texto": "Con esta energía leonina, animate a mostrar tu luz y compartir tus ideas. Es un día ideal para proponer planes que te entusiasmen y contagiar tu alegría."
+    },
+    "Virgo": {
+     "titulo": "Orden y conexión",
+     "texto": "Hoy, con la Luna en Virgo, aprovechá la energía para organizar tus ideas y presentarlas. Es un buen momento para charlar con alguien cercano y proponer algo nuevo."
+    },
+    "Libra": {
+     "titulo": "Armonía y Conexión",
+     "texto": "Hoy la Luna en Libra te invita a buscar el equilibrio en tus relaciones. Aprovechá para charlar, pedir lo que necesitás o simplemente disfrutar de buena compañía."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Claridad",
+     "texto": "La Luna en Escorpio te invita a ir al fondo de las cosas. Aprovechá esta energía para tener conversaciones profundas y sinceras con quienes te importan."
+    },
+    "Sagitario": {
+     "titulo": "Aventurate con Fe",
+     "texto": "Hoy la Luna en Sagitario te impulsa a explorar nuevas ideas. Animate a proponer ese proyecto que tenías guardado, ¡la confianza es tu mejor aliada!"
+    },
+    "Capricornio": {
+     "titulo": "Proyectá con calma",
+     "texto": "Hoy la Luna en Capricornio te impulsa a organizar tus ideas. Aprovechá esta energía para planificar tus próximos pasos con realismo y estrategia."
+    },
+    "Acuario": {
+     "titulo": "Conexión innovadora",
+     "texto": "Hoy, con la Luna en Acuario, aprovechá esta energía para proponer ideas originales en tus grupos. Compartir tus pensamientos sin filtros te va a conectar mejor con los demás."
+    },
+    "Piscis": {
+     "titulo": "Conectá con tu intuición",
+     "texto": "Hoy, con la Luna en Piscis, tus emociones fluyen. Aprovechá esta energía para escuchar tu voz interior y confiar en tus corazonadas al momento de tomar decisiones."
+    }
+   },
+   "cuadratura": {
+    "Aries": {
+     "titulo": "Fuerza y Emoción",
+     "texto": "Hoy tus emociones pueden estar intensas, pero tu fuerza de voluntad también. Canalizá esa energía en algo que te motive y te haga avanzar."
+    },
+    "Tauro": {
+     "titulo": "Conexión y calma",
+     "texto": "Hoy, con la Luna en Tauro, buscá conectar con lo que te da paz. Si las emociones te desbordan, hacé una pausa y volvé a tu centro con algo que disfrutes."
+    },
+    "Géminis": {
+     "titulo": "Mente y corazón en sintonía",
+     "texto": "Hoy, la Luna en Géminis te pide que te expreses con claridad para resolver cualquier tensión. Hablá lo que sentís para que tu voluntad y tus emociones se alineen."
+    },
+    "Cáncer": {
+     "titulo": "Emoción y Acción",
+     "texto": "Hoy tu corazón pide refugio, pero tu energía te impulsa a moverte. Buscá un equilibrio: animate a hacer algo que te reconforte, aunque sea un ratito."
+    },
+    "Leo": {
+     "titulo": "Fuerza y Corazón",
+     "texto": "Hoy, tu fuerza interior y tu corazón pueden sentirse en pugna. Conectá con lo que te hace feliz y buscá maneras creativas de expresarte, ¡el escenario es tuyo!"
+    },
+    "Virgo": {
+     "titulo": "Ordená tus ideas",
+     "texto": "Hoy, la Luna en Virgo te pide que pongas las emociones en orden. Si sentís que algo te trabe, anotá tus pensamientos y creá un plan simple para avanzar."
+    },
+    "Libra": {
+     "titulo": "Equilibrio Emocional Hoy",
+     "texto": "La Luna en Libra te pide diplomacia. Si sentís tensión interna, buscá un punto medio: negociá con vos mismo y con los demás para encontrar armonía."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Claridad",
+     "texto": "Hoy la Luna en Escorpio te pide ir a fondo con tus emociones. Aprovechá esa intensidad para resolver algo que venís posponiendo, sin miedo a lo que surja."
+    },
+    "Sagitario": {
+     "titulo": "Flexibilidad y expansión",
+     "texto": "Hoy, tus emociones te invitan a explorar. Si sentís que algo te frena, buscá una perspectiva más amplia y animáte a probar algo nuevo."
+    },
+    "Capricornio": {
+     "titulo": "Capricórnio en tensión",
+     "texto": "Hoy, soltá la rigidez. Si sentís que el deber te aplasta, buscá un momento para vos, algo que te reconforte sin culpas. Priorizá tu bienestar."
+    },
+    "Acuario": {
+     "titulo": "Tensión y libertad",
+     "texto": "Hoy, tu lado más libre y original (Luna en Acuario) puede sentirse un poco trabado. Buscá un espacio para expresarte sin presiones, aunque sea un ratito."
+    },
+    "Piscis": {
+     "titulo": "Emoción y acción",
+     "texto": "Hoy, tu corazón te pide algo, pero tu cabeza otra. Confiá en tu intuición, pero buscá un punto medio para avanzar sin frenarte."
+    }
+   },
+   "trígono": {
+    "Aries": {
+     "titulo": "Energía para arrancar",
+     "texto": "Con la Luna en Aries, sentís un empuje bárbaro. Aprovechá para iniciar eso que tenés en mente, ¡hoy tenés la fuerza para hacerlo realidad!"
+    },
+    "Tauro": {
+     "titulo": "Conexión y Placer",
+     "texto": "Hoy, con la Luna en Tauro, sentite a gusto y conectate con lo que te da placer. Aprovechá esta energía para disfrutar de los pequeños gustos del día."
+    },
+    "Géminis": {
+     "titulo": "Conectate y fluye",
+     "texto": "Hoy la Luna en Géminis te invita a charlar, a intercambiar ideas. Aprovechá esta energía para poner tus pensamientos en palabras y conectar con gente copada."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Sentimientos",
+     "texto": "La Luna en Cáncer te pide que te conectes con lo que te hace sentir bien en casa. Aprovechá para mimarte y darte esos gustos que te reconfortan el alma."
+    },
+    "Leo": {
+     "titulo": "Brillá con confianza",
+     "texto": "Hoy, la Luna en Leo te invita a mostrarte. Animáte a liderar ese proyecto o a expresar tus ideas con alegría y seguridad. Tu brillo es contagioso."
+    },
+    "Virgo": {
+     "titulo": "Armonía y orden",
+     "texto": "La Luna en Virgo te pide poner orden en tu vida. Aprovechá esta energía para organizar tus tareas y hacer que todo fluya en armonía."
+    },
+    "Libra": {
+     "titulo": "Armonía y Conexión",
+     "texto": "Hoy la Luna en Libra te invita a buscar el equilibrio en tus relaciones. Si tenés que charlar algo, es el momento ideal para hacerlo con diplomacia y buscando un punto en común."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y fluidez",
+     "texto": "Hoy, la Luna en Escorpio te invita a bucear profundo en tus emociones. Aprovechá esta armonía para conectar con lo que te mueve de verdad y expresarlo sin vueltas."
+    },
+    "Sagitario": {
+     "titulo": "Aventura y expansión",
+     "texto": "Hoy tu energía vital se alinea con tu mundo interior, dándote ganas de explorar y aprender. Aprovechá para salir de la rutina y animarte a algo nuevo."
+    },
+    "Capricornio": {
+     "titulo": "Capricornio en Armonía",
+     "texto": "Hoy la Luna en Capricornio te da una mano para organizarte. Aprovechá para poner orden en tus proyectos y sentirte más productivo."
+    },
+    "Acuario": {
+     "titulo": "Conexión y Originalidad",
+     "texto": "Hoy sentís una conexión especial con los demás. Animate a proponer ideas nuevas y compartilas, seguro van a ser bien recibidas."
+    },
+    "Piscis": {
+     "titulo": "Fluye con tu intuición",
+     "texto": "Hoy la Luna en Piscis te regala sensibilidad y empatía. Conectate con tu costado más creativo y dejate llevar por lo que te inspira."
+    }
+   },
+   "oposición": {
+    "Aries": {
+     "titulo": "Tu Luna en Aries",
+     "texto": "Hoy las emociones están a flor de piel. Conectá con tu lado más impulsivo para tomar decisiones importantes, pero mirá a los demás para encontrar el equilibrio."
+    },
+    "Tauro": {
+     "titulo": "Luna en Tauro: Aprecio",
+     "texto": "Hoy, con la Luna en Tauro y en oposición a tu Sol, es momento de conectar con lo que te da placer y seguridad. Compartí un buen momento con alguien que te haga sentir bien."
+    },
+    "Géminis": {
+     "titulo": "Mirate en el otro",
+     "texto": "Hoy, con la Luna en Géminis, tus emociones se reflejan en los demás. Prestá atención a lo que te dicen, ¡es un espejo de vos!"
+    },
+    "Cáncer": {
+     "titulo": "Luna Llena Emocional",
+     "texto": "Hoy, con la Luna en Cáncer opuesta a tu Sol, sentís todo a flor de piel. Compartí tus emociones con alguien de confianza, te va a hacer bien."
+    },
+    "Leo": {
+     "titulo": "Luz y sombra",
+     "texto": "Hoy, con la Luna en Leo enfrente de tu Sol, conectate con tu brillo interior y compartilo. Es un buen día para dar luz a los demás con tu generosidad."
+    },
+    "Virgo": {
+     "titulo": "Virgo: Conexión y Cuidado",
+     "texto": "Hoy, con la Luna en Virgo, sentís todo a flor de piel. Aprovechá para prestar atención a las necesidades de quienes te rodean y ofrecé tu ayuda de forma práctica y organizada. Un gesto amable puede hacer una gran diferencia."
+    },
+    "Libra": {
+     "titulo": "Conectate en equilibrio",
+     "texto": "Hoy, con la Luna en Libra, tus emociones están a flor de piel. Buscá el diálogo y la armonía en tus relaciones, encontrando puntos medios para que todos se sientan escuchados."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Conexión",
+     "texto": "Hoy, con la Luna en Escorpio oponiéndose a tu Sol, tus emociones son protagonistas. Conectá profundamente con alguien, compartiendo lo que te mueve, para sentirte más vos."
+    },
+    "Sagitario": {
+     "titulo": "Luna Llena Sagitariana",
+     "texto": "Hoy, con la oposición de tu Sol y la Luna en Sagitario, sentís todo más intensamente. Es un buen día para escuchar a los demás y compartir tus ideas sin filtro."
+    },
+    "Capricornio": {
+     "titulo": "Conectá con otros",
+     "texto": "Hoy, con la Luna en Capricornio opuesta a tu Sol, es un día para prestar atención a los demás y a tus vínculos. Buscá un equilibrio entre tus necesidades y las de quienes te rodean."
+    },
+    "Acuario": {
+     "titulo": "Conectate con otros",
+     "texto": "Hoy la Luna en Acuario te pide que te abras a los demás. Compartí tus emociones y escuchá atentamente, vas a aprender un montón."
+    },
+    "Piscis": {
+     "titulo": "Conectate con otros",
+     "texto": "Tu luna llena te pide conectar con los demás. Piscis te invita a escuchar con empatía, a ser compasivo y a tender puentes. Compartí tus sentimientos."
+    }
+   },
+   "sin aspecto mayor": {
+    "Aries": {
+     "titulo": "Día para vos",
+     "texto": "La Luna en Aries te da chispa. Aprovechá esta energía para iniciar algo que tenías ganas, aunque sea chiquito."
+    },
+    "Tauro": {
+     "titulo": "Pausa y disfrute",
+     "texto": "Hoy la Luna en Tauro te invita a conectar con tus sentidos. Aprovechá para darte un gusto, algo rico para comer o un momento de paz que te recargue."
+    },
+    "Géminis": {
+     "titulo": "Conectate y compartí",
+     "texto": "Hoy, con la Luna en Géminis, aprovechá para charlar y intercambiar ideas. Mandale un mensaje a esa persona que te da curiosidad."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Cuidado",
+     "texto": "Hoy la Luna en Cáncer te invita a mimarte y cuidar de vos. Preparate algo rico o rodeate de cosas que te hagan sentir bien en tu espacio."
+    },
+    "Leo": {
+     "titulo": "Tu momento de brillar",
+     "texto": "La Luna en Leo te invita a ser protagonista. Animate a mostrar tu talento y a disfrutar de ser el centro de atención en lo que hagas hoy."
+    },
+    "Virgo": {
+     "titulo": "Orden y Bienestar",
+     "texto": "Hoy la Luna en Virgo te invita a poner orden en tu rutina. Aprovechá para organizar tus tareas o darte un gusto saludable."
+    },
+    "Libra": {
+     "titulo": "Armonía en el aire",
+     "texto": "Hoy, con la Luna en Libra, buscá el equilibrio en tus relaciones. Conectá con gente que te haga sentir bien y compartí momentos agradables."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad tranquila",
+     "texto": "Hoy la Luna en Escorpio te invita a conectar con tus emociones profundas. Aprovechá para meditar o escribir sobre lo que te pasa por dentro."
+    },
+    "Sagitario": {
+     "titulo": "Aventurate sin miedo",
+     "texto": "Con la Luna en Sagitario, aprovechá para aprender algo nuevo o planear esa escapada que tenés en mente. Dale rienda suelta a tu espíritu explorador."
+    },
+    "Capricornio": {
+     "titulo": "Orden y calma",
+     "texto": "Hoy la Luna en Capricornio te invita a poner tus cosas en orden. Aprovechá la serenidad para organizar tus tareas y sentirte más liviano."
+    },
+    "Acuario": {
+     "titulo": "Aire y Amigos",
+     "texto": "Con la Luna en Acuario, la cosa está para soltar un poco la rutina. Buscá un plan diferente con gente que te inspire, ¡dale una vuelta de rosca a tu día!"
+    },
+    "Piscis": {
+     "titulo": "Fluyendo con Piscis",
+     "texto": "Hoy, con la Luna en Piscis, dejate llevar por la intuición. Si sentís ganas de soñar despierta o conectar con tu lado artístico, dale para adelante sin culpa."
+    }
+   }
+  },
+  "analitico": {
+   "conjunción": {
+    "Aries": {
+     "titulo": "Fuerza y Claridad",
+     "texto": "La Luna en Aries te impulsa a actuar con decisión. Aprovechá esta energía para encarar lo que tenés pendiente, porque hoy tus emociones y tu accionar van de la mano, potenciando tu empuje."
+    },
+    "Tauro": {
+     "titulo": "Tu día taurino",
+     "texto": "La Luna en Tauro te regala un día para conectar con tus placeres. Aprovechá para mimarte y disfrutar de las cosas simples que te hacen bien."
+    },
+    "Géminis": {
+     "titulo": "Energía y vos",
+     "texto": "Hoy la Luna en Géminis se junta con tu Sol, así que tus ganas de comunicar y conectar fluyen con tu esencia. Aprovechá esta chispa para compartir tus ideas y escuchar a los demás."
+    },
+    "Cáncer": {
+     "titulo": "Conexión interior",
+     "texto": "Hoy la Luna en Cáncer se junta con tu Sol, potenciando tu energía y tus emociones. Conectá con lo que te hace sentir seguro y nutrí tus vínculos más íntimos."
+    },
+    "Leo": {
+     "titulo": "Tu brillo interior",
+     "texto": "La Luna en Leo te impulsa a brillar. Al estar en conjunción con tu Sol, tus emociones y tu energía se alinean, dándote la confianza para ser el centro de atención y expresar tu vitalidad."
+    },
+    "Virgo": {
+     "titulo": "Conexión y Orden",
+     "texto": "Hoy la Luna en Virgo te impulsa a organizar tus emociones y tu energía. Aprovechá esta conjunción para poner en orden tus pensamientos y sentirte más liviano."
+    },
+    "Libra": {
+     "titulo": "Conjunción Lunar: Tu Voz",
+     "texto": "Hoy la Luna en Libra ilumina tu Sol, haciendo que tus emociones y tu esencia se alineen. Conecta con tu intuición y expresate con claridad, es el momento de decir lo que sentís."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Claridad",
+     "texto": "Hoy la Luna en Escorpio se junta con tu Sol, trayéndote una fuerza emocional increíble. Aprovechá esta potencia para ir a fondo en lo que te importa, sin miedo a las profundidades."
+    },
+    "Sagitario": {
+     "titulo": "Energía Sagitariana",
+     "texto": "La Luna en tu signo solar potencia tu vitalidad. Aprovechá para encarar proyectos con optimismo y expandir tus horizontes, sintiendo que todo fluye."
+    },
+    "Capricornio": {
+     "titulo": "Tu capricornio interior",
+     "texto": "Hoy la Luna se alinea con tu Sol en Capricornio, así que sentís tu energía y tus emociones en la misma sintonía. Aprovechá para encarar proyectos con disciplina y foco, vas a sentirte imparable para lograr tus metas."
+    },
+    "Acuario": {
+     "titulo": "Conexión Acuariana",
+     "texto": "Hoy la Luna en Acuario se une a tu Sol, alineando tu energía y emociones. Aprovechá para conectar con tu lado más innovador y social, compartiendo ideas que te apasionan."
+    },
+    "Piscis": {
+     "titulo": "Emoción y Acción",
+     "texto": "La Luna en Piscis alumbra tu energía solar, uniendo tus impulsos con tu sensibilidad. Aprovechá esta conjunción para actuar con empatía y compasión, guiando tus decisiones desde el corazón."
+    }
+   },
+   "sextil": {
+    "Aries": {
+     "titulo": "Conectá tu fuego",
+     "texto": "Con la Luna en Aries, tu instinto está activo y con este sextil a tu Sol, es un día genial para proponer tus ideas con confianza. Animáte a dar el primer paso."
+    },
+    "Tauro": {
+     "titulo": "Placer y Conexión",
+     "texto": "La Luna en Tauro te regala un sextil al Sol, impulsando la fluidez para conectar y proponer. Aprovechá esta energía para disfrutar de los placeres sencillos y compartir tus ideas de forma práctica y tangible."
+    },
+    "Géminis": {
+     "titulo": "Comunicación y Conexión",
+     "texto": "Tu Sol y la Luna en Géminis te invitan a charlar. Aprovechá este sextil para compartir ideas, conectar con gente y poner en marcha proyectos que te entusiasmen."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Corazón",
+     "texto": "Con la Luna en Cáncer, tu día se presta para nutrir tus vínculos más íntimos. Aprovechá esta energía para compartir tus emociones y sentirte más conectado/a con quienes querés, gracias a la fluidez del sextil lunar."
+    },
+    "Leo": {
+     "titulo": "Expresate con brillo",
+     "texto": "Con la Luna en Leo y en sextil a tu Sol, es un día ideal para mostrarte tal cual sos. Aprovechá la confianza para iniciar proyectos o compartir tus ideas con alegría."
+    },
+    "Virgo": {
+     "titulo": "Orden y Propuestas",
+     "texto": "Hoy la Luna en Virgo te ayuda a organizar tus ideas con claridad. Es un buen momento para plantear tus proyectos, ya que tu mente analítica está afilada y tu energía es colaborativa."
+    },
+    "Libra": {
+     "titulo": "Armonía y Propuestas",
+     "texto": "La Luna en Libra te invita a buscar el equilibrio en tus relaciones. Aprovechá esta energía de sextil con tu Sol para proponer ideas y generar acuerdos, todo fluye mejor hoy."
+    },
+    "Escorpio": {
+     "titulo": "Conexión Profunda",
+     "texto": "La Luna en Escorpio te invita a indagar en tus emociones y las de los demás. Aprovechá este sextil con tu Sol para tener conversaciones significativas y honestas, mostrando tu lado más vulnerable y auténtico."
+    },
+    "Sagitario": {
+     "titulo": "Aventura y expansión",
+     "texto": "Con la Luna en Sagitario y en sextil a tu Sol, es un día ideal para animarte a probar cosas nuevas y compartir tus ideas. La energía te acompaña para expandir tus horizontes y encarar proyectos con optimismo."
+    },
+    "Capricornio": {
+     "titulo": "Expansión y orden",
+     "texto": "La Luna en Capricornio te da un impulso para organizar tus proyectos. Aprovechá esta energía para planificar con claridad y dar pasos firmes hacia tus metas, sintiendo la fluidez del sextil con tu Sol."
+    },
+    "Acuario": {
+     "titulo": "Conectá con tu gente",
+     "texto": "Hoy la Luna en Acuario te invita a compartir ideas innovadoras. Aprovechá este sextil al Sol para proponer proyectos grupales y conectar con tu comunidad."
+    },
+    "Piscis": {
+     "titulo": "Sextil Piscis: Intuición y Conexión",
+     "texto": "Con la Luna en Piscis haciendo un sextil a tu Sol, aprovechá esta energía para conectar con tu mundo interior. Confiá en tu intuición y dejate llevar por lo que te inspira para avanzar con dulzura."
+    }
+   },
+   "cuadratura": {
+    "Aries": {
+     "titulo": "Tu pulso y tu deseo",
+     "texto": "Hoy, la Luna en Aries te impulsa a la acción, pero en tensión con tu Sol, puede que sientas que tus emociones y tu voluntad no van de la mano. Buscá un equilibrio: animate a empezar algo nuevo, pero sin descuidar tus objetivos principales."
+    },
+    "Tauro": {
+     "titulo": "Pausa y Reflexión",
+     "texto": "Hoy la Luna en Tauro te pide que frenes y conectes con tus sensaciones. Ante cualquier impulso, respirá hondo y pensá si realmente te nutre. Buscá la calma en lo simple."
+    },
+    "Géminis": {
+     "titulo": "Tu mente y tu corazón",
+     "texto": "Hoy la Luna en Géminis tensa tu Sol, así que tu cabeza y tus emociones pueden ir por carriles distintos. Intentá comunicar lo que te pasa para encontrar un punto medio y que la energía fluya mejor."
+    },
+    "Cáncer": {
+     "titulo": "Emociones en tensión",
+     "texto": "Hoy la Luna en Cáncer te pide que escuches tu instinto. Ante cualquier conflicto entre lo que sentís y lo que querés hacer, confiá en tu corazón. El diálogo interno es clave."
+    },
+    "Leo": {
+     "titulo": "Foco en tu ego",
+     "texto": "Hoy, con la Luna en Leo, tus emociones piden brillar y ser reconocidas. La tensión con tu Sol natal sugiere que tu ego puede sentirse desafiado. Canalizá esa energía para liderar con confianza, pero recordá escuchar también las necesidades de los demás."
+    },
+    "Virgo": {
+     "titulo": "Tensión y Eficiencia",
+     "texto": "Hoy la Luna en Virgo te pide ordenar tus emociones para que no choquen con tu voluntad. Buscá un método que te ayude a canalizar esa energía en tareas prácticas y productivas."
+    },
+    "Libra": {
+     "titulo": "Armonía y Decisión",
+     "texto": "Hoy la Luna en Libra te pide equilibrio. Ante cualquier tensión entre tus emociones y tu voluntad, buscá el diálogo y la diplomacia para encontrar soluciones justas para todos."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y acción",
+     "texto": "Hoy, con la Luna en Escorpio en cuadratura a tu Sol, las emociones profundas pueden generar un impulso fuerte. Canalizá esa intensidad en una acción concreta para resolver algo que te preocupa, sin dejar que la tensión te paralice."
+    },
+    "Sagitario": {
+     "titulo": "Emoción y Acción",
+     "texto": "Hoy la Luna en Sagitario te pide expandir tu energía, pero la cuadratura con tu Sol genera un choque entre tus ganas de explorar y lo que tu voluntad te exige. Buscá un equilibrio entre la aventura y las responsabilidades, sin postergar ninguna."
+    },
+    "Capricornio": {
+     "titulo": "Emoción y Meta",
+     "texto": "Hoy, la Luna en Capricornio te pide que alinees tus sentimientos con tus objetivos. Si sentís tensión, es porque tus emociones te piden un respiro o un cambio de rumbo para poder avanzar hacia tus metas."
+    },
+    "Acuario": {
+     "titulo": "Tensión y originalidad",
+     "texto": "Hoy la Luna en Acuario tensa tu Sol, así que es normal que tus emociones choquen con tus planes. Buscá soluciones innovadoras y no te aferres a lo de siempre para salir del paso."
+    },
+    "Piscis": {
+     "titulo": "Emoción y Voluntad",
+     "texto": "La Luna en Piscis te pide empatía, pero la cuadratura con tu Sol trae tensión. Conectá con tu intuición para alinear tus deseos con lo que sentís, sin exigirte demasiado."
+    }
+   },
+   "trígono": {
+    "Aries": {
+     "titulo": "Energía y acción",
+     "texto": "Con la Luna en Aries haciendo trígono a tu Sol, sentís que todo fluye. Aprovechá esta chispa para iniciar proyectos o ponerle garra a lo que te propongas."
+    },
+    "Tauro": {
+     "titulo": "Conexión y Placer",
+     "texto": "Hoy la Luna en Tauro hace trígono a tu Sol, permitiendo que las cosas fluyan. Aprovechá esta energía para conectar con lo que te da placer y seguridad, quizás cocinando algo rico o dedicándote un tiempo de relax."
+    },
+    "Géminis": {
+     "titulo": "Fluidez y Comunicación",
+     "texto": "Con la Luna en Géminis en trígono a tu Sol, es un día para conectar y expresarte. Aprovechá esta energía ágil para charlar, intercambiar ideas y resolver asuntos con facilidad. Tu mente está clara y tu palabra es persuasiva."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Emoción",
+     "texto": "La Luna en Cáncer te invita a conectar con tus afectos y tu espacio. Aprovechá esta armonía para nutrirte en casa y con quienes querés."
+    },
+    "Leo": {
+     "titulo": "Luna en Leo",
+     "texto": "Hoy, con la Luna en Leo, sentís esa chispa creativa que te impulsa. Aprovechá este trígono con tu Sol para brillar y expresarte con confianza. ¡Dale rienda suelta a tu originalidad!"
+    },
+    "Virgo": {
+     "titulo": "Luna en Virgo",
+     "texto": "Hoy la Luna en Virgo forma un trígono con tu Sol, trayendo orden y eficiencia. Aprovechá esta energía para organizar tus tareas y encontrar soluciones prácticas a lo que te preocupa."
+    },
+    "Libra": {
+     "titulo": "Armonía en Libra",
+     "texto": "Hoy la Luna en Libra te regala un trígono con tu Sol. Aprovechá esta energía de equilibrio y diplomacia para conectar con otros y encontrar acuerdos. Buscá la belleza en las pequeñas cosas."
+    },
+    "Escorpio": {
+     "titulo": "Intuición poderosa",
+     "texto": "La Luna en Escorpio te regala una intuición aguda. Conectate con tus sensaciones más profundas para tomar decisiones clave; confiá en tu instinto."
+    },
+    "Sagitario": {
+     "titulo": "Aventura y expansión",
+     "texto": "Hoy la Luna en Sagitario forma un trígono con tu Sol. Aprovechá esta energía de expansión para animarte a probar algo nuevo. ¡Salí de tu zona de confort y explorá tus horizontes!"
+    },
+    "Capricornio": {
+     "titulo": "Capricornio: Estabilidad y Acción",
+     "texto": "Hoy la Luna en Capricornio te brinda una energía práctica y organizada. Aprovechala para avanzar en tus proyectos con disciplina y enfoque. El trígono con tu Sol potencia tu capacidad de concreción."
+    },
+    "Acuario": {
+     "titulo": "Fluidez Acuariana",
+     "texto": "Hoy la Luna en Acuario forma un trígono con tu Sol, trayéndote un día de conexiones fáciles y originales. Aprovechá esta energía para pensar fuera de la caja y compartir ideas innovadoras con tu gente."
+    },
+    "Piscis": {
+     "titulo": "Intuitivo y Empático",
+     "texto": "Hoy, con la Luna en Piscis haciendo trígono a tu Sol, sentís una conexión especial con tus emociones y las de los demás. Confiá en tu intuición y usala para entender mejor a quienes te rodean."
+    }
+   },
+   "oposición": {
+    "Aries": {
+     "titulo": "Vos y los demás",
+     "texto": "Hoy la Luna en Aries te pone re sensible, con las emociones a flor de piel. La oposición con tu Sol te pide que prestes atención a lo que los demás necesitan, pero sin perder de vista tus propias ganas."
+    },
+    "Tauro": {
+     "titulo": "Tu momento de expansión",
+     "texto": "Hoy, con la Luna en Tauro opuesta a tu Sol, sentís las emociones a flor de piel. Es clave conectar con lo que te nutre y te da seguridad. Escuchá tus necesidades internas, pero también las de los demás, encontrando un equilibrio generoso."
+    },
+    "Géminis": {
+     "titulo": "Conexión y Claridad",
+     "texto": "Hoy, con la Luna en Géminis oponiéndose a tu Sol, tus emociones se expresan a través de la comunicación. Compartí tus sentimientos con alguien de confianza para entenderlos mejor."
+    },
+    "Cáncer": {
+     "titulo": "Luna en Cáncer",
+     "texto": "Hoy, con la Luna en Cáncer en oposición a tu Sol, tus emociones están a flor de piel. Conectá con tu intuición y cuidá tus vínculos, especialmente los familiares. ¡Un mate compartido puede ser un gran bálsamo!"
+    },
+    "Leo": {
+     "titulo": "Luna en Leo",
+     "texto": "Hoy la Luna en Leo te pide que te conectes con tu brillo interno y lo compartas. La oposición a tu Sol invita a equilibrar tus necesidades con las de los demás, encontrando un punto medio donde ambos puedan brillar."
+    },
+    "Virgo": {
+     "titulo": "Virgo: Aceptar la ayuda",
+     "texto": "Hoy tu Luna en Virgo te pide que te abras a recibir y dar ayuda. La oposición de tu Luna con el Sol te pone en un eje de dar y recibir, donde es clave el equilibrio con los demás."
+    },
+    "Libra": {
+     "titulo": "Vos y los demás",
+     "texto": "Hoy la Luna en Libra te invita a equilibrar tu mundo interno con las necesidades de los otros. Es un buen momento para negociar y buscar acuerdos, prestando atención a cómo te sentís en relación a los demás."
+    },
+    "Escorpio": {
+     "titulo": "Conectá con tu intensidad",
+     "texto": "Hoy, con la Luna en Escorpio opuesta a tu Sol, tus emociones se sienten profundas. Aprovechá para entender qué te moviliza en tus vínculos, sin miedo a ir a fondo."
+    },
+    "Sagitario": {
+     "titulo": "Luna en Sagitario",
+     "texto": "Hoy tus emociones están a flor de piel, pero la oposición de la Luna a tu Sol te invita a mirar hacia afuera. Buscá expandir tus horizontes y compartir tus sentimientos, Sagitario."
+    },
+    "Capricornio": {
+     "titulo": "Tu día y los demás",
+     "texto": "Hoy la Luna en Capricornio te pide que encuentres el equilibrio entre tus necesidades y las de los demás. La oposición a tu Sol te pone el foco afuera, así que buscá la armonía en tus vínculos."
+    },
+    "Acuario": {
+     "titulo": "Conectá con tu gente",
+     "texto": "Con la Luna en Acuario en oposición a tu Sol, sentís las emociones ajenas. Es un día ideal para conectar con tu círculo, compartir ideas y sentirte parte de algo más grande."
+    },
+    "Piscis": {
+     "titulo": "Emociones y Conexión",
+     "texto": "Hoy, con la Luna en Piscis oponiéndose a tu Sol, las emociones están a flor de piel. Conectá con tu empatía para entender mejor a quienes te rodean, es un día para la sensibilidad compartida."
+    }
+   },
+   "sin aspecto mayor": {
+    "Aries": {
+     "titulo": "Impulso Tranquilo",
+     "texto": "Con la Luna en Aries, sentís una energía serena pero activa. Aprovechá esta calma para darle un empujoncito a esos proyectos que tenés en mente, sin presiones."
+    },
+    "Tauro": {
+     "titulo": "Paz y disfrute",
+     "texto": "Hoy la Luna en Tauro te invita a conectar con los placeres sencillos. Al no haber aspectos tensos con tu Sol, es un día ideal para darte esos gustos que te recargan y te hacen sentir bien, sin apuros."
+    },
+    "Géminis": {
+     "titulo": "Comunicación y curiosidad",
+     "texto": "Con la Luna en Géminis, tu día se presta para conectar con otros de forma liviana y curiosa. Intercambiá ideas, chateá o mandale un mensaje a alguien que te inspire."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Emociones",
+     "texto": "Con la Luna en Cáncer, priorizá tu bienestar en casa. Sentite cómoda y segura, eso te dará la energía que necesitás para el resto del día."
+    },
+    "Leo": {
+     "titulo": "Día de Brillo Leo",
+     "texto": "La Luna en Leo te invita a mostrar tu esencia con confianza. Aprovechá esta energía para expresarte y sentirte protagonista de tu propia historia, sin presiones externas."
+    },
+    "Virgo": {
+     "titulo": "Día enfocado en detalles",
+     "texto": "Con la Luna en Virgo, aprovechá esta calma para ordenar tus pensamientos y tus tareas. Es un buen momento para ser meticuloso y encontrar la eficiencia en lo cotidiano."
+    },
+    "Libra": {
+     "titulo": "Equilibrio y conexión",
+     "texto": "Hoy la Luna en Libra te invita a buscar la armonía en tus relaciones. Dedicá tiempo a escuchar y dialogar para encontrar puntos en común y fortalecer tus vínculos."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad Tranquila",
+     "texto": "La Luna en Escorpio te invita a explorar tus emociones más profundas. Aprovechá esta calma para entender qué te mueve por dentro y cómo podés usar esa energía a tu favor."
+    },
+    "Sagitario": {
+     "titulo": "Día Sagitariano",
+     "texto": "Hoy la Luna en Sagitario te invita a expandir tu horizonte. Aprovechá esta energía para aprender algo nuevo o planear una escapada, aunque sea mental. ¡Abrite a nuevas ideas!"
+    },
+    "Capricornio": {
+     "titulo": "Paciencia y meta",
+     "texto": "Con la Luna en Capricornio, hoy es un día para enfocarte en tus objetivos a largo plazo. Tu necesidad de estructura y orden te impulsa a ser metódico y responsable con tus proyectos."
+    },
+    "Acuario": {
+     "titulo": "Día de Reflexión",
+     "texto": "La Luna en Acuario te invita a conectar con tu lado más original y a pensar fuera de lo común. Aprovechá esta energía para explorar nuevas ideas y compartir tus pensamientos con quienes te rodean."
+    },
+    "Piscis": {
+     "titulo": "Piscis: Claridad y Conexión",
+     "texto": "Hoy la Luna en Piscis te invita a conectar con tu intuición. Aprovechá esta energía para escuchar tus sensaciones y tomar decisiones desde el corazón, sin presiones."
+    }
+   }
+  },
+  "intuitivo": {
+   "conjunción": {
+    "Aries": {
+     "titulo": "Tu fuego interior",
+     "texto": "Hoy tu energía y tus emociones están en la misma sintonía. Aprovechá este impulso para arrancar eso que tenés en mente, ¡dale para adelante con todo!"
+    },
+    "Tauro": {
+     "titulo": "Sentite en casa",
+     "texto": "Hoy la Luna te abraza en Tauro, tu signo. Tus emociones y tu energía vibran al unísono, permitiéndote sentirte plena y conectada con lo que te hace bien."
+    },
+    "Géminis": {
+     "titulo": "Tu energía, a pleno",
+     "texto": "Hoy sentís todo con intensidad y claridad. Aprovechá esta chispa para comunicarte y conectar con quienes te inspiran. ¡Dale voz a lo que te mueve!"
+    },
+    "Cáncer": {
+     "titulo": "Tu centro emocional",
+     "texto": "Hoy, la Luna en Cáncer te devuelve a tu esencia. Sentí la seguridad de estar en casa, en tu propio espacio interior. Confiá en tu intuición para guiar tus pasos."
+    },
+    "Leo": {
+     "titulo": "Tu momento de brillar",
+     "texto": "Hoy la Luna te regala un solazo. Sentís la energía a pleno, así que animate a mostrar todo tu potencial. ¡Es tu hora de brillar!"
+    },
+    "Virgo": {
+     "titulo": "Tu día, tu centro",
+     "texto": "Hoy la Luna te ilumina en Virgo, tu signo. Sentís todo con claridad y ganas de poner las cosas en orden. Animáte a organizar tus ideas, ¡verás qué bien te sentís!"
+    },
+    "Libra": {
+     "titulo": "Energía y Armonía",
+     "texto": "Hoy sentís todo con más fuerza, pero también con más ganas de encontrar el equilibrio. Buscá momentos de paz y conexión con otros para que la energía fluya linda."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Claridad",
+     "texto": "Hoy tus emociones se sienten a flor de piel, pero con la fuerza de Escorpio podés ir a fondo y entender lo que te pasa. Animáte a bucear en tus sentimientos más profundos para encontrar respuestas."
+    },
+    "Sagitario": {
+     "titulo": "Fuego y Emoción",
+     "texto": "Hoy sentís que todo fluye, como un río que va directo al mar. Aprovechá esta energía para lanzarte a lo que te inspira, sin dudar."
+    },
+    "Capricornio": {
+     "titulo": "Fuerza y meta",
+     "texto": "Hoy sentís que podés con todo, como si tuvieras un motorcito interno. Aprovechá esta energía para darle un empujoncito a esos proyectos que te ilusionan."
+    },
+    "Acuario": {
+     "titulo": "Tu luz interior",
+     "texto": "Hoy la Luna en Acuario te ilumina desde tu propio signo. Sentís la energía y las emociones alineadas, como si tuvieras un faro interno guiándote. Aprovechá esta claridad para expresarte y conectar con lo que te hace único."
+    },
+    "Piscis": {
+     "titulo": "Tu brillo interior",
+     "texto": "Hoy sentís todo con mucha intensidad, como una ola que te envuelve. Dejá que tu intuición te guíe, es tu brújula más fiel para navegar este día."
+    }
+   },
+   "sextil": {
+    "Aries": {
+     "titulo": "Energía y acción",
+     "texto": "Hoy la Luna en Aries te invita a moverte. Aprovechá esta chispa para encarar eso que tenías pendiente, con confianza y sin dudar."
+    },
+    "Tauro": {
+     "titulo": "Conexión y Placer",
+     "texto": "La Luna en Tauro te invita a disfrutar de lo simple. Aprovechá esta energía para conectar con tus seres queridos y darte esos gustitos que te hacen bien."
+    },
+    "Géminis": {
+     "titulo": "Aire y Conexión",
+     "texto": "Hoy la Luna en Géminis te invita a desplegar tus alas. Compartí tus ideas, conversá, ¡conectate con gente copada! Tu mente está ágil, aprovechala."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Corazón",
+     "texto": "La Luna en Cáncer te invita a nutrirte y a cuidar de vos. Sentite en casa, abrigate con lo que te hace bien y compartí esa calidez."
+    },
+    "Leo": {
+     "titulo": "Tu momento de brillar",
+     "texto": "Hoy la Luna en Leo te invita a desplegar tu chispa. Es un día ideal para animarte a mostrar quién sos y compartir tu alegría con quienes te rodean, como si fueras el sol del mediodía."
+    },
+    "Virgo": {
+     "titulo": "Orden y fluidez",
+     "texto": "Hoy la Luna en Virgo te invita a organizar tus ideas con calma. Aprovechá esta energía para concretar proyectos y conectar con quienes te inspiran, como un río que encuentra su cauce."
+    },
+    "Libra": {
+     "titulo": "Conexión y Armonía",
+     "texto": "Hoy la Luna en Libra te invita a buscar el equilibrio en tus vínculos. Aprovechá esta energía para charlar, acordar y crear puentes con quienes te rodean."
+    },
+    "Escorpio": {
+     "titulo": "Intuición profunda",
+     "texto": "Hoy la Luna en Escorpio te regala una intuición filosa. Confiá en esa vocecita interna para entender lo que pasa a tu alrededor y animate a proponer ideas que vengan de ese lugar."
+    },
+    "Sagitario": {
+     "titulo": "Expansión y buena onda",
+     "texto": "Hoy, con la Luna en Sagitario, sentís ganas de abrirte y compartir. Es un día ideal para charlar sin filtros, contagiar tu optimismo y animarte a proponer eso que tenés en mente."
+    },
+    "Capricornio": {
+     "titulo": "Conexión y estructura",
+     "texto": "Hoy la Luna en Capricornio te invita a ordenar tus emociones como quien planifica un proyecto. Aprovechá esta energía para concretar ideas y sentirte más segura."
+    },
+    "Acuario": {
+     "titulo": "Ideas que inspiran",
+     "texto": "Hoy la Luna en Acuario te regala un sextil, un viento fresco para tus ideas. Animarte a compartir esas chispas creativas, ¡van a encender algo genial!"
+    },
+    "Piscis": {
+     "titulo": "Fluye y sentí",
+     "texto": "Hoy la Luna en Piscis te invita a dejarte llevar por la intuición. Conectate con tus emociones y dejá que fluyan, como agua clara que renueva todo a su paso."
+    }
+   },
+   "cuadratura": {
+    "Aries": {
+     "titulo": "Fuerza y Corazón",
+     "texto": "Hoy tus emociones pueden sentirse un poco inquietas, como un fuego que necesita dirección. Canalizá esa energía en algo que te impulse hacia adelante, con valentía y decisión."
+    },
+    "Tauro": {
+     "titulo": "Calma en la tormenta",
+     "texto": "Hoy la Luna en Tauro te invita a bajar un cambio. Si sentís que tus emociones tiran para un lado y tu voluntad para otro, conectá con lo que te da seguridad y disfrute. Un buen mate o escuchar tu música favorita te anclan."
+    },
+    "Géminis": {
+     "titulo": "Mente y corazón en sintonía",
+     "texto": "Hoy, las ideas vuelan y las emociones te invitan a sentirlas. Dale espacio a tu inquietud, pero buscá un remanso para que tu corazón encuentre su norte."
+    },
+    "Cáncer": {
+     "titulo": "Tu corazón manda",
+     "texto": "Hoy tu instinto te pide refugio y cuidado. Conectá con lo que te nutre y te hace sentir segura, aunque tu mente se resista un poquito."
+    },
+    "Leo": {
+     "titulo": "Fuego en el corazón",
+     "texto": "Hoy sentís que tu brillo interior pide salir, pero algo te frena. Conectá con tu pasión, animate a ser vos sin dudar. ¡Dejá que tu luz ilumine todo!"
+    },
+    "Virgo": {
+     "titulo": "Emoción y Razón",
+     "texto": "Hoy, tus sentimientos y tu lado práctico pueden estar en discordia. Buscá un equilibrio, como un chef que mide los ingredientes con precisión para lograr el sabor perfecto."
+    },
+    "Libra": {
+     "titulo": "Equilibrio y Acción",
+     "texto": "Hoy, tus emociones te piden armonía, pero tu fuerza vital busca avanzar. Buscá un punto medio: un pequeño gesto de paz puede abrir el camino a lo que deseás."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad y Autoconocimiento",
+     "texto": "Hoy la luna en Escorpio te invita a bucear profundo en tus emociones. Aprovechá esta tensión para entender qué te mueve realmente y ser más fiel a tu verdad."
+    },
+    "Sagitario": {
+     "titulo": "Fuego y Voluntad",
+     "texto": "Hoy las emociones te invitan a la aventura, pero tu centro puede sentirse un poco trabado. Dale espacio a esa inquietud, buscá una meta que te inspire y avanzá con confianza."
+    },
+    "Capricornio": {
+     "titulo": "Tu centro y tus emociones",
+     "texto": "Hoy tu corazón puede sentirse un poco rebelde frente a tus planes. Date un respiro para que tu sentir y tu hacer se reencuentren en paz."
+    },
+    "Acuario": {
+     "titulo": "Emociones con chispa",
+     "texto": "Hoy la Luna en Acuario te invita a soltar lo que no te sirve, como si prendieras un fósforo y dejaras ir el humo. Animáte a ser vos mismo."
+    },
+    "Piscis": {
+     "titulo": "Emociones en flujo",
+     "texto": "Hoy tu corazón se siente un poco revuelto. Confiá en tu intuición, que te guiará suavemente a través de la calma de Piscis."
+    }
+   },
+   "trígono": {
+    "Aries": {
+     "titulo": "Energía y Coraje",
+     "texto": "Hoy la Luna te impulsa con la fuerza de Aries. Aprobá tus proyectos con decisión y animate a dar ese primer paso que venís posponiendo."
+    },
+    "Tauro": {
+     "titulo": "Abraza la calma",
+     "texto": "Hoy la Luna en Tauro te invita a disfrutar de las cosas simples. Conectá con tu paz interior, date un gusto que te haga bien y sentite en armonía con vos y el mundo."
+    },
+    "Géminis": {
+     "titulo": "Aire y Claridad",
+     "texto": "Hoy la Luna en Géminis te invita a conectar con tu lado más ágil. Dejá que las ideas fluyan y compartí lo que sentís, todo se sentirá más liviano y en sintonía con vos."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Sentimientos",
+     "texto": "Hoy la Luna en Cáncer te invita a nutrirte y a conectar con tu hogar, como un capullo que se abre al sol. Sentite segura y abrigada en lo que te hace bien."
+    },
+    "Leo": {
+     "titulo": "Tu brillo interior",
+     "texto": "Hoy la Luna en Leo te invita a desplegar tu fuego, a mostrarte tal cual sos. Sentite libre de brillar y compartir tu luz con el mundo, que todo te saldrá con una sonrisa."
+    },
+    "Virgo": {
+     "titulo": "Armonía y Claridad",
+     "texto": "Hoy la Luna en Virgo te regala una chispa de claridad mental. Conectá con tu lado práctico para organizar tus ideas y sentite liviana."
+    },
+    "Libra": {
+     "titulo": "Armonía y Conexión",
+     "texto": "Hoy la vida te sonríe, como una melodía que acompaña tus pasos. Buscá ese encuentro que te nutre, compartí un café o una charla que te haga sentir bien."
+    },
+    "Escorpio": {
+     "titulo": "Intuición poderosa",
+     "texto": "Hoy la Luna en Escorpio te regala una intuición a flor de piel. Confiá en tus corazonadas, te guiarán hacia lo que realmente necesitás."
+    },
+    "Sagitario": {
+     "titulo": "Aventura y expansión",
+     "texto": "Hoy la vida te sonríe, como un viento fresco que te impulsa a explorar. Animate a probar algo nuevo, tu optimismo es tu mejor brújula."
+    },
+    "Capricornio": {
+     "titulo": "Capricornio en armonía",
+     "texto": "Hoy la Luna en Capricornio te regala una brújula interna. Confiá en tu intuición para organizar tus proyectos, como un arquitecto que dibuja planos sólidos."
+    },
+    "Acuario": {
+     "titulo": "Aire y Claridad",
+     "texto": "Hoy la vida te regala una brisa de Acuario. Conectate con eso que te inspira y dejá volar tu mente sin miedos."
+    },
+    "Piscis": {
+     "titulo": "Intuición bajo el agua",
+     "texto": "Hoy la Luna en Piscis te susurra al oído. Confiá en esas corazonadas, te guían hacia donde necesitás estar. Dale espacio a tu mundo interior."
+    }
+   },
+   "oposición": {
+    "Aries": {
+     "titulo": "Luz y Sombra",
+     "texto": "Hoy tus emociones brillan con intensidad, como una luna llena. Prestá atención a lo que el otro te espeja, puede ser un gran reflejo para vos. ¡Aprovechá para conectar!"
+    },
+    "Tauro": {
+     "titulo": "Conexión y calma",
+     "texto": "Hoy la Luna en Tauro te invita a buscar la calma en lo simple. Como estás más sensible, buscá momentos de paz y conexión genuina con quienes te nutren el alma."
+    },
+    "Géminis": {
+     "titulo": "Conectate con otros",
+     "texto": "Hoy, con la Luna en Géminis, tus emociones están a flor de piel. Es un día ideal para charlar, escuchar y entender a quienes te rodean. ¡Encontrá el equilibrio en la conexión!"
+    },
+    "Cáncer": {
+     "titulo": "Tu espejo emocional",
+     "texto": "Hoy la vida te muestra espejos: prestá atención a lo que los demás reflejan de vos. Sentí con calma, conectá con tu hogar interior."
+    },
+    "Leo": {
+     "titulo": "Vos y los demás",
+     "texto": "Hoy sentís que tu corazón late al ritmo de los demás. Compartí tu brillo leonino, pero recordá que tu luz propia es lo más importante."
+    },
+    "Virgo": {
+     "titulo": "Conexión y Cuidado",
+     "texto": "Hoy, con la Luna en Virgo, tus emociones se sienten intensas, invitándote a poner el foco en los demás. Es un buen día para ofrecer tu ayuda de forma práctica y organizada, sintiendo la conexión que eso genera."
+    },
+    "Libra": {
+     "titulo": "Conectando con otros",
+     "texto": "Hoy la Luna en Libra te invita a buscar el equilibrio en tus relaciones. Es un buen momento para escuchar y ser escuchado, como un espejo que te devuelve tu propia imagen."
+    },
+    "Escorpio": {
+     "titulo": "Emociones en foco",
+     "texto": "Hoy la Luna en Escorpio te pide mirar de frente lo que te pasa, especialmente en relación a los demás. Conectá con tu intuición para entender qué necesitas."
+    },
+    "Sagitario": {
+     "titulo": "Soltando para crecer",
+     "texto": "Hoy, con la Luna en Sagitario, sentís todo más fuerte. Es un buen día para compartir lo que te pasa, y así, como una flecha, soltar lo que pesa para seguir tu camino."
+    },
+    "Capricornio": {
+     "titulo": "Tu espejo emocional",
+     "texto": "Hoy sentís todo a flor de piel, como si el mundo te espejara. Prestale atención a lo que te devuelven los demás, puede ser una pista valiosa para vos."
+    },
+    "Acuario": {
+     "titulo": "Conectate con otros",
+     "texto": "Hoy sentís todo a flor de piel. Acuario te invita a compartir tus emociones, a escuchar y ser escuchado. Buscá un espacio de diálogo sincero y nutrite de las miradas ajenas."
+    },
+    "Piscis": {
+     "titulo": "Emociones en espejo",
+     "texto": "Hoy tus emociones brillan intensas, como un espejo que devuelve lo que venís sintiendo. Prestá atención a lo que te reflejan los demás, puede ser una gran guía."
+    }
+   },
+   "sin aspecto mayor": {
+    "Aries": {
+     "titulo": "Energía para empezar",
+     "texto": "Hoy la Luna en Aries te invita a dar ese primer paso que venís pensando. Animate a iniciar algo nuevo, aunque sea chiquito."
+    },
+    "Tauro": {
+     "titulo": "Paz en tu ritmo",
+     "texto": "Hoy la Luna en Tauro te invita a disfrutar de lo simple. Conectate con tus sentidos, baja un cambio y date un gusto. ¡Pequeños placeres que nutren el alma!"
+    },
+    "Géminis": {
+     "titulo": "Mente ágil",
+     "texto": "Hoy la Luna en Géminis te invita a mover la cabeza. Escuchá esa curiosidad que te llama, compartí ideas y dejate llevar por la conversación."
+    },
+    "Cáncer": {
+     "titulo": "Hogar y Sentimientos",
+     "texto": "La Luna en Cáncer te invita a conectar con tu mundo interior. Aprovechá para mimarte, cocinar algo rico o simplemente estar en casa, ese refugio que tanto te nutre."
+    },
+    "Leo": {
+     "titulo": "Soltá la melena",
+     "texto": "Hoy la Luna en Leo te invita a brillar sin filtros. Dejá que tu alegría se expanda, contagiá tu entusiasmo y disfrutá de ser el centro de tu propia fiesta."
+    },
+    "Virgo": {
+     "titulo": "Calma y enfoque",
+     "texto": "Hoy la Luna en Virgo te invita a ordenar tus pensamientos y tu espacio. Aprovechá esta paz para ocuparte de esos detalles que te hacen sentir mejor."
+    },
+    "Libra": {
+     "titulo": "Equilibrio y conexión",
+     "texto": "Hoy la Luna en Libra te invita a buscar la armonía en tus vínculos. Pensá en cómo podés generar un clima de paz y disfrute con quienes te rodean."
+    },
+    "Escorpio": {
+     "titulo": "Intensidad serena",
+     "texto": "Hoy la Luna en Escorpio te invita a bucear profundo en tus emociones. Conectá con tu intuición y confiá en lo que te susurra el alma. Es un buen momento para sanar y soltar."
+    },
+    "Sagitario": {
+     "titulo": "Aventura y expansión",
+     "texto": "Hoy la Luna en Sagitario te invita a expandir tus horizontes. Animáte a probar algo nuevo, una idea, un camino diferente. ¡Dale rienda suelta a tu espíritu!"
+    },
+    "Capricornio": {
+     "titulo": "Paso firme y sereno",
+     "texto": "Hoy la Luna en Capricornio te invita a enfocar tu energía en lo que te hace bien. Tomate un momento para organizar tus ideas y avanzar con paso seguro hacia tus metas."
+    },
+    "Acuario": {
+     "titulo": "Aire fresco y conexiones",
+     "texto": "Hoy la Luna en Acuario te invita a respirar profundo y conectar con tu gente. Buscá un ratito para charlar o compartir algo que te inspire."
+    },
+    "Piscis": {
+     "titulo": "Fluyes suave",
+     "texto": "Hoy la Luna en Piscis te invita a dejarte llevar por la corriente. Conectá con tu intuición, que está más despierta que nunca."
+    }
+   }
+  }
+ },
+ "por_registro_generado_con": "google/gemini-2.5-flash-lite"
 }

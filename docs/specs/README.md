@@ -33,3 +33,4 @@ Regla dura del proyecto: **spec → casos de prueba → código.** Ninguna featu
 | [X1-redaccion-con-ia](./X1-redaccion-con-ia.md) | X1 (transversal) | approved |
 
 Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada spec dice explícitamente qué queda fuera de alcance de v1.
+| [X2-hiperpersonalizacion](./X2-hiperpersonalizacion.md) | X2 (transversal) | approved |
