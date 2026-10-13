@@ -1,6 +1,6 @@
 # A9-compartir-mi-carta — Compartir mi carta con un link
 
-- **Estado**: approved
+- **Estado**: implemented
 - **Módulo**: A (autoconocimiento) + crecimiento
 - **Aprobada para implementación por**: German Villamarin, 2026-10-13 ("debería ser simple compartir, hagamos nosotros el filtro de datos y todo listo para compartir").
 - **Origen**: análisis de competencia (NeoHumanCode vende informes en PDF). German prefirió compartir online en vez de PDF.

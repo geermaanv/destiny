@@ -32,7 +32,7 @@ export function SkyWheel({ cielo, leyenda }: { cielo: Sky; leyenda?: string }) {
   const hasAsc = cielo.some((p) => p.punto === "asc");
   const at = (lon: number, r: number) => {
     const theta = Math.PI + ((lon - asc) * Math.PI) / 180;
-    return { x: 50 + r * Math.cos(theta), y: 50 - r * Math.sin(theta) };
+    return { x: Math.round((50 + r * Math.cos(theta)) * 100) / 100, y: Math.round((50 - r * Math.sin(theta)) * 100) / 100 };
   };
   return (
     <figure className="space-y-2">

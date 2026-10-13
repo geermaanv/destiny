@@ -593,3 +593,31 @@ export async function getNatalSynthesis(profileId: string, clave: string): Promi
   if (!res.ok) throw new Error("No se pudo cargar la síntesis");
   return res.json();
 }
+
+// Compartir mi carta con un link (spec A9).
+export type ShareStatus = { activo: boolean; token?: string | null; vistas: number };
+
+export type PublicCarta = {
+  nombre: string;
+  signos: { sol: string; luna: string; asc?: string };
+  cielo: { punto: string; lon: number }[];
+  dimensiones: { clave: string; nombre: string; pregunta: string; sintesis: string }[];
+  paleta: Record<string, Record<string, string>>;
+  tipografia: string;
+  fondo: Fondo;
+  elementos: Record<string, number>;
+};
+
+export async function createShare(profileId: string): Promise<ShareStatus> {
+  return postJson(`/profiles/${profileId}/share`);
+}
+
+export async function getShare(profileId: string): Promise<ShareStatus> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/share`);
+  if (!res.ok) throw new Error("No se pudo cargar el estado de compartir");
+  return res.json();
+}
+
+export async function deleteShare(profileId: string): Promise<void> {
+  await fetch(`${API_URL}/profiles/${profileId}/share`, { method: "DELETE" });
+}

@@ -14,6 +14,9 @@ const ELEMENT_COLOR: Record<string, string> = {
 };
 const element = (lon: number) => ELEMENTS[Math.floor(lon / 30) % 4];
 const lonOf = (cielo: Sky, p: string) => cielo.find((c) => c.punto === p)?.lon;
+// Redondeo: el servidor y el navegador calculan senos con diferencias en el último
+// decimal y React avisa que el HTML no coincide (la página compartida se arma en el servidor).
+const r2 = (x: number) => Math.round(x * 100) / 100;
 
 function seeded(cielo: Sky) {
   let seed = Math.round(cielo.reduce((s, p) => s + p.lon * 1000, 0)) % 2147483647 || 1;
@@ -24,7 +27,7 @@ function seeded(cielo: Sky) {
 export function AuraSutil({ cielo }: BackgroundProps) {
   const sol = lonOf(cielo, "sol") ?? 0;
   const luna = lonOf(cielo, "luna") ?? 180;
-  const pos = (lon: number) => ({ x: 50 + 35 * Math.cos((lon * Math.PI) / 180), y: 50 - 35 * Math.sin((lon * Math.PI) / 180) });
+  const pos = (lon: number) => ({ x: r2(50 + 35 * Math.cos((lon * Math.PI) / 180)), y: r2(50 - 35 * Math.sin((lon * Math.PI) / 180)) });
   const a = pos(sol);
   const b = pos(luna);
   return (
@@ -47,10 +50,10 @@ export function Constelacion({ cielo }: BackgroundProps) {
   const planets = cielo.filter((p) => !["asc", "mc"].includes(p.punto)).sort((a, b) => a.lon - b.lon);
   const stars = planets.map((p, i) => ({
     ...p,
-    x: 10 + (80 * i) / Math.max(1, planets.length - 1),
-    y: 90 + 70 * Math.sin((p.lon * 7 * Math.PI) / 180) * 0.8 + (rand() - 0.5) * 20,
+    x: r2(10 + (80 * i) / Math.max(1, planets.length - 1)),
+    y: r2(90 + 70 * Math.sin((p.lon * 7 * Math.PI) / 180) * 0.8 + (rand() - 0.5) * 20),
   }));
-  const dust = Array.from({ length: 50 }, () => ({ x: rand() * 100, y: rand() * 200 }));
+  const dust = Array.from({ length: 50 }, () => ({ x: r2(rand() * 100), y: r2(rand() * 200) }));
   return (
     <svg className="absolute inset-0 h-full w-full text-gold-300" viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice">
       <defs>

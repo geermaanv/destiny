@@ -173,3 +173,15 @@ class AIText(Base):
     prompt_tokens: Mapped[int | None] = mapped_column(nullable=True)
     completion_tokens: Mapped[int | None] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class ShareLink(Base):
+    """Link público para compartir mi carta (spec A9). Uno activo por persona."""
+
+    __tablename__ = "share_links"
+
+    token: Mapped[str] = mapped_column(String, primary_key=True)
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    views: Mapped[int] = mapped_column(default=0, nullable=False)

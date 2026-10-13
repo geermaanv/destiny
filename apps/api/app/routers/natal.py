@@ -44,11 +44,16 @@ def get_synthesis(
         raise HTTPException(status_code=404, detail="Dimensión inexistente")
     result = natal_dimensions(profile)
     dimension = next(d for d in result["dimensiones"] if d["clave"] == clave)
-    style = style_for(profile)
+    text, ai = dimension_synthesis(db, profile, dimension, result["aproximado"], style_for(profile))
+    return NatalSynthesisOut(texto=text, ia=ai)
+
+
+def dimension_synthesis(db: Session, profile: Profile, dimension: dict, approximate: bool, style: dict) -> tuple[str, bool]:
+    """Síntesis de una dimensión, desde la cache si ya se redactó (la usa también Compartir mi carta, spec A9)."""
     versions = f"{load_config()['version']}/{load_library().get('version', '')}"
-    key = carta_key(profile, clave, style, versions)
+    key = carta_key(profile, dimension["clave"], style, versions)
     if (text := cached(db, key)) is not None:
-        return NatalSynthesisOut(texto=text, ia=True)
-    written = synthesize(dimension, result["aproximado"], prompt_instructions(style))
+        return text, True
+    written = synthesize(dimension, approximate, prompt_instructions(style))
     record(db, key, "carta", written)
-    return NatalSynthesisOut(texto=written.text, ia=written.ai is not None)
+    return written.text, written.ai is not None

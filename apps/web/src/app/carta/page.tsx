@@ -6,7 +6,11 @@ import { SkyWheel } from "@/components/BirthSky";
 import { Card, ListCard, ListRow, Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import {
+  createShare,
+  deleteShare,
   getMyPersonality,
+  getShare,
+  ShareStatus,
   getNatalDimensions,
   getNatalSynthesis,
   getStyle,
@@ -93,6 +97,63 @@ function Dimension({ profileId, dimension }: { profileId: string; dimension: Nat
   );
 }
 
+// Compartir mi carta (spec A9): un toque; Destiny decide qué datos se muestran.
+const SHARE_TEXT = "¿Por qué con algunas personas fluye y con otras no? Mirá mi carta en Destiny y descubrí la tuya:";
+
+function ShareCard({ profileId }: { profileId: string }) {
+  const [status, setStatus] = useState<ShareStatus | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    getShare(profileId).then(setStatus).catch(() => null);
+  }, [profileId]);
+
+  async function share() {
+    setBusy(true);
+    try {
+      const s = await createShare(profileId);
+      setStatus(s);
+      const url = `${window.location.origin}/c/${s.token}`;
+      if (navigator.share) {
+        await navigator.share({ title: "Mi carta en Destiny", text: SHARE_TEXT, url }).catch(() => null);
+      } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(`${SHARE_TEXT} ${url}`)}`, "_blank");
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Card className="space-y-2 text-center">
+      <button
+        type="button"
+        onClick={share}
+        disabled={busy}
+        className="w-full rounded-md bg-violet-600 px-3 py-2.5 font-medium text-white disabled:opacity-60"
+      >
+        Compartir mi carta
+      </button>
+      <p className="text-xs text-slate-400">Se comparten tus signos y estas lecturas; nunca tu fecha, hora ni lugar de nacimiento.</p>
+      {status?.activo && (
+        <p className="text-xs text-slate-400">
+          Tu carta se vio {status.vistas} {status.vistas === 1 ? "vez" : "veces"} ·{" "}
+          <button
+            type="button"
+            className="underline"
+            onClick={async () => {
+              await deleteShare(profileId);
+              setStatus({ activo: false, vistas: 0 });
+            }}
+          >
+            Dejar de compartir
+          </button>
+        </p>
+      )}
+    </Card>
+  );
+}
+
 function MiCarta() {
   const profileId = useSessionProfileId();
   const [data, setData] = useState<NatalDimensions | null>(null);
@@ -149,6 +210,7 @@ function MiCarta() {
         ))}
       </div>
       <Dimension profileId={profileId} dimension={current} />
+      <ShareCard profileId={profileId} />
       <ListCard>
         <ListRow
           href="/perfil/test"

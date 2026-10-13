@@ -188,6 +188,34 @@ class NatalSynthesisOut(BaseModel):
     ia: bool
 
 
+class ShareStatusOut(BaseModel):
+    """Compartir mi carta (spec A9)."""
+
+    activo: bool
+    token: str | None = None
+    vistas: int = 0
+
+
+class PublicDimensionOut(BaseModel):
+    clave: str
+    nombre: str
+    pregunta: str
+    sintesis: str
+
+
+class PublicCartaOut(BaseModel):
+    """Lo único que muestra el link público: Destiny filtra los datos (spec A9)."""
+
+    nombre: str
+    signos: dict[str, str]
+    cielo: list[dict[str, str | float]]
+    dimensiones: list[PublicDimensionOut]
+    paleta: dict[str, dict[str, str]]
+    tipografia: str
+    fondo: str
+    elementos: dict[str, int]
+
+
 class StyleOut(BaseModel):
     """Estilo de redacción (spec X2)."""
 
