@@ -638,3 +638,41 @@ export async function getMyDayDetail(profileId: string, date: string): Promise<D
   if (!res.ok) throw new Error("No se pudo cargar tu día");
   return res.json();
 }
+
+// Astrochat (spec X3).
+export type AstroMessage = { rol: "persona" | "destiny"; texto: string; modo: string; creado: string };
+export type Astrochat = {
+  modo: string;
+  modos: { clave: string; nombre: string; descripcion: string }[];
+  mensajes: AstroMessage[];
+  restantes_hoy: number;
+  limite: number;
+  ejemplos: string[];
+};
+
+export async function getAstrochat(profileId: string): Promise<Astrochat> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/astrochat`);
+  if (!res.ok) throw new Error("No se pudo cargar el Astrochat");
+  return res.json();
+}
+
+export async function askAstrochat(
+  profileId: string,
+  texto: string,
+  modo: string,
+): Promise<{ respuesta: AstroMessage; ia: boolean; restantes_hoy: number }> {
+  const res = await fetch(`${API_URL}/profiles/${profileId}/astrochat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ texto, modo }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(typeof body?.detail === "string" ? body.detail : "No pudimos enviar tu pregunta");
+  }
+  return res.json();
+}
+
+export async function clearAstrochat(profileId: string): Promise<void> {
+  await fetch(`${API_URL}/profiles/${profileId}/astrochat`, { method: "DELETE" });
+}

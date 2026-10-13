@@ -212,6 +212,7 @@ function MiCarta() {
       <Dimension profileId={profileId} dimension={current} />
       <ShareCard profileId={profileId} />
       <ListCard>
+        <ListRow href="/astrochat" icon="✧" title="Preguntale a Destiny" detail="Charlá sobre tu carta con el Astrochat" />
         <ListRow
           href="/perfil/test"
           icon="✓"

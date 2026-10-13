@@ -1,8 +1,8 @@
 """Redacción con IA vía OpenRouter (spec X1, ADR 0011: la IA solo redacta).
 
-Una sola función, `complete`: manda un prompt al modelo configurado y devuelve
-el texto limpio y recortado, o None si no hay key, falla, tarda o viene vacío
-(en ese caso quien llama usa su texto de plantilla).
+`complete` manda un prompt al modelo configurado y `converse` una conversación
+(Astrochat, spec X3). Devuelven el texto limpio y recortado, o None si no hay
+key, falla, tarda o viene vacío (en ese caso quien llama usa su texto de plantilla).
 """
 
 import logging
@@ -53,20 +53,30 @@ def trim_by_sentence(text: str, max_chars: int) -> str:
 
 
 def complete(system: str, user: str, max_chars: int) -> LLMResult | None:
+    return converse(system, [{"role": "user", "content": user}], max_chars)
+
+
+def converse(
+    system: str,
+    messages: list[dict],
+    max_chars: int,
+    max_tokens: int = MAX_TOKENS,
+    timeout: float = TIMEOUT_SECONDS,
+) -> LLMResult | None:
     if not is_configured():
         return None
     try:
-        with httpx.Client(transport=TRANSPORT, timeout=TIMEOUT_SECONDS) as client:
+        with httpx.Client(transport=TRANSPORT, timeout=timeout) as client:
             response = client.post(
                 OPENROUTER_URL,
                 headers={"Authorization": f"Bearer {settings.openrouter_api_key}", "X-Title": "Destiny"},
                 json={
                     "model": settings.openrouter_model,
-                    "max_tokens": MAX_TOKENS,
+                    "max_tokens": max_tokens,
                     "temperature": TEMPERATURE,
                     # Los modelos que "piensan" gastaban los tokens pensando y devolvían vacío (spec X1).
                     "reasoning": {"enabled": False},
-                    "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+                    "messages": [{"role": "system", "content": system}, *messages],
                 },
             )
             response.raise_for_status()

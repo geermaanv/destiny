@@ -38,3 +38,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [A8-mi-carta-dimensiones](./A8-mi-carta-dimensiones.md) | A (autoconocimiento) | implemented |
 | [U1-reorganizacion-ui](./U1-reorganizacion-ui.md) | transversal (web) | implemented |
 | [A9-compartir-mi-carta](./A9-compartir-mi-carta.md) | A (autoconocimiento) | implemented |
+| [X3-astrochat](./X3-astrochat.md) | X3 (transversal) | implemented |

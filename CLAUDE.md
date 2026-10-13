@@ -117,7 +117,7 @@ Sugerencia técnica, **no es definitiva** — revisar antes de comprometerse en 
 
 ### IA para redactar explicaciones y rompehielos: OpenRouter (spec X1)
 
-La IA **solo redacta** a partir del resultado ya calculado (ADR 0011): el modelo matemático decide qué los une y qué tienen que trabajar. Va por **OpenRouter** (`OPENROUTER_API_KEY` y `OPENROUTER_MODEL` en `apps/api/.env`; el modelo se cambia sin tocar código). Sin key o si falla, textos de plantilla. Nunca se mandan datos personales. Comparación de modelos: `docs/referencias/comparacion-modelos-ia.md` (`apps/api/scripts/compare_llm_models.py`).
+La IA **solo redacta** a partir del resultado ya calculado (ADR 0011): el modelo matemático decide qué los une y qué tienen que trabajar. También redacta Mi carta, Tu día completo y conversa en el **Astrochat** (spec X3), siempre con los datos ya calculados por el motor y sin datos personales (`app/llm.py`: `complete` para un texto, `converse` para el chat). Va por **OpenRouter** (`OPENROUTER_API_KEY` y `OPENROUTER_MODEL` en `apps/api/.env`; el modelo se cambia sin tocar código). Sin key o si falla, textos de plantilla. Nunca se mandan datos personales. Comparación de modelos: `docs/referencias/comparacion-modelos-ia.md` (`apps/api/scripts/compare_llm_models.py`).
 
 ### Motor astrológico: `astronomy-engine` (no Swiss Ephemeris)
 

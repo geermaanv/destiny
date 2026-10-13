@@ -130,6 +130,7 @@ function HomeContent() {
       </section>
 
       <ListCard>
+        <ListRow href="/astrochat" icon="✧" title="Preguntale a Destiny" detail="Charlá sobre tu carta y tu momento" />
         <ListRow href="/carta" icon="☉" title="Mi carta" detail="Identidad, amor, vocación y emociones" />
       </ListCard>
     </>

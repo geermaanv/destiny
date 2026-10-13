@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 // cuentan como esa pestaña (el calendario es parte de Hoy, el chat de Conexiones).
 const ITEMS = [
   { href: "/home", label: "Hoy", icon: "☾", also: ["/calendario", "/dia"] },
-  { href: "/carta", label: "Mi carta", icon: "☉", also: [] },
+  { href: "/carta", label: "Mi carta", icon: "☉", also: ["/astrochat"] },
   { href: "/discover", label: "Descubrir", icon: "✦", also: [] },
   { href: "/conexiones", label: "Conexiones", icon: "✉", also: ["/chat"] },
   { href: "/perfil", label: "Perfil", icon: "◉", also: ["/perfil/", "/invitar"] },

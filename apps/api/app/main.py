@@ -17,6 +17,7 @@ from app.routers import (
     style,
     natal,
     share,
+    astrochat,
     whatsapp,
 )
 
@@ -50,6 +51,7 @@ app.include_router(personality.router)
 app.include_router(style.router)
 app.include_router(natal.router)
 app.include_router(share.router)
+app.include_router(astrochat.router)
 
 
 @app.get("/health")

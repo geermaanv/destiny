@@ -217,6 +217,41 @@ class PublicCartaOut(BaseModel):
     elementos: dict[str, int]
 
 
+class AstroModeOut(BaseModel):
+    clave: str
+    nombre: str
+    descripcion: str
+
+
+class AstroMessageOut(BaseModel):
+    rol: Literal["persona", "destiny"]
+    texto: str
+    modo: str
+    creado: datetime
+
+
+class AstrochatOut(BaseModel):
+    """Astrochat (spec X3)."""
+
+    modo: str
+    modos: list[AstroModeOut]
+    mensajes: list[AstroMessageOut]
+    restantes_hoy: int
+    limite: int
+    ejemplos: list[str]
+
+
+class AstroAskIn(BaseModel):
+    texto: str
+    modo: str | None = None
+
+
+class AstroAnswerOut(BaseModel):
+    respuesta: AstroMessageOut
+    ia: bool
+    restantes_hoy: int
+
+
 class StyleOut(BaseModel):
     """Estilo de redacción (spec X2)."""
 

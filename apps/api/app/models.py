@@ -185,3 +185,21 @@ class ShareLink(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     views: Mapped[int] = mapped_column(default=0, nullable=False)
+
+
+class AstroMessage(Base):
+    """Mensajes del Astrochat (spec X3). Borrar la conversación los oculta (deleted_at), no los cuenta de nuevo."""
+
+    __tablename__ = "astro_messages"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), nullable=False, index=True)
+    role: Mapped[str] = mapped_column(String, nullable=False)  # persona | destiny
+    text: Mapped[str] = mapped_column(String, nullable=False)
+    mode: Mapped[str] = mapped_column(String, nullable=False)
+    counts: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)  # cuenta para el límite diario
+    model: Mapped[str | None] = mapped_column(String, nullable=True)
+    prompt_tokens: Mapped[int | None] = mapped_column(nullable=True)
+    completion_tokens: Mapped[int | None] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
