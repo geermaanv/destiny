@@ -68,7 +68,7 @@ function HomeContent() {
         <img src="/logo.png" alt="" width={44} height={44} className="shrink-0" />
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold">
-            Hoy {myDay && <span className="text-gold-300">{myDay.title}</span>}
+            Hoy:{myDay && <span className="font-normal text-slate-200"> {myDay.title}</span>}
           </h1>
           <p className="text-sm text-gold-300">{astroWeather ?? "Leyendo el cielo…"}</p>
         </div>
@@ -79,9 +79,9 @@ function HomeContent() {
           <p className="leading-relaxed text-slate-200">{myDay.text}</p>
           <Link
             href="/dia"
-            className="inline-flex items-center gap-2 rounded-full bg-violet-600/15 px-4 py-2 text-sm font-medium text-violet-400 ring-1 ring-violet-400/60 hover:bg-violet-600/25"
+            className="block w-full rounded-xl bg-violet-600 px-4 py-3 text-center font-medium text-white hover:bg-violet-500"
           >
-            Leé tu día completo <span aria-hidden>✦</span>
+            Leé tu día completo
           </Link>
         </section>
       )}
