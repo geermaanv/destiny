@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import ThemeApplier from "@/components/ThemeApplier";
 
 export const metadata: Metadata = {
   title: "Destiny",
@@ -18,7 +19,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <ThemeApplier />
+        {children}
+      </body>
     </html>
   );
 }

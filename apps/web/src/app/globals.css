@@ -7,4 +7,33 @@
    claro y quedan invisibles sobre el fondo. */
 :root {
   color-scheme: dark;
+  /* Paleta clásica (colores del logo). El tema de cada persona la reemplaza
+     desde src/lib/theme.ts (spec X2 v2). Formato "r g b" para las opacidades de Tailwind. */
+  --slate-50: 249 247 241;
+  --slate-100: 244 241 232;
+  --slate-200: 227 224 242;
+  --slate-300: 201 198 227;
+  --slate-400: 166 163 204;
+  --slate-500: 128 125 170;
+  --slate-600: 91 88 144;
+  --slate-700: 58 55 121;
+  --slate-800: 37 34 91;
+  --slate-900: 26 24 68;
+  --slate-950: 14 13 41;
+  --violet-50: 255 241 240;
+  --violet-100: 255 224 222;
+  --violet-200: 255 198 194;
+  --violet-300: 255 158 152;
+  --violet-400: 254 112 104;
+  --violet-500: 252 75 67;
+  --violet-600: 233 52 44;
+  --violet-700: 196 38 31;
+  --violet-800: 162 35 30;
+  --violet-900: 134 35 31;
+  --violet-950: 73 13 10;
+  --gold-100: 253 244 211;
+  --gold-200: 251 231 162;
+  --gold-300: 248 214 107;
+  --gold-400: 245 197 66;
+  --gold-500: 224 170 31;
 }

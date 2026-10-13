@@ -36,7 +36,10 @@ def set_style(
     current: uuid.UUID | None = Depends(session_profile_id),
 ) -> StyleOut:
     profile = _own(profile_id, current, db)
-    profile.style_registro = payload.registro
+    if "registro" in payload.model_fields_set:
+        profile.style_registro = payload.registro
+    if "tema" in payload.model_fields_set:
+        profile.style_tema = payload.tema
     db.commit()
     db.refresh(profile)
     return StyleOut(**style_for(profile))

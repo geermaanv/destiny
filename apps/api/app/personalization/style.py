@@ -58,14 +58,39 @@ def style_from_chart(chart: Chart) -> dict:
     }
 
 
+def theme_from_chart(chart: Chart) -> dict:
+    """Tema visual (spec X2 v2): elemento predominante, P(e) = Σ pesos en e / Σ pesos. Empate → elemento del Sol."""
+    cfg = load_config()
+    elements, theme_cfg = cfg["elementos"], cfg["tema"]
+    totals = dict.fromkeys(elements, 0.0)
+    for point, weight in theme_cfg["pesos"].items():
+        if point in chart.points:
+            totals[elements[_sign(chart, point) % 4]] += weight
+    best = max(totals.values())
+    tied = [e for e in elements if totals[e] == best]
+    element = tied[0] if len(tied) == 1 else elements[_sign(chart, theme_cfg["desempate"]) % 4]
+    total = sum(totals.values()) or 1
+    pct = {e: round(100 * v / total) for e, v in totals.items()}
+    return {
+        "tema_carta": theme_cfg["por_elemento"][element],
+        "elementos": pct,
+        "tema_por_que": f"En tu carta predomina el {element} ({pct[element]} %).",
+    }
+
+
 def style_for(profile: Profile) -> dict:
-    """Estilo de la carta, con la elección manual de registro si la hay."""
-    style = style_from_chart(chart_for_profile(profile))
+    """Estilo de la carta, con las elecciones manuales (registro, tema) si las hay."""
+    chart = chart_for_profile(profile)
+    style = style_from_chart(chart) | theme_from_chart(chart)
     style["registro_carta"] = style["registro"]
     style["source"] = "carta"
     if profile.style_registro:
         style["registro"] = profile.style_registro
         style["source"] = "elegido"
+    style["tema"], style["tema_source"] = style["tema_carta"], "carta"
+    if profile.style_tema:
+        style["tema"], style["tema_source"] = profile.style_tema, "elegido"
+    style["paleta"] = load_config()["tema"]["temas"][style["tema"]]["paleta"]
     return style
 
 

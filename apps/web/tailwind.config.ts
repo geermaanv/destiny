@@ -1,46 +1,46 @@
 import type { Config } from "tailwindcss";
 
-// Paleta de marca, tomada del logo de Destiny: azul noche, coral (las manos) y
-// dorado (los astros). En vez de cambiar cada clase, se redefinen las escalas
-// que ya usa la app: `slate` pasa a ser la escala de azul noche (neutros) y
-// `violet` la de coral (acción principal). `gold` es el acento.
+// Las tres escalas que usa toda la app: `slate` (fondo y neutros), `violet`
+// (acción principal) y `gold` (acento). Son variables CSS para poder cambiar el
+// tema según la carta (spec X2 v2): la paleta clásica (logo: azul noche, coral y
+// dorado) está en globals.css y la de cada tema llega de la API (src/lib/theme.ts).
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
         slate: {
-          50: "#f9f7f1",
-          100: "#f4f1e8",
-          200: "#e3e0f2",
-          300: "#c9c6e3",
-          400: "#a6a3cc",
-          500: "#807daa",
-          600: "#5b5890",
-          700: "#3a3779",
-          800: "#25225b", // azul noche del logo
-          900: "#1a1844",
-          950: "#0e0d29",
+          50: "rgb(var(--slate-50) / <alpha-value>)",
+          100: "rgb(var(--slate-100) / <alpha-value>)",
+          200: "rgb(var(--slate-200) / <alpha-value>)",
+          300: "rgb(var(--slate-300) / <alpha-value>)",
+          400: "rgb(var(--slate-400) / <alpha-value>)",
+          500: "rgb(var(--slate-500) / <alpha-value>)",
+          600: "rgb(var(--slate-600) / <alpha-value>)",
+          700: "rgb(var(--slate-700) / <alpha-value>)",
+          800: "rgb(var(--slate-800) / <alpha-value>)",
+          900: "rgb(var(--slate-900) / <alpha-value>)",
+          950: "rgb(var(--slate-950) / <alpha-value>)",
         },
         violet: {
-          50: "#fff1f0",
-          100: "#ffe0de",
-          200: "#ffc6c2",
-          300: "#ff9e98",
-          400: "#fe7068",
-          500: "#fc4b43", // coral de las manos del logo
-          600: "#e9342c",
-          700: "#c4261f",
-          800: "#a2231e",
-          900: "#86231f",
-          950: "#490d0a",
+          50: "rgb(var(--violet-50) / <alpha-value>)",
+          100: "rgb(var(--violet-100) / <alpha-value>)",
+          200: "rgb(var(--violet-200) / <alpha-value>)",
+          300: "rgb(var(--violet-300) / <alpha-value>)",
+          400: "rgb(var(--violet-400) / <alpha-value>)",
+          500: "rgb(var(--violet-500) / <alpha-value>)",
+          600: "rgb(var(--violet-600) / <alpha-value>)",
+          700: "rgb(var(--violet-700) / <alpha-value>)",
+          800: "rgb(var(--violet-800) / <alpha-value>)",
+          900: "rgb(var(--violet-900) / <alpha-value>)",
+          950: "rgb(var(--violet-950) / <alpha-value>)",
         },
         gold: {
-          100: "#fdf4d3",
-          200: "#fbe7a2",
-          300: "#f8d66b",
-          400: "#f5c542", // dorado de los astros del logo
-          500: "#e0aa1f",
+          100: "rgb(var(--gold-100) / <alpha-value>)",
+          200: "rgb(var(--gold-200) / <alpha-value>)",
+          300: "rgb(var(--gold-300) / <alpha-value>)",
+          400: "rgb(var(--gold-400) / <alpha-value>)",
+          500: "rgb(var(--gold-500) / <alpha-value>)",
         },
       },
     },

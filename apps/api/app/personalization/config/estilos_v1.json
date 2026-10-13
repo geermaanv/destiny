@@ -1,37 +1,314 @@
 {
  "version": "v1",
  "notas": "Mapeo carta → estilo de redacción (spec X2). Parte del modelo: Pablo es la última palabra (ADR 0011). Se puede editar sin tocar código.",
- "elementos": ["fuego", "tierra", "aire", "agua"],
- "modalidades": ["cardinal", "fijo", "mutable"],
+ "elementos": [
+  "fuego",
+  "tierra",
+  "aire",
+  "agua"
+ ],
+ "modalidades": [
+  "cardinal",
+  "fijo",
+  "mutable"
+ ],
  "registro": {
   "planeta": "mercurio",
   "que_define": "cómo procesás la información",
-  "por_elemento": {"fuego": "directo", "tierra": "practico", "aire": "analitico", "agua": "intuitivo"},
+  "por_elemento": {
+   "fuego": "directo",
+   "tierra": "practico",
+   "aire": "analitico",
+   "agua": "intuitivo"
+  },
   "estilos": {
-   "directo": {"nombre": "Directo", "descripcion": "al grano, franco y motivador", "instruccion": "Estilo DIRECTO: andá al grano, frases cortas y francas, con energía; nada de rodeos."},
-   "practico": {"nombre": "Práctico", "descripcion": "concreto y accionable", "instruccion": "Estilo PRÁCTICO: concreto y accionable; decí qué conviene hacer, sin abstracciones."},
-   "analitico": {"nombre": "Analítico", "descripcion": "con el porqué y las ideas detrás", "instruccion": "Estilo ANALÍTICO: explicá el porqué con claridad, podés mencionar el aspecto o el eje que lo explica; ordenado y preciso."},
-   "intuitivo": {"nombre": "Intuitivo", "descripcion": "emocional, con imágenes", "instruccion": "Estilo INTUITIVO: hablale a lo que siente, con alguna imagen o metáfora simple; cálido y evocador."}
+   "directo": {
+    "nombre": "Directo",
+    "descripcion": "al grano, franco y motivador",
+    "instruccion": "Estilo DIRECTO: andá al grano, frases cortas y francas, con energía; nada de rodeos."
+   },
+   "practico": {
+    "nombre": "Práctico",
+    "descripcion": "concreto y accionable",
+    "instruccion": "Estilo PRÁCTICO: concreto y accionable; decí qué conviene hacer, sin abstracciones."
+   },
+   "analitico": {
+    "nombre": "Analítico",
+    "descripcion": "con el porqué y las ideas detrás",
+    "instruccion": "Estilo ANALÍTICO: explicá el porqué con claridad, podés mencionar el aspecto o el eje que lo explica; ordenado y preciso."
+   },
+   "intuitivo": {
+    "nombre": "Intuitivo",
+    "descripcion": "emocional, con imágenes",
+    "instruccion": "Estilo INTUITIVO: hablale a lo que siente, con alguna imagen o metáfora simple; cálido y evocador."
+   }
   }
  },
  "tono": {
   "planeta": "luna",
   "que_define": "cuánta contención necesitás",
-  "por_elemento": {"fuego": "liviano", "tierra": "contenedor", "aire": "liviano", "agua": "contenedor"},
+  "por_elemento": {
+   "fuego": "liviano",
+   "tierra": "contenedor",
+   "aire": "liviano",
+   "agua": "contenedor"
+  },
   "estilos": {
-   "contenedor": {"nombre": "contenedor", "instruccion": "Tono CONTENEDOR: cuidadoso, que acompañe; si hay algo difícil, decilo con suavidad."},
-   "liviano": {"nombre": "liviano", "instruccion": "Tono LIVIANO: relajado, con algo de humor si cabe; sin dramatizar."}
+   "contenedor": {
+    "nombre": "contenedor",
+    "instruccion": "Tono CONTENEDOR: cuidadoso, que acompañe; si hay algo difícil, decilo con suavidad."
+   },
+   "liviano": {
+    "nombre": "liviano",
+    "instruccion": "Tono LIVIANO: relajado, con algo de humor si cabe; sin dramatizar."
+   }
   }
  },
  "formato": {
   "que_define": "qué formato te sirve",
-  "pesos": {"sol": 3, "luna": 3, "asc": 2, "mercurio": 1, "venus": 1, "marte": 1},
+  "pesos": {
+   "sol": 3,
+   "luna": 3,
+   "asc": 2,
+   "mercurio": 1,
+   "venus": 1,
+   "marte": 1
+  },
   "desempate": "mercurio",
-  "por_modalidad": {"cardinal": "acciones", "fijo": "profundidad", "mutable": "opciones"},
+  "por_modalidad": {
+   "cardinal": "acciones",
+   "fijo": "profundidad",
+   "mutable": "opciones"
+  },
   "estilos": {
-   "acciones": {"nombre": "con acciones", "instruccion": "Formato ACCIONES: cerrá con una acción concreta para hacer."},
-   "profundidad": {"nombre": "en profundidad", "instruccion": "Formato PROFUNDIDAD: una sola idea central, bien desarrollada."},
-   "opciones": {"nombre": "con opciones", "instruccion": "Formato OPCIONES: ofrecé un par de caminos posibles, breve."}
+   "acciones": {
+    "nombre": "con acciones",
+    "instruccion": "Formato ACCIONES: cerrá con una acción concreta para hacer."
+   },
+   "profundidad": {
+    "nombre": "en profundidad",
+    "instruccion": "Formato PROFUNDIDAD: una sola idea central, bien desarrollada."
+   },
+   "opciones": {
+    "nombre": "con opciones",
+    "instruccion": "Formato OPCIONES: ofrecé un par de caminos posibles, breve."
+   }
+  }
+ },
+ "tema": {
+  "que_define": "los colores de la app",
+  "descripcion": "Elemento predominante de la carta: P(e) = suma de pesos de los puntos en ese elemento / suma de pesos (whitepaper §3.2). Empate: el elemento del Sol.",
+  "pesos": {
+   "sol": 3,
+   "luna": 3,
+   "asc": 2,
+   "mercurio": 1,
+   "venus": 1,
+   "marte": 1
+  },
+  "desempate": "sol",
+  "por_elemento": {
+   "fuego": "fuego",
+   "tierra": "tierra",
+   "aire": "aire",
+   "agua": "agua"
+  },
+  "temas": {
+   "clasico": {
+    "nombre": "Clásico",
+    "descripcion": "los colores del logo: azul noche, coral y dorado",
+    "paleta": {
+     "slate": {
+      "50": "#f9f7f1",
+      "100": "#f4f1e8",
+      "200": "#e3e0f2",
+      "300": "#c9c6e3",
+      "400": "#a6a3cc",
+      "500": "#807daa",
+      "600": "#5b5890",
+      "700": "#3a3779",
+      "800": "#25225b",
+      "900": "#1a1844",
+      "950": "#0e0d29"
+     },
+     "violet": {
+      "50": "#fff1f0",
+      "100": "#ffe0de",
+      "200": "#ffc6c2",
+      "300": "#ff9e98",
+      "400": "#fe7068",
+      "500": "#fc4b43",
+      "600": "#e9342c",
+      "700": "#c4261f",
+      "800": "#a2231e",
+      "900": "#86231f",
+      "950": "#490d0a"
+     },
+     "gold": {
+      "100": "#fdf4d3",
+      "200": "#fbe7a2",
+      "300": "#f8d66b",
+      "400": "#f5c542",
+      "500": "#e0aa1f"
+     }
+    }
+   },
+   "fuego": {
+    "nombre": "Fuego",
+    "descripcion": "rojo profundo, terracota y dorado",
+    "paleta": {
+     "slate": {
+      "50": "#f9f1f3",
+      "100": "#f3e9eb",
+      "200": "#f1e1e5",
+      "300": "#e2c7ce",
+      "400": "#caa5ae",
+      "500": "#a87f89",
+      "600": "#8d5b67",
+      "700": "#763a49",
+      "800": "#582532",
+      "900": "#421a24",
+      "950": "#280e15"
+     },
+     "violet": {
+      "50": "#fef5f1",
+      "100": "#fde8e0",
+      "200": "#fad4c7",
+      "300": "#f7b7a0",
+      "400": "#f39573",
+      "500": "#ee7b51",
+      "600": "#db653a",
+      "700": "#b8512b",
+      "800": "#984628",
+      "900": "#7e3e27",
+      "950": "#441d0f"
+     },
+     "gold": {
+      "100": "#fdefd3",
+      "200": "#fbdda2",
+      "300": "#f8c96b",
+      "400": "#f5b942",
+      "500": "#e0a01f"
+     }
+    }
+   },
+   "tierra": {
+    "nombre": "Tierra",
+    "descripcion": "verde bosque, arena y cobre",
+    "paleta": {
+     "slate": {
+      "50": "#f3f7f5",
+      "100": "#ebf1ee",
+      "200": "#e4eee9",
+      "300": "#cddcd5",
+      "400": "#acc3b8",
+      "500": "#87a094",
+      "600": "#658375",
+      "700": "#466a59",
+      "800": "#2f4e40",
+      "900": "#223a2f",
+      "950": "#13231c"
+     },
+     "violet": {
+      "50": "#fdf6f2",
+      "100": "#faece3",
+      "200": "#f6dccb",
+      "300": "#f0c4a7",
+      "400": "#e7a87e",
+      "500": "#e0935f",
+      "600": "#cd7d48",
+      "700": "#ab6638",
+      "800": "#8e5732",
+      "900": "#774b2e",
+      "950": "#402513"
+     },
+     "gold": {
+      "100": "#f4ebdc",
+      "200": "#e7d5b6",
+      "300": "#d8bc8b",
+      "400": "#cda96a",
+      "500": "#b58e4a"
+     }
+    }
+   },
+   "aire": {
+    "nombre": "Aire",
+    "descripcion": "azul claro, plata y lavanda",
+    "paleta": {
+     "slate": {
+      "50": "#f3f5f7",
+      "100": "#eaeef2",
+      "200": "#e4e9ee",
+      "300": "#ccd4dd",
+      "400": "#abb7c4",
+      "500": "#8693a1",
+      "600": "#637385",
+      "700": "#44576c",
+      "800": "#2d3d50",
+      "900": "#212d3b",
+      "950": "#131a23"
+     },
+     "violet": {
+      "50": "#f6f2fd",
+      "100": "#ebe2fb",
+      "200": "#dacaf7",
+      "300": "#c1a5f2",
+      "400": "#a47beb",
+      "500": "#8d5ae5",
+      "600": "#7844d1",
+      "700": "#6134af",
+      "800": "#532f92",
+      "900": "#482c79",
+      "950": "#231241"
+     },
+     "gold": {
+      "100": "#dceef4",
+      "200": "#b6dbe7",
+      "300": "#8bc5d8",
+      "400": "#6ab4cd",
+      "500": "#4a9ab5"
+     }
+    }
+   },
+   "agua": {
+    "nombre": "Agua",
+    "descripcion": "índigo, océano y violeta",
+    "paleta": {
+     "slate": {
+      "50": "#f1f3f9",
+      "100": "#e8ecf4",
+      "200": "#e0e5f2",
+      "300": "#c6cfe3",
+      "400": "#a3afcc",
+      "500": "#7d8aaa",
+      "600": "#586990",
+      "700": "#374b79",
+      "800": "#22335b",
+      "900": "#182544",
+      "950": "#0d1529"
+     },
+     "violet": {
+      "50": "#f9f2fd",
+      "100": "#f1e1fc",
+      "200": "#e5c8f9",
+      "300": "#d4a2f5",
+      "400": "#bf77ef",
+      "500": "#ae55ea",
+      "600": "#9a3fd6",
+      "700": "#7f30b4",
+      "800": "#6b2b95",
+      "900": "#5b297c",
+      "950": "#2f1043"
+     },
+     "gold": {
+      "100": "#d9f7f3",
+      "200": "#afeee5",
+      "300": "#80e3d6",
+      "400": "#5ddac9",
+      "500": "#3cc3b1"
+     }
+    }
+   }
   }
  }
 }

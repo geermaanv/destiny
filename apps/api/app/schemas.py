@@ -197,10 +197,20 @@ class StyleOut(BaseModel):
     source: Literal["carta", "elegido"]
     por_que: str
     registro_carta: str
+    # Tema visual (spec X2 v2)
+    tema: str
+    tema_carta: str
+    tema_source: Literal["carta", "elegido"]
+    tema_por_que: str
+    elementos: dict[str, int]
+    paleta: dict[str, dict[str, str]]
 
 
 class StyleIn(BaseModel):
+    """Solo se cambian los campos que se mandan; null = que decida la carta."""
+
     registro: Literal["directo", "practico", "analitico", "intuitivo"] | None = None
+    tema: Literal["fuego", "tierra", "aire", "agua", "clasico"] | None = None
 
 
 class MyDayOut(BaseModel):

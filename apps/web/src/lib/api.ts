@@ -1,3 +1,4 @@
+import { resetPalette } from "@/lib/theme";
 // "/api" en vez de una URL absoluta: Next.js la proxea server-side a
 // API_INTERNAL_URL (ver next.config.ts). Así el browser solo necesita
 // llegar al origen de Next — un solo túnel alcanza para hostear
@@ -458,6 +459,7 @@ export async function getLoginStatus(loginId: string): Promise<"pendiente" | "li
 
 export async function logout(): Promise<void> {
   await fetch(`${API_URL}/sessions/logout`, { method: "POST" });
+  resetPalette(); // el tema es de la persona: al salir vuelve el clásico (spec X2 v2)
 }
 
 // Test de personalidad de Pablo (spec A6).
@@ -518,7 +520,15 @@ export type Style = {
   source: "carta" | "elegido";
   por_que: string;
   registro_carta: Registro;
+  tema: Tema;
+  tema_carta: Tema;
+  tema_source: "carta" | "elegido";
+  tema_por_que: string;
+  elementos: Record<string, number>;
+  paleta: Record<string, Record<string, string>>;
 };
+
+export type Tema = "fuego" | "tierra" | "aire" | "agua" | "clasico";
 
 export async function getStyle(profileId: string): Promise<Style> {
   const res = await fetch(`${API_URL}/profiles/${profileId}/style`);
@@ -526,11 +536,12 @@ export async function getStyle(profileId: string): Promise<Style> {
   return res.json();
 }
 
-export async function setStyle(profileId: string, registro: Registro | null): Promise<Style> {
+// Solo cambia lo que se manda: { registro } o { tema }; null = que decida la carta.
+export async function setStyle(profileId: string, change: { registro?: Registro | null; tema?: Tema | null }): Promise<Style> {
   const res = await fetch(`${API_URL}/profiles/${profileId}/style`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ registro }),
+    body: JSON.stringify(change),
   });
   if (!res.ok) throw new Error("No se pudo guardar tu estilo");
   return res.json();
