@@ -21,7 +21,7 @@ Ya **no bloquean** la implementación (las specs correspondientes las dejaron fu
 - [ ] Decisión PWA vs. nativo para push notifications en iOS (ver ADR 0002 — afecta a `A2-ritmo-notificaciones.md`).
 - [x] **Motor de sinastría por ejes** (cuadro de German): implementado con tablas `v1-provisoria` en configuración (ADR 0010). Integrado a Descubrir con selector de contexto.
 - [x] ~~Validar las tablas de sinastría provisorias~~ → reemplazadas por el **motor oficial Destiny 1.0 de Pablo** (spec A7, ADR 0012, 2026-10-13): coincide con su motor de referencia en 457 casos de sus auditorías y sus 3 demos.
-- [ ] **Decisiones de Pablo sobre el motor 1.0** (hoy se aplican tal como están en su motor): E3 con casas desde el grado del ASC o por signo entero; Juno en E4; tolerancia extra de 0,1° en los orbes y doble aspecto por par; aceptar el modo reducido (redistribución de pesos y E4 neutralizado hacia 50). Además: el test de personalidad usa 60/10/25/5 en ocasional y el motor 70/10/15/5, ¿se igualan?
+- [x] **Decisiones sobre el motor 1.0** — decidido por German (2026-10-13): **se toma lo de Pablo como bueno**, tal como está en su motor: E3 con casas desde el grado del ASC, Juno sin informar, orbes sin tolerancia extra ni doble aspecto, y el modo reducido (redistribución de pesos y E4 neutralizado hacia 50). La sinastría usa los pesos del motor (ocasional 70/10/15/5) y el test de personalidad los suyos (60/10/25/5): son dos modelos de Pablo y se muestran separados.
 - [ ] Si Pablo cambia una planilla: copiar el ZIP nuevo a `~/proyectos/destiny-fuentes/`, correr `apps/api/scripts/build_synastry_v2.py` (y `build_motor_fixtures.py` si trae auditorías nuevas) y correr los tests.
 - [x] (Hecho 2026-10-12) Pasar el rompehielos, la invitación (C8) y el calendario (B6) a la carta completa: hoy usan Sol–Sol / Luna–Sol y además toman la hora de nacimiento como si fuera UTC (`app/compatibility.py::sun_longitude`). El motor nuevo ya usa la zona horaria real.
 - [x] Contexto de relación en Descubrir — **implementado** (selector Pareja / Amistad / Trabajo / Casual, cambia los pesos del motor). Antes: **decidido el enfoque**: no va en el perfil, se elige en Descubrir y la lista queda abierta (pareja, amistad, trabajo/jefe, socio…). Falta la spec del selector y de cómo cambia la explicación (`B5-pantalla-descubrir.md`).
@@ -91,6 +91,16 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 - [x] **Falta feedback en las acciones** (hecho: "Guardado ✓", confirmación del check-in, hora en el chat, "Enviando solicitud…", ícono de Next oculto): "Perfil guardado" queda fuera de la vista, el check-in no confirma, el chat no muestra la hora de los mensajes, "Conectar" no muestra que está enviando. Además el ícono "N" de Next.js (solo en modo desarrollo, pero Pablo lo ve por el túnel) tapa "Inicio" en la barra.
 
 
+## Autoconocimiento primero, matchmaking después (decisión de German, 2026-10-13)
+
+Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usuarios crece; el matchmaking sigue. Prioridad tomada del MVP 1 del whitepaper (`docs/referencias/whitepaper-producto-v1.md`), sobre lo que ya existe:
+- [ ] **Mi carta por dimensiones**: las 4 del MVP (identidad, amor, vocación, emociones), cada una con síntesis, los indicadores astrológicos que la explican (planetas, casas, aspectos) y preguntas de reflexión. Necesita la matriz dimensión → indicadores (propuesta nuestra, revisión de Pablo).
+- [ ] **Astrochat** con los 4 modos del whitepaper (Explorador, Mentor, Astrólogo técnico, Acompañante), consultando cálculos reales (carta, tránsitos), nunca inventados. Reutiliza los estilos de X2. Costo de IA por uso → se conecta con los créditos.
+- [ ] **Mi cielo**: tránsitos de todos los planetas sobre los puntos natales (orbe, exactitud, período activo), filtros por área de vida. Extiende el calendario y "Tu día".
+- [ ] **Consentimientos y datos**: aceptar privacidad al empezar, ver/exportar/borrar mis datos, memoria del chat opcional.
+- [ ] Timeline / Diario cósmico (fase 2 del whitepaper).
+- [ ] Inicio y navegación centrados en autoconocimiento (Mi perfil · Mi cielo · Astrochat · Mi evolución), con Descubrir como sección.
+
 ## Roadmap de producto (Pablo, octubre 2026)
 
 Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + ampliación de 37 iniciativas). Clasificación (2026-10-12):
@@ -111,7 +121,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Informe de vínculo descargable (PDF con ejes y sugerencias de conversación).
 
 **Post-MVP**
-- [ ] AstroChat IA (consultando el motor matemático; memoria, privacidad y costos a definir).
+- [ ] ~~AstroChat IA~~ → sube a prioridad en "Autoconocimiento primero" (arriba).
 - [ ] Marketplace de astrólogos por zona + Destiny Studio (software para astrólogos) + AstroAcademy.
 - [ ] Eventos tipo "Time left" (Cosmic Tables, speed dating, tribus, hosts).
 - [ ] Destiny Pro (cofounder, mentores, networking).

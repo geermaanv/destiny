@@ -6,6 +6,10 @@
 
 Dating es la puerta de entrada ("wedge"), no el techo del producto. Una vez validado el core loop de dating, el mismo **Identity Graph** soporta otros contextos: amistad, profesional, espiritual, actividades.
 
+## Estrategia de lanzamiento: autoconocimiento + matchmaking (German, 2026-10-13)
+
+Alineados 100% con el whitepaper de producto (`docs/referencias/whitepaper-producto-v1.md`): **el autoconocimiento da valor desde el primer día**, aunque todavía haya pocos usuarios. El matchmaking **sigue** siendo parte del producto, pero un match necesita masa crítica de gente cerca y compatible; hasta tener una base amplia, lo que retiene es lo que Destiny le dice a cada persona sobre sí misma (su carta, su cielo, su día, cómo le hablamos). Las dos cosas usan el mismo motor natal: cada usuario que llega por autoconocimiento suma a la base para el matchmaking.
+
 ## Orden de experiencia (invertido vs. Tinder/Bumble)
 
 ```

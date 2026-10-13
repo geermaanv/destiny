@@ -36,7 +36,9 @@ Entrada por persona: longitudes [0, 360) de Sol, Luna, Mercurio, Venus, Marte, J
 - Cambia la versión de tablas → la caché de explicaciones se regenera sola.
 - El motor provisorio v1 y `scripts/build_synastry_config.py` se eliminan (quedan en el historial de git).
 
-## Puntos abiertos (los decide Pablo; mientras tanto, como en su motor)
+## Decisiones sobre los puntos abiertos
+
+German (2026-10-13): **se toma lo de Pablo como bueno**, tal como está en su motor. Quedan así:
 
 - E3: casas desde el grado del ASC vs. signo entero.
 - E4: Juno (opcional; hoy no se informa).
