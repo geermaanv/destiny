@@ -118,3 +118,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - Consultá tu carta en Hoy y Tu día: el botón naranja pasa a ser un link "Preguntar →", con el mismo estilo que "Leer más" y "Ver el mes" (pedido de German).
 - Tu día completo: se saca "Ver el mes" del final (German): ya está en Próximos días de Hoy, y la pantalla termina en "Consultá sobre tu día".
 - **Respuestas reordenada** (German): arriba el campo, "Preguntar →" y cuántas preguntas quedan; debajo cada consulta como pregunta y respuesta juntas, lo más nuevo primero; al final la aclaración y "Borrar conversación".
+- Carta: la fila "Consultá tu carta" (confundía: ya estás en Carta) pasa a ser la misma pieza de Hoy y Tu día, titulada "Preguntá sobre tu carta", con el campo y "Preguntar →".

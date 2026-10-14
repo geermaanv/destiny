@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import AskBox from "@/components/AskBox";
 import { SkyWheel } from "@/components/BirthSky";
 import { Card, ListCard, ListRow, Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
@@ -218,9 +219,13 @@ function MiCarta() {
         ))}
       </div>
       <Dimension profileId={profileId} dimension={current} />
+      <AskBox
+        title="Preguntá sobre tu carta"
+        hint="¿Querés profundizar en algo de tu carta? Preguntá y te respondemos con ella."
+        example="¿Qué dice mi carta sobre cómo me vinculo?"
+      />
       <ShareCard profileId={profileId} />
       <ListCard>
-        <ListRow href="/astrochat" icon="✧" title="Consultá tu carta" detail="Preguntá lo que quieras sobre vos, tu momento o tus vínculos" />
         <ListRow
           href="/perfil/test"
           icon="✓"
