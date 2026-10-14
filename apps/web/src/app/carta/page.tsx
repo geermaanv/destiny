@@ -133,33 +133,32 @@ function ShareCard({ profileId }: { profileId: string }) {
     }
   }
 
+  // Arriba, debajo de la rueda: compartir es sobre toda la carta (pedido de German).
   return (
-    <Card className="space-y-2 text-center">
-      <button
-        type="button"
-        onClick={share}
-        disabled={busy}
-        className="w-full rounded-md bg-violet-600 px-3 py-2.5 font-medium text-white disabled:opacity-60"
-      >
-        Compartir mi carta
+    <div className="space-y-1 text-center text-sm">
+      <button type="button" onClick={share} disabled={busy} className="text-violet-400 disabled:opacity-60">
+        Compartir mi carta →
       </button>
-      <p className="text-xs text-slate-400">Se comparten tus signos y estas lecturas; nunca tu fecha, hora ni lugar de nacimiento.</p>
-      {status?.activo && (
-        <p className="text-xs text-slate-400">
-          Tu carta se vio {status.vistas} {status.vistas === 1 ? "vez" : "veces"} ·{" "}
-          <button
-            type="button"
-            className="underline"
-            onClick={async () => {
-              await deleteShare(profileId);
-              setStatus({ activo: false, vistas: 0 });
-            }}
-          >
-            Dejar de compartir
-          </button>
-        </p>
-      )}
-    </Card>
+      <p className="text-xs text-slate-500">
+        {status?.activo ? (
+          <>
+            Se vio {status.vistas} {status.vistas === 1 ? "vez" : "veces"} ·{" "}
+            <button
+              type="button"
+              className="underline"
+              onClick={async () => {
+                await deleteShare(profileId);
+                setStatus({ activo: false, vistas: 0 });
+              }}
+            >
+              Dejar de compartir
+            </button>
+          </>
+        ) : (
+          "Se comparten tus signos y lecturas, nunca tu fecha, hora ni lugar de nacimiento."
+        )}
+      </p>
+    </div>
   );
 }
 
@@ -194,6 +193,7 @@ function MiCarta() {
         subtitle="Lo que dice tu carta natal sobre cuatro áreas de tu vida. Una lectura simbólica para pensarte, no una predicción."
       />
       {style && <SkyWheel cielo={style.cielo} leyenda={style.cielo_leyenda} />}
+      <ShareCard profileId={profileId} />
       {data.aproximado && (
         <p className="text-xs text-gold-300">
           Sin tu hora exacta, la lectura es aproximada.{" "}
@@ -224,7 +224,6 @@ function MiCarta() {
         hint="¿Querés profundizar en algo de tu carta? Preguntá y te respondemos con ella."
         example="¿Qué dice mi carta sobre cómo me vinculo?"
       />
-      <ShareCard profileId={profileId} />
       <ListCard>
         <ListRow
           href="/perfil/test"
