@@ -6,7 +6,7 @@ import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import { askAstrochat, Astrochat, AstroMessage, clearAstrochat, getAstrochat } from "@/lib/api";
 
-// Consultá tu carta (Astrochat, spec X3). Responde con tu carta y tu día, ya
+// Respuestas basadas en tu carta (Astrochat, spec X3). Responde con tu carta y tu día, ya
 // calculados por el motor, en tu estilo. El modo no se elige acá (confundía con
 // "Tu estilo"): sale del estilo de la persona, que se cambia en Perfil > Tu estilo.
 function Chat() {
@@ -81,7 +81,7 @@ function Chat() {
   return (
     <>
       <PageTitle
-        title="Consultá tu carta"
+        title="Respuestas basadas en tu carta"
         subtitle="Preguntá lo que quieras sobre vos, tu momento o tus vínculos. Te respondemos con tu carta y tu día, en tu estilo."
       />
 
