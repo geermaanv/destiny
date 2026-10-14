@@ -121,7 +121,7 @@ function HomeContent() {
       </section>
 
       <section className="space-y-2">
-        <SectionTitle>Mis conexiones</SectionTitle>
+        <SectionTitle>Tu red</SectionTitle>
         <ListCard>
           {pendingRequests > 0 && (
             <ListRow

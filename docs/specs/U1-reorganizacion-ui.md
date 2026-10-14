@@ -46,4 +46,4 @@ Rediseño de Descubrir, Conexiones, chat y onboarding (solo pasan a usar `Page`/
 
 ## Barra v2 (German, 2026-10-13)
 
-**Hoy · Mi carta · Consultá · Mis conexiones · Mi perfil** (nombres en primera persona elegidos por German; "Vínculos" sonaba formal). Descubrir y los chats se juntaron en **Mis conexiones**, con el gancho como título ("¿Con quién fluye?") y dos solapas (Descubrir · Mis chats), para darle su lugar en la barra a **Consultá tu carta** (Astrochat, spec X3). En Hoy, la sección "Tu gente" pasa a "Mis conexiones". Los botones de la barra tienen el mismo ancho y el texto puede ir en dos líneas.
+**Hoy · Carta · Consulta · Red · Perfil** (German: palabras cortas en la barra; la calidez va en los títulos de cada pantalla: "Mi carta", "Consultá tu carta", "¿Con quién fluye?". Antes se probó "Vínculos" y la primera persona). Descubrir y los chats se juntaron en **Red**, con el gancho como título ("¿Con quién fluye?") y dos solapas (Descubrir · Mis chats), para darle su lugar en la barra a **Consultá tu carta** (Astrochat, spec X3). En Hoy, la sección se llama "Tu red". Los botones de la barra tienen el mismo ancho y el texto puede ir en dos líneas.
