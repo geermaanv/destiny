@@ -44,3 +44,5 @@ La verificación por WhatsApp es el último paso del registro y frena a mucha ge
 8. Pasar a WhatsApp sin estar verificado → 409.
 9. Aceptar una invitación con un perfil activo sin verificar funciona.
 10. "En tu frecuencia" cuenta los perfiles activos.
+
+**Corrección (2026-10-14, reportado por German)**: entrar al registro (`/onboarding/datos-natales`) con una sesión iniciada creaba un perfil nuevo y volvía a pedir los datos; pasaba con el link corto de pruebas, que apunta ahí desde antes de que existiera la sesión (y TinyURL no deja cambiarlo). Ahora, con sesión, el registro lleva a Hoy.

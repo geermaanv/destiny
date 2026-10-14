@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BirthTimePeriod, createProfile, getProfile, Place, searchPlaces, setBirthData } from "@/lib/api";
+import { BirthTimePeriod, createProfile, getMe, getProfile, Place, searchPlaces, setBirthData } from "@/lib/api";
 import OnboardingSteps from "@/components/OnboardingSteps";
 
 const SEARCH_DEBOUNCE_MS = 300;
@@ -167,8 +167,17 @@ function DatosNatalesForm() {
     if (started.current) return;
     started.current = true;
     if (!existingProfileId) {
-      createProfile()
-        .then((profile) => setProfileId(profile.id))
+      // Con sesión iniciada no se arranca otro registro: se va a Hoy. Pasaba al entrar por el
+      // link corto de pruebas, que apunta acá (de cuando la app no tenía inicio de sesión).
+      getMe()
+        .catch(() => null)
+        .then((me) => {
+          if (me) {
+            router.replace("/home");
+            return;
+          }
+          return createProfile().then((profile) => setProfileId(profile.id));
+        })
         .catch(() => setError("No se pudo conectar con la API."));
       return;
     }
