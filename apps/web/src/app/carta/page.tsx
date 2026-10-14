@@ -41,7 +41,7 @@ function label(f: NatalFoundation): string {
   return `${point} en ${ASPECT_NAMES[f.aspecto ?? ""] ?? f.aspecto} con ${POINT_NAMES[f.otro ?? ""] ?? f.otro}`;
 }
 
-function Dimension({ profileId, dimension }: { profileId: string; dimension: NatalDimension }) {
+function Dimension({ profileId, dimension, falta }: { profileId: string; dimension: NatalDimension; falta?: "hora" | "lugar" | null }) {
   const [synthesis, setSynthesis] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -63,7 +63,10 @@ function Dimension({ profileId, dimension }: { profileId: string; dimension: Nat
       </div>
       <p className="text-sm leading-relaxed text-slate-200">{synthesis === null ? "Leyendo tu carta…" : synthesis}</p>
       {dimension.faltan_por_hora.length > 0 && (
-        <p className="text-xs text-gold-300">Con tu hora exacta de nacimiento sumamos: {dimension.faltan_por_hora.join(", ")}.</p>
+        <p className="text-xs text-gold-300">
+          {falta === "lugar" ? "Con tu ciudad del buscador" : "Con tu hora exacta de nacimiento"} sumamos:{" "}
+          {dimension.faltan_por_hora.join(", ")}.
+        </p>
       )}
       <div className="text-right text-sm">
         <button type="button" onClick={() => setOpen(!open)} className="text-violet-400">
@@ -211,11 +214,13 @@ function MiCarta() {
           </button>
         </p>
       )}
-      {data.aproximado && (
+      {data.falta && (
         <p className="text-xs text-gold-300">
-          Sin tu hora exacta, la lectura es aproximada.{" "}
+          {data.falta === "hora"
+            ? "Sin tu hora exacta, la lectura es aproximada."
+            : "Tu ciudad no está elegida del buscador: sin ella no calculamos tu Ascendente ni tus casas."}{" "}
           <Link href={`/onboarding/datos-natales?profileId=${profileId}&editar=1`} className="underline">
-            Cargar la hora
+            {data.falta === "hora" ? "Cargar la hora" : "Elegir la ciudad"}
           </Link>
         </p>
       )}
@@ -233,7 +238,7 @@ function MiCarta() {
           </button>
         ))}
       </div>
-      {tab === "cielo" ? style && <Cielo style={style} /> : <Dimension profileId={profileId} dimension={current} />}
+      {tab === "cielo" ? style && <Cielo style={style} /> : <Dimension profileId={profileId} dimension={current} falta={data.falta} />}
       <AskBox
         title="Respuestas basadas en tu carta"
         hint="¿Querés profundizar en algo de tu carta? Preguntá y te respondemos con ella."

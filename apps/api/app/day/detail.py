@@ -133,6 +133,7 @@ def day_detail(profile, day: date) -> dict:
         "areas": area_list,
         "pregunta": cfg["preguntas"][active["clave"] if active else "tranquilo"],
         "aproximado": not natal.time_known,
+        "falta": "hora" if not natal.time_known else "lugar" if natal.houses is None else None,
     }
 
 

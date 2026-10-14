@@ -65,3 +65,5 @@ En `apps/api/tests/test_a8_mi_carta.py`:
 8. Otra persona → 403; sin sesión → 401; dimensión inexistente → 404.
 9. Cambiar los indicadores de una dimensión en la configuración cambia los fundamentos sin tocar código.
 10. (v2) Un perfil todavía no verificado puede leer sus dimensiones y la síntesis sin sesión; la respuesta trae `cielo`. Un perfil verificado sigue siendo solo de su dueño.
+
+**Corrección (revisión nocturna, 2026-10-14)**: la respuesta suma `falta` (`"hora"` | `"lugar"` | null). Con hora exacta pero ciudad fuera del buscador, la app decía "con tu hora exacta sumamos…", un consejo equivocado; ahora pide elegir la ciudad. Test en `tests/test_robustez.py`.

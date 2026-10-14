@@ -50,6 +50,13 @@ function HomeContent() {
   const [pendingRequests, setPendingRequests] = useState(0);
   const [invitations, setInvitations] = useState<MyInvitation[]>([]);
 
+  // El ejemplo rota por día; se elige en el navegador (si se elige al dibujar, la página
+  // generada al compilar muestra el del día del build y React avisa que no coincide).
+  const [example, setExample] = useState(CONSULT_EXAMPLES[0]);
+  useEffect(() => {
+    setExample(CONSULT_EXAMPLES[new Date().getDate() % CONSULT_EXAMPLES.length]);
+  }, []);
+
   useEffect(() => {
     getTodayAstroWeather(isoLocal(new Date())).then((r) => setAstroWeather(r.astro_weather)).catch(() => null);
   }, []);
@@ -98,7 +105,7 @@ function HomeContent() {
       <AskBox
         title="Respuestas basadas en tu carta"
         hint="Preguntá lo que quieras sobre vos, tu momento o tus vínculos."
-        example={CONSULT_EXAMPLES[new Date().getDate() % CONSULT_EXAMPLES.length]}
+        example={example}
       />
 
       <section className="space-y-2">

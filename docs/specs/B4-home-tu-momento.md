@@ -86,3 +86,5 @@ Configuración en `app/day/config/dia_v1.json` (orbes, pesos, áreas y sus punto
 7. Cambiar los orbes en la configuración cambia los tránsitos sin tocar código.
 
 **Corrección (2026-10-13)**: el clima del día del encabezado (`GET /home/today`) acepta `?date=` y la app manda su fecha local, así coincide con "Tu día" (de noche, en UTC ya es el día siguiente y la Luna podía figurar en otro signo).
+
+**Corrección (revisión nocturna, 2026-10-14)**: Tu día completo suma `falta` (`"hora"` | `"lugar"` | null) para avisar por qué no hay casas; antes, sin ciudad del buscador no avisaba nada. El ejemplo rotativo de "Respuestas basadas en tu carta" en Hoy se elige en el navegador (elegido al dibujar, la página generada al compilar mostraba el del día del build y React avisaba que no coincidía).

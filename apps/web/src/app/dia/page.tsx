@@ -100,11 +100,12 @@ function Dia() {
             ))}
           </ListCard>
         )}
-        {detail.aproximado && (
+        {detail.falta && (
           <p className="text-xs text-gold-300">
-            Sin tu hora exacta no vemos tus casas, tu Ascendente ni tu Medio Cielo.{" "}
+            {detail.falta === "hora" ? "Sin tu hora exacta" : "Sin tu ciudad del buscador"} no vemos tus casas, tu Ascendente ni
+            tu Medio Cielo.{" "}
             <Link href={`/onboarding/datos-natales?profileId=${profileId}&editar=1`} className="underline">
-              Cargar la hora
+              {detail.falta === "hora" ? "Cargar la hora" : "Elegir la ciudad"}
             </Link>
           </p>
         )}

@@ -180,6 +180,7 @@ class NatalDimensionOut(BaseModel):
 
 class NatalDimensionsOut(BaseModel):
     aproximado: bool
+    falta: Literal["hora", "lugar"] | None = None
     cielo: list[dict[str, str | float]] = []
     dimensiones: list[NatalDimensionOut]
 
@@ -325,6 +326,7 @@ class MyDayDetailOut(BaseModel):
     lectura: DayReadingOut
     pregunta: str
     aproximado: bool
+    falta: Literal["hora", "lugar"] | None = None
 
 
 class MyDayOut(BaseModel):
