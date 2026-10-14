@@ -117,3 +117,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - **Consultá tu carta, coherente en todos lados** (feedback de German): Hoy y Tu día usan la misma pieza, un campo real con botón **"Preguntar"** que lleva a Respuestas con la pregunta ya enviada (antes era un link con forma de campo, y en Tu día una tarjeta distinta). El botón del chat pasa de "Enviar" a "Preguntar". Probado de punta a punta en el navegador.
 - Consultá tu carta en Hoy y Tu día: el botón naranja pasa a ser un link "Preguntar →", con el mismo estilo que "Leer más" y "Ver el mes" (pedido de German).
 - Tu día completo: se saca "Ver el mes" del final (German): ya está en Próximos días de Hoy, y la pantalla termina en "Consultá sobre tu día".
+- **Respuestas reordenada** (German): arriba el campo, "Preguntar →" y cuántas preguntas quedan; debajo cada consulta como pregunta y respuesta juntas, lo más nuevo primero; al final la aclaración y "Borrar conversación".

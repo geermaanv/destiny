@@ -22,7 +22,6 @@ function Chat() {
   const autoSent = useRef(false);
   const [sending, setSending] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!profileId) return;
@@ -43,10 +42,6 @@ function Chat() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chat]);
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [chat?.mensajes.length, sending]);
 
   async function send(question: string) {
     if (!profileId || !chat || !question.trim() || sending) return;
@@ -74,6 +69,15 @@ function Chat() {
 
   if (!profileId || !chat) return <p className="text-slate-400">{notice ?? "Abriendo el Astrochat…"}</p>;
 
+  // Preguntas y respuestas en pares, lo más nuevo arriba (pedido de German): no es un
+  // chat largo de ida y vuelta, sino consultas.
+  const pairs: { question: AstroMessage; answer?: AstroMessage }[] = [];
+  for (const m of chat.mensajes) {
+    if (m.rol === "persona") pairs.push({ question: m });
+    else if (pairs.length && !pairs[pairs.length - 1].answer) pairs[pairs.length - 1].answer = m;
+  }
+  pairs.reverse();
+
   return (
     <>
       <PageTitle
@@ -81,87 +85,84 @@ function Chat() {
         subtitle="Preguntá lo que quieras sobre vos, tu momento o tus vínculos. Te respondemos con tu carta y tu día, en tu estilo."
       />
 
-      <div className="space-y-3">
-        {chat.mensajes.length === 0 && !text && (
-          <div className="space-y-2">
-            <p className="text-sm text-slate-400">Podés empezar por acá:</p>
-            {chat.ejemplos.map((q) => (
-              <button
-                key={q}
-                type="button"
-                onClick={() => send(q)}
-                className="block w-full rounded-xl bg-slate-900 px-4 py-3 text-left text-sm text-slate-200 ring-1 ring-slate-700 hover:ring-violet-400"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        )}
-        {chat.mensajes.map((m, i) => (
-          <div key={i} className={`flex ${m.rol === "persona" ? "justify-end" : "justify-start"}`}>
-            <p
-              className={`max-w-[85%] whitespace-pre-line rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                m.rol === "persona" ? "bg-violet-600 text-white" : "bg-slate-900 text-slate-200 ring-1 ring-slate-700"
-              }`}
-            >
-              {m.texto}
-            </p>
-          </div>
-        ))}
-        {sending && <p className="text-sm text-slate-400">Destiny está leyendo tu cielo…</p>}
-        <div ref={endRef} />
-      </div>
-
-      {notice && <p className="text-sm text-gold-300">{notice}</p>}
-
-      <form onSubmit={submit} className="space-y-2">
-        <div className="flex items-end gap-2">
-          <textarea
-            ref={inputRef}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                send(text);
-              }
-            }}
-            maxLength={500}
-            rows={2}
-            placeholder={chat.restantes_hoy > 0 ? "Ej.: ¿Por qué me cuesta tanto decidir?" : "Llegaste a las preguntas de hoy"}
-            disabled={chat.restantes_hoy === 0}
-            className="flex-1 resize-none rounded-xl bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-violet-400 disabled:opacity-50"
-          />
+      <form onSubmit={submit} className="space-y-2 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">
+        <textarea
+          ref={inputRef}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              send(text);
+            }
+          }}
+          maxLength={500}
+          rows={2}
+          placeholder={chat.restantes_hoy > 0 ? "Ej.: ¿Por qué me cuesta tanto decidir?" : "Llegaste a las preguntas de hoy"}
+          disabled={chat.restantes_hoy === 0}
+          className="block w-full resize-none rounded-lg bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none ring-1 ring-slate-700 placeholder:text-slate-500 focus:ring-violet-400 disabled:opacity-50"
+        />
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-xs text-slate-500">
+            Te {chat.restantes_hoy === 1 ? "queda 1 pregunta" : `quedan ${chat.restantes_hoy} preguntas`} hoy
+          </span>
           <button
             type="submit"
             disabled={sending || !text.trim() || chat.restantes_hoy === 0}
-            className="rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-40"
+            className="text-violet-400 disabled:opacity-40"
           >
-            Preguntar
+            Preguntar →
           </button>
         </div>
-        <p className="flex justify-between text-xs text-slate-500">
-          <span>
-            Te {chat.restantes_hoy === 1 ? "queda 1 pregunta" : `quedan ${chat.restantes_hoy} preguntas`} hoy
-          </span>
-          {chat.mensajes.length > 0 && (
-            <button
-              type="button"
-              className="underline"
-              onClick={async () => {
-                await clearAstrochat(profileId);
-                setChat({ ...chat, mensajes: [] });
-              }}
-            >
-              Borrar conversación
-            </button>
-          )}
-        </p>
-        <p className="text-xs text-slate-500">
-          Una lectura simbólica para pensarte: no predice el futuro ni decide por vos. En temas de salud, dinero o
-          decisiones importantes, consultá a un profesional.
-        </p>
       </form>
+
+      {notice && <p className="text-sm text-gold-300">{notice}</p>}
+
+      {chat.mensajes.length === 0 && !text && (
+        <div className="space-y-2">
+          <p className="text-sm text-slate-400">Podés empezar por acá:</p>
+          {chat.ejemplos.map((q) => (
+            <button
+              key={q}
+              type="button"
+              onClick={() => send(q)}
+              className="block w-full rounded-xl bg-slate-900 px-4 py-3 text-left text-sm text-slate-200 ring-1 ring-slate-700 hover:ring-violet-400"
+            >
+              {q}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {pairs.map((pair, i) => (
+          <section key={pairs.length - i} className="space-y-2 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
+            <p className="text-sm font-medium text-gold-300">{pair.question.texto}</p>
+            <p className="whitespace-pre-line text-sm leading-relaxed text-slate-200">
+              {pair.answer ? pair.answer.texto : sending && i === 0 ? "Destiny está leyendo tu cielo…" : ""}
+            </p>
+          </section>
+        ))}
+      </div>
+
+      {chat.mensajes.length > 0 && (
+        <div className="space-y-2 text-xs text-slate-500">
+          <p>
+            Una lectura simbólica para pensarte: no predice el futuro ni decide por vos. En temas de salud, dinero o
+            decisiones importantes, consultá a un profesional.
+          </p>
+          <button
+            type="button"
+            className="underline"
+            onClick={async () => {
+              await clearAstrochat(profileId);
+              setChat({ ...chat, mensajes: [] });
+            }}
+          >
+            Borrar conversación
+          </button>
+        </div>
+      )}
     </>
   );
 }
