@@ -20,8 +20,10 @@ function TestContent() {
 
   useEffect(() => {
     if (!profileId) return;
-    getPersonalityTest().then(setTest);
-    getMyPersonality(profileId).then((m) => setAnswers(m.answers));
+    getPersonalityTest().then(setTest).catch(() => setNotice("No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo."));
+    getMyPersonality(profileId)
+      .then((m) => setAnswers(m.answers))
+      .catch(() => setNotice("No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo."));
   }, [profileId]);
 
   async function save(qid: string, choices: number[]) {
@@ -44,7 +46,7 @@ function TestContent() {
     save(qid, [...current, option]);
   }
 
-  if (!profileId || !test) return <p className="text-slate-400">Cargando…</p>;
+  if (!profileId || !test) return <p className="text-slate-400">{notice ?? "Cargando…"}</p>;
 
   const questions = test.questions.filter((q) => q.axis === axis);
   const answered = test.questions.filter((q) => answers[q.id]?.length).length;

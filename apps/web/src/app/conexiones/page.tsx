@@ -27,9 +27,10 @@ function Person({ c }: { c: Connection }) {
 function ConexionesContent() {
   const profileId = useSessionProfileId();
   const [connections, setConnections] = useState<Connection[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
-    if (profileId) getConnections(profileId).then(setConnections);
+    if (profileId) getConnections(profileId).then(setConnections).catch(() => setLoadError(true));
   }, [profileId]);
 
   async function respond(c: Connection, action: "accept" | "reject") {
@@ -38,6 +39,7 @@ function ConexionesContent() {
     setConnections(await getConnections(profileId));
   }
 
+  if (loadError) return <p className="text-slate-400">No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo.</p>;
   if (!profileId || connections === null) return <p className="text-slate-400">Cargando…</p>;
 
   const received = connections.filter((c) => c.status === "pendiente" && c.direction === "recibida");

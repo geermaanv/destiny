@@ -47,6 +47,7 @@ function CalendarioContent() {
   });
   const [days, setDays] = useState<CalendarDay[] | null>(null);
   const [upcoming, setUpcoming] = useState<UpcomingEvent[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [detail, setDetail] = useState<CalendarDayDetail | null>(null);
   const [note, setNote] = useState("");
@@ -55,7 +56,7 @@ function CalendarioContent() {
   useEffect(() => {
     if (!profileId) return;
     setDays(null);
-    getMonth(profileId, cursor.year, cursor.month).then(setDays);
+    getMonth(profileId, cursor.year, cursor.month).then(setDays).catch(() => setLoadError(true));
   }, [profileId, cursor]);
 
   // La lista sigue al mes que se está mirando (B6, corrección 2026-10-12):
@@ -66,7 +67,7 @@ function CalendarioContent() {
   useEffect(() => {
     if (!profileId) return;
     setUpcoming(null);
-    getUpcoming(profileId, listFrom).then(setUpcoming);
+    getUpcoming(profileId, listFrom).then(setUpcoming).catch(() => setUpcoming([]));
   }, [profileId, listFrom]);
 
   function moveMonth(delta: number) {
@@ -94,9 +95,10 @@ function CalendarioContent() {
     await addAnnotation(profileId, selectedDay, note.trim());
     setNote("");
     setDetail(await getDay(profileId, selectedDay));
-    getUpcoming(profileId, listFrom).then(setUpcoming);
+    getUpcoming(profileId, listFrom).then(setUpcoming).catch(() => setUpcoming([]));
   }
 
+  if (loadError) return <p className="text-slate-400">No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo.</p>;
   if (!profileId) return <p className="text-slate-400">Cargando…</p>;
 
   // La grilla arranca en lunes: celdas vacías antes del día 1.

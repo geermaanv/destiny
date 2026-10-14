@@ -208,7 +208,9 @@ function DatosNatalesForm() {
       .catch(() => {
         // El perfil ya no se puede editar (ej. verificado) o no existe: se arranca de cero.
         setLoadedPlace("");
-        createProfile().then((profile) => setProfileId(profile.id));
+        createProfile()
+          .then((profile) => setProfileId(profile.id))
+          .catch(() => setError("No se pudo conectar con la API."));
       });
   }, [existingProfileId]);
 

@@ -8,13 +8,27 @@ function InvitacionContent() {
   const router = useRouter();
   const ref = useSearchParams().get("ref");
   const [invitation, setInvitation] = useState<InvitationPreload | null>(null);
+  const [invalid, setInvalid] = useState(false);
 
   useEffect(() => {
     if (!ref) return;
-    getInvitation(ref).then(setInvitation);
+    // Link vencido o mal copiado: antes quedaba "Cargando..." para siempre.
+    getInvitation(ref).then(setInvitation).catch(() => setInvalid(true));
   }, [ref]);
 
-  if (!ref) return <p className="text-slate-400">Link de invitación inválido.</p>;
+  if (!ref || invalid)
+    return (
+      <div className="w-full max-w-sm space-y-4 text-center">
+        <p className="text-slate-300">Este link de invitación no es válido o ya no está disponible.</p>
+        <button
+          type="button"
+          onClick={() => router.push("/")}
+          className="w-full rounded-md bg-violet-600 px-3 py-2.5 font-medium text-white"
+        >
+          Conocer Destiny
+        </button>
+      </div>
+    );
 
   return (
     <div className="w-full max-w-sm space-y-5 text-center">
