@@ -191,6 +191,7 @@ function CalendarioContent() {
             <input
               value={note}
               onChange={(e) => setNote(e.target.value)}
+              maxLength={500}
               placeholder="Agregar una nota a este día"
               className="min-w-0 flex-1 rounded-md bg-slate-800 px-2 py-1 text-sm outline-none ring-1 ring-slate-700"
             />

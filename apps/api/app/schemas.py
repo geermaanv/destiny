@@ -1,8 +1,8 @@
 import uuid
 from datetime import date, datetime, time
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, StringConstraints, field_validator, model_validator
 
 NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
 
@@ -413,7 +413,8 @@ class CalendarDayOut(BaseModel):
 
 class AnnotationIn(BaseModel):
     profile_id: uuid.UUID
-    text: str
+    # Revisión nocturna: antes aceptaba notas vacías o de cualquier largo.
+    text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)]
 
 
 class AnnotationOut(BaseModel):

@@ -62,3 +62,5 @@ Tests automáticos en `apps/api/tests/test_b6_calendario.py` (correr: `cd apps/a
 ## Fuera de alcance
 
 - Anotaciones/actividades sugeridas por la app (integración de actividades, pendiente de definición).
+
+**Corrección (revisión nocturna, 2026-10-14)**: las notas se guardan sin espacios de más y tienen que tener entre 1 y 500 caracteres (antes se aceptaban vacías o de cualquier largo). El campo de la app tiene el mismo límite.

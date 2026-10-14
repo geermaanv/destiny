@@ -66,3 +66,17 @@ def test_tu_dia_completo_dice_que_falta(client, sin_key, kwargs, falta):  # noqa
     pid = verified_user(client, "5491111111111", **kwargs)
     body = client.get("/home/my-day/detail", params={"profile_id": pid, "date": "2026-10-12"}).json()
     assert body["falta"] == falta
+
+
+@pytest.mark.parametrize("text", ["   ", "x" * 501])
+def test_nota_del_calendario_vacia_o_gigante(client, text):
+    """Bug: el calendario aceptaba notas vacías o de cualquier largo."""
+    pid = verified_user(client, "5491111111111")
+    r = client.post("/calendar/day/2026-10-12/annotations", json={"profile_id": pid, "text": text})
+    assert r.status_code == 422
+
+
+def test_nota_del_calendario_se_guarda_sin_espacios_de_mas(client):
+    pid = verified_user(client, "5491111111111")
+    r = client.post("/calendar/day/2026-10-12/annotations", json={"profile_id": pid, "text": "  Fui al cine  "})
+    assert r.status_code in (200, 201) and r.json()["text"] == "Fui al cine"
