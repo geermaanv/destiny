@@ -253,6 +253,10 @@ def agree_whatsapp(
     match = _get_own_match(match_id, current, db)
     if match.status != "aceptada":
         raise HTTPException(status_code=409, detail="La conexión no está activa")
+    me = db.get(Profile, current)
+    if me is None or me.verification_status != "verificado":
+        # Spec A10: para pasar a WhatsApp hace falta el número, que se confirma al verificar.
+        raise HTTPException(status_code=409, detail="Verificá tu WhatsApp para poder pasar a WhatsApp")
     if match.profile_a_id == current:
         match.whatsapp_a_ok = True
     else:

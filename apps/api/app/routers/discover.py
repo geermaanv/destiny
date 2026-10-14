@@ -2,10 +2,11 @@ import uuid
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
-from app.auth import require_self, session_profile_id
+from app.auth import is_active, require_self, session_profile_id
+from app.config import settings
 from app.database import get_db
 from app.explainer import ResonanceExplainer, get_explainer
 from app.models import PersonalityAnswers, Profile
@@ -23,11 +24,19 @@ Relationship = Literal["pareja", "amistad", "laboral", "ocasional"]
 MAX_CANDIDATES = 5  # "lista curada y chica" (B5-pantalla-descubrir.md)
 
 
+def account_filter():
+    """Quién aparece en Descubrir y en "tu frecuencia": verificados o, si la verificación no es
+    obligatoria (spec A10), cualquier cuenta activa."""
+    verified = Profile.verification_status == "verificado"
+    return verified if settings.verificacion_obligatoria else or_(verified, Profile.activated_at.is_not(None))
+
+
 def _require_verified_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    if profile.verification_status != "verificado":
+    allowed = profile.verification_status == "verificado" if settings.verificacion_obligatoria else is_active(profile)
+    if not allowed:
         raise HTTPException(status_code=403, detail="Identidad no verificada")
     return profile
 
@@ -47,7 +56,7 @@ def list_discover(
     candidates = db.scalars(
         select(Profile)
         .where(
-            Profile.verification_status == "verificado",
+            account_filter(),
             Profile.id != viewer_id,
             Profile.birth_date.is_not(None),
             # Perfil incompleto (sin nombre, spec A4) no aparece en Descubrir.
@@ -80,6 +89,7 @@ def list_discover(
                 relationship=result["tipo_de_relacion"],
                 approximate=result["aproximado"],
                 personality=personality,
+                verificado=candidate.verification_status == "verificado",
                 **public_fields(candidate),
             )
         )

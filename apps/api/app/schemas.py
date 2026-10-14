@@ -390,6 +390,8 @@ class DiscoverCandidateOut(BaseModel):
     approximate: bool = False
     # Test de personalidad de Pablo (spec A6): separado de la astrología; None si alguno no respondió nada.
     personality: PersonalityCompatOut | None = None
+    # Spec A10: marca "Verificado" (WhatsApp).
+    verificado: bool = False
     # Perfil liviano (spec A4): solo datos públicos.
     display_name: str | None = None
     age: int | None = None

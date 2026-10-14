@@ -45,6 +45,11 @@ class Profile(Base):
     def has_photo(self) -> bool:
         return self.photo_path is not None
 
+    # Verificación opcional (spec A10): prueba del navegador que creó el perfil y cuándo inició
+    # sesión al terminar el registro sin WhatsApp.
+    device_token_hash: Mapped[str | None] = mapped_column(String, nullable=True)
+    activated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
     # Hiperpersonalización (spec X2): registro elegido a mano; None = lo decide la carta.
     style_registro: Mapped[str | None] = mapped_column(String, nullable=True)
     # Tema visual elegido a mano (spec X2 v2); None = lo decide la carta.

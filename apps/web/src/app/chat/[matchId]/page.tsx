@@ -31,6 +31,7 @@ function ChatContent() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [sendError, setSendError] = useState<string | null>(null);
+  const [waError, setWaError] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   // Panel "Compatibilidad" (B7): astrología y personalidad por separado, con selector de vínculo.
   const [showCompat, setShowCompat] = useState(false);
@@ -74,9 +75,14 @@ function ChatContent() {
 
   async function act(action: "whatsapp" | "block") {
     if (!profileId) return;
-    const updated = await respondConnection(matchId, profileId, action);
-    if (action === "block") router.replace("/conexiones");
-    else setConnection(updated);
+    try {
+      const updated = await respondConnection(matchId, profileId, action);
+      if (action === "block") router.replace("/conexiones");
+      else setConnection(updated);
+    } catch {
+      // Spec A10: para pasar a WhatsApp hay que verificar el número.
+      setWaError(action === "whatsapp");
+    }
   }
 
   if (!profileId || !connection) return <p className="text-slate-400">Cargando…</p>;
@@ -189,6 +195,14 @@ function ChatContent() {
                   {wa.other_ok ? "Aceptar y pasar a WhatsApp" : "Quiero pasar a WhatsApp"}
                 </button>
                 <p className="text-xs text-slate-500">Tu número solo se comparte si los dos aceptan.</p>
+                {waError && (
+                  <p className="text-xs text-gold-300">
+                    Para pasar a WhatsApp primero verificá tu número.{" "}
+                    <a href={`/onboarding/verificacion?profileId=${profileId}`} className="underline">
+                      Verificar mi WhatsApp
+                    </a>
+                  </p>
+                )}
               </div>
             )}
           </div>

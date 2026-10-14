@@ -56,6 +56,7 @@ export type Profile = {
   avatar: AvatarKey | null;
   has_photo: boolean;
   sun_sign: string | null;
+  verification_status: string;
 };
 
 export type EnergyPeriod = "madrugada" | "manana" | "tarde" | "noche";
@@ -168,6 +169,7 @@ export type DiscoverCandidate = {
   axes: Partial<Record<"atraccion" | "afecto" | "comunicacion" | "compromiso", number>>;
   relationship: RelationshipContext | null;
   approximate: boolean;
+  verificado?: boolean;
   personality: PersonalityCompat | null;
   display_name: string | null;
   age: number | null;
@@ -678,3 +680,18 @@ export async function askAstrochat(
 export async function clearAstrochat(profileId: string): Promise<void> {
   await fetch(`${API_URL}/profiles/${profileId}/astrochat`, { method: "DELETE" });
 }
+
+// Verificación opcional (spec A10): al terminar el registro se inicia la sesión en el
+// dispositivo, sin WhatsApp. Devuelve "verificacion" si la verificación es obligatoria.
+export async function startSession(profileId: string): Promise<"ok" | "verificacion"> {
+  const res = await fetch(`${API_URL}/sessions/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ profile_id: profileId }),
+  });
+  if (res.ok) return "ok";
+  const body = await res.json().catch(() => null);
+  if (body?.detail === "verificacion_obligatoria") return "verificacion";
+  throw new Error(typeof body?.detail === "string" ? body.detail : "No pudimos terminar tu registro");
+}
+

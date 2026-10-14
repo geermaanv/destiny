@@ -110,6 +110,11 @@ function DiscoverContent() {
               <span className="block truncate font-medium">
                 {c.display_name ?? "Sin nombre"}
                 {c.age !== null && <span className="font-normal text-slate-400">, {c.age}</span>}
+                {c.verificado && (
+                  <span className="ml-1.5 align-middle text-xs font-normal text-gold-300" title="Verificó su WhatsApp">
+                    ✓{"\uFE0E"} Verificado
+                  </span>
+                )}
               </span>
               <span className="block text-xs text-slate-400">
                 {[c.sun_sign, c.neighborhood].filter(Boolean).join(" · ")}

@@ -2,7 +2,8 @@ import Link from "next/link";
 
 // Indicador de pasos del registro (mejora #1 de la revisión): cuánto falta y
 // cómo volver al paso anterior sin perder lo cargado.
-const STEPS = ["Datos natales", "Perfil", "Avisos", "Verificación"];
+// Spec A10: la verificación por WhatsApp ya no es un paso del registro (es opcional, desde Perfil).
+const STEPS = ["Datos natales", "Perfil", "Avisos"];
 
 export function onboardingHref(path: string, profileId: string | null, ref: string | null): string {
   const params = new URLSearchParams();
@@ -27,7 +28,7 @@ export default function OnboardingSteps({ step, backHref }: { step: number; back
           Paso {step} de {STEPS.length} · {STEPS[step - 1]}
         </span>
       </div>
-      <div className="grid grid-cols-4 gap-1.5" aria-hidden>
+      <div className="grid grid-cols-3 gap-1.5" aria-hidden>
         {STEPS.map((label, i) => (
           <span key={label} className={`h-1 rounded-full ${i < step ? "bg-gold-400" : "bg-slate-800"}`} />
         ))}

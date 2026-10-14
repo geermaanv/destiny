@@ -4,6 +4,8 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://destiny:destiny@localhost:5432/destiny"
     environment: str = "development"
+    # Spec A10: con False (MVP) el registro termina sin WhatsApp; con True vuelve a ser obligatorio.
+    verificacion_obligatoria: bool = False
     # Redacción con IA vía OpenRouter (spec X1). Sin key → textos de plantilla.
     openrouter_api_key: str | None = None
     openrouter_model: str | None = None

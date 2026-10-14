@@ -152,3 +152,5 @@ Se mantiene la idea original. Se suma **encima** de WhatsApp, no lo reemplaza:
 El código ya está preparado: la interfaz `IdentityVerificationAdapter` y el `MockKYCAdapter` (`app/adapters/kyc.py`, ADR 0006) **se conservan** aunque v1 no los use en el flujo de onboarding. Activar v2 es enchufar un adapter real y volver a sumar el paso de captura en la pantalla.
 
 Antes de v2: elegir vendor, confirmar costos por verificación y revisar el tratamiento de datos biométricos (Ley 25.326 — consentimiento explícito; preferir que el vendor guarde la imagen y Destiny solo el resultado).
+
+**Cambio (2026-10-14)**: para el MVP la verificación por WhatsApp es **opcional** y el registro termina sin ella (spec [A10](./A10-verificacion-opcional.md), interruptor `VERIFICACION_OBLIGATORIA`). Con el interruptor prendido, vale lo de esta spec.

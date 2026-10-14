@@ -140,7 +140,7 @@ Autocomplete de ciudad de nacimiento → lat/lon + timezone, detrás de un adapt
 
 ### Verificación de identidad: WhatsApp en v1, KYC (selfie/video) en v2
 
-MVP v1: verificación por WhatsApp "al revés" — el usuario envía un código al número de Destiny, sin costo (ADR 0008, spec `A3`). La selfie/video en vivo vía vendor de KYC se mantiene como plan para próximas versiones.
+MVP v1: verificación por WhatsApp "al revés" — el usuario envía un código al número de Destiny, sin costo (ADR 0008, spec `A3`). **Desde 2026-10-14 es opcional** (spec `A10`, `VERIFICACION_OBLIGATORIA=false`): el registro termina sin WhatsApp, la sesión se inicia en el dispositivo y la verificación se ofrece desde Perfil (marca de verificado, entrar desde otro celular, pasar a WhatsApp). La selfie/video en vivo vía vendor de KYC se mantiene como plan para próximas versiones.
 
 KYC (v2) — candidatos con soporte de captura por cámara web: **Persona, Onfido, Veriff, Didit**. Vendor a elegir cuando se encare v2 (Módulo A.3 en `docs/ALCANCE_MVP.md`).
 

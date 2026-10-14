@@ -39,3 +39,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [U1-reorganizacion-ui](./U1-reorganizacion-ui.md) | transversal (web) | implemented |
 | [A9-compartir-mi-carta](./A9-compartir-mi-carta.md) | A (autoconocimiento) | implemented |
 | [X3-astrochat](./X3-astrochat.md) | X3 (transversal) | implemented |
+| [A10-verificacion-opcional](./A10-verificacion-opcional.md) | A (verificación y sesión) | implemented |

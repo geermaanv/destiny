@@ -74,6 +74,22 @@ function MiPerfil() {
         <ListRow href="/perfil/test" icon="✓" title="Test de personalidad" detail={testDetail} />
         <ListRow href="/invitar" icon="✉" title="Invitar a alguien" detail="A comparar el test o con un adelanto astrológico" />
       </ListCard>
+      {/* Spec A10: la verificación por WhatsApp es opcional; acá se ofrece con sus beneficios. */}
+      {me.verification_status !== "verificado" ? (
+        <div className="space-y-2">
+          <ListCard>
+            <ListRow
+              href={`/onboarding/verificacion?profileId=${profileId}`}
+              icon="✓"
+              title="Verificá tu WhatsApp"
+              detail="Marca de verificado, entrar desde otro celular y pasar a WhatsApp"
+            />
+          </ListCard>
+          <p className="text-xs text-slate-500">Tu cuenta vive en este dispositivo: verificá tu WhatsApp para no perderla.</p>
+        </div>
+      ) : (
+        <p className="text-xs text-gold-300">✓{"\uFE0E"} WhatsApp verificado</p>
+      )}
       {me.birth_place_lat === null && (
         <p className="text-xs text-gold-300">
           Tu ciudad no está elegida del buscador: no podemos calcular tu Ascendente ni tus casas. Abrí Datos de nacimiento y

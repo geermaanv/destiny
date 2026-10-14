@@ -68,3 +68,5 @@ Tests automáticos en `apps/api/tests/test_a5_sesion.py` (correr: `cd apps/api &
 
 - Varias sesiones administrables ("cerrar sesión en otros dispositivos").
 - Login con email, contraseña o redes sociales.
+
+**Cambio (2026-10-14)**: para el MVP la verificación por WhatsApp es **opcional** y el registro termina sin ella (spec [A10](./A10-verificacion-opcional.md), interruptor `VERIFICACION_OBLIGATORIA`). Con el interruptor prendido, vale lo de esta spec.

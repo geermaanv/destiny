@@ -3,7 +3,7 @@
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import OnboardingSteps, { onboardingHref } from "@/components/OnboardingSteps";
+import Link from "next/link";
 import {
   acceptInvitation,
   claimSession,
@@ -150,8 +150,8 @@ function VerificacionForm() {
         )}
         {result.status === "verificado" && (
           sessionReady ? (
-            <a href="/home" className="inline-block text-violet-400 underline">
-              Ir a Tu Momento
+            <a href="/perfil" className="inline-block text-violet-400 underline">
+              Volver a mi perfil
             </a>
           ) : claimFailed || !code ? (
             // Ej. recargó la página después de verificarse: entra con "Ya tengo cuenta".
@@ -183,11 +183,14 @@ function VerificacionForm() {
 
   return (
     <div className="w-full max-w-sm space-y-5 text-center">
-      <OnboardingSteps step={4} backHref={onboardingHref("/onboarding/ritmo-notificaciones", profileId, ref)} />
-      <h1 className="text-2xl font-semibold">Verificá tu identidad</h1>
+      {/* Spec A10: opcional, desde Perfil (o obligatoria si el interruptor está prendido). */}
+      <Link href="/perfil" className="block text-left text-sm text-slate-400">
+        ← Mi perfil
+      </Link>
+      <h1 className="text-2xl font-semibold">Verificá tu WhatsApp</h1>
       <p className="text-slate-400">
-        Mandanos un mensaje por WhatsApp para confirmar que sos una persona real. Es obligatorio antes de acceder a
-        descubrimiento.
+        Mandanos un mensaje por WhatsApp para confirmar tu número. Así tenés la marca de verificado, podés entrar desde
+        otro celular y pasar a WhatsApp con tus conexiones.
       </p>
       <p className="text-xs text-slate-500">
         Usamos tu número solo para verificarte y evitar cuentas duplicadas. Nunca se lo mostramos a otros usuarios.

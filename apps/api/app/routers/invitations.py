@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app.aspects import angle_between, aspect_sentence, classify_aspect
 from app.astro import approximate_longitude_for_sign, natal_sun_longitude
 from app.config import settings
-from app.auth import require_self, session_profile_id
+from app.auth import is_active, require_self, session_profile_id
 from app.database import get_db
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
 from app.ai_texts import record
@@ -179,8 +179,8 @@ def accept_invitation(
 
     inviter = _get_profile(invitation.inviter_profile_id, db)
     invitee = _get_profile(current, db)
-    if invitee.verification_status != "verificado":
-        raise HTTPException(status_code=403, detail="Verificá tu identidad antes de aceptar")
+    if not is_active(invitee):  # spec A10: alcanza con una cuenta activa
+        raise HTTPException(status_code=403, detail="Terminá tu registro antes de aceptar")
 
     match_id = _match_between(db, inviter.id, invitee.id)
     if match_id is None:

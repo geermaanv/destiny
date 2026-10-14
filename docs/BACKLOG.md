@@ -183,6 +183,11 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 
 ## Tareas técnicas sueltas
 
+**Verificación opcional (spec A10, 2026-10-14)**
+- [x] Registro sin WhatsApp (sesión en el dispositivo), verificación desde Perfil, marca "Verificado" en Descubrir y pasar a WhatsApp solo verificado. Interruptor `VERIFICACION_OBLIGATORIA` para volver atrás.
+- [ ] Antes de abrir a más gente: decidir si se pide verificar para algo más (ej. conectar) según cuántos perfiles falsos aparezcan.
+- [ ] Recuperar una cuenta no verificada perdida no es posible: evaluar un recordatorio más fuerte después de unos días de uso.
+
 **Revisión nocturna 2026-10-14: lo que quedó anotado (no es urgente o requiere decisión)**
 - [ ] **Escala de Descubrir**: una sinastría del motor oficial tarda ~13 ms; Descubrir calcula una por candidato. Con miles de usuarios, precalcular o cachear (por pareja + versión de tablas).
 - [ ] La lista de años del registro se arma con el año del build: si no se recompila, en enero falta el año nuevo y React avisa un desajuste. Generarla en el navegador.

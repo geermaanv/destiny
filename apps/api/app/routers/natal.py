@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.ai_texts import cached, carta_key, record
-from app.auth import require_owner_if_verified, session_profile_id
+from app.auth import require_owner_if_active, session_profile_id
 from app.content.carta import load_library
 from app.database import get_db
 from app.models import Profile
@@ -22,7 +22,7 @@ def _own(profile_id: uuid.UUID, current: uuid.UUID | None, db: Session) -> Profi
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Perfil inexistente")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
     if profile.birth_date is None:
         raise HTTPException(status_code=409, detail="Perfil sin datos natales")
     return profile

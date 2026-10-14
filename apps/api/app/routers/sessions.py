@@ -5,11 +5,12 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.auth import CLAIM_WINDOW, end_session, hash_token, session_profile_id, start_session
+from app.auth import CLAIM_WINDOW, DEVICE_COOKIE, end_session, hash_token, session_profile_id, start_session
+from app.config import settings
 from app.database import get_db
 from app.models import PhoneVerificationCode, Profile
 from app.public_profile import sun_sign
-from app.schemas import ClaimIn, LoginStartOut, LoginStatusOut, ProfileOut
+from app.schemas import ClaimIn, LoginStartOut, LoginStatusOut, ProfileOut, ProfileRefIn
 from app.whatsapp import build_wa_link, is_mock_mode, issue_login_code
 
 # Sesión con WhatsApp (spec A5).
@@ -37,6 +38,27 @@ def claim_session(payload: ClaimIn, response: Response, db: Session = Depends(ge
         raise HTTPException(status_code=409, detail="El perfil no está verificado")
 
     entry.claimed_at = now
+    start_session(db, response, profile.id)
+    response.status_code = 204
+    return response
+
+
+@router.post("/sessions/start", status_code=204)
+def start_without_whatsapp(
+    payload: ProfileRefIn, request: Request, response: Response, db: Session = Depends(get_db)
+) -> Response:
+    """Spec A10: al terminar el registro se inicia la sesión en el dispositivo, sin WhatsApp.
+    Solo el navegador que creó el perfil (cookie destiny_device) puede hacerlo."""
+    if settings.verificacion_obligatoria:
+        raise HTTPException(status_code=403, detail="verificacion_obligatoria")
+    profile = db.get(Profile, payload.profile_id)
+    token = request.cookies.get(DEVICE_COOKIE)
+    if profile is None or not token or profile.device_token_hash != hash_token(token):
+        raise HTTPException(status_code=403, detail="Este dispositivo no creó el perfil")
+    if profile.birth_date is None or not profile.display_name:
+        raise HTTPException(status_code=409, detail="Completá tus datos de nacimiento y tu nombre")
+    if profile.activated_at is None:
+        profile.activated_at = datetime.now(timezone.utc)
     start_session(db, response, profile.id)
     response.status_code = 204
     return response

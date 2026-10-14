@@ -14,6 +14,7 @@ from app.database import get_db
 from app.models import MoodCheckin, Profile
 from app.schemas import AstroWeatherOut, FrequencyCountOut, MoodCheckinIn, MyDayOut
 from app.transits import day_transit
+from app.routers.discover import account_filter
 from app.ai_texts import cached, day_key, record
 from app.day.detail import day_detail, load_config as day_config, write_reading
 from app.personalization.style import prompt_instructions
@@ -38,9 +39,9 @@ def get_frequency_count(
     # día (ver B4-home-tu-momento.md, "fuera de alcance": agrupación
     # geográfica y afinidad fina de tránsitos quedan para una iteración
     # posterior).
-    # Mismo universo que /discover: verificados con datos natales y nombre, sin contarse a uno mismo.
+    # Mismo universo que /discover (spec A10: cuentas activas), con datos natales y nombre, sin contarse a uno mismo.
     query = select(func.count()).select_from(Profile).where(
-        Profile.verification_status == "verificado",
+        account_filter(),
         Profile.birth_date.is_not(None),
         Profile.display_name.is_not(None),
     )

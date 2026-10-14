@@ -32,7 +32,7 @@ function RitmoNotificacionesForm() {
       await setNotificationPreference(profileId, rhythm);
       const next = new URLSearchParams({ profileId });
       if (ref) next.set("ref", ref);
-      router.push(`/onboarding/verificacion?${next.toString()}`);
+      router.push(`/onboarding/listo?${next.toString()}`); // spec A10: sin WhatsApp
     } catch {
       setStatus("error");
     }

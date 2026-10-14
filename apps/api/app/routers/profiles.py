@@ -7,7 +7,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from app.adapters.kyc import IdentityVerificationAdapter, get_kyc_adapter
-from app.auth import hash_token, require_owner_if_verified, session_profile_id, start_session
+from app.auth import hash_token, new_token, require_owner_if_active, session_profile_id, set_device_cookie, start_session
 from app.config import settings
 from app.public_profile import sun_sign
 from app.database import get_db
@@ -30,8 +30,11 @@ router = APIRouter(prefix="/profiles", tags=["profiles"])
 
 
 @router.post("", response_model=ProfileOut, status_code=201)
-def create_profile(db: Session = Depends(get_db)) -> Profile:
-    profile = Profile()
+def create_profile(response: Response, db: Session = Depends(get_db)) -> Profile:
+    # Spec A10: prueba de que este navegador creó el perfil (para iniciar sesión sin WhatsApp).
+    device_token = new_token()
+    profile = Profile(device_token_hash=hash_token(device_token))
+    set_device_cookie(response, device_token)
     db.add(profile)
     db.commit()
     db.refresh(profile)
@@ -47,7 +50,7 @@ def get_profile(
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
     return ProfileOut.model_validate(profile).model_copy(update={"sun_sign": sun_sign(profile)})
 
 
@@ -61,7 +64,7 @@ def set_birth_data(
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
 
     profile.birth_date = payload.birth_date
     if payload.birth_time is None:
@@ -94,7 +97,7 @@ def set_notification_preference(
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
 
     profile.notification_rhythm = payload.rhythm
 
@@ -114,7 +117,7 @@ async def start_verification(
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
 
     media_bytes = await media.read()
     result = adapter.start_verification(str(profile_id), media_bytes)
@@ -128,10 +131,14 @@ async def start_verification(
 
 
 @router.post("/{profile_id}/verification/whatsapp", response_model=WhatsappCodeOut)
-def start_whatsapp_verification(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> WhatsappCodeOut:
+def start_whatsapp_verification(
+    profile_id: uuid.UUID, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> WhatsappCodeOut:
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
+    # Spec A10: una cuenta activa solo la verifica su dueño (si no, otro la verificaría con su teléfono).
+    require_owner_if_active(profile, current)
     if profile.verification_status == "verificado":
         raise HTTPException(status_code=409, detail="Profile already verified")
     if profile.birth_date is None:
@@ -212,7 +219,7 @@ def set_basic_info(
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
 
     profile.display_name = payload.display_name
     profile.energy_period = payload.energy_period
@@ -235,7 +242,7 @@ async def upload_photo(
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
     extension = PHOTO_TYPES.get(photo.content_type or "")
     if extension is None:
         raise HTTPException(status_code=415, detail="La foto tiene que ser JPG, PNG o WebP")
@@ -265,7 +272,7 @@ def delete_photo(
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_verified(profile, current)
+    require_owner_if_active(profile, current)
     if profile.photo_path:
         Path(profile.photo_path).unlink(missing_ok=True)
         profile.photo_path = None

@@ -20,6 +20,8 @@ from app.database import get_db
 from app.models import Profile, UserSession
 
 COOKIE_NAME = "destiny_session"
+# Spec A10: el navegador que creó el perfil guarda este token; solo él inicia la sesión sin WhatsApp.
+DEVICE_COOKIE = "destiny_device"
 SESSION_TTL = timedelta(days=90)
 # Ventana para tomar la sesión después de que llegó el mensaje de WhatsApp.
 CLAIM_WINDOW = timedelta(minutes=30)
@@ -84,7 +86,24 @@ def require_self(profile_id: uuid.UUID, current: uuid.UUID | None) -> None:
         raise HTTPException(status_code=403, detail="No podés actuar en nombre de otro perfil")
 
 
-def require_owner_if_verified(profile: Profile, current: uuid.UUID | None) -> None:
-    """El onboarding (antes de verificar) funciona sin sesión; un perfil verificado solo lo toca su dueño."""
-    if profile.verification_status == "verificado":
+def is_active(profile: Profile) -> bool:
+    """Spec A10: un perfil es una cuenta si está verificado o si ya inició sesión al terminar el registro."""
+    return profile.verification_status == "verificado" or profile.activated_at is not None
+
+
+def require_owner_if_active(profile: Profile, current: uuid.UUID | None) -> None:
+    """El registro (antes de terminarlo) funciona sin sesión; una cuenta activa solo la toca su dueño."""
+    if is_active(profile):
         require_self(profile.id, current)
+
+
+def set_device_cookie(response: Response, token: str) -> None:
+    response.set_cookie(
+        DEVICE_COOKIE,
+        token,
+        max_age=int(SESSION_TTL.total_seconds()),
+        httponly=True,
+        samesite="lax",
+        secure=settings.environment != "development",
+        path="/",
+    )
