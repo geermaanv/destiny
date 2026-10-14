@@ -113,3 +113,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - **Barra con palabras cortas** (German): Hoy · Carta · Consulta · **Red** · Perfil. Los títulos de las pantallas mantienen la calidez ("Mi carta", "Consultá tu carta", "¿Con quién fluye?"); en Hoy la sección pasa a "Tu red".
 - Barra: "Red" pasa a **Círculos** y "Consulta" a **Guía** (German). Se descartó "Oráculo": promete predecir el futuro, y Destiny no predice. En Hoy, "Tus círculos".
 - "Círculos" pasa a **Círculo**, en singular (German): "tu círculo" es la expresión natural y hace juego con Carta, Guía y Perfil.
+- Barra: "Guía" pasa a **Respuestas** (German, después de comparar varias opciones: lo que la persona busca es resolver sus dudas). Queda **Hoy · Carta · Respuestas · Círculo · Perfil**.
