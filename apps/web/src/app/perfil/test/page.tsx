@@ -83,7 +83,7 @@ function TestContent() {
               key={a}
               onClick={() => setAxis(a)}
               className={`rounded-md px-1 py-2 text-xs ring-1 ${
-                axis === a ? "bg-violet-600 text-white ring-violet-500" : "bg-slate-900 text-slate-300 ring-slate-700"
+                axis === a ? "bg-slate-700 text-white ring-slate-400" : "bg-slate-900 text-slate-300 ring-slate-700"
               }`}
             >
               {test.axes[a]?.short}
@@ -97,7 +97,7 @@ function TestContent() {
       {questions.map((q) => {
         const selected = answers[q.id] ?? [];
         return (
-          <fieldset key={q.id} className="space-y-2 rounded-md bg-slate-900 p-3 ring-1 ring-slate-800">
+          <fieldset key={q.id} className="space-y-2 rounded-xl bg-slate-900 p-3 ring-1 ring-slate-800">
             <legend className="sr-only">{q.id}</legend>
             <p className="text-sm font-medium">{q.question}</p>
             {q.options.map((option, i) => {

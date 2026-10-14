@@ -379,7 +379,7 @@ function DatosNatalesForm() {
           No sé mi hora exacta
         </label>
         {timeUnknown && (
-          <div className="space-y-2 rounded-md bg-slate-900 px-3 py-3">
+          <div className="space-y-2 rounded-xl bg-slate-900 px-3 py-3">
             <p className="text-sm text-slate-300">¿Te acordás en qué momento del día fue?</p>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {PERIODS.map((p) => (
@@ -389,8 +389,8 @@ function DatosNatalesForm() {
                   onClick={() => setTimePeriod(timePeriod === p.value ? null : p.value)}
                   className={`rounded-md px-2 py-1.5 text-left ring-1 ${
                     timePeriod === p.value
-                      ? "bg-violet-600 text-white ring-violet-500"
-                      : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-violet-400"
+                      ? "bg-slate-700 text-white ring-slate-400"
+                      : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-slate-500"
                   }`}
                 >
                   <span className="block text-sm">{p.label}</span>

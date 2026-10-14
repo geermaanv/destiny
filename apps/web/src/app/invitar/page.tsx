@@ -113,8 +113,8 @@ function InvitarForm() {
             key={k.value}
             type="button"
             onClick={() => setKind(k.value)}
-            className={`rounded-md p-3 text-left ring-1 ${
-              kind === k.value ? "bg-violet-950 ring-violet-500" : "bg-slate-900 ring-slate-700 hover:ring-slate-500"
+            className={`rounded-xl p-3 text-left ring-1 ${
+              kind === k.value ? "bg-slate-800 ring-slate-400" : "bg-slate-900 ring-slate-700 hover:ring-slate-500"
             }`}
           >
             <span className="block text-sm font-medium">{k.title}</span>
@@ -124,7 +124,7 @@ function InvitarForm() {
       </div>
 
       {kind === "test" && !testComplete ? (
-        <div className="space-y-3 rounded-md bg-slate-900 p-4 ring-1 ring-gold-400/40">
+        <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/40">
           <p className="text-sm text-slate-300">
             Para invitar a comparar el test, primero completá el tuyo
             {mine ? ` (llevás ${mine.completed}/${mine.total_questions})` : ""}: el mensaje le dice que ya lo hiciste.
@@ -159,7 +159,7 @@ function InvitarForm() {
                     type="button"
                     onClick={() => setRelationship(c.value)}
                     className={`rounded-full px-2 py-1.5 text-xs ring-1 ${
-                      relationship === c.value ? "bg-violet-600 text-white ring-violet-500" : "bg-slate-900 text-slate-300 ring-slate-700"
+                      relationship === c.value ? "bg-slate-700 text-white ring-slate-400" : "bg-slate-900 text-slate-300 ring-slate-700"
                     }`}
                   >
                     {c.label}

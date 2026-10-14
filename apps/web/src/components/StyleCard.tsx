@@ -53,7 +53,7 @@ export default function StyleCard({ profileId }: { profileId: string }) {
   const current = REGISTROS.find((r) => r.value === style.registro);
 
   return (
-    <div className="space-y-3 rounded-md bg-slate-900 p-4 ring-1 ring-slate-700">
+    <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
       <div className="space-y-1">
         <p className="text-xs uppercase tracking-wide text-slate-500">Cómo te hablamos</p>
         <p className="text-sm text-slate-300">
@@ -73,8 +73,8 @@ export default function StyleCard({ profileId }: { profileId: string }) {
             onClick={() => save({ registro: r.value === style.registro_carta ? null : r.value })}
             className={`rounded-md px-2 py-1.5 text-left text-sm ring-1 disabled:opacity-60 ${
               style.registro === r.value
-                ? "bg-violet-600 text-white ring-violet-500"
-                : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-violet-400"
+                ? "bg-slate-700 text-white ring-slate-400"
+                : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-slate-500"
             }`}
           >
             {r.label}
@@ -102,8 +102,8 @@ export default function StyleCard({ profileId }: { profileId: string }) {
             onClick={() => save({ tema: t.value === style.tema_carta ? null : t.value })}
             className={`rounded-md px-2 py-1.5 text-left text-sm ring-1 disabled:opacity-60 ${
               style.tema === t.value
-                ? "bg-violet-600 text-white ring-violet-500"
-                : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-violet-400"
+                ? "bg-slate-700 text-white ring-slate-400"
+                : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-slate-500"
             }`}
           >
             {t.label}
@@ -120,7 +120,7 @@ export default function StyleCard({ profileId }: { profileId: string }) {
               disabled={saving}
               onClick={() => save({ modo: m })}
               className={`rounded-md px-3 py-1 text-sm ring-1 disabled:opacity-60 ${
-                style.modo === m ? "bg-violet-600 text-white ring-violet-500" : "bg-slate-950 text-slate-300 ring-slate-700"
+                style.modo === m ? "bg-slate-700 text-white ring-slate-400" : "bg-slate-950 text-slate-300 ring-slate-700"
               }`}
             >
               {m === "oscuro" ? "Oscuro" : "Claro"}
@@ -148,8 +148,8 @@ export default function StyleCard({ profileId }: { profileId: string }) {
             onClick={() => save({ fondo: f.value })}
             className={`rounded-md px-2 py-1.5 text-left text-sm ring-1 disabled:opacity-60 ${
               style.fondo === f.value
-                ? "bg-violet-600 text-white ring-violet-500"
-                : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-violet-400"
+                ? "bg-slate-700 text-white ring-slate-400"
+                : "bg-slate-950 text-slate-300 ring-slate-700 hover:ring-slate-500"
             }`}
           >
             {f.label}

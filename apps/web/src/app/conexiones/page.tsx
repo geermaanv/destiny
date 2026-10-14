@@ -62,7 +62,7 @@ function ConexionesContent() {
         <section className="space-y-2">
           <h2 className="text-sm font-medium text-gold-300">Quieren conectar con vos ({received.length})</h2>
           {received.map((c) => (
-            <div key={c.match_id} className="space-y-3 rounded-md bg-slate-900 p-3 ring-1 ring-gold-400/40">
+            <div key={c.match_id} className="space-y-3 rounded-xl bg-slate-900 p-3 ring-1 ring-gold-400/40">
               <Person c={c} />
               <div className="flex gap-2">
                 <button
@@ -90,7 +90,7 @@ function ConexionesContent() {
             <Link
               key={c.match_id}
               href={`/chat/${c.match_id}`}
-              className="block space-y-1 rounded-md bg-slate-900 p-3 ring-1 ring-slate-800 hover:ring-violet-400"
+              className="block space-y-1 rounded-xl bg-slate-900 p-3 ring-1 ring-slate-800 hover:ring-violet-400"
             >
               <Person c={c} />
               {c.last_message && <p className="truncate pl-14 text-sm text-slate-400">{c.last_message}</p>}
@@ -104,7 +104,7 @@ function ConexionesContent() {
         <section className="space-y-2">
           <h2 className="text-sm font-medium text-slate-400">Esperando respuesta</h2>
           {sent.map((c) => (
-            <div key={c.match_id} className="rounded-md bg-slate-900 p-3 opacity-70 ring-1 ring-slate-800">
+            <div key={c.match_id} className="rounded-xl bg-slate-900 p-3 opacity-70 ring-1 ring-slate-800">
               <Person c={c} />
             </div>
           ))}

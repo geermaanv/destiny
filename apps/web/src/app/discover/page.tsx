@@ -91,8 +91,8 @@ function DiscoverContent() {
               onClick={() => setContext(c.value)}
               className={`flex-1 rounded-full px-2 py-1.5 text-xs ring-1 ${
                 context === c.value
-                  ? "bg-violet-600 text-white ring-violet-500"
-                  : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-violet-400"
+                  ? "bg-slate-700 text-white ring-slate-400"
+                  : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-slate-500"
               }`}
             >
               {c.label}
@@ -103,7 +103,7 @@ function DiscoverContent() {
       {candidates === null && <p className="text-slate-400">Cargando...</p>}
       {candidates?.length === 0 && <p className="text-slate-400">Todavía no hay nadie en tu frecuencia.</p>}
       {candidates?.map((c) => (
-        <div key={c.profile_id} className="rounded-md bg-slate-900 p-4 ring-1 ring-slate-700">
+        <div key={c.profile_id} className="rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
           <button onClick={() => openCandidate(c.profile_id)} className="flex w-full items-center gap-3 text-left">
             <ProfileAvatar photoUrl={c.photo_url} avatar={c.avatar} sunSign={c.sun_sign} />
             <span className="min-w-0 flex-1">

@@ -19,7 +19,7 @@ const INPUT_CLASS =
 
 const chip = (selected: boolean) =>
   `rounded-full px-3 py-1.5 text-sm ring-1 ${
-    selected ? "bg-violet-600 text-white ring-violet-500" : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-violet-400"
+    selected ? "bg-slate-700 text-white ring-slate-400" : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-slate-500"
   }`;
 
 // Formulario del perfil liviano (spec A4): se usa en el onboarding y en "Mi perfil".
@@ -159,7 +159,7 @@ export default function ProfileForm({
                 onClick={() => setAvatar(a.value)}
                 aria-label={a.value === "signo" ? "Mi signo" : a.value}
                 className={`flex h-11 w-11 items-center justify-center rounded-full text-xl ring-1 ${
-                  avatar === a.value ? "bg-violet-600 ring-violet-400" : "bg-slate-900 ring-slate-700"
+                  avatar === a.value ? "bg-slate-700 ring-slate-300" : "bg-slate-900 ring-slate-700"
                 }`}
               >
                 {a.value === "signo" ? <span className="text-xs text-slate-200">Signo</span> : a.emoji}
@@ -193,8 +193,8 @@ export default function ProfileForm({
               onClick={() => setEnergy(energy === p.value ? null : p.value)}
               className={`rounded-md px-1 py-2 text-xs ring-1 ${
                 energy === p.value
-                  ? "bg-violet-600 text-white ring-violet-500"
-                  : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-violet-400"
+                  ? "bg-slate-700 text-white ring-slate-400"
+                  : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-slate-500"
               }`}
             >
               <span className="block text-lg">{p.icon}</span>

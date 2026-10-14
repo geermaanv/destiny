@@ -110,14 +110,14 @@ function ChatContent() {
       </div>
 
       {connection.status === "pendiente" ? (
-        <p className="rounded-md bg-slate-900 p-3 text-sm text-slate-400 ring-1 ring-slate-800">
+        <p className="rounded-xl bg-slate-900 p-3 text-sm text-slate-400 ring-1 ring-slate-800">
           {connection.direction === "enviada"
             ? `Esperando que ${name} acepte la conexión.`
             : `${name} quiere conectar con vos. Aceptá desde Conexiones para chatear.`}
         </p>
       ) : (
         <>
-          <div className="rounded-md bg-slate-900 p-3 ring-1 ring-slate-800">
+          <div className="rounded-xl bg-slate-900 p-3 ring-1 ring-slate-800">
             <button
               onClick={() => setShowCompat((v) => !v)}
               className="flex w-full items-center justify-between text-sm font-medium"
@@ -134,7 +134,7 @@ function ChatContent() {
                       onClick={() => setCompatContext(c.value)}
                       className={`rounded-full px-2 py-1 text-xs ring-1 ${
                         (compat?.relationship ?? compatContext) === c.value
-                          ? "bg-violet-600 text-white ring-violet-500"
+                          ? "bg-slate-700 text-white ring-slate-400"
                           : "bg-slate-950 text-slate-300 ring-slate-700"
                       }`}
                     >
@@ -158,7 +158,7 @@ function ChatContent() {
             )}
           </div>
 
-          <div className="rounded-md bg-slate-900 p-3 text-sm ring-1 ring-slate-800">
+          <div className="rounded-xl bg-slate-900 p-3 text-sm ring-1 ring-slate-800">
             {wa.link ? (
               <a
                 href={wa.link}

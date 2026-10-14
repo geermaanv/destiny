@@ -58,7 +58,7 @@ function RitmoNotificacionesForm() {
             key={option.value}
             onClick={() => choose(option.value)}
             disabled={status === "submitting"}
-            className="w-full rounded-md bg-slate-900 p-4 text-left ring-1 ring-slate-700 hover:ring-violet-400 disabled:opacity-50"
+            className="w-full rounded-xl bg-slate-900 p-4 text-left ring-1 ring-slate-700 hover:ring-slate-500 disabled:opacity-50"
           >
             <p className="font-medium">{option.title}</p>
             <p className="mt-1 text-sm text-slate-400">{option.description}</p>

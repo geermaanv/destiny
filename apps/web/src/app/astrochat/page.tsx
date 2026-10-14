@@ -126,7 +126,7 @@ function Chat() {
               key={q}
               type="button"
               onClick={() => send(q)}
-              className="block w-full rounded-xl bg-slate-900 px-4 py-3 text-left text-sm text-slate-200 ring-1 ring-slate-700 hover:ring-violet-400"
+              className="block w-full rounded-xl bg-slate-900 px-4 py-3 text-left text-sm text-slate-200 ring-1 ring-slate-700 hover:ring-slate-500"
             >
               {q}
             </button>

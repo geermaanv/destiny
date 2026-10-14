@@ -54,3 +54,8 @@ Rediseño de Descubrir, Conexiones, chat y onboarding (solo pasan a usar `Page`/
 - Cada área muestra el **texto completo** (sin "Leer más") y "En qué se basa →" como link discreto a la derecha (es la trazabilidad que distingue a Destiny). Se saca "Consultá sobre esto" (repetía "Preguntá sobre tu carta", que está debajo).
 - **Compartir →** arriba a la derecha, junto al título, con la aclaración debajo ("se comparten solo tus signos y lecturas…") y, si ya se compartió, las vistas y "Dejar de compartir".
 - **Solapas con un estilo común** (`segmentClass` en `ui.tsx`), también en Círculo: la seleccionada en un tono neutro, para no confundirse con los links de acción.
+
+## Unificación visual (revisión nocturna, 2026-10-14)
+
+- **Opciones seleccionadas en tono neutro** en toda la app (Tu estilo, Descubrir, panel del chat, invitar, test, perfil, franjas del registro), igual que las solapas: el color de acción queda solo para links y botones. Excepción: el ranking de respuestas del test, donde el color marca el orden de preferencia.
+- **Tarjetas con el mismo radio** (`rounded-xl`) en las pantallas viejas (calendario, chat, conexiones, invitar, registro, verificación); los campos de texto y menús mantienen su radio.

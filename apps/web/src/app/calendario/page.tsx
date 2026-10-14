@@ -168,7 +168,7 @@ function CalendarioContent() {
       </section>
 
       {detail && selectedDay && (
-        <div ref={detailRef} className="space-y-3 rounded-md bg-slate-900 p-4 ring-1 ring-slate-700">
+        <div ref={detailRef} className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
           <p className="text-sm text-slate-400">{longDate(selectedDay)}</p>
           {detail.transits[0]?.title ? (
             <div>
@@ -212,7 +212,7 @@ function CalendarioContent() {
             <li key={e.start}>
               <button
                 onClick={() => openEvent(e)}
-                className="w-full rounded-md bg-slate-900 p-3 text-left ring-1 ring-slate-800 hover:ring-violet-400"
+                className="w-full rounded-xl bg-slate-900 p-3 text-left ring-1 ring-slate-800 hover:ring-violet-400"
               >
                 <span className="flex items-baseline justify-between gap-2">
                   <span className="font-medium text-gold-300">{e.title}</span>
