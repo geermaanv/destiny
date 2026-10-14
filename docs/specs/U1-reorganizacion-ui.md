@@ -47,3 +47,10 @@ Rediseño de Descubrir, Conexiones, chat y onboarding (solo pasan a usar `Page`/
 ## Barra v2 (German, 2026-10-13)
 
 **Hoy · Carta · Respuestas · Círculo · Perfil** (German: palabras cortas en la barra; para el Astrochat se compararon Guía, Claridad, Luz, Clave, Lente, Chat, Charla y Oráculo, y German eligió "Respuestas" porque lo que la persona busca es resolver sus dudas; "Oráculo" se descartó porque promete predecir y Destiny no predice; la calidez va en los títulos de cada pantalla: "Mi carta", "Consultá tu carta", "¿Con quién fluye?". Antes se probó "Vínculos" y la primera persona). Descubrir y los chats se juntaron en **Círculo**, con el gancho como título ("¿Con quién fluye?") y dos solapas (Descubrir · Mis chats), para darle su lugar en la barra a **Consultá tu carta** (Astrochat, spec X3). En Hoy, la sección se llama "Tu círculo". Los botones de la barra tienen el mismo ancho y el texto puede ir en dos líneas.
+
+## Mi carta v2 (German, 2026-10-14, con captura)
+
+- Solapas **Identidad · Amor · Vocación · Emociones · Cielo**: la rueda pasa a ser la pestaña **Cielo** (más chica, con Sol, Luna y Ascendente explicados), en vez de estar suelta arriba sin explicación.
+- Cada área muestra el **texto completo** (sin "Leer más") y "En qué se basa →" como link discreto a la derecha (es la trazabilidad que distingue a Destiny). Se saca "Consultá sobre esto" (repetía "Preguntá sobre tu carta", que está debajo).
+- **Compartir →** arriba a la derecha, junto al título, con la aclaración debajo ("se comparten solo tus signos y lecturas…") y, si ya se compartió, las vistas y "Dejar de compartir".
+- **Solapas con un estilo común** (`segmentClass` en `ui.tsx`), también en Círculo: la seleccionada en un tono neutro, para no confundirse con los links de acción.

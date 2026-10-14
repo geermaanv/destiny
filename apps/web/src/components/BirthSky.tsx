@@ -27,7 +27,7 @@ export default function BirthSky({ cielo, elementos, fondo }: { cielo: Sky; elem
   );
 }
 
-export function SkyWheel({ cielo, leyenda }: { cielo: Sky; leyenda?: string }) {
+export function SkyWheel({ cielo, leyenda, compact = false }: { cielo: Sky; leyenda?: string; compact?: boolean }) {
   const asc = cielo.find((p) => p.punto === "asc")?.lon ?? 0;
   const hasAsc = cielo.some((p) => p.punto === "asc");
   const at = (lon: number, r: number) => {
@@ -36,7 +36,7 @@ export function SkyWheel({ cielo, leyenda }: { cielo: Sky; leyenda?: string }) {
   };
   return (
     <figure className="space-y-2">
-      <svg viewBox="0 0 100 100" role="img" aria-label={leyenda ?? "Tu cielo de nacimiento"} className="mx-auto w-full max-w-[18rem] text-gold-300">
+      <svg viewBox="0 0 100 100" role="img" aria-label={leyenda ?? "Tu cielo de nacimiento"} className={`mx-auto w-full ${compact ? "max-w-[13rem]" : "max-w-[18rem]"} text-gold-300`}>
         <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" strokeOpacity="0.6" strokeWidth="0.5" />
         <circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" strokeOpacity="0.4" strokeWidth="0.35" />
         {Array.from({ length: 12 }, (_, i) => {

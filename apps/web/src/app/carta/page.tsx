@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import AskBox from "@/components/AskBox";
 import { SkyWheel } from "@/components/BirthSky";
-import { Card, ListCard, ListRow, Page, PageTitle } from "@/components/ui";
+import { Card, ListCard, ListRow, Page, PageTitle, segmentClass, SEGMENTS } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import {
   createShare,
@@ -20,6 +20,7 @@ import {
   NatalDimensions,
   NatalFoundation,
   Style,
+  SUN_SIGNS as SIGNS,
 } from "@/lib/api";
 
 // Mi carta (spec A8; pestaña propia y en pestañas por dimensión, spec U1-D).
@@ -42,45 +43,32 @@ function label(f: NatalFoundation): string {
 
 function Dimension({ profileId, dimension }: { profileId: string; dimension: NatalDimension }) {
   const [synthesis, setSynthesis] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setSynthesis(null);
-    setExpanded(false);
     setOpen(false);
     getNatalSynthesis(profileId, dimension.clave)
       .then((s) => setSynthesis(s.texto))
       .catch(() => setSynthesis(""));
   }, [profileId, dimension.clave]);
 
+  // Texto completo (una área por vez), y "En qué se basa" como link discreto: es la
+  // trazabilidad que distingue a Destiny de un horóscopo genérico.
   return (
     <Card className="space-y-3">
       <div>
         <h2 className="text-lg font-medium text-gold-300">{dimension.nombre}</h2>
         <p className="text-sm text-slate-400">{dimension.pregunta}</p>
       </div>
-      <p className={`text-sm leading-relaxed text-slate-200 ${expanded ? "" : "line-clamp-3"}`}>
-        {synthesis === null ? "Leyendo tu carta…" : synthesis}
-      </p>
-      {synthesis && !expanded && (
-        <button type="button" onClick={() => setExpanded(true)} className="text-sm text-violet-400">
-          Leer más
-        </button>
-      )}
+      <p className="text-sm leading-relaxed text-slate-200">{synthesis === null ? "Leyendo tu carta…" : synthesis}</p>
       {dimension.faltan_por_hora.length > 0 && (
         <p className="text-xs text-gold-300">Con tu hora exacta de nacimiento sumamos: {dimension.faltan_por_hora.join(", ")}.</p>
       )}
-      <div className="flex justify-between text-sm">
+      <div className="text-right text-sm">
         <button type="button" onClick={() => setOpen(!open)} className="text-violet-400">
           {open ? "Ocultar en qué se basa" : "En qué se basa →"}
         </button>
-        <Link
-          href={`/astrochat?q=${encodeURIComponent(`¿Qué más dice mi carta sobre ${dimension.nombre.toLowerCase()}?`)}`}
-          className="text-violet-400"
-        >
-          Consultá sobre esto →
-        </Link>
       </div>
       {open && (
         <div className="space-y-3 border-t border-slate-800 pt-3">
@@ -106,18 +94,52 @@ function Dimension({ profileId, dimension }: { profileId: string; dimension: Nat
   );
 }
 
+// Tu cielo como una pestaña más (pedido de German): la rueda más chica y tus signos explicados.
+function Cielo({ style }: { style: Style }) {
+  const sign = (p: string) => {
+    const lon = style.cielo.find((c) => c.punto === p)?.lon;
+    return lon === undefined ? null : SIGNS[Math.floor(lon / 30) % 12];
+  };
+  const rows = [
+    { glyph: "☉", name: "Sol", sign: sign("sol"), means: "tu esencia, lo que te mueve" },
+    { glyph: "☽", name: "Luna", sign: sign("luna"), means: "tus emociones y lo que te da seguridad" },
+    { glyph: "AC", name: "Ascendente", sign: sign("asc"), means: "cómo te mostrás y te ven" },
+  ].filter((r) => r.sign);
+  return (
+    <Card className="space-y-4">
+      <p className="text-sm text-slate-400">Así estaba el cielo cuando naciste.</p>
+      <SkyWheel cielo={style.cielo} compact />
+      <ul className="space-y-2">
+        {rows.map((r) => (
+          <li key={r.name} className="flex gap-3 text-sm">
+            <span className="w-6 text-center text-gold-300">{r.glyph + "\uFE0E"}</span>
+            <span>
+              <span className="block text-slate-100">
+                {r.name} en {r.sign}
+              </span>
+              <span className="block text-xs text-slate-400">{r.means}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </Card>
+  );
+}
+
 // Compartir mi carta (spec A9): un toque; Destiny decide qué datos se muestran.
+// Va arriba a la derecha, junto al título (pedido de German).
 const SHARE_TEXT = "¿Por qué con algunas personas fluye y con otras no? Mirá mi carta en Destiny y descubrí la tuya:";
 
-function ShareCard({ profileId }: { profileId: string }) {
+function useShare(profileId: string | null) {
   const [status, setStatus] = useState<ShareStatus | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    getShare(profileId).then(setStatus).catch(() => null);
+    if (profileId) getShare(profileId).then(setStatus).catch(() => null);
   }, [profileId]);
 
   async function share() {
+    if (!profileId) return;
     setBusy(true);
     try {
       const s = await createShare(profileId);
@@ -133,33 +155,13 @@ function ShareCard({ profileId }: { profileId: string }) {
     }
   }
 
-  // Arriba, debajo de la rueda: compartir es sobre toda la carta (pedido de German).
-  return (
-    <div className="space-y-1 text-center text-sm">
-      <button type="button" onClick={share} disabled={busy} className="text-violet-400 disabled:opacity-60">
-        Compartir mi carta →
-      </button>
-      <p className="text-xs text-slate-500">
-        {status?.activo ? (
-          <>
-            Se vio {status.vistas} {status.vistas === 1 ? "vez" : "veces"} ·{" "}
-            <button
-              type="button"
-              className="underline"
-              onClick={async () => {
-                await deleteShare(profileId);
-                setStatus({ activo: false, vistas: 0 });
-              }}
-            >
-              Dejar de compartir
-            </button>
-          </>
-        ) : (
-          "Se comparten tus signos y lecturas, nunca tu fecha, hora ni lugar de nacimiento."
-        )}
-      </p>
-    </div>
-  );
+  async function stop() {
+    if (!profileId) return;
+    await deleteShare(profileId);
+    setStatus({ activo: false, vistas: 0 });
+  }
+
+  return { status, busy, share, stop };
 }
 
 function MiCarta() {
@@ -169,6 +171,7 @@ function MiCarta() {
   const [personality, setPersonality] = useState<MyPersonality | null>(null);
   const [tab, setTab] = useState<string | null>(null);
   const [error, setError] = useState(false);
+  const shared = useShare(profileId);
 
   useEffect(() => {
     if (!profileId) return;
@@ -186,14 +189,32 @@ function MiCarta() {
   if (!profileId || !data) return <p className="text-slate-400">Cargando…</p>;
   const current = data.dimensiones.find((d) => d.clave === tab) ?? data.dimensiones[0];
 
+  const tabs = [...data.dimensiones.map((d) => ({ clave: d.clave, label: SHORT[d.clave] ?? d.nombre })), { clave: "cielo", label: "Cielo" }];
+
   return (
     <>
       <PageTitle
         title="Mi carta"
         subtitle="Lo que dice tu carta natal sobre cuatro áreas de tu vida. Una lectura simbólica para pensarte, no una predicción."
+        action={
+          <button type="button" onClick={shared.share} disabled={shared.busy} className="text-violet-400 disabled:opacity-60">
+            Compartir →
+          </button>
+        }
       />
-      {style && <SkyWheel cielo={style.cielo} leyenda={style.cielo_leyenda} />}
-      <ShareCard profileId={profileId} />
+      {/* Qué se comparte (pedido de German) y, si ya compartiste, vistas y dejar de compartir. */}
+      <p className="-mt-3 text-right text-xs text-slate-500">
+        Se comparten solo tus signos y lecturas, nunca tu fecha, hora ni lugar de nacimiento.
+        {shared.status?.activo && (
+          <>
+            {" "}
+            Se vio {shared.status.vistas} {shared.status.vistas === 1 ? "vez" : "veces"} ·{" "}
+            <button type="button" className="underline" onClick={shared.stop}>
+              Dejar de compartir
+            </button>
+          </>
+        )}
+      </p>
       {data.aproximado && (
         <p className="text-xs text-gold-300">
           Sin tu hora exacta, la lectura es aproximada.{" "}
@@ -202,23 +223,21 @@ function MiCarta() {
           </Link>
         </p>
       )}
-      <div role="tablist" className="grid grid-cols-4 gap-1 rounded-xl bg-slate-900 p-1 ring-1 ring-slate-700">
-        {data.dimensiones.map((d) => (
+      <div role="tablist" className={`${SEGMENTS} grid-cols-5`}>
+        {tabs.map((t) => (
           <button
-            key={d.clave}
+            key={t.clave}
             role="tab"
-            aria-selected={d.clave === current.clave}
+            aria-selected={t.clave === tab}
             type="button"
-            onClick={() => setTab(d.clave)}
-            className={`rounded-lg px-1 py-1.5 text-xs ${
-              d.clave === current.clave ? "bg-violet-600 text-white" : "text-slate-300 hover:bg-slate-800"
-            }`}
+            onClick={() => setTab(t.clave)}
+            className={segmentClass(t.clave === tab)}
           >
-            {SHORT[d.clave] ?? d.nombre}
+            {t.label}
           </button>
         ))}
       </div>
-      <Dimension profileId={profileId} dimension={current} />
+      {tab === "cielo" ? style && <Cielo style={style} /> : <Dimension profileId={profileId} dimension={current} />}
       <AskBox
         title="Preguntá sobre tu carta"
         hint="¿Querés profundizar en algo de tu carta? Preguntá y te respondemos con ella."

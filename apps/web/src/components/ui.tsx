@@ -14,7 +14,24 @@ export function Page({ children, nav = true }: { children: ReactNode; nav?: bool
   );
 }
 
-export function PageTitle({ title, subtitle, back }: { title: string; subtitle?: ReactNode; back?: { href: string; label: string } }) {
+// Solapas (Carta, Círculo): la seleccionada en un tono neutro, para no confundirse
+// con los links de acción (pedido de German).
+export function segmentClass(active: boolean): string {
+  return `rounded-lg px-1 py-1.5 text-center text-xs ${active ? "bg-slate-700 text-white" : "text-slate-400 hover:bg-slate-800"}`;
+}
+export const SEGMENTS = "grid gap-1 rounded-xl bg-slate-900 p-1 ring-1 ring-slate-700";
+
+export function PageTitle({
+  title,
+  subtitle,
+  back,
+  action,
+}: {
+  title: string;
+  subtitle?: ReactNode;
+  back?: { href: string; label: string };
+  action?: ReactNode;
+}) {
   return (
     <header className="space-y-1">
       {back && (
@@ -22,7 +39,10 @@ export function PageTitle({ title, subtitle, back }: { title: string; subtitle?:
           ← {back.label}
         </Link>
       )}
-      <h1 className="text-2xl font-semibold">{title}</h1>
+      <div className="flex items-baseline justify-between gap-3">
+        <h1 className="text-2xl font-semibold">{title}</h1>
+        {action && <div className="shrink-0 text-sm">{action}</div>}
+      </div>
       {subtitle && <div className="text-sm text-slate-400">{subtitle}</div>}
     </header>
   );

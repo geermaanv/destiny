@@ -11,7 +11,7 @@ Mi carta le da valor a la persona, pero no sale de la app. Un link compartible h
 
 ## Comportamiento
 
-- En **Mi carta**, el link **"Compartir mi carta →"** va arriba, debajo de la rueda (German: compartir es sobre toda la carta; antes era un botón lleno al final): crea (o reutiliza) el link de la persona y abre el menú de compartir del celular (o WhatsApp en la compu) con el mensaje: "¿Por qué con algunas personas fluye y con otras no? Mirá mi carta en Destiny y descubrí la tuya: {link}".
+- En **Mi carta**, el link **"Compartir →"** va arriba a la derecha, junto al título (German: compartir es sobre toda la carta), con la aclaración de qué se comparte debajo: crea (o reutiliza) el link de la persona y abre el menú de compartir del celular (o WhatsApp en la compu) con el mensaje: "¿Por qué con algunas personas fluye y con otras no? Mirá mi carta en Destiny y descubrí la tuya: {link}".
 - Un solo link activo por persona, imposible de adivinar (`/c/{token}`). Debajo: "Se vio N veces · Dejar de compartir" (o, si no se compartió, qué se comparte y qué no). Al dejar de compartir, el link deja de funcionar; si vuelve a compartir, se crea uno nuevo.
 - **Página pública** `/c/{token}`, con los colores, la tipografía y el fondo de la persona: "La carta de {nombre}", sus signos (☉ ☽ AC), la rueda, las síntesis de las 4 dimensiones y al final el gancho con "Descubrí tu carta gratis" (lleva a la entrada de Destiny).
 - **Vista previa en WhatsApp**: título "La carta de {nombre} en Destiny", descripción con los signos y el gancho.
