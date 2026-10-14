@@ -6,8 +6,9 @@ import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import { askAstrochat, Astrochat, AstroMessage, clearAstrochat, getAstrochat } from "@/lib/api";
 
-// Astrochat (spec X3): preguntale a Destiny. Responde con tu carta y tu día, ya
-// calculados por el motor, en tu estilo y en el modo que elijas.
+// Consultá tu carta (Astrochat, spec X3). Responde con tu carta y tu día, ya
+// calculados por el motor, en tu estilo. El modo no se elige acá (confundía con
+// "Tu estilo"): sale del estilo de la persona, que se cambia en Perfil > Tu estilo.
 function Chat() {
   const profileId = useSessionProfileId();
   const params = useSearchParams();
@@ -43,7 +44,7 @@ function Chat() {
     setChat({ ...chat, mensajes: [...chat.mensajes, mine] });
     setText("");
     try {
-      const answer = await askAstrochat(profileId, question.trim(), mode);
+      const answer = await askAstrochat(profileId, question.trim());
       setChat((c) => (c ? { ...c, mensajes: [...c.mensajes, answer.respuesta], restantes_hoy: answer.restantes_hoy } : c));
     } catch (e) {
       setChat((c) => (c ? { ...c, mensajes: c.mensajes.filter((m) => m !== mine) } : c));
@@ -60,7 +61,6 @@ function Chat() {
   }
 
   if (!profileId || !chat) return <p className="text-slate-400">{notice ?? "Abriendo el Astrochat…"}</p>;
-  const current = chat.modos.find((m) => m.clave === mode);
 
   return (
     <>
@@ -68,22 +68,6 @@ function Chat() {
         title="Consultá tu carta"
         subtitle="Preguntá lo que quieras sobre vos, tu momento o tus vínculos. Te respondemos con tu carta y tu día, en tu estilo."
       />
-
-      <div className="space-y-2">
-        <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-900 p-1 ring-1 ring-slate-700 sm:grid-cols-4">
-          {chat.modos.map((m) => (
-            <button
-              key={m.clave}
-              type="button"
-              onClick={() => setMode(m.clave)}
-              className={`rounded-lg px-2 py-1.5 text-sm ${m.clave === mode ? "bg-violet-600 text-white" : "text-slate-300 hover:bg-slate-800"}`}
-            >
-              {m.nombre}
-            </button>
-          ))}
-        </div>
-        {current && <p className="text-xs text-slate-400">{current.nombre}: {current.descripcion.toLowerCase()}.</p>}
-      </div>
 
       <div className="space-y-3">
         {chat.mensajes.length === 0 && !text && (

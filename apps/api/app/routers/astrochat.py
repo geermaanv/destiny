@@ -53,9 +53,9 @@ def _out(m: AstroMessage) -> AstroMessageOut:
     return AstroMessageOut(rol=m.role, texto=m.text, modo=m.mode, creado=m.created_at)
 
 
-def _current_mode(db: Session, profile: Profile) -> str:
-    last = _history(db, profile.id, 1)
-    return last[-1].mode if last else suggested_mode(style_for(profile))
+def _current_mode(profile: Profile) -> str:
+    """El modo sale del estilo actual de la persona (se cambia en Tu estilo, no en el chat)."""
+    return suggested_mode(style_for(profile))
 
 
 @router.get("/profiles/{profile_id}/astrochat", response_model=AstrochatOut)
@@ -65,7 +65,7 @@ def get_astrochat(
     profile = _own(profile_id, current, db)
     cfg = load_config()
     return AstrochatOut(
-        modo=_current_mode(db, profile),
+        modo=_current_mode(profile),
         modos=[AstroModeOut(clave=k, nombre=m["nombre"], descripcion=m["descripcion"]) for k, m in cfg["modos"].items()],
         mensajes=[_out(m) for m in _history(db, profile_id)],
         restantes_hoy=max(0, cfg["limite_diario"] - _used_today(db, profile_id)),
@@ -86,7 +86,7 @@ def ask_astrochat(
     text = payload.texto.strip()
     if not text or len(text) > cfg["max_entrada"]:
         raise HTTPException(status_code=422, detail=f"La pregunta tiene que tener entre 1 y {cfg['max_entrada']} caracteres")
-    mode = payload.modo or _current_mode(db, profile)
+    mode = payload.modo or _current_mode(profile)
     if mode not in cfg["modos"]:
         raise HTTPException(status_code=422, detail="Modo inexistente")
     used = _used_today(db, profile_id)

@@ -660,7 +660,7 @@ export async function getAstrochat(profileId: string): Promise<Astrochat> {
 export async function askAstrochat(
   profileId: string,
   texto: string,
-  modo: string,
+  modo?: string,
 ): Promise<{ respuesta: AstroMessage; ia: boolean; restantes_hoy: number }> {
   const res = await fetch(`${API_URL}/profiles/${profileId}/astrochat`, {
     method: "POST",

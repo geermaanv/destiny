@@ -66,7 +66,17 @@ def test_preguntar(client, openrouter):  # noqa: F811
         ("persona", "¿Por qué me cuesta decidir?"),
         ("destiny", openrouter.reply),
     ]
-    assert history["modo"] == "mentor"
+    assert history["modo"] == _config()["modo_por_registro"][client.get(f"/profiles/{pid}/style").json()["registro"]]
+
+
+def test_el_modo_sigue_al_estilo(client, openrouter):  # noqa: F811
+    pid = verified_user(client, PHONE)
+    client.put(f"/profiles/{pid}/style", json={"registro": "intuitivo"})
+    _ask(client, pid, "hola")
+    client.put(f"/profiles/{pid}/style", json={"registro": "practico"})
+    assert client.get(_url(pid)).json()["modo"] == _config()["modo_por_registro"]["practico"]
+    body = _ask(client, pid, "otra").json()
+    assert body["respuesta"]["modo"] == _config()["modo_por_registro"]["practico"]
 
 
 # 4
