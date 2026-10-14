@@ -195,26 +195,22 @@ function MiCarta() {
     <>
       <PageTitle
         title="Mi carta"
-        subtitle="Lo que dice tu carta natal sobre cuatro áreas de tu vida. Una lectura simbólica para pensarte, no una predicción."
+        subtitle="Lo que dice tu carta natal sobre cuatro áreas de tu vida: una lectura simbólica para pensarte, no una predicción. Si la compartís, se ven solo tus signos y lecturas, nunca tu fecha, hora ni lugar de nacimiento."
         action={
           <button type="button" onClick={shared.share} disabled={shared.busy} className="text-violet-400 disabled:opacity-60">
             Compartir →
           </button>
         }
       />
-      {/* Qué se comparte (pedido de German) y, si ya compartiste, vistas y dejar de compartir. */}
-      <p className="-mt-3 text-right text-xs text-slate-500">
-        Se comparten solo tus signos y lecturas, nunca tu fecha, hora ni lugar de nacimiento.
-        {shared.status?.activo && (
-          <>
-            {" "}
-            Se vio {shared.status.vistas} {shared.status.vistas === 1 ? "vez" : "veces"} ·{" "}
-            <button type="button" className="underline" onClick={shared.stop}>
-              Dejar de compartir
-            </button>
-          </>
-        )}
-      </p>
+      {/* Si ya compartiste: vistas y dejar de compartir (qué se comparte va en el subtítulo). */}
+      {shared.status?.activo && (
+        <p className="-mt-3 text-right text-xs text-slate-500">
+          Tu carta se vio {shared.status.vistas} {shared.status.vistas === 1 ? "vez" : "veces"} ·{" "}
+          <button type="button" className="underline" onClick={shared.stop}>
+            Dejar de compartir
+          </button>
+        </p>
+      )}
       {data.aproximado && (
         <p className="text-xs text-gold-300">
           Sin tu hora exacta, la lectura es aproximada.{" "}
