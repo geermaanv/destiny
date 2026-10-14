@@ -162,6 +162,9 @@ function DatosNatalesForm() {
   const chosenPeriod = PERIODS.find((p) => p.value === timePeriod);
   const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  // Mientras se averigua si ya hay sesión no se muestra el formulario (si hay, se va a Hoy):
+  // si no, aparecía el registro unos segundos antes de redirigir.
+  const [checkingSession, setCheckingSession] = useState(!existingProfileId);
 
   useEffect(() => {
     if (started.current) return;
@@ -176,9 +179,13 @@ function DatosNatalesForm() {
             router.replace("/home");
             return;
           }
+          setCheckingSession(false);
           return createProfile().then((profile) => setProfileId(profile.id));
         })
-        .catch(() => setError("No se pudo conectar con la API."));
+        .catch(() => {
+          setCheckingSession(false);
+          setError("No se pudo conectar con la API.");
+        });
       return;
     }
     // Volvió desde un paso posterior: se recupera lo cargado en vez de crear otro perfil.
@@ -262,6 +269,8 @@ function DatosNatalesForm() {
       setStatus("error");
     }
   }
+
+  if (checkingSession) return <p className="text-slate-400">Cargando…</p>;
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-5">
