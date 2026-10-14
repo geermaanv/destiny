@@ -84,7 +84,7 @@ function HomeContent() {
         <img src="/logo.png" alt="" width={44} height={44} className="shrink-0" />
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold">
-            Hoy:{myDay && <span className="font-normal text-slate-200"> {myDay.title}</span>}
+            Hoy{myDay && <>:<span className="font-normal text-slate-200"> {myDay.title}</span></>}
           </h1>
           <p className="text-sm text-gold-300">{astroWeather ?? "Leyendo el cielo…"}</p>
         </div>
