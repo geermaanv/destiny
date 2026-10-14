@@ -115,3 +115,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - "Círculos" pasa a **Círculo**, en singular (German): "tu círculo" es la expresión natural y hace juego con Carta, Guía y Perfil.
 - Barra: "Guía" pasa a **Respuestas** (German, después de comparar varias opciones: lo que la persona busca es resolver sus dudas). Queda **Hoy · Carta · Respuestas · Círculo · Perfil**.
 - **Consultá tu carta, coherente en todos lados** (feedback de German): Hoy y Tu día usan la misma pieza, un campo real con botón **"Preguntar"** que lleva a Respuestas con la pregunta ya enviada (antes era un link con forma de campo, y en Tu día una tarjeta distinta). El botón del chat pasa de "Enviar" a "Preguntar". Probado de punta a punta en el navegador.
+- Consultá tu carta en Hoy y Tu día: el botón naranja pasa a ser un link "Preguntar →", con el mismo estilo que "Leer más" y "Ver el mes" (pedido de German).

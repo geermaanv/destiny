@@ -23,8 +23,7 @@ export default function AskBox({ title, hint, example }: { title: string; hint: 
       <SectionTitle>{title}</SectionTitle>
       <form onSubmit={submit} className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">
         <p className="text-sm text-slate-300">{hint}</p>
-        <div className="flex items-end gap-2">
-          <textarea
+        <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => {
@@ -33,14 +32,12 @@ export default function AskBox({ title, hint, example }: { title: string; hint: 
             rows={2}
             maxLength={500}
             placeholder={`Ej.: ${example}`}
-            className="flex-1 resize-none rounded-lg bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none ring-1 ring-slate-700 placeholder:text-slate-500 focus:ring-violet-400"
+            className="block w-full resize-none rounded-lg bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none ring-1 ring-slate-700 placeholder:text-slate-500 focus:ring-violet-400"
           />
-          <button
-            type="submit"
-            disabled={!text.trim()}
-            className="rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-40"
-          >
-            Preguntar
+        {/* Link de texto, como "Leer más" y "Ver el mes" (pedido de German). */}
+        <div className="text-right text-sm">
+          <button type="submit" disabled={!text.trim()} className="text-violet-400 disabled:opacity-40">
+            Preguntar →
           </button>
         </div>
       </form>
