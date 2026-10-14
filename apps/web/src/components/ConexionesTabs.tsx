@@ -3,18 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Vínculos (spec U1, pedido de German): Descubrir y Conexiones en una sola pestaña,
-// con dos solapas arriba.
+// Mis conexiones (spec U1, nombres de German): Descubrir y los chats en una sola
+// pestaña, con el gancho como título y dos solapas.
 const TABS = [
   { href: "/discover", label: "Descubrir" },
-  { href: "/conexiones", label: "Conexiones" },
+  { href: "/conexiones", label: "Mis chats" },
 ];
 
-export default function VinculosTabs() {
+export default function ConexionesTabs() {
   const pathname = usePathname();
   return (
     <header className="space-y-3">
-      <h1 className="text-2xl font-semibold">Vínculos</h1>
+      <h1 className="text-2xl font-semibold">¿Con quién fluye?</h1>
       <nav className="grid grid-cols-2 gap-1 rounded-xl bg-slate-900 p-1 ring-1 ring-slate-700">
         {TABS.map((t) => (
           <Link

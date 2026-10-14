@@ -109,3 +109,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - **Barra nueva**: Hoy · Mi carta · Consultá · **Vínculos** · Perfil. Descubrir y Conexiones se juntan en Vínculos con dos solapas (idea de German).
 - **Bug**: de noche el encabezado de Hoy mostraba la Luna de mañana (fecha UTC) y "Tu día" la de hoy. `GET /home/today` acepta la fecha local y la app la manda (test nuevo). 245 tests en verde.
 - **Consultá sin selector de modos** (German: "no se entiende"): los 4 modos competían con Tu estilo. Ahora el modo sale siempre del estilo actual de la persona y se cambia en un solo lugar (Perfil > Tu estilo). Test nuevo: si cambia el estilo, cambia el modo.
+- **Nombres en primera persona** (German): la barra queda Hoy · Mi carta · Consultá · **Mis conexiones** · **Mi perfil**; la pantalla de conexiones se titula con el gancho, "¿Con quién fluye?", con las solapas Descubrir y Mis chats; en Hoy, "Tu gente" pasa a "Mis conexiones".

@@ -13,7 +13,7 @@ function Editar() {
   if (!profileId) return <p className="text-slate-400">Cargando…</p>;
   return (
     <>
-      <PageTitle title="Editar perfil" back={{ href: "/perfil", label: "Perfil" }} />
+      <PageTitle title="Editar perfil" back={{ href: "/perfil", label: "Mi perfil" }} />
       <ProfileForm profileId={profileId} submitLabel="Guardar cambios" onSaved={() => router.push("/perfil")} />
     </>
   );

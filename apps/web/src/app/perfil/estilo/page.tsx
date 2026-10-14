@@ -14,7 +14,7 @@ function Estilo() {
       <PageTitle
         title="Tu estilo"
         subtitle="Cómo te hablamos y cómo se ve la app: sale de tu carta y lo podés cambiar."
-        back={{ href: "/perfil", label: "Perfil" }}
+        back={{ href: "/perfil", label: "Mi perfil" }}
       />
       <StyleCard profileId={profileId} />
     </>
