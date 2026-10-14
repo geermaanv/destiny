@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { Page } from "@/components/ui";
+import VinculosTabs from "@/components/VinculosTabs";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { Connection, getConnections, respondConnection } from "@/lib/api";
 import { useSessionProfileId } from "@/lib/session";
@@ -45,7 +46,7 @@ function ConexionesContent() {
 
   return (
     <div className="w-full space-y-6">
-      <h1 className="text-2xl font-semibold">Conexiones</h1>
+      <VinculosTabs />
 
       {connections.length === 0 && (
         <p className="text-slate-400">

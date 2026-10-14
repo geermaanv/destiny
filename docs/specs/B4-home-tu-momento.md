@@ -84,3 +84,5 @@ Configuración en `app/day/config/dia_v1.json` (orbes, pesos, áreas y sus punto
 5. Las 4 áreas, cada una con un estado válido.
 6. Sin key, la lectura es la plantilla (sin llamar a la red); con IA, el prompt lleva el estilo de la persona, no lleva datos personales y la segunda vez sale de la cache.
 7. Cambiar los orbes en la configuración cambia los tránsitos sin tocar código.
+
+**Corrección (2026-10-13)**: el clima del día del encabezado (`GET /home/today`) acepta `?date=` y la app manda su fecha local, así coincide con "Tu día" (de noche, en UTC ya es el día siguiente y la Luna podía figurar en otro signo).

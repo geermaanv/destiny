@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.astro import moon_longitude, today_astro_weather, zodiac_sign
+from app.astro import astro_weather_for_date, moon_longitude, today_astro_weather, zodiac_sign
 from app.auth import require_self, session_profile_id
 from app.content.transits import reviewed, text_for
 from app.personalization.style import style_for
@@ -23,8 +23,11 @@ router = APIRouter(prefix="/home", tags=["home"])
 
 
 @router.get("/today", response_model=AstroWeatherOut)
-def get_today() -> AstroWeatherOut:
-    return AstroWeatherOut(astro_weather=today_astro_weather(), date=datetime.now(timezone.utc).date())
+def get_today(day: date | None = Query(default=None, alias="date")) -> AstroWeatherOut:
+    """Clima del día. La app manda su fecha local, así coincide con "Tu día" (sin fecha: hoy en UTC)."""
+    if day is None:
+        return AstroWeatherOut(astro_weather=today_astro_weather(), date=datetime.now(timezone.utc).date())
+    return AstroWeatherOut(astro_weather=astro_weather_for_date(day), date=day)
 
 
 @router.get("/frequency-count", response_model=FrequencyCountOut)

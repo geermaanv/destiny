@@ -109,6 +109,11 @@ function Dia() {
         )}
       </section>
 
+      <Card href={`/astrochat?q=${encodeURIComponent("¿Qué me conviene hacer hoy con lo que trae mi día?")}`} className="space-y-1">
+        <span className="block text-sm font-medium text-gold-300">Consultá sobre tu día</span>
+        <span className="block text-sm text-slate-400">Preguntá lo que quieras sobre lo que te trae hoy.</span>
+      </Card>
+
       <Link href="/calendario" className="block text-center text-sm text-violet-400">
         Ver el mes →
       </Link>

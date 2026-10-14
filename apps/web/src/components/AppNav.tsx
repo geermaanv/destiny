@@ -5,13 +5,14 @@ import { usePathname } from "next/navigation";
 
 // Barra de navegación inferior de la app (después del onboarding). El perfil
 // sale de la sesión (spec A5), así que los links no llevan profileId.
-// Spec U1-A: Hoy · Mi carta · Descubrir · Conexiones · Perfil. `also` = rutas que
-// cuentan como esa pestaña (el calendario es parte de Hoy, el chat de Conexiones).
+// Hoy · Mi carta · Consultá · Vínculos · Perfil (spec U1; Descubrir y Conexiones se
+// juntaron en Vínculos para darle lugar a Consultá tu carta). `also` = rutas que
+// cuentan como esa pestaña.
 const ITEMS = [
   { href: "/home", label: "Hoy", icon: "☾", also: ["/calendario", "/dia"] },
-  { href: "/carta", label: "Mi carta", icon: "☉", also: ["/astrochat"] },
-  { href: "/discover", label: "Descubrir", icon: "✦", also: [] },
-  { href: "/conexiones", label: "Conexiones", icon: "✉", also: ["/chat"] },
+  { href: "/carta", label: "Mi carta", icon: "☉", also: [] },
+  { href: "/astrochat", label: "Consultá", icon: "✧", also: [] },
+  { href: "/discover", label: "Vínculos", icon: "✦", also: ["/conexiones", "/chat"] },
   { href: "/perfil", label: "Perfil", icon: "◉", also: ["/perfil/", "/invitar"] },
 ];
 

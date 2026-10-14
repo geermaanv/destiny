@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Page } from "@/components/ui";
+import VinculosTabs from "@/components/VinculosTabs";
 import { useSessionProfileId } from "@/lib/session";
 import { PersonalityBlock } from "@/components/CompatibilityView";
 import ProfileAvatar from "@/components/ProfileAvatar";
@@ -80,7 +81,7 @@ function DiscoverContent() {
 
   return (
     <div className="w-full space-y-4">
-      <h1 className="text-2xl font-semibold">Descubrir</h1>
+      <VinculosTabs />
       <div className="space-y-1">
         <p className="text-xs text-slate-400">¿Qué tipo de vínculo querés mirar?</p>
         <div className="flex gap-2">

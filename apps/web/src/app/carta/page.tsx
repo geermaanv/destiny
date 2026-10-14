@@ -70,9 +70,17 @@ function Dimension({ profileId, dimension }: { profileId: string; dimension: Nat
       {dimension.faltan_por_hora.length > 0 && (
         <p className="text-xs text-gold-300">Con tu hora exacta de nacimiento sumamos: {dimension.faltan_por_hora.join(", ")}.</p>
       )}
-      <button type="button" onClick={() => setOpen(!open)} className="block text-sm text-violet-400">
-        {open ? "Ocultar en qué se basa" : "En qué se basa →"}
-      </button>
+      <div className="flex justify-between text-sm">
+        <button type="button" onClick={() => setOpen(!open)} className="text-violet-400">
+          {open ? "Ocultar en qué se basa" : "En qué se basa →"}
+        </button>
+        <Link
+          href={`/astrochat?q=${encodeURIComponent(`¿Qué más dice mi carta sobre ${dimension.nombre.toLowerCase()}?`)}`}
+          className="text-violet-400"
+        >
+          Consultá sobre esto →
+        </Link>
+      </div>
       {open && (
         <div className="space-y-3 border-t border-slate-800 pt-3">
           <ul className="space-y-2">
@@ -212,7 +220,7 @@ function MiCarta() {
       <Dimension profileId={profileId} dimension={current} />
       <ShareCard profileId={profileId} />
       <ListCard>
-        <ListRow href="/astrochat" icon="✧" title="Preguntale a Destiny" detail="Charlá sobre tu carta con el Astrochat" />
+        <ListRow href="/astrochat" icon="✧" title="Consultá tu carta" detail="Preguntá lo que quieras sobre vos, tu momento o tus vínculos" />
         <ListRow
           href="/perfil/test"
           icon="✓"

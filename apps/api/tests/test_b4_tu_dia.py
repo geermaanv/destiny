@@ -89,3 +89,14 @@ def test_si_falta_el_texto_usa_el_generico(client, monkeypatch):
         assert (body["title"], body["text"]) == generic
     else:
         assert body["title"] and body["text"]
+
+
+def test_clima_del_dia_usa_la_fecha_local_que_manda_la_app(client):
+    """El encabezado de Hoy y "Tu día" tienen que hablar de la misma fecha (la local de la persona)."""
+    from datetime import date as d
+
+    from app.astro import astro_weather_for_date
+
+    r = client.get("/home/today", params={"date": "2026-10-12"})
+    assert r.status_code == 200
+    assert r.json() == {"astro_weather": astro_weather_for_date(d(2026, 10, 12)), "date": "2026-10-12"}

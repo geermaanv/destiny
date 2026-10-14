@@ -43,3 +43,7 @@ Rediseño de Descubrir, Conexiones, chat y onboarding (solo pasan a usar `Page`/
 - Encabezado: "Hoy:" + el título del día (en el color del texto, sin negrita), la fase de la Luna abajo y el texto del día debajo, sin repetir "Tu día · Luna en…" ni recuadro.
 - El llamado a la lectura completa es un link "Leer más →" debajo del texto, con el mismo estilo que "Ver el mes" (German probó un botón y prefirió el link).
 - Próximos días: arriba el día y la descripción ("Vie 16 oct · Día fluido"), abajo el detalle; "Ver el mes →" va al final, adentro del recuadro.
+
+## Barra v2 (German, 2026-10-13)
+
+**Hoy · Mi carta · Consultá · Vínculos · Perfil.** Descubrir y Conexiones se juntaron en **Vínculos**, con dos solapas arriba (Descubrir · Conexiones), para darle su lugar en la barra a **Consultá tu carta** (Astrochat, spec X3), que en Mi carta quedaba escondido.

@@ -18,6 +18,14 @@ import {
 
 // Hoy (spec U1-C): Tu día como protagonista, los próximos días importantes y lo
 // social en una sola tarjeta. (El check-in de ánimo se sacó: no devolvía nada.)
+// Ejemplos para el acceso a Consultá tu carta (los mismos de astrochat_v1.json); rota por día.
+const CONSULT_EXAMPLES = [
+  "¿Por qué me cuesta tanto decidir?",
+  "¿Qué dice mi carta sobre cómo me vinculo?",
+  "¿Con qué tiene que ver cómo me siento esta semana?",
+  "¿En qué me conviene poner energía este mes?",
+];
+
 const pad = (n: number) => String(n).padStart(2, "0");
 const isoLocal = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const shortDate = (iso: string) => {
@@ -42,7 +50,7 @@ function HomeContent() {
   const [invitations, setInvitations] = useState<MyInvitation[]>([]);
 
   useEffect(() => {
-    getTodayAstroWeather().then((r) => setAstroWeather(r.astro_weather)).catch(() => null);
+    getTodayAstroWeather(isoLocal(new Date())).then((r) => setAstroWeather(r.astro_weather)).catch(() => null);
   }, []);
 
   useEffect(() => {
@@ -84,6 +92,17 @@ function HomeContent() {
           </div>
         </section>
       )}
+
+      {/* Consultá tu carta (Astrochat, spec X3): arriba y con un ejemplo, para que se entienda qué es. */}
+      <section className="space-y-2">
+        <SectionTitle>Consultá tu carta</SectionTitle>
+        <Link href="/astrochat" className="block space-y-2 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50 hover:ring-gold-400">
+          <span className="block text-sm text-slate-300">Preguntá lo que quieras sobre vos, tu momento o tus vínculos.</span>
+          <span className="block rounded-lg bg-slate-950 px-3 py-2.5 text-sm text-slate-500 ring-1 ring-slate-700">
+            Ej.: {CONSULT_EXAMPLES[new Date().getDate() % CONSULT_EXAMPLES.length]}
+          </span>
+        </Link>
+      </section>
 
       <section className="space-y-2">
         <SectionTitle>Próximos días</SectionTitle>
@@ -130,7 +149,6 @@ function HomeContent() {
       </section>
 
       <ListCard>
-        <ListRow href="/astrochat" icon="✧" title="Preguntale a Destiny" detail="Charlá sobre tu carta y tu momento" />
         <ListRow href="/carta" icon="☉" title="Mi carta" detail="Identidad, amor, vocación y emociones" />
       </ListCard>
     </>

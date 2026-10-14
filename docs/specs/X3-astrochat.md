@@ -10,7 +10,7 @@ Mi carta y Tu día dan lecturas cerradas. La persona quiere preguntar lo suyo ("
 
 ## Comportamiento
 
-- Pantalla **Astrochat** (`/astrochat`), con acceso desde Hoy y Mi carta ("Preguntale a Destiny"). Una conversación continua por persona.
+- Se llama **"Consultá tu carta"** (elegido por German entre tres opciones: dice qué es y que se responde con *tu* carta), con la bajada "Preguntá lo que quieras sobre vos, tu momento o tus vínculos" y un ejemplo en el campo de escritura. Pantalla `/astrochat`, con pestaña propia en la barra ("Consultá"), un acceso destacado en Hoy (después de Tu día) y accesos desde el contexto: "Consultá sobre tu día" en Tu día completo y "Consultá sobre esto" en cada área de Mi carta, que abren el chat con la pregunta ya escrita (`?q=`). Una conversación continua por persona.
 - **4 modos** (whitepaper), elegibles con un toque: **Explorador** (preguntas para pensar), **Mentor** (ordena opciones y próximos pasos, sin decidir), **Astrólogo técnico** (explica la lógica: aspectos, casas, orbes), **Acompañante** (escucha y contiene). Por defecto, el sugerido por el registro de la persona (X2): directo → Explorador, práctico → Mentor, analítico → Astrólogo técnico, intuitivo → Acompañante **(a revisar)**.
 - Responde **en el estilo de la persona** (X2) y en el modo elegido.
 - Cuando no hay mensajes, muestra preguntas de ejemplo para arrancar.

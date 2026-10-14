@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import { askAstrochat, Astrochat, AstroMessage, clearAstrochat, getAstrochat } from "@/lib/api";
@@ -9,9 +10,12 @@ import { askAstrochat, Astrochat, AstroMessage, clearAstrochat, getAstrochat } f
 // calculados por el motor, en tu estilo y en el modo que elijas.
 function Chat() {
   const profileId = useSessionProfileId();
+  const params = useSearchParams();
   const [chat, setChat] = useState<Astrochat | null>(null);
   const [mode, setMode] = useState<string>("");
-  const [text, setText] = useState("");
+  // Desde Tu día o Mi carta llega una pregunta sugerida (?q=), lista para mandar o editar.
+  const [text, setText] = useState(() => params.get("q") ?? "");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [sending, setSending] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -22,6 +26,7 @@ function Chat() {
       .then((c) => {
         setChat(c);
         setMode(c.modo);
+        setTimeout(() => inputRef.current?.focus(), 0);
       })
       .catch(() => setNotice("No pudimos abrir el Astrochat. Probá en un rato."));
   }, [profileId]);
@@ -60,8 +65,8 @@ function Chat() {
   return (
     <>
       <PageTitle
-        title="Preguntale a Destiny"
-        subtitle="Responde con tu carta y tu día, calculados por Destiny, y en tu estilo."
+        title="Consultá tu carta"
+        subtitle="Preguntá lo que quieras sobre vos, tu momento o tus vínculos. Te respondemos con tu carta y tu día, en tu estilo."
       />
 
       <div className="space-y-2">
@@ -81,7 +86,7 @@ function Chat() {
       </div>
 
       <div className="space-y-3">
-        {chat.mensajes.length === 0 && (
+        {chat.mensajes.length === 0 && !text && (
           <div className="space-y-2">
             <p className="text-sm text-slate-400">Podés empezar por acá:</p>
             {chat.ejemplos.map((q) => (
@@ -116,6 +121,7 @@ function Chat() {
       <form onSubmit={submit} className="space-y-2">
         <div className="flex items-end gap-2">
           <textarea
+            ref={inputRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => {
@@ -126,7 +132,7 @@ function Chat() {
             }}
             maxLength={500}
             rows={2}
-            placeholder={chat.restantes_hoy > 0 ? "Escribí tu pregunta…" : "Llegaste a las preguntas de hoy"}
+            placeholder={chat.restantes_hoy > 0 ? "Ej.: ¿Por qué me cuesta tanto decidir?" : "Llegaste a las preguntas de hoy"}
             disabled={chat.restantes_hoy === 0}
             className="flex-1 resize-none rounded-xl bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none ring-1 ring-slate-700 focus:ring-violet-400 disabled:opacity-50"
           />

@@ -143,8 +143,9 @@ export type WhatsappCode = {
 
 export type Mood = "energico" | "tranquilo" | "reflexivo" | "ansioso" | "inspirado";
 
-export async function getTodayAstroWeather(): Promise<{ astro_weather: string; date: string }> {
-  const res = await fetch(`${API_URL}/home/today`);
+// Con la fecha local, así coincide con "Tu día" (de noche, en UTC ya es mañana).
+export async function getTodayAstroWeather(localDate?: string): Promise<{ astro_weather: string; date: string }> {
+  const res = await fetch(`${API_URL}/home/today${localDate ? `?date=${localDate}` : ""}`);
   if (!res.ok) throw new Error("No se pudo obtener el clima astrológico");
   return res.json();
 }
