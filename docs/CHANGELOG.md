@@ -112,3 +112,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - **Nombres en primera persona** (German): la barra queda Hoy · Mi carta · Consultá · **Mis conexiones** · **Mi perfil**; la pantalla de conexiones se titula con el gancho, "¿Con quién fluye?", con las solapas Descubrir y Mis chats; en Hoy, "Tu gente" pasa a "Mis conexiones".
 - **Barra con palabras cortas** (German): Hoy · Carta · Consulta · **Red** · Perfil. Los títulos de las pantallas mantienen la calidez ("Mi carta", "Consultá tu carta", "¿Con quién fluye?"); en Hoy la sección pasa a "Tu red".
 - Barra: "Red" pasa a **Círculos** y "Consulta" a **Guía** (German). Se descartó "Oráculo": promete predecir el futuro, y Destiny no predice. En Hoy, "Tus círculos".
+- "Círculos" pasa a **Círculo**, en singular (German): "tu círculo" es la expresión natural y hace juego con Carta, Guía y Perfil.

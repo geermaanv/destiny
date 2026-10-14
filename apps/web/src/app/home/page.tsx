@@ -121,7 +121,7 @@ function HomeContent() {
       </section>
 
       <section className="space-y-2">
-        <SectionTitle>Tus círculos</SectionTitle>
+        <SectionTitle>Tu círculo</SectionTitle>
         <ListCard>
           {pendingRequests > 0 && (
             <ListRow

@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 
 // Barra de navegación inferior de la app (después del onboarding). El perfil
 // sale de la sesión (spec A5), así que los links no llevan profileId.
-// Hoy · Carta · Guía · Círculos · Perfil (spec U1; palabras cortas elegidas por German;
+// Hoy · Carta · Guía · Círculo · Perfil (spec U1; palabras cortas elegidas por German;
 // la calidez va en los títulos de cada pantalla). `also` = rutas que cuentan como esa pestaña.
 const ITEMS = [
   { href: "/home", label: "Hoy", icon: "☾", also: ["/calendario", "/dia"] },
   { href: "/carta", label: "Carta", icon: "☉", also: [] },
   { href: "/astrochat", label: "Guía", icon: "✧", also: [] },
-  { href: "/discover", label: "Círculos", icon: "✦", also: ["/conexiones", "/chat"] },
+  { href: "/discover", label: "Círculo", icon: "✦", also: ["/conexiones", "/chat"] },
   { href: "/perfil", label: "Perfil", icon: "◉", also: ["/perfil/", "/invitar"] },
 ];
 
