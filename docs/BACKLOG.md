@@ -182,6 +182,15 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 
 ## Tareas técnicas sueltas
 
+**Revisión nocturna 2026-10-14: lo que quedó anotado (no es urgente o requiere decisión)**
+- [ ] **Escala de Descubrir**: una sinastría del motor oficial tarda ~13 ms; Descubrir calcula una por candidato. Con miles de usuarios, precalcular o cachear (por pareja + versión de tablas).
+- [ ] La lista de años del registro se arma con el año del build: si no se recompila, en enero falta el año nuevo y React avisa un desajuste. Generarla en el navegador.
+- [ ] Decidir: las pantallas del registro son más angostas (`max-w-sm`) que las de la app (`max-w-md`).
+- [ ] Decidir: el chat entre personas tiene un botón naranja "Enviar", mientras que Respuestas usa el link "Preguntar →".
+- [ ] Si la sesión vence sin "Cerrar sesión", el estilo visual de la persona queda guardado en el dispositivo hasta que alguien inicie sesión.
+- [ ] Algunas acciones (aceptar o rechazar una conexión, bloquear) no muestran aviso si falla la API.
+- [ ] Aceptado por diseño, para tener presente: un perfil todavía sin verificar se puede leer sin sesión con su id (UUID imposible de adivinar), incluida la síntesis de Mi carta, que puede llamar a la IA.
+
 - [ ] Confirmar si Postgres es el motor definitivo (ADR 0001) antes de producción.
 - [x] Esquema de datos: `profiles` (A1-A3), `MoodCheckin`/`CalendarAnnotation` (B4/B6), `Match`/`ChatMessage` (B7). Falta modelar invitaciones (C8).
 - [x] Gating real de `/discover` según `verification_status` — implementado en `B5-pantalla-descubrir.md` (`_require_verified_profile`, 403 si no verificado).
