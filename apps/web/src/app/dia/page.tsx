@@ -116,9 +116,6 @@ function Dia() {
         example="¿Qué me conviene hacer hoy con lo que trae mi día?"
       />
 
-      <Link href="/calendario" className="block text-center text-sm text-violet-400">
-        Ver el mes →
-      </Link>
     </>
   );
 }
