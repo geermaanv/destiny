@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import { askAstrochat, Astrochat, AstroMessage, clearAstrochat, getAstrochat } from "@/lib/api";
@@ -12,11 +12,14 @@ import { askAstrochat, Astrochat, AstroMessage, clearAstrochat, getAstrochat } f
 function Chat() {
   const profileId = useSessionProfileId();
   const params = useSearchParams();
+  const router = useRouter();
   const [chat, setChat] = useState<Astrochat | null>(null);
   const [mode, setMode] = useState<string>("");
   // Desde Tu día o Mi carta llega una pregunta sugerida (?q=), lista para mandar o editar.
   const [text, setText] = useState(() => params.get("q") ?? "");
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  // Desde Hoy o Tu día la pregunta llega ya escrita y con ?enviar=1: se manda sola, una vez.
+  const autoSent = useRef(false);
   const [sending, setSending] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -31,6 +34,15 @@ function Chat() {
       })
       .catch(() => setNotice("No pudimos abrir el Astrochat. Probá en un rato."));
   }, [profileId]);
+
+  useEffect(() => {
+    if (chat && !autoSent.current && params.get("enviar") === "1" && params.get("q")) {
+      autoSent.current = true;
+      router.replace("/astrochat");
+      send(params.get("q")!);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chat]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -125,7 +137,7 @@ function Chat() {
             disabled={sending || !text.trim() || chat.restantes_hoy === 0}
             className="rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-40"
           >
-            Enviar
+            Preguntar
           </button>
         </div>
         <p className="flex justify-between text-xs text-slate-500">

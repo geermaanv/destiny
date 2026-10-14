@@ -114,3 +114,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - Barra: "Red" pasa a **Círculos** y "Consulta" a **Guía** (German). Se descartó "Oráculo": promete predecir el futuro, y Destiny no predice. En Hoy, "Tus círculos".
 - "Círculos" pasa a **Círculo**, en singular (German): "tu círculo" es la expresión natural y hace juego con Carta, Guía y Perfil.
 - Barra: "Guía" pasa a **Respuestas** (German, después de comparar varias opciones: lo que la persona busca es resolver sus dudas). Queda **Hoy · Carta · Respuestas · Círculo · Perfil**.
+- **Consultá tu carta, coherente en todos lados** (feedback de German): Hoy y Tu día usan la misma pieza, un campo real con botón **"Preguntar"** que lleva a Respuestas con la pregunta ya enviada (antes era un link con forma de campo, y en Tu día una tarjeta distinta). El botón del chat pasa de "Enviar" a "Preguntar". Probado de punta a punta en el navegador.

@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import AskBox from "@/components/AskBox";
 import { ListCard, ListRow, Page, SectionTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import {
@@ -93,16 +94,12 @@ function HomeContent() {
         </section>
       )}
 
-      {/* Consultá tu carta (Astrochat, spec X3): arriba y con un ejemplo, para que se entienda qué es. */}
-      <section className="space-y-2">
-        <SectionTitle>Consultá tu carta</SectionTitle>
-        <Link href="/astrochat" className="block space-y-2 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50 hover:ring-gold-400">
-          <span className="block text-sm text-slate-300">Preguntá lo que quieras sobre vos, tu momento o tus vínculos.</span>
-          <span className="block rounded-lg bg-slate-950 px-3 py-2.5 text-sm text-slate-500 ring-1 ring-slate-700">
-            Ej.: {CONSULT_EXAMPLES[new Date().getDate() % CONSULT_EXAMPLES.length]}
-          </span>
-        </Link>
-      </section>
+      {/* Consultá tu carta (Respuestas, spec X3): se escribe acá y se envía. */}
+      <AskBox
+        title="Consultá tu carta"
+        hint="Preguntá lo que quieras sobre vos, tu momento o tus vínculos."
+        example={CONSULT_EXAMPLES[new Date().getDate() % CONSULT_EXAMPLES.length]}
+      />
 
       <section className="space-y-2">
         <SectionTitle>Próximos días</SectionTitle>
