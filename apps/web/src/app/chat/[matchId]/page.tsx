@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import AppNav from "@/components/AppNav";
+import { Page } from "@/components/ui";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { AstrologyBlock, CONTEXTS, PersonalityBlock } from "@/components/CompatibilityView";
 import {
@@ -30,6 +30,7 @@ function ChatContent() {
   const [connection, setConnection] = useState<Connection | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
+  const [sendError, setSendError] = useState<string | null>(null);
   const [showMenu, setShowMenu] = useState(false);
   // Panel "Compatibilidad" (B7): astrología y personalidad por separado, con selector de vínculo.
   const [showCompat, setShowCompat] = useState(false);
@@ -46,7 +47,8 @@ function ChatContent() {
     if (!profileId) return;
     const refresh = () => {
       getConnection(matchId).then(setConnection).catch(() => router.replace("/conexiones"));
-      getMessages(matchId).then(setMessages);
+      // Si la red falla un momento, el próximo refresco lo reintenta (antes quedaba un error sin atrapar).
+      getMessages(matchId).then(setMessages).catch(() => null);
     };
     refresh();
     const id = setInterval(refresh, POLL_MS);
@@ -59,9 +61,15 @@ function ChatContent() {
 
   async function send() {
     if (!profileId || !draft.trim()) return;
-    await sendMessage(matchId, profileId, draft.trim());
-    setDraft("");
-    setMessages(await getMessages(matchId));
+    try {
+      await sendMessage(matchId, profileId, draft.trim());
+      setDraft("");
+      setMessages(await getMessages(matchId));
+      setSendError(null);
+    } catch {
+      // Se conserva lo escrito y se avisa (antes el mensaje se perdía sin aviso).
+      setSendError("No pudimos enviar el mensaje. Probá de nuevo.");
+    }
   }
 
   async function act(action: "whatsapp" | "block") {
@@ -77,7 +85,7 @@ function ChatContent() {
   const wa = connection.whatsapp;
 
   return (
-    <div className="flex w-full max-w-sm flex-col space-y-4">
+    <div className="flex w-full flex-col space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link href="/conexiones" aria-label="Volver" className="text-xl text-slate-400">
@@ -222,12 +230,14 @@ function ChatContent() {
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               placeholder="Escribí algo..."
+              maxLength={1000}
               className="min-w-0 flex-1 rounded-md bg-slate-900 px-3 py-2 text-sm outline-none ring-1 ring-slate-700"
             />
             <button type="submit" className="rounded-md bg-violet-600 px-3 py-2 text-sm font-medium text-white">
               Enviar
             </button>
           </form>
+          {sendError && <p className="text-sm text-gold-300">{sendError}</p>}
         </>
       )}
     </div>
@@ -236,11 +246,10 @@ function ChatContent() {
 
 export default function ChatPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center bg-slate-950 px-6 py-10 pb-24 text-slate-100">
+    <Page>
       <Suspense>
         <ChatContent />
       </Suspense>
-      <AppNav />
-    </main>
+    </Page>
   );
 }
