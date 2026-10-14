@@ -12,8 +12,10 @@ from functools import lru_cache
 from pathlib import Path
 
 from app.astro import ZODIAC_SIGNS
-from app.day.detail import day_detail
+from app.day.detail import day_detail, upcoming_transits
+from app.natal.dimensions import load_config as natal_config
 from app.natal.dimensions import natal_dimensions
+from app.personality.engine import load_config as personality_config
 from app.synastry.chart import chart_for_profile
 
 CONFIG_PATH = Path(__file__).parent / "config" / "astrochat_v1.json"
@@ -38,8 +40,55 @@ def is_crisis(text: str) -> bool:
     return any(_plain(word) in plain for word in load_config()["crisis"]["palabras"])
 
 
-def chart_facts(profile, today: date) -> dict:
-    """Lo único astrológico que ve la IA: ya calculado, sin datos personales."""
+POINT_NAMES = {
+    "sol": "Sol", "luna": "Luna", "mercurio": "Mercurio", "venus": "Venus", "marte": "Marte", "jupiter": "Júpiter",
+    "saturno": "Saturno", "urano": "Urano", "neptuno": "Neptuno", "pluton": "Plutón", "asc": "Ascendente", "mc": "Medio Cielo",
+}
+
+
+def _angle(a: float, b: float) -> float:
+    return abs((a - b + 180) % 360 - 180)
+
+
+def full_chart(chart) -> tuple[dict, list[str]]:
+    """v2: todos los puntos con signo (y casa con hora y lugar) y los aspectos natales mayores."""
+    planets = {}
+    for key, name in POINT_NAMES.items():
+        if key not in chart.points:
+            continue
+        info = {"signo": ZODIAC_SIGNS[int(chart.points[key] // 30)]}
+        if chart.houses and key not in ("asc", "mc"):
+            info["casa"] = chart.house_of(chart.points[key])
+        planets[name] = info
+    aspects_cfg = natal_config()["aspectos"]
+    keys = [k for k in POINT_NAMES if k in chart.points]
+    aspects = []
+    for i, a in enumerate(keys):
+        for b in keys[i + 1 :]:
+            sep = _angle(chart.points[a], chart.points[b])
+            found = [(abs(sep - x["angulo"]), x["nombre"]) for x in aspects_cfg.values() if abs(sep - x["angulo"]) <= x["orbe"]]
+            if found:
+                orb, name = min(found)
+                aspects.append(f"{POINT_NAMES[a]} en {name} con {POINT_NAMES[b]} (orbe {orb:.1f}°)")
+    return planets, aspects
+
+
+def personality_facts(answers: dict | None) -> dict:
+    """v2: preguntas respondidas con las opciones elegidas, en orden. Solo los ejes configurados
+    (por defecto sin E1, que tiene datos sensibles)."""
+    if not answers:
+        return {}
+    axes = set(load_config()["contexto"]["personalidad_ejes"])
+    out = {}
+    for q in personality_config()["questions"]:
+        choices = answers.get(q["id"])
+        if q["axis"] in axes and choices:
+            out[q["question"]] = [q["options"][c] for c in choices if 0 <= c < len(q["options"])]
+    return out
+
+
+def chart_facts(profile, today: date, answers: dict | None = None) -> dict:
+    """Lo único que ve la IA: ya calculado, sin datos personales."""
     chart = chart_for_profile(profile)
     signs = {
         name: ZODIAC_SIGNS[int(chart.points[point] // 30)]
@@ -48,7 +97,9 @@ def chart_facts(profile, today: date) -> dict:
     }
     dims = natal_dimensions(profile)
     day = day_detail(profile, today)
-    return {
+    planets, natal_aspects = full_chart(chart)
+    ctx = load_config()["contexto"]
+    facts = {
         "signos": signs,
         "hora_exacta": chart.time_known,
         "mi_carta": {d["nombre"]: [f["texto"] for f in d["fundamentos"]] for d in dims["dimensiones"]},
@@ -57,10 +108,17 @@ def chart_facts(profile, today: date) -> dict:
             "transitos": [t["texto"] for t in day["transitos"]],
             "areas": {a["nombre"]: a["estado"] for a in day["areas"]},
         },
+        "planetas": planets,
+        "aspectos_natales": natal_aspects,
+        "proximos_30_dias": upcoming_transits(profile, today, ctx["proximos_dias"], ctx["maximo_transitos_proximos"]),
     }
+    test = personality_facts(answers)
+    if test:
+        facts["test_de_personalidad"] = test
+    return facts
 
 
-def system_prompt(profile, mode: str, style_instructions: str, today: date) -> str:
+def system_prompt(profile, mode: str, style_instructions: str, today: date, answers: dict | None = None) -> str:
     cfg = load_config()
-    facts = json.dumps(chart_facts(profile, today), ensure_ascii=False)
+    facts = json.dumps(chart_facts(profile, today, answers), ensure_ascii=False)
     return f"{cfg['guia']} {cfg['modos'][mode]['instruccion']} {style_instructions}\n\nDatos de su carta (calculados por Destiny): {facts}"

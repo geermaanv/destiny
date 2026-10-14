@@ -17,9 +17,16 @@ Mi carta y Tu día dan lecturas cerradas. La persona quiere preguntar lo suyo ("
 
 ## Lo que sabe la IA (y lo que no)
 
-- **Sí, ya calculado por el motor** (ADR 0011: la IA no calcula nada): signos de Sol, Luna y Ascendente; los fundamentos de las 4 dimensiones de Mi carta; Tu día de hoy (Luna, casa, tránsitos, áreas). Se le indica que no invente posiciones ni aspectos que no estén en los datos.
-- **No**: nombre, fecha, hora y lugar de nacimiento, teléfono, foto, ni nada de otras personas (conexiones, compatibilidades). Preguntas sobre otra persona se responden desde la carta propia **(a revisar: sumar compatibilidad con conexiones en v2, con consentimiento)**.
+- **Sí, ya calculado por el motor** (ADR 0011: la IA no calcula nada): signos de Sol, Luna y Ascendente; los fundamentos de las 4 dimensiones de Mi carta; Tu día de hoy (Luna, casa, tránsitos, áreas); y desde la v2, la carta completa, los tránsitos de los próximos 30 días y el test de personalidad (ver abajo). Son unos 1600 tokens por pregunta. Se le indica que no invente posiciones ni aspectos que no estén en los datos.
+- **No**: nombre, fecha, hora y lugar de nacimiento, teléfono, foto, las respuestas del eje E1 del test (sensibles), ni nada de otras personas (conexiones, compatibilidades). Preguntas sobre otra persona se responden desde la carta propia **(a revisar: sumar compatibilidad con conexiones en v2, con consentimiento)**.
 - Contexto de la conversación: los últimos 10 mensajes.
+
+## v2 — Más contexto (German, 2026-10-14: "agregar los puntos 1, 2 y 3")
+
+La IA suma, siempre calculado por el motor y sin datos personales:
+1. **La carta completa**: los 10 planetas, el Ascendente y el Medio Cielo con su signo y su casa (casas solo con hora exacta y ciudad del buscador), y los **aspectos natales** mayores entre ellos (orbes de `dimensiones_v1.json`).
+2. **Los tránsitos de los próximos 30 días**: los más fuertes de los planetas del día sobre la carta (sin la Luna, que cambia todos los días), con el día en que son exactos. Usa el mismo motor que Tu día completo.
+3. **El test de personalidad**: las preguntas respondidas con las opciones elegidas en orden de preferencia. **Por defecto solo los ejes Afecto, Comunicación y Compromiso** (E2–E4): el eje Atracción y sexualidad (E1) tiene datos sensibles (vida sexual, Ley 25.326) y no se manda a un proveedor externo salvo que se decida lo contrario en `astrochat_v1.json` (`contexto.personalidad_ejes`).
 
 ## Límites y cuidados
 
@@ -55,3 +62,6 @@ Compatibilidad con conexiones en el chat, memoria a largo plazo, varias conversa
 9. Sin key o si la IA falla: respuesta fija, `ia` false, sin romper.
 10. Borrar la conversación: el historial queda vacío y la próxima pregunta no manda los mensajes viejos.
 11. Cambiar el límite en la configuración lo cambia sin tocar código.
+12. (v2) El prompt trae los 10 planetas con su signo (y casa con hora exacta) y los aspectos natales calculados.
+13. (v2) El prompt trae los tránsitos de los próximos 30 días, cada uno con su día exacto dentro de la ventana, sin la Luna.
+14. (v2) Con el test respondido, el prompt trae las respuestas elegidas de los ejes configurados y no las del eje E1.

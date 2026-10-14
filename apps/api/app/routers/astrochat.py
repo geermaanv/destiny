@@ -9,7 +9,7 @@ from app.astrochat.chat import is_crisis, load_config, suggested_mode, system_pr
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.llm import converse
-from app.models import AstroMessage, Profile
+from app.models import AstroMessage, PersonalityAnswers, Profile
 from app.personalization.style import prompt_instructions, style_for
 from app.schemas import AstroAnswerOut, AstroAskIn, AstrochatOut, AstroMessageOut, AstroModeOut
 
@@ -121,7 +121,8 @@ def ask_astrochat(
         {"role": "user" if m.role == "persona" else "assistant", "content": m.text}
         for m in _history(db, profile_id, cfg["mensajes_de_contexto"])
     ]
-    system = system_prompt(profile, mode, prompt_instructions(style_for(profile)), now.date())
+    test = db.get(PersonalityAnswers, profile_id)
+    system = system_prompt(profile, mode, prompt_instructions(style_for(profile)), now.date(), test.answers if test else None)
     result = converse(
         system,
         [*context, {"role": "user", "content": text}],

@@ -66,7 +66,8 @@ def _exact_day(planet: str, natal_lon: float, angle: float, day: date, cfg: dict
     return days[best] if 0 < best < len(days) - 1 else None
 
 
-def transits(natal: Chart, sky: Chart, day: date, cfg: dict) -> list[dict]:
+def _hits(natal: Chart, sky: Chart, cfg: dict) -> list[dict]:
+    """Aspectos de los planetas del día sobre los puntos natales, ordenados por fuerza (sin día exacto)."""
     names = cfg["nombres"]
     found = []
     for planet in cfg["planetas_del_dia"]:
@@ -89,6 +90,11 @@ def transits(natal: Chart, sky: Chart, day: date, cfg: dict) -> list[dict]:
                 ),
             })
     found.sort(key=lambda t: -t["fuerza"])
+    return found
+
+
+def transits(natal: Chart, sky: Chart, day: date, cfg: dict) -> list[dict]:
+    found = _hits(natal, sky, cfg)
     for t in found[: cfg["maximo_transitos"]]:
         exact = _exact_day(t["planeta"], natal.points[t["punto"]], cfg["aspectos"][t["aspecto"]]["angulo"], day, cfg)
         t["exacto"] = exact.isoformat() if exact else None
@@ -157,3 +163,22 @@ def write_reading(detail: dict, style_instructions: str) -> Written:
         if result:
             return Written(result.text, result)
     return Written(template_reading(detail), None)
+
+
+def upcoming_transits(profile, start: date, days: int, limit: int) -> list[dict]:
+    """Tránsitos más fuertes de los próximos días (Astrochat v2): cada uno con el día en que queda
+    más exacto dentro de la ventana. Sin la Luna, que cambia todos los días."""
+    cfg = load_config()
+    natal = chart_for_profile(profile)
+    best: dict[tuple, dict] = {}
+    for offset in range(days + 1):
+        day = start + timedelta(days=offset)
+        for hit in _hits(natal, sky_for(day), cfg):
+            if hit["planeta"] == "luna":
+                continue
+            key = (hit["planeta"], hit["punto"], hit["aspecto"])
+            if key not in best or hit["orbe"] < best[key]["orbe"]:
+                best[key] = hit | {"exacto": day.isoformat()}
+    ranked = sorted(best.values(), key=lambda t: -t["fuerza"])[:limit]
+    return [{"texto": t["texto"], "exacto": t["exacto"]} for t in sorted(ranked, key=lambda t: t["exacto"])]
+

@@ -99,7 +99,8 @@ Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usua
 - [ ] Mi carta v2: las otras 12 dimensiones del whitepaper, guardar respuestas a las preguntas (Destiny Mirror), regentes de casas.
 - [x] **Astrochat** (spec X3): "Preguntale a Destiny" desde Hoy y Mi carta, 4 modos, en el estilo de la persona, con la carta y Tu día ya calculados (sin datos personales), límite diario, respuesta fija ante palabras de crisis (135 / 911) y borrar conversación.
 - [ ] **Decisiones del Astrochat a revisar (German)**: el modo sale del estilo (directo → Explorador, práctico → Mentor, analítico → Técnico, intuitivo → Acompañante) y ya no se elige en la pantalla; límite de 10 preguntas por día; sin datos de conexiones; sin memoria a largo plazo. Todo se cambia en `app/astrochat/config/astrochat_v1.json`.
-- [ ] Astrochat v2: compatibilidad con tus conexiones (con consentimiento), memoria opcional, varias conversaciones, respuestas en streaming. Con créditos: preguntas extra con tokens.
+- [x] Astrochat v2 (más contexto): carta completa con aspectos natales, tránsitos de los próximos 30 días y test de personalidad (sin el eje E1, sensible).
+- [ ] Astrochat v3: compatibilidad con tus conexiones (con consentimiento), memoria opcional, varias conversaciones, respuestas en streaming. Con créditos: preguntas extra con tokens. Decidir si se suma el eje E1 del test.
 - [x] **Tu día completo** (spec B4 v3), primera versión de "Mi cielo": clima del día (Luna, fase y casa), los 3 tránsitos más fuertes de todos los planetas sobre la carta (con cuándo son exactos), estado por área y lectura con IA en el estilo de la persona.
 - [ ] Mi cielo v2: "hoy fluye con…" (tránsitos cruzados con tus conexiones), filtros por área en el calendario, tránsitos de varios meses.
 - [ ] **Consentimientos y datos**: aceptar privacidad al empezar, ver/exportar/borrar mis datos, memoria del chat opcional.

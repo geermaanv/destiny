@@ -161,3 +161,60 @@ def test_borrar_conversacion(client, openrouter):  # noqa: F811
     _ask(client, pid, "Algo nuevo")
     sent = json.dumps(openrouter.requests[-1]["body"]["messages"], ensure_ascii=False)
     assert "Algo viejo" not in sent
+
+
+# --- v2: más contexto -------------------------------------------------------
+
+def _facts(openrouter):  # noqa: F811
+    system = openrouter.requests[-1]["body"]["messages"][0]["content"]
+    return json.loads(system.split("Datos de su carta (calculados por Destiny): ", 1)[1])
+
+
+# 12
+def test_v2_carta_completa(client, openrouter):  # noqa: F811
+    from app.natal.dimensions import load_config as natal
+
+    pid = verified_user(client, PHONE, birth_date=BIRTH[0], birth_time=BIRTH[1])
+    _ask(client, pid, "¿Qué dice mi Marte?")
+    facts = _facts(openrouter)
+    c = compute_chart(date.fromisoformat(BIRTH[0]), time.fromisoformat(BIRTH[1]), True,
+                      BUENOS_AIRES["lat"], BUENOS_AIRES["lon"], BUENOS_AIRES["timezone"])
+    names = {"sol": "Sol", "luna": "Luna", "mercurio": "Mercurio", "venus": "Venus", "marte": "Marte",
+             "jupiter": "Júpiter", "saturno": "Saturno", "urano": "Urano", "neptuno": "Neptuno", "pluton": "Plutón"}
+    for key, name in names.items():
+        assert facts["planetas"][name]["signo"] == ZODIAC_SIGNS[int(c.points[key] // 30)]
+        assert facts["planetas"][name]["casa"] == c.house_of(c.points[key])
+    assert "Ascendente" in facts["planetas"] and facts["aspectos_natales"]
+    aspects = natal()["aspectos"]
+    for text in facts["aspectos_natales"]:
+        assert any(a["nombre"] in text for a in aspects.values())
+
+
+# 13
+def test_v2_proximos_30_dias(client, openrouter):  # noqa: F811
+    from datetime import datetime, timedelta, timezone
+
+    pid = verified_user(client, PHONE, birth_date=BIRTH[0], birth_time=BIRTH[1])
+    _ask(client, pid, "¿Qué me espera este mes?")
+    upcoming = _facts(openrouter)["proximos_30_dias"]
+    today = datetime.now(timezone.utc).date()
+    assert upcoming
+    for t in upcoming:
+        assert today <= date.fromisoformat(t["exacto"]) <= today + timedelta(days=30)
+        assert not t["texto"].startswith("La Luna")
+
+
+# 14
+def test_v2_test_de_personalidad_sin_eje_sensible(client, openrouter):  # noqa: F811
+    from app.personality.engine import load_config as test_config
+
+    pid = verified_user(client, PHONE)
+    questions = test_config()["questions"]
+    answers = {q["id"]: [1] for q in questions}
+    assert client.put(f"/profiles/{pid}/personality", json={"answers": answers}).status_code == 200
+    _ask(client, pid, "¿Cómo me vinculo?")
+    test = _facts(openrouter)["test_de_personalidad"]
+    e2 = next(q for q in questions if q["axis"] == "E2")
+    e1 = next(q for q in questions if q["axis"] == "E1")
+    assert test[e2["question"]] == [e2["options"][1]]
+    assert e1["question"] not in test
