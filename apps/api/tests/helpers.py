@@ -3,6 +3,8 @@
 import hashlib
 import hmac
 import json
+import struct
+import zlib
 
 from fastapi.testclient import TestClient
 
@@ -59,11 +61,32 @@ def verify(client: TestClient, profile_id: str, phone: str) -> dict:
     return code
 
 
-def verified_user(client: TestClient, phone: str, name: str = "Test", **kwargs) -> str:
-    """Usuario completo: datos natales + nombre + verificado + sesión iniciada en `client`."""
+def png() -> bytes:
+    """PNG válido de 1x1 para subir como foto."""
+
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0))
+        + chunk(b"IDAT", zlib.compress(b"\x00\xff\x00\x00"))
+        + chunk(b"IEND", b"")
+    )
+
+
+def add_photo(client: TestClient, profile_id: str):
+    """Sube una foto (spec A11: sin foto no se aparece en Descubrir)."""
+    return client.post(f"/profiles/{profile_id}/photos", files={"photo": ("p.png", png(), "image/png")})
+
+
+def verified_user(client: TestClient, phone: str, name: str = "Test", photo: bool = True, **kwargs) -> str:
+    """Usuario completo: datos natales + nombre + verificado + sesión iniciada en `client` + foto."""
     profile_id = create_profile(client, name=name, **kwargs)
     verify(client, profile_id, phone)
     assert client.get("/me").status_code == 200
+    if photo:
+        add_photo(client, profile_id)
     return profile_id
 
 

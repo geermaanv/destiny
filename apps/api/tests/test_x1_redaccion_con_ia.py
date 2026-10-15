@@ -13,13 +13,19 @@ class FakeOpenRouter:
 
     def __init__(self):
         self.requests: list[dict] = []
+        # Chequeo de fotos (spec A11): va aparte para no mezclarse con los pedidos de redacción.
+        self.moderation: list[dict] = []
+        self.moderation_reply = '{"apta": true, "motivo": null, "persona": true}'
         self.reply: str | None = "Los une una forma de hablar muy parecida. Lo que más van a tener que cuidar es el compromiso."
         self.status = 200
         self.raise_timeout = False
 
     def handler(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
-        self.requests.append({"url": str(request.url), "headers": dict(request.headers), "body": body})
+        if "provider" in body:
+            self.moderation.append({"url": str(request.url), "headers": dict(request.headers), "body": body})
+        else:
+            self.requests.append({"url": str(request.url), "headers": dict(request.headers), "body": body})
         if self.raise_timeout:
             raise httpx.ReadTimeout("timeout", request=request)
         if self.status != 200:
@@ -28,7 +34,7 @@ class FakeOpenRouter:
             200,
             json={
                 "model": body["model"],
-                "choices": [{"message": {"content": self.reply}}],
+                "choices": [{"message": {"content": self.moderation_reply if "provider" in body else self.reply}}],
                 "usage": {"prompt_tokens": 321, "completion_tokens": 45},
             },
         )

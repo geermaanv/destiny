@@ -1,188 +1,275 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Page } from "@/components/ui";
 import ConexionesTabs from "@/components/ConexionesTabs";
-import { useSessionProfileId } from "@/lib/session";
-import { PersonalityBlock } from "@/components/CompatibilityView";
+import GenderPrefs from "@/components/GenderPrefs";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import {
-  createMatch,
-  DiscoverCandidate,
-  getDiscoverCandidates,
-  getExplanation,
-  RelationshipContext,
-} from "@/lib/api";
-import { energyLabel, interestLabel } from "@/lib/profile";
+import { useSessionProfileId } from "@/lib/session";
+import { apiUrl, DiscoverCandidate, DiscoverFilters, getDiscoverCandidates, getProfile, Profile } from "@/lib/api";
+import { activeFilterCount, DEFAULT_FILTERS, loadFilters, saveFilters, saveLastList } from "@/lib/discover";
 
-const CONTEXTS: { value: RelationshipContext; label: string }[] = [
+const CONTEXTS: { value: DiscoverFilters["context"]; label: string }[] = [
   { value: "pareja", label: "Pareja" },
   { value: "amistad", label: "Amistad" },
   { value: "laboral", label: "Trabajo" },
   { value: "ocasional", label: "Casual" },
 ];
+const MIN_PCTS = [0, 50, 60, 70, 80];
 
-const AXES: { key: "atraccion" | "afecto" | "comunicacion" | "compromiso"; label: string }[] = [
-  { key: "atraccion", label: "Química" },
-  { key: "afecto", label: "Afecto" },
-  { key: "comunicacion", label: "Comunicación" },
-  { key: "compromiso", label: "Compromiso" },
-];
+const pill = (active: boolean) =>
+  `rounded-full px-3 py-1.5 text-xs ring-1 ${
+    active ? "bg-slate-700 text-white ring-slate-400" : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-slate-500"
+  }`;
 
-function DiscoverContent() {
-  const router = useRouter();
-  const profileId = useSessionProfileId();
-  const [candidates, setCandidates] = useState<DiscoverCandidate[] | null>(null);
-  const [openId, setOpenId] = useState<string | null>(null);
-  const [explanations, setExplanations] = useState<Record<string, string>>({});
-  const [error, setError] = useState<string | null>(null);
-  const [requested, setRequested] = useState<Record<string, boolean>>({});
-  const [context, setContext] = useState<RelationshipContext>("pareja");
-  const [connecting, setConnecting] = useState<string | null>(null);
+function Filters({ filters, onChange }: { filters: DiscoverFilters; onChange: (f: DiscoverFilters) => void }) {
+  const [edadMin, setEdadMin] = useState(String(filters.edad_min));
+  const [edadMax, setEdadMax] = useState(String(filters.edad_max));
 
-  useEffect(() => {
-    if (!profileId) return;
-    setCandidates(null);
-    setExplanations({});
-    getDiscoverCandidates(profileId, context)
-      .then(setCandidates)
-      .catch((e: Error) =>
-        setError(
-          e.message === "403"
-            ? "Para ver Descubrir primero tenés que verificar tu identidad."
-            : e.message === "409"
-              ? "Te faltan tus datos natales. Volvé a empezar el registro para completarlos."
-              : "No pudimos cargar Descubrir. Probá de nuevo en un rato."
-        )
-      );
-  }, [profileId, context]);
-
-  async function openCandidate(candidateId: string) {
-    setOpenId(candidateId);
-    if (!profileId || explanations[candidateId]) return;
-    const { text } = await getExplanation(profileId, candidateId, context);
-    setExplanations((prev) => ({ ...prev, [candidateId]: text }));
+  function applyAges() {
+    const clamp = (v: string, fallback: number) => Math.min(99, Math.max(18, Number(v) || fallback));
+    let min = clamp(edadMin, 18);
+    let max = clamp(edadMax, 99);
+    if (min > max) [min, max] = [max, min];
+    setEdadMin(String(min));
+    setEdadMax(String(max));
+    onChange({ ...filters, edad_min: min, edad_max: max });
   }
-
-  async function match(candidateId: string) {
-    if (!profileId || connecting) return;
-    setConnecting(candidateId);
-    const { id, status } = await createMatch(profileId, candidateId).finally(() => setConnecting(null));
-    if (status === "aceptada") {
-      router.push(`/chat/${id}`);
-    } else {
-      setRequested((prev) => ({ ...prev, [candidateId]: true }));
-    }
-  }
-
-  if (!profileId) return <p className="text-slate-400">Cargando…</p>;
-  if (error) return <p className="text-red-400">{error}</p>;
 
   return (
-    <div className="w-full space-y-4">
-      <ConexionesTabs />
-      <div className="space-y-1">
-        <p className="text-xs text-slate-400">¿Qué tipo de vínculo querés mirar?</p>
+    <div className="space-y-4 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
+      <div className="space-y-2">
+        <p className="text-xs text-slate-400">Según qué sistema</p>
         <div className="flex gap-2">
-          {CONTEXTS.map((c) => (
-            <button
-              key={c.value}
-              onClick={() => setContext(c.value)}
-              className={`flex-1 rounded-full px-2 py-1.5 text-xs ring-1 ${
-                context === c.value
-                  ? "bg-slate-700 text-white ring-slate-400"
-                  : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-slate-500"
-              }`}
-            >
-              {c.label}
+          <button onClick={() => onChange({ ...filters, sistema: "astrologia" })} className={pill(filters.sistema === "astrologia")}>
+            Astrología
+          </button>
+          <button onClick={() => onChange({ ...filters, sistema: "personalidad" })} className={pill(filters.sistema === "personalidad")}>
+            Test de personalidad
+          </button>
+          <span className="self-center text-xs text-slate-500">Numerología, próximamente</span>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <p className="text-xs text-slate-400">Compatibilidad mínima</p>
+        <div className="flex flex-wrap gap-2">
+          {MIN_PCTS.map((p) => (
+            <button key={p} onClick={() => onChange({ ...filters, min_pct: p })} className={pill(filters.min_pct === p)}>
+              {p === 0 ? "Cualquiera" : `${p}% o más`}
             </button>
           ))}
         </div>
       </div>
-      {candidates === null && <p className="text-slate-400">Cargando...</p>}
-      {candidates?.length === 0 && <p className="text-slate-400">Todavía no hay nadie en tu frecuencia.</p>}
-      {candidates?.map((c) => (
-        <div key={c.profile_id} className="rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
-          <button onClick={() => openCandidate(c.profile_id)} className="flex w-full items-center gap-3 text-left">
-            <ProfileAvatar photoUrl={c.photo_url} avatar={c.avatar} sunSign={c.sun_sign} />
-            <span className="min-w-0 flex-1">
-              <span className="block truncate font-medium">
-                {c.display_name ?? "Sin nombre"}
-                {c.age !== null && <span className="font-normal text-slate-400">, {c.age}</span>}
-                {c.verificado && (
-                  <span className="ml-1.5 align-middle text-xs font-normal text-gold-300" title="Verificó su WhatsApp">
-                    ✓{"\uFE0E"} Verificado
-                  </span>
-                )}
+      <div className="space-y-2">
+        <p className="text-xs text-slate-400">Edad</p>
+        <div className="flex items-center gap-2 text-sm">
+          <input
+            inputMode="numeric"
+            value={edadMin}
+            onChange={(e) => setEdadMin(e.target.value)}
+            onBlur={applyAges}
+            aria-label="Edad desde"
+            className="w-16 rounded-md bg-slate-950 px-2 py-1.5 text-center outline-none ring-1 ring-slate-700 focus:ring-slate-400"
+          />
+          <span className="text-slate-400">a</span>
+          <input
+            inputMode="numeric"
+            value={edadMax}
+            onChange={(e) => setEdadMax(e.target.value)}
+            onBlur={applyAges}
+            aria-label="Edad hasta"
+            className="w-16 rounded-md bg-slate-950 px-2 py-1.5 text-center outline-none ring-1 ring-slate-700 focus:ring-slate-400"
+          />
+          <span className="text-slate-400">años</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CandidateCard({ c, big }: { c: DiscoverCandidate; big: boolean }) {
+  return (
+    <Link
+      href={`/discover/${c.profile_id}`}
+      className="block overflow-hidden rounded-xl bg-slate-900 ring-1 ring-slate-700 hover:ring-slate-500"
+    >
+      {c.photo_url ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={apiUrl(c.photo_url)} alt="" className={`w-full object-cover object-top ${big ? "aspect-square" : "aspect-[16/9]"}`} />
+      ) : (
+        <div className="flex aspect-[16/9] items-center justify-center bg-slate-800">
+          <ProfileAvatar photoUrl={null} avatar={c.avatar} sunSign={c.sun_sign} size={64} />
+        </div>
+      )}
+      <div className="flex items-start gap-3 p-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-medium">
+            {c.display_name ?? "Sin nombre"}
+            {c.age !== null && <span className="font-normal text-slate-400">, {c.age}</span>}
+            {c.verificado && (
+              <span className="ml-1.5 align-middle text-xs font-normal text-gold-300" title="Verificó su WhatsApp">
+                ✓{"︎"} Verificado
               </span>
-              <span className="block text-xs text-slate-400">
-                {[c.sun_sign, c.neighborhood].filter(Boolean).join(" · ")}
-              </span>
-              <span className="block text-xs text-gold-300">{c.preview}</span>
-            </span>
-            <span className="font-semibold text-gold-300">{c.compatibility_pct}%</span>
+            )}
+          </p>
+          <p className="text-xs text-slate-400">{[c.sun_sign, c.gender_label, c.neighborhood].filter(Boolean).join(" · ")}</p>
+          <p className="text-xs text-gold-300">{c.preview}</p>
+        </div>
+        <div className="text-right">
+          <p className="font-semibold text-gold-300">{c.compatibility_pct}%</p>
+          <p className="text-xs text-violet-400">Ver perfil →</p>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function DiscoverContent() {
+  const profileId = useSessionProfileId();
+  const [me, setMe] = useState<Profile | null>(null);
+  const [filters, setFilters] = useState<DiscoverFilters>(DEFAULT_FILTERS);
+  const [filtersReady, setFiltersReady] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [query, setQuery] = useState("");
+  const [search, setSearch] = useState("");
+  const [skipPrefs, setSkipPrefs] = useState(false);
+  const [candidates, setCandidates] = useState<DiscoverCandidate[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setFilters(loadFilters());
+    setFiltersReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (profileId) getProfile(profileId).then(setMe).catch(() => null);
+  }, [profileId]);
+
+  // La búsqueda espera a que se deje de escribir.
+  useEffect(() => {
+    const id = setTimeout(() => setSearch(query.trim()), 400);
+    return () => clearTimeout(id);
+  }, [query]);
+
+  useEffect(() => {
+    if (!profileId || !filtersReady) return;
+    setCandidates(null);
+    setError(null);
+    getDiscoverCandidates(profileId, filters, search)
+      .then((list) => {
+        setCandidates(list);
+        saveLastList(filters, list);
+      })
+      .catch((e: Error) =>
+        setError(
+          e.message === "409" && filters.sistema === "personalidad"
+            ? "test"
+            : e.message === "403"
+              ? "Para ver Descubrir primero tenés que verificar tu identidad."
+              : e.message === "409"
+                ? "Te faltan tus datos natales. Volvé a empezar el registro para completarlos."
+                : "No pudimos cargar Descubrir. Probá de nuevo en un rato."
+        )
+      );
+  }, [profileId, filters, filtersReady, search]);
+
+  function update(next: DiscoverFilters) {
+    setFilters(next);
+    saveFilters(next);
+  }
+
+  if (!profileId || !me) return <p className="text-slate-400">Cargando…</p>;
+
+  const needsPrefs = filters.context === "pareja" && (!me.gender || me.show_me.length === 0) && !skipPrefs;
+  const filterCount = activeFilterCount(filters);
+
+  return (
+    <div className="w-full space-y-4">
+      <ConexionesTabs />
+
+      {!me.has_photo && (
+        <Link
+          href="/perfil/fotos?desde=descubrir"
+          className="block rounded-xl bg-slate-900 p-3 text-sm text-gold-200 ring-1 ring-gold-400/50"
+        >
+          Subí tu foto para que otros te vean. <span className="text-violet-400">Subir foto →</span>
+        </Link>
+      )}
+
+      <div className="flex gap-2">
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="⌕ Buscar por nombre"
+          className="min-w-0 flex-1 rounded-md bg-slate-900 px-3 py-2 text-sm outline-none ring-1 ring-slate-700 focus:ring-slate-400"
+        />
+        <button
+          onClick={() => setShowFilters((v) => !v)}
+          className={`rounded-md px-3 py-2 text-sm ring-1 ${showFilters ? "bg-slate-700 text-white ring-slate-400" : "bg-slate-900 text-slate-300 ring-slate-700"}`}
+        >
+          Filtros{filterCount > 0 && ` · ${filterCount}`}
+        </button>
+      </div>
+
+      {!search && (
+        <div className="space-y-1">
+          <p className="text-xs text-slate-400">¿Qué buscás?</p>
+          <div className="flex gap-2">
+            {CONTEXTS.map((c) => (
+              <button key={c.value} onClick={() => update({ ...filters, context: c.value })} className={`flex-1 ${pill(filters.context === c.value)}`}>
+                {c.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {showFilters && !search && <Filters filters={filters} onChange={update} />}
+
+      {needsPrefs && (
+        <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">
+          <div>
+            <p className="font-medium">Para mostrarte gente para pareja</p>
+            <p className="text-xs text-slate-400">Contanos tu género y a quién querés ver. Lo podés cambiar en Editar perfil.</p>
+          </div>
+          <GenderPrefs profile={me} submitLabel="Guardar y ver" onSaved={setMe} />
+          <button onClick={() => setSkipPrefs(true)} className="w-full text-center text-xs text-slate-500 underline">
+            Ahora no
           </button>
-          {openId === c.profile_id && (
+        </div>
+      )}
+
+      {error === "test" ? (
+        <p className="text-sm text-slate-300">
+          Para buscar por personalidad primero completá tu test.{" "}
+          <Link href="/perfil/test" className="text-violet-400">
+            Hacer el test →
+          </Link>
+        </p>
+      ) : error ? (
+        <p className="text-red-400">{error}</p>
+      ) : null}
+
+      {!error && candidates === null && <p className="text-slate-400">Cargando…</p>}
+      {!error && candidates?.length === 0 && (
+        <div className="space-y-1 text-sm text-slate-400">
+          {search ? (
+            <p>Nadie con ese nombre.</p>
+          ) : filterCount > 0 ? (
             <>
-              <div className="mt-3 space-y-1.5">
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">✦ Astrología · {c.compatibility_pct}%</p>
-                {AXES.map((axis) => (
-                  <div key={axis.key} className="flex items-center gap-2 text-xs">
-                    <span className="w-24 text-slate-400">{axis.label}</span>
-                    <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800">
-                      <span
-                        className="block h-full rounded-full bg-gold-400"
-                        style={{ width: `${c.axes[axis.key] ?? 0}%` }}
-                      />
-                    </span>
-                    <span className="w-7 text-right text-slate-300">{c.axes[axis.key] ?? "—"}</span>
-                  </div>
-                ))}
-                {c.approximate && (
-                  <p className="text-xs text-slate-500">Aproximado: sin hora exacta de nacimiento no se usan las casas.</p>
-                )}
-              </div>
-              <div className="mt-3">
-                <PersonalityBlock p={c.personality} />
-              </div>
-              {(c.bio || c.energy_period || c.interests.length > 0) && (
-                <div className="mt-3 space-y-2 text-sm">
-                  {c.bio && <p className="text-slate-200">“{c.bio}”</p>}
-                  {c.energy_period && (
-                    <p className="text-slate-400">
-                      {energyLabel(c.energy_period)?.icon} Más energía a la {energyLabel(c.energy_period)?.label.toLowerCase()}
-                    </p>
-                  )}
-                  {c.interests.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {c.interests.map((i) => (
-                        <span key={i} className="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-slate-300">
-                          {interestLabel(i)}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-              <p className="mt-3 text-sm text-slate-300">{explanations[c.profile_id] ?? "Cargando explicación..."}</p>
-              {requested[c.profile_id] ? (
-                <p className="mt-3 text-center text-sm text-gold-300">
-                  ✓ Solicitud enviada. Te avisamos en Conexiones cuando acepte.
-                </p>
-              ) : (
-                <button
-                  onClick={() => match(c.profile_id)}
-                  disabled={connecting === c.profile_id}
-                  className="mt-3 w-full rounded-md bg-violet-600 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-60"
-                >
-                  {connecting === c.profile_id ? "Enviando solicitud…" : "Conectar"}
-                </button>
-              )}
+              <p>Nadie con estos filtros todavía.</p>
+              <button onClick={() => update({ ...DEFAULT_FILTERS, context: filters.context })} className="text-violet-400">
+                Ampliar filtros →
+              </button>
             </>
+          ) : (
+            <p>Todavía no hay nadie en tu frecuencia.</p>
           )}
         </div>
-      ))}
+      )}
+      {!needsPrefs && candidates?.map((c, i) => <CandidateCard key={c.profile_id} c={c} big={i === 0 || !search} />)}
     </div>
   );
 }

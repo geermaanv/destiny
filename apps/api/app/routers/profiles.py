@@ -11,7 +11,8 @@ from app.auth import hash_token, new_token, require_owner_if_active, session_pro
 from app.config import settings
 from app.public_profile import sun_sign
 from app.database import get_db
-from app.models import PhoneVerificationCode, Profile
+from app import photos
+from app.models import PhoneVerificationCode, Profile, ProfilePhoto
 from app.schemas import (
     PERIOD_MIDPOINTS,
     UNKNOWN_TIME,
@@ -20,6 +21,9 @@ from app.schemas import (
     BirthDataIn,
     ContinueExistingOut,
     NotificationPreferenceIn,
+    PhotoOut,
+    PhotosOut,
+    PreferencesIn,
     ProfileOut,
     VerificationOut,
     WhatsappCodeOut,
@@ -204,9 +208,7 @@ def continue_with_existing_profile(
     return ContinueExistingOut(profile_id=existing.id)
 
 
-# Perfil liviano (spec A4).
-PHOTO_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
-MAX_PHOTO_BYTES = 5 * 1024 * 1024
+# Perfil liviano (spec A4); las fotos son de la spec A11.
 
 
 @router.post("/{profile_id}/basic-info", response_model=ProfileOut)
@@ -232,53 +234,146 @@ def set_basic_info(
     return profile
 
 
-@router.post("/{profile_id}/photo", response_model=ProfileOut)
-async def upload_photo(
+@router.post("/{profile_id}/preferences", response_model=ProfileOut)
+def set_preferences(
     profile_id: uuid.UUID,
-    photo: UploadFile = File(...),
+    payload: PreferencesIn,
     db: Session = Depends(get_db),
     current: uuid.UUID | None = Depends(session_profile_id),
 ) -> Profile:
-    profile = db.get(Profile, profile_id)
-    if profile is None:
-        raise HTTPException(status_code=404, detail="Profile not found")
-    require_owner_if_active(profile, current)
-    extension = PHOTO_TYPES.get(photo.content_type or "")
-    if extension is None:
-        raise HTTPException(status_code=415, detail="La foto tiene que ser JPG, PNG o WebP")
-    content = await photo.read(MAX_PHOTO_BYTES + 1)
-    if len(content) > MAX_PHOTO_BYTES:
-        raise HTTPException(status_code=413, detail="La foto no puede pesar más de 5 MB")
-
-    uploads = Path(settings.uploads_dir)
-    uploads.mkdir(parents=True, exist_ok=True)
-    if profile.photo_path:
-        Path(profile.photo_path).unlink(missing_ok=True)
-    path = uploads / f"{profile.id}{extension}"
-    path.write_bytes(content)
-
-    profile.photo_path = str(path)
+    """Spec B8: género y a quién ver en Descubrir ("pareja")."""
+    profile = _owned(profile_id, db, current)
+    profile.gender = payload.gender
+    profile.gender_detail = payload.gender_detail
+    profile.show_me = list(dict.fromkeys(payload.show_me))
+    profile.appear_in = list(dict.fromkeys(payload.appear_in)) if payload.gender == "no_binario" else []
+    profile.show_gender = payload.show_gender
     db.commit()
     db.refresh(profile)
     return profile
 
 
-@router.delete("/{profile_id}/photo", response_model=ProfileOut)
-def delete_photo(
-    profile_id: uuid.UUID,
-    db: Session = Depends(get_db),
-    current: uuid.UUID | None = Depends(session_profile_id),
-) -> Profile:
+def _owned(profile_id: uuid.UUID, db: Session, current: uuid.UUID | None) -> Profile:
     profile = db.get(Profile, profile_id)
     if profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
     require_owner_if_active(profile, current)
-    if profile.photo_path:
-        Path(profile.photo_path).unlink(missing_ok=True)
-        profile.photo_path = None
-        db.commit()
-        db.refresh(profile)
     return profile
+
+
+def _photos_out(profile: Profile) -> PhotosOut:
+    return PhotosOut(
+        photos=[
+            PhotoOut(
+                id=p.id,
+                url=f"/profiles/{profile.id}/photo" if p.position == 0 else f"/photos/{p.id}",
+                principal=p.position == 0,
+            )
+            for p in profile.photos
+        ],
+        max=photos.load_config()["max"],
+    )
+
+
+def _save_order(db: Session, profile: Profile, ordered: list[ProfilePhoto]) -> PhotosOut:
+    """Renumera (0 = principal) y deja `photo_path` apuntando a la principal."""
+    for position, photo in enumerate(ordered):
+        photo.position = position
+    profile.photo_path = ordered[0].path if ordered else None
+    db.commit()
+    db.refresh(profile)
+    return _photos_out(profile)
+
+
+@router.get("/{profile_id}/photos", response_model=PhotosOut)
+def list_photos(
+    profile_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> PhotosOut:
+    profile = _owned(profile_id, db, current)
+    if current != profile.id:  # sus fotos solo las lista el dueño (las públicas van por Descubrir)
+        raise HTTPException(status_code=401, detail="Iniciá sesión")
+    return _photos_out(profile)
+
+
+@router.post("/{profile_id}/photos", response_model=PhotosOut, status_code=201)
+async def upload_photo(
+    profile_id: uuid.UUID,
+    photo: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> PhotosOut:
+    profile = _owned(profile_id, db, current)
+    cfg = photos.load_config()
+    if len(profile.photos) >= cfg["max"]:
+        raise HTTPException(status_code=409, detail=f"Podés tener hasta {cfg['max']} fotos")
+    content_type = photo.content_type or ""
+    extension = cfg["tipos"].get(content_type)
+    if extension is None:
+        raise HTTPException(status_code=415, detail="La foto tiene que ser JPG, PNG o WebP")
+    content = await photo.read(cfg["max_bytes"] + 1)
+    if len(content) > cfg["max_bytes"]:
+        raise HTTPException(status_code=413, detail="La foto no puede pesar más de 5 MB")
+
+    # Chequeo automático (ADR 0013): a la IA va solo la imagen.
+    verdict = photos.check(content, content_type)
+    if not verdict.apta:
+        raise HTTPException(status_code=422, detail=photos.rejection_message(verdict))
+    if not profile.photos and verdict.persona is False:
+        raise HTTPException(status_code=422, detail=cfg["sin_persona"])
+
+    uploads = Path(settings.uploads_dir)
+    uploads.mkdir(parents=True, exist_ok=True)
+    photo_id = uuid.uuid4()
+    path = uploads / f"{profile.id}-{photo_id}{extension}"
+    path.write_bytes(content)
+    new = ProfilePhoto(
+        id=photo_id,
+        profile_id=profile.id,
+        path=str(path),
+        position=len(profile.photos),
+        persona=verdict.persona,
+        moderacion="aprobada" if verdict.revisada else "sin_revisar",
+    )
+    db.add(new)
+    return _save_order(db, profile, [*profile.photos, new])
+
+
+def _find_photo(profile: Profile, photo_id: uuid.UUID) -> ProfilePhoto:
+    for p in profile.photos:
+        if p.id == photo_id:
+            return p
+    raise HTTPException(status_code=404, detail="Photo not found")
+
+
+@router.delete("/{profile_id}/photos/{photo_id}", response_model=PhotosOut)
+def delete_photo(
+    profile_id: uuid.UUID,
+    photo_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> PhotosOut:
+    profile = _owned(profile_id, db, current)
+    target = _find_photo(profile, photo_id)
+    Path(target.path).unlink(missing_ok=True)
+    rest = [p for p in profile.photos if p.id != photo_id]
+    db.delete(target)
+    return _save_order(db, profile, rest)
+
+
+@router.post("/{profile_id}/photos/{photo_id}/principal", response_model=PhotosOut)
+def set_principal(
+    profile_id: uuid.UUID,
+    photo_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> PhotosOut:
+    profile = _owned(profile_id, db, current)
+    target = _find_photo(profile, photo_id)
+    if target.persona is False:
+        raise HTTPException(status_code=409, detail=photos.load_config()["sin_persona"])
+    return _save_order(db, profile, [target, *(p for p in profile.photos if p.id != photo_id)])
 
 
 @router.get("/{profile_id}/photo")

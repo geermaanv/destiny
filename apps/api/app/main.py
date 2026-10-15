@@ -12,6 +12,7 @@ from app.routers import (
     invitations,
     matches,
     personality,
+    photos,
     profiles,
     sessions,
     style,
@@ -38,6 +39,7 @@ app.add_middleware(
 )
 
 app.include_router(profiles.router)
+app.include_router(photos.router)
 app.include_router(home.router)
 app.include_router(home.mood_router)
 app.include_router(discover.router)

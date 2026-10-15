@@ -2,16 +2,18 @@
 
 import pytest
 
-from tests.helpers import BUENOS_AIRES, create_profile, verified_user
+from tests.helpers import BUENOS_AIRES, add_photo, create_profile, verified_user
 from tests.test_x1_redaccion_con_ia import FakeOpenRouter  # noqa: F401
 from tests.test_x1_redaccion_con_ia import sin_key  # noqa: F401
 
 
-def active_user(client, name="Ana", birth_date="1990-05-20", birth_time="14:30") -> str:
-    """Registro completo sin WhatsApp: perfil, datos, nombre y sesión en el dispositivo."""
+def active_user(client, name="Ana", birth_date="1990-05-20", birth_time="14:30", photo=True) -> str:
+    """Registro completo sin WhatsApp: perfil, datos, nombre y sesión en el dispositivo (y foto, spec A11)."""
     pid = create_profile(client, birth_date=birth_date, birth_time=birth_time, name=name)
     r = client.post("/sessions/start", json={"profile_id": pid})
     assert r.status_code == 204, r.text
+    if photo:
+        add_photo(client, pid)
     return pid
 
 

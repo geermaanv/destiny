@@ -40,3 +40,5 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [A9-compartir-mi-carta](./A9-compartir-mi-carta.md) | A (autoconocimiento) | implemented |
 | [X3-astrochat](./X3-astrochat.md) | X3 (transversal) | implemented |
 | [A10-verificacion-opcional](./A10-verificacion-opcional.md) | A (verificación y sesión) | implemented |
+| [A11-fotos](./A11-fotos.md) | A4 / B5 | implemented |
+| [B8-filtros-descubrir](./B8-filtros-descubrir.md) | B5 | implemented |

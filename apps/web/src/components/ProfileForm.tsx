@@ -1,17 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import {
-  apiUrl,
-  AvatarKey,
-  deletePhoto,
-  EnergyPeriod,
-  getProfile,
-  Interest,
-  Profile,
-  setBasicInfo,
-  uploadPhoto,
-} from "@/lib/api";
+import { useEffect, useState } from "react";
+import { AvatarKey, EnergyPeriod, getProfile, Interest, Profile, setBasicInfo } from "@/lib/api";
 import { AVATARS, avatarEmoji, ENERGY_PERIODS, INTERESTS, MAX_INTERESTS } from "@/lib/profile";
 
 const INPUT_CLASS =
@@ -39,12 +29,9 @@ export default function ProfileForm({
   const [bio, setBio] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
   const [avatar, setAvatar] = useState<AvatarKey>("signo");
-  const [hasPhoto, setHasPhoto] = useState(false);
-  const [photoVersion, setPhotoVersion] = useState(0);
   const [saving, setSaving] = useState(false);
   const [savedFlash, setSavedFlash] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     getProfile(profileId)
@@ -56,7 +43,6 @@ export default function ProfileForm({
         setBio(p.bio ?? "");
         setNeighborhood(p.neighborhood ?? "");
         setAvatar(p.avatar ?? "signo");
-        setHasPhoto(p.has_photo);
       })
       .catch(() => setError("No se pudo cargar tu perfil."));
   }, [profileId]);
@@ -65,22 +51,6 @@ export default function ProfileForm({
     setInterests((prev) =>
       prev.includes(value) ? prev.filter((i) => i !== value) : prev.length < MAX_INTERESTS ? [...prev, value] : prev
     );
-  }
-
-  async function handlePhoto(file: File) {
-    setError(null);
-    try {
-      await uploadPhoto(profileId, file);
-      setHasPhoto(true);
-      setPhotoVersion((v) => v + 1);
-    } catch (e) {
-      setError((e as Error).message);
-    }
-  }
-
-  async function removePhoto() {
-    await deletePhoto(profileId).catch(() => null);
-    setHasPhoto(false);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -116,58 +86,32 @@ export default function ProfileForm({
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6">
-      <div className="flex items-center gap-4">
-        {hasPhoto ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={`${apiUrl(`/profiles/${profileId}/photo`)}?v=${photoVersion}`}
-            alt="Tu foto"
-            className="h-20 w-20 rounded-full object-cover"
-          />
-        ) : (
-          <span className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-800 text-4xl text-gold-200 ring-1 ring-gold-400/40">
+      {/* Spec A11: las fotos ya no van acá (ni en el registro); se cargan en Perfil → Tus fotos y en Descubrir. */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-800 text-3xl text-gold-200 ring-1 ring-gold-400/40">
             {previewEmoji}
           </span>
-        )}
-        <div className="space-y-1 text-sm">
-          <input
-            ref={fileInput}
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            className="hidden"
-            onChange={(e) => e.target.files?.[0] && handlePhoto(e.target.files[0])}
-          />
-          <button type="button" onClick={() => fileInput.current?.click()} className="block text-violet-400 underline">
-            {hasPhoto ? "Cambiar foto" : "Subir foto (opcional)"}
-          </button>
-          {hasPhoto && (
-            <button type="button" onClick={removePhoto} className="block text-slate-500 underline">
-              Usar avatar en vez de foto
+          <p className="text-sm text-slate-400">
+            Elegí tu avatar <span className="block text-xs text-slate-500">Se ve mientras no tengas fotos.</span>
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {AVATARS.map((a) => (
+            <button
+              key={a.value}
+              type="button"
+              onClick={() => setAvatar(a.value)}
+              aria-label={a.value === "signo" ? "Mi signo" : a.value}
+              className={`flex h-11 w-11 items-center justify-center rounded-full text-xl ring-1 ${
+                avatar === a.value ? "bg-slate-700 ring-slate-300" : "bg-slate-900 ring-slate-700"
+              }`}
+            >
+              {a.value === "signo" ? <span className="text-xs text-slate-200">Signo</span> : a.emoji}
             </button>
-          )}
+          ))}
         </div>
       </div>
-
-      {!hasPhoto && (
-        <div className="space-y-2">
-          <p className="text-sm text-slate-400">Elegí tu avatar</p>
-          <div className="flex flex-wrap gap-2">
-            {AVATARS.map((a) => (
-              <button
-                key={a.value}
-                type="button"
-                onClick={() => setAvatar(a.value)}
-                aria-label={a.value === "signo" ? "Mi signo" : a.value}
-                className={`flex h-11 w-11 items-center justify-center rounded-full text-xl ring-1 ${
-                  avatar === a.value ? "bg-slate-700 ring-slate-300" : "bg-slate-900 ring-slate-700"
-                }`}
-              >
-                {a.value === "signo" ? <span className="text-xs text-slate-200">Signo</span> : a.emoji}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       <div className="space-y-1">
         <label htmlFor="display-name" className="block text-sm text-slate-400">

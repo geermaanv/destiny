@@ -158,6 +158,18 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Propuesta para respetar los 6 meses gratis: lanzar primero solo **ganar y gastar** créditos (sin venta) para aprender qué valora la gente.
 - [ ] Revisión legal del saldo prepago (Defensa del Consumidor: vencimiento, devoluciones, información de precios).
 
+**Fotos y búsqueda (pedido de Pablo, 2026-10-15)**
+- [x] Fotos: hasta 4 con chequeo automático (spec A11, ADR 0013).
+- [x] Descubrir: lupa por nombre, filtros por sistema, compatibilidad mínima y edad, género y "Mostrame" (spec B8).
+- [ ] Reportar fotos y revisar a mano las "sin revisar".
+- [ ] Fotos en almacenamiento en la nube (hoy disco de la Mac), junto con el hosting.
+- [ ] Política de privacidad: avisar que las fotos se chequean con un proveedor externo (ADR 0013).
+- [ ] Filtro por distancia (hace falta pedir ciudad o ubicación aproximada).
+- [ ] Numerología como sistema de compatibilidad (modelo a definir por Pablo).
+- [ ] @ usuario y QR para compartir el perfil (spec C9).
+- [ ] Qué compartir con cada conexión (idea de Pablo: fotos, carta, test, valores, metas; spec C10).
+- [ ] Propuesta a Pablo: 4 fotos por elemento y Destiny elige cuál mostrar según el día (enviada por WhatsApp, sin respuesta).
+
 **Decisiones pendientes para Pablo**
 - [ ] Confirmar que la monetización queda para después del MVP 100 % gratis (regla de `ALCANCE_MVP.md`).
 - [x] **RRHH con la carta natal** — **queda afuera por ahora** (decisión de German, 2026-10-13). Contexto: usar la carta para seleccionar o descartar candidatos tiene riesgo legal (discriminación, datos personales sensibles; sin evidencia de que prediga desempeño). Propuesta: Destiny Pro como networking y autoconocimiento voluntario, no selección de personal. Validar con un abogado.

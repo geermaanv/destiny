@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     # Redacción con IA vía OpenRouter (spec X1). Sin key → textos de plantilla.
     openrouter_api_key: str | None = None
     openrouter_model: str | None = None
+    # Chequeo de fotos (spec A11, ADR 0013); sin valor usa openrouter_model (tiene que aceptar imágenes).
+    openrouter_moderation_model: str | None = None
     web_base_url: str = "http://localhost:3000"
     # Fotos de perfil (spec A4): en disco local mientras el hosting sea la Mac del equipo (ADR 0007).
     uploads_dir: str = "uploads"

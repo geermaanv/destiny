@@ -1,10 +1,10 @@
 import uuid
 from datetime import date, datetime, time
 
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, String, Time
+from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, String, Time
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
 from app.database import Base
@@ -39,7 +39,17 @@ class Profile(Base):
     energy_period: Mapped[str | None] = mapped_column(String, nullable=True)
     interests: Mapped[list[str]] = mapped_column(ARRAY(String), default=list, nullable=False)
     avatar: Mapped[str | None] = mapped_column(String, nullable=True)
+    # Spec A11: copia de la ruta de la foto principal (la primera de `photos`); None = sin fotos.
     photo_path: Mapped[str | None] = mapped_column(String, nullable=True)
+    photos: Mapped[list["ProfilePhoto"]] = relationship(order_by="ProfilePhoto.position", lazy="selectin")
+
+    # Spec B8: género y a quién quiere ver en Descubrir ("pareja"). No se pregunta la orientación.
+    gender: Mapped[str | None] = mapped_column(String, nullable=True)  # "mujer" | "hombre" | "no_binario"
+    gender_detail: Mapped[str | None] = mapped_column(String, nullable=True)
+    show_me: Mapped[list[str]] = mapped_column(ARRAY(String), default=list, server_default="{}", nullable=False)
+    # Solo no binario: en qué búsquedas aparece ("mujer", "hombre").
+    appear_in: Mapped[list[str]] = mapped_column(ARRAY(String), default=list, server_default="{}", nullable=False)
+    show_gender: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", nullable=False)
 
     @property
     def has_photo(self) -> bool:
@@ -60,6 +70,21 @@ class Profile(Base):
 
     # Si la verificación dio duplicado_detectado: el perfil que ya tiene ese número.
     duplicate_of_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+
+
+class ProfilePhoto(Base):
+    """Fotos del perfil (spec A11): hasta 4; position 0 es la principal."""
+
+    __tablename__ = "profile_photos"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), index=True, nullable=False)
+    path: Mapped[str] = mapped_column(String, nullable=False)
+    position: Mapped[int] = mapped_column(Integer, nullable=False)
+    # Lo que dijo el chequeo automático (ADR 0013): si se ve una persona (None = sin revisar).
+    persona: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    moderacion: Mapped[str] = mapped_column(String, nullable=False)  # "aprobada" | "sin_revisar"
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
 class PhoneVerificationCode(Base):

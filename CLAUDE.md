@@ -95,7 +95,7 @@ Corre en `http://localhost:3000`.
 
 ## Decisiones técnicas y razonamiento
 
-> Resumen operativo. El detalle y el porqué completo de cada una está en `docs/decisions/` (ADRs 0001–0006) — actualizar ahí primero si una decisión cambia, y reflejar el resumen acá.
+> Resumen operativo. El detalle y el porqué completo de cada una está en `docs/decisions/` (ADRs 0001–0013) — actualizar ahí primero si una decisión cambia, y reflejar el resumen acá.
 
 ### Frontend: PWA primero, no nativo
 
@@ -117,7 +117,7 @@ Sugerencia técnica, **no es definitiva** — revisar antes de comprometerse en 
 
 ### IA para redactar explicaciones y rompehielos: OpenRouter (spec X1)
 
-La IA **solo redacta** a partir del resultado ya calculado (ADR 0011): el modelo matemático decide qué los une y qué tienen que trabajar. También redacta Mi carta, Tu día completo y conversa en el **Astrochat** (spec X3), siempre con los datos ya calculados por el motor y sin datos personales (`app/llm.py`: `complete` para un texto, `converse` para el chat). Va por **OpenRouter** (`OPENROUTER_API_KEY` y `OPENROUTER_MODEL` en `apps/api/.env`; el modelo se cambia sin tocar código). Sin key o si falla, textos de plantilla. Nunca se mandan datos personales. Comparación de modelos: `docs/referencias/comparacion-modelos-ia.md` (`apps/api/scripts/compare_llm_models.py`).
+La IA **solo redacta** a partir del resultado ya calculado (ADR 0011): el modelo matemático decide qué los une y qué tienen que trabajar. También redacta Mi carta, Tu día completo y conversa en el **Astrochat** (spec X3), siempre con los datos ya calculados por el motor y sin datos personales (`app/llm.py`: `complete` para un texto, `converse` para el chat). Va por **OpenRouter** (`OPENROUTER_API_KEY` y `OPENROUTER_MODEL` en `apps/api/.env`; el modelo se cambia sin tocar código). Sin key o si falla, textos de plantilla. Nunca se mandan datos personales, con una excepción acotada: el chequeo de fotos (spec A11, ADR 0013) manda solo la imagen, sin ningún otro dato y pidiendo que el proveedor no la guarde. Comparación de modelos: `docs/referencias/comparacion-modelos-ia.md` (`apps/api/scripts/compare_llm_models.py`).
 
 ### Motor astrológico: `astronomy-engine` (no Swiss Ephemeris)
 

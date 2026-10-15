@@ -1,0 +1,21 @@
+{
+  "version": "fotos_v1",
+  "max": 4,
+  "max_bytes": 5242880,
+  "tipos": {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"},
+  "moderacion": {
+    "max_tokens": 60,
+    "timeout_segundos": 15,
+    "prompt": "Revisás fotos que la gente sube a su perfil en una app para conocer personas. Respondé SOLO un JSON, sin texto alrededor: {\"apta\": true|false, \"motivo\": null|\"desnudo\"|\"sexual\"|\"violencia\"|\"menor\"|\"no_es_foto\", \"persona\": true|false}. No es apta si hay desnudez o contenido sexual explícito, violencia o sangre, si la persona principal parece menor de 18 años, o si no es una foto real (captura de pantalla, meme, texto, dibujo). Paisajes, mascotas, comida u objetos SÍ son aptos. \"persona\" es true si en la foto se ve claramente al menos una persona adulta."
+  },
+  "motivos": {
+    "desnudo": "tiene desnudos.",
+    "sexual": "tiene contenido sexual.",
+    "violencia": "tiene contenido violento.",
+    "menor": "parece haber un menor de edad.",
+    "no_es_foto": "parece una captura, un meme o un dibujo; subí una foto real.",
+    "otro": "no cumple las reglas de Destiny."
+  },
+  "sin_persona": "Esta foto no se puede usar como principal: tiene que verse una persona.",
+  "rechazo": "Esta foto no se puede usar: {motivo}"
+}

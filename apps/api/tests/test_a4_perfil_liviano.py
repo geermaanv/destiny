@@ -55,18 +55,21 @@ def test_frase_hasta_140_caracteres(client):
     assert client.post(f"/profiles/{pid}/basic-info", json={"display_name": "a", "bio": "x" * 141}).status_code == 422
 
 
+# Desde la spec A11 las fotos van por /profiles/{id}/photos (hasta 4); acá queda lo básico de A4.
 def test_foto_subir_ver_y_borrar(client):
     pid = create_profile(client)
-    r = client.post(f"/profiles/{pid}/photo", files={"photo": ("p.png", _png(), "image/png")})
-    assert r.status_code == 200 and r.json()["has_photo"] is True
+    r = client.post(f"/profiles/{pid}/photos", files={"photo": ("p.png", _png(), "image/png")})
+    assert r.status_code == 201 and client.get(f"/profiles/{pid}").json()["has_photo"] is True
     foto = client.get(f"/profiles/{pid}/photo")
     assert foto.status_code == 200 and foto.headers["content-type"] == "image/png"
-    assert client.delete(f"/profiles/{pid}/photo").json()["has_photo"] is False
+    photo_id = r.json()["photos"][0]["id"]
+    client.delete(f"/profiles/{pid}/photos/{photo_id}")
+    assert client.get(f"/profiles/{pid}").json()["has_photo"] is False
 
 
 def test_foto_que_no_es_imagen_se_rechaza(client):
     pid = create_profile(client)
-    r = client.post(f"/profiles/{pid}/photo", files={"photo": ("a.txt", b"hola", "text/plain")})
+    r = client.post(f"/profiles/{pid}/photos", files={"photo": ("a.txt", b"hola", "text/plain")})
     assert r.status_code == 415
 
 

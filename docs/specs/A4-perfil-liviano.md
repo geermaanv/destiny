@@ -100,3 +100,5 @@ Tests automáticos en `apps/api/tests/test_a4_perfil_liviano.py` (correr: `cd ap
 - Género / orientación.
 - Varias fotos, verificación de que la foto coincide con la persona (eso va con la selfie de A3 v2).
 - Ubicación geográfica precisa (el barrio es texto libre, sin geocodificar).
+
+**Cambios posteriores (2026-10-15)**: las fotos pasan a la spec A11 (hasta 4, chequeo automático, ya no en el registro; `POST/DELETE /profiles/{id}/photo` se reemplazan por `/profiles/{id}/photos`). El género, que esta spec dejaba afuera, entra con la spec B8 (solo para filtrar pareja y mostrarlo si la persona quiere).

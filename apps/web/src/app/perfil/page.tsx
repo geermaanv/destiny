@@ -58,7 +58,13 @@ function MiPerfil() {
         </div>
       </header>
       <ListCard>
-        <ListRow href="/perfil/editar" icon="✎" title="Editar perfil" detail="Nombre, avatar, intereses, barrio" />
+        <ListRow href="/perfil/editar" icon="✎" title="Editar perfil" detail="Nombre, avatar, intereses, barrio, género" />
+        <ListRow
+          href="/perfil/fotos"
+          icon="▣"
+          title="Tus fotos"
+          detail={me.has_photo ? "Hasta 4, la principal se ve en Descubrir" : "Subí una para aparecer en Descubrir"}
+        />
         <ListRow
           href={`/onboarding/datos-natales?profileId=${profileId}&editar=1`}
           icon="✶"

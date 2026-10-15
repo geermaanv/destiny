@@ -22,12 +22,25 @@ def sun_sign(profile: Profile) -> str | None:
     return zodiac_sign(natal_sun_longitude(profile))
 
 
+GENDER_LABELS = {"mujer": "mujer", "hombre": "hombre", "no_binario": "no binario"}
+
+
+def gender_label(profile: Profile) -> str | None:
+    """Spec B8: el género se muestra solo si la persona lo elige; su texto libre si lo escribió."""
+    if not profile.show_gender or profile.gender is None:
+        return None
+    return profile.gender_detail or GENDER_LABELS[profile.gender]
+
+
 def public_fields(profile: Profile) -> dict:
     return {
         "display_name": profile.display_name,
         "age": age(profile.birth_date),
         "sun_sign": sun_sign(profile),
         "photo_url": f"/profiles/{profile.id}/photo" if profile.photo_path else None,
+        # La principal por su URL de siempre (avatar en chats y listas); el resto por id (spec A11).
+        "photos": [f"/profiles/{profile.id}/photo" if p.position == 0 else f"/photos/{p.id}" for p in profile.photos],
+        "gender_label": gender_label(profile),
         "avatar": profile.avatar,
         "energy_period": profile.energy_period,
         "interests": profile.interests or [],

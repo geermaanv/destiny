@@ -62,21 +62,27 @@ def converse(
     max_chars: int,
     max_tokens: int = MAX_TOKENS,
     timeout: float = TIMEOUT_SECONDS,
+    model: str | None = None,
+    temperature: float = TEMPERATURE,
+    extra: dict | None = None,
 ) -> LLMResult | None:
+    """`model` reemplaza al configurado y `extra` suma campos al pedido (ej. `provider`, spec A11)."""
     if not is_configured():
         return None
+    model = model or settings.openrouter_model
     try:
         with httpx.Client(transport=TRANSPORT, timeout=timeout) as client:
             response = client.post(
                 OPENROUTER_URL,
                 headers={"Authorization": f"Bearer {settings.openrouter_api_key}", "X-Title": "Destiny"},
                 json={
-                    "model": settings.openrouter_model,
+                    "model": model,
                     "max_tokens": max_tokens,
-                    "temperature": TEMPERATURE,
+                    "temperature": temperature,
                     # Los modelos que "piensan" gastaban los tokens pensando y devolvían vacío (spec X1).
                     "reasoning": {"enabled": False},
                     "messages": [{"role": "system", "content": system}, *messages],
+                    **(extra or {}),
                 },
             )
             response.raise_for_status()
@@ -87,7 +93,7 @@ def converse(
         usage = data.get("usage") or {}
         return LLMResult(
             text=trim_by_sentence(text, max_chars),
-            model=data.get("model") or settings.openrouter_model,
+            model=data.get("model") or model,
             prompt_tokens=usage.get("prompt_tokens"),
             completion_tokens=usage.get("completion_tokens"),
         )

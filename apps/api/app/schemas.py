@@ -83,6 +83,38 @@ class BasicInfoIn(BaseModel):
         return value or None
 
 
+# Spec B8: género y a quién ver en Descubrir ("pareja").
+Gender = Literal["mujer", "hombre", "no_binario"]
+
+
+class PreferencesIn(BaseModel):
+    gender: Gender | None = None
+    gender_detail: str | None = Field(default=None, max_length=40)
+    show_me: list[Gender] = Field(default_factory=list, max_length=3)
+    appear_in: list[Literal["mujer", "hombre"]] = Field(default_factory=list, max_length=2)
+    show_gender: bool = False
+
+    @field_validator("gender_detail", mode="before")
+    @classmethod
+    def strip_blank(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        return value or None
+
+
+# Spec A11: fotos del perfil.
+class PhotoOut(BaseModel):
+    id: uuid.UUID
+    url: str
+    principal: bool
+
+
+class PhotosOut(BaseModel):
+    photos: list[PhotoOut]
+    max: int
+
+
 class ProfileOut(BaseModel):
     id: uuid.UUID
     birth_date: date | None
@@ -103,6 +135,11 @@ class ProfileOut(BaseModel):
     avatar: str | None = None
     has_photo: bool = False
     sun_sign: str | None = None  # solo lo completa GET /profiles/{id}
+    gender: str | None = None
+    gender_detail: str | None = None
+    show_me: list[str] = []
+    appear_in: list[str] = []
+    show_gender: bool = False
 
     class Config:
         from_attributes = True
@@ -382,7 +419,9 @@ class PersonalityCompatOut(BaseModel):
 
 class DiscoverCandidateOut(BaseModel):
     profile_id: uuid.UUID
+    # Según el sistema elegido (spec B8); astrology_pct es siempre el de la sinastría.
     compatibility_pct: int
+    astrology_pct: int = 0
     preview: str
     # Motor de sinastría (spec B5-motor-sinastria.md): puntaje por eje y contexto.
     axes: dict[str, int] = {}
@@ -397,6 +436,10 @@ class DiscoverCandidateOut(BaseModel):
     age: int | None = None
     sun_sign: str | None = None
     photo_url: str | None = None
+    # Spec A11: todas sus fotos, la principal primero.
+    photos: list[str] = []
+    # Spec B8: solo si la persona eligió mostrar su género.
+    gender_label: str | None = None
     avatar: str | None = None
     energy_period: str | None = None
     interests: list[str] = []

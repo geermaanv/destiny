@@ -18,3 +18,4 @@ Architecture Decision Records. Cada decisión técnica con peso (elegir una libr
 | [0010](./0010-motor-sinastria-config.md) | Motor de sinastría: tablas en configuración, casas iguales y calibración | reemplazada por 0012 |
 | [0011](./0011-modelo-matematico-pablo.md) | Compatibilidad con modelo matemático; Pablo es la última palabra del modelo | aceptada |
 | [0012](./0012-motor-oficial-destiny-1-0.md) | Motor oficial Destiny 1.0 (calculadoras de Pablo), tablas generadas desde los Excel | aceptada |
+| [0013](./0013-chequeo-fotos-con-ia.md) | Chequeo de fotos con IA (excepción acotada a "la IA no recibe datos personales") | aceptada |

@@ -57,7 +57,27 @@ export type Profile = {
   has_photo: boolean;
   sun_sign: string | null;
   verification_status: string;
+  // Spec B8: género y a quién ver en Descubrir ("pareja").
+  gender: Gender | null;
+  gender_detail: string | null;
+  show_me: Gender[];
+  appear_in: ("mujer" | "hombre")[];
+  show_gender: boolean;
 };
+
+export type Gender = "mujer" | "hombre" | "no_binario";
+
+export type PreferencesPayload = {
+  gender: Gender | null;
+  gender_detail: string | null;
+  show_me: Gender[];
+  appear_in: ("mujer" | "hombre")[];
+  show_gender: boolean;
+};
+
+export function setPreferences(profileId: string, payload: PreferencesPayload): Promise<Profile> {
+  return postJson(`/profiles/${profileId}/preferences`, payload);
+}
 
 export type EnergyPeriod = "madrugada" | "manana" | "tarde" | "noche";
 export type Interest =
@@ -85,18 +105,35 @@ export function setBasicInfo(profileId: string, payload: BasicInfoPayload): Prom
   return postJson(`/profiles/${profileId}/basic-info`, payload);
 }
 
-export async function uploadPhoto(profileId: string, photo: File): Promise<Profile> {
-  const formData = new FormData();
-  formData.append("photo", photo);
-  const res = await fetch(`${API_URL}/profiles/${profileId}/photo`, { method: "POST", body: formData });
-  if (!res.ok) throw new Error(res.status === 413 ? "La foto no puede pesar más de 5 MB" : "No se pudo subir la foto");
+// Fotos del perfil (spec A11): hasta 4, la primera es la principal.
+export type Photo = { id: string; url: string; principal: boolean };
+export type Photos = { photos: Photo[]; max: number };
+
+async function photosResponse(res: Response): Promise<Photos> {
+  if (!res.ok) {
+    // 422 trae el motivo del chequeo automático ("Esta foto no se puede usar: …").
+    const detail = await res.json().then((b) => (typeof b.detail === "string" ? b.detail : null)).catch(() => null);
+    throw new Error(detail ?? (res.status === 413 ? "La foto no puede pesar más de 5 MB" : "No se pudo subir la foto"));
+  }
   return res.json();
 }
 
-export async function deletePhoto(profileId: string): Promise<Profile> {
-  const res = await fetch(`${API_URL}/profiles/${profileId}/photo`, { method: "DELETE" });
-  if (!res.ok) throw new Error("No se pudo borrar la foto");
-  return res.json();
+export async function getPhotos(profileId: string): Promise<Photos> {
+  return photosResponse(await fetch(`${API_URL}/profiles/${profileId}/photos`));
+}
+
+export async function uploadPhoto(profileId: string, photo: Blob): Promise<Photos> {
+  const formData = new FormData();
+  formData.append("photo", photo, "foto.jpg");
+  return photosResponse(await fetch(`${API_URL}/profiles/${profileId}/photos`, { method: "POST", body: formData }));
+}
+
+export async function deletePhoto(profileId: string, photoId: string): Promise<Photos> {
+  return photosResponse(await fetch(`${API_URL}/profiles/${profileId}/photos/${photoId}`, { method: "DELETE" }));
+}
+
+export async function setPrincipalPhoto(profileId: string, photoId: string): Promise<Photos> {
+  return photosResponse(await fetch(`${API_URL}/profiles/${profileId}/photos/${photoId}/principal`, { method: "POST" }));
 }
 
 // photo_url viene relativo a la API (ej. "/profiles/{id}/photo").
@@ -164,7 +201,8 @@ export function submitMoodCheckin(profileId: string, mood: Mood): Promise<void> 
 
 export type DiscoverCandidate = {
   profile_id: string;
-  compatibility_pct: number;
+  compatibility_pct: number; // según el sistema elegido (spec B8)
+  astrology_pct: number;
   preview: string;
   axes: Partial<Record<"atraccion" | "afecto" | "comunicacion" | "compromiso", number>>;
   relationship: RelationshipContext | null;
@@ -175,6 +213,8 @@ export type DiscoverCandidate = {
   age: number | null;
   sun_sign: string | null;
   photo_url: string | null;
+  photos: string[];
+  gender_label: string | null;
   avatar: AvatarKey | null;
   energy_period: EnergyPeriod | null;
   interests: Interest[];
@@ -182,14 +222,33 @@ export type DiscoverCandidate = {
   neighborhood: string | null;
 };
 
+// Filtros de Descubrir (spec B8).
+export type DiscoverFilters = {
+  context: RelationshipContext;
+  sistema: "astrologia" | "personalidad";
+  min_pct: number;
+  edad_min: number;
+  edad_max: number;
+};
+
 // Contexto de relación en Descubrir (spec B5): cambia los pesos de cada eje.
 export type RelationshipContext = "pareja" | "amistad" | "laboral" | "ocasional";
 
 export async function getDiscoverCandidates(
   viewerId: string,
-  context: RelationshipContext = "pareja"
+  filters: DiscoverFilters,
+  q?: string
 ): Promise<DiscoverCandidate[]> {
-  const res = await fetch(`${API_URL}/discover?viewer_id=${viewerId}&context=${context}`);
+  const params = new URLSearchParams({
+    viewer_id: viewerId,
+    context: filters.context,
+    sistema: filters.sistema,
+    min_pct: String(filters.min_pct),
+    edad_min: String(filters.edad_min),
+    edad_max: String(filters.edad_max),
+  });
+  if (q?.trim()) params.set("q", q.trim());
+  const res = await fetch(`${API_URL}/discover?${params.toString()}`);
   if (!res.ok) throw new Error(String(res.status));
   return res.json();
 }
