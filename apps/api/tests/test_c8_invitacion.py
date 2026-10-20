@@ -9,7 +9,7 @@ def test_invitacion_arma_mensaje_en_primera_persona(client):
     body = r.json()
     assert r.status_code == 201
     assert body["message"].startswith("¡Hola Juan! ¿Por qué con algunas personas fluye y con otras no?")
-    assert "Te invito a Destiny" in body["message"]
+    assert "Descubrilo en Destiny" in body["message"]  # texto de la spec C12
     assert "(Géminis)" in body["message"]
     assert "sus soles" not in body["message"]
     assert "https://destiny.test/onboarding/invitacion?ref=" in body["message"]

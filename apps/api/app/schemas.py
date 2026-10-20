@@ -2,7 +2,7 @@ import uuid
 from datetime import date, datetime, time
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator
 
 NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
 
@@ -580,10 +580,9 @@ Relationship = Literal["pareja", "amistad", "laboral", "ocasional"]
 
 
 class InvitationIn(BaseModel):
+    # Spec C12: nombre y, si lo sabe, el signo. El tipo y el vínculo se deducen solos.
     inviter_id: uuid.UUID
     friend_name: str = Field(min_length=1, max_length=40)
-    kind: Literal["astro", "test"] = "astro"  # C8 v2
-    relationship: Relationship | None = None
     friend_sun_sign: (
         Literal[
             "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo",
@@ -592,11 +591,9 @@ class InvitationIn(BaseModel):
         | None
     ) = None
 
-    @model_validator(mode="after")
-    def sign_for_astro(self) -> "InvitationIn":
-        if self.kind == "astro" and self.friend_sun_sign is None:
-            raise ValueError("la invitación astrológica necesita el signo del amigo")
-        return self
+
+class InvitationPreviewOut(BaseModel):
+    message: str
 
 
 class PartialReportOut(BaseModel):
@@ -608,7 +605,7 @@ class InvitationOut(BaseModel):
     message: str = ""  # texto que se manda por WhatsApp (para mostrarlo antes de enviar)
     ref_id: str
     whatsapp_url: str
-    partial_report: PartialReportOut | None = None  # solo en kind="astro"
+    partial_report: PartialReportOut | None = None  # solo con el signo del amigo
     kind: str = "astro"
 
 

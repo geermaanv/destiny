@@ -1,18 +1,15 @@
-"""Spec C8 v2: invitación a comparar el test de personalidad."""
+"""Spec C8 v2: invitación a comparar el test de personalidad (simplificada por C12: el tipo y el
+vínculo se deducen solos; ya no se pide test completo para invitar)."""
 
 import pytest
 
-from tests.helpers import complete_personality, create_profile, verify, verified_user
+from tests.helpers import complete_personality, verified_user
 
 
 def _invite(client, inviter, **extra):
-    payload = {"inviter_id": inviter, "friend_name": "Juan", "kind": "test", "relationship": "laboral", **extra}
-    return client.post("/invitations", json=payload)
-
-
-def test_sin_test_completo_no_se_puede_invitar(client):
-    pid = verified_user(client, "5491111111111", name="Ger")
-    assert _invite(client, pid).status_code == 409
+    # Spec C12: el vínculo sale de "¿Qué buscás?" de quien invita.
+    client.post(f"/profiles/{inviter}/looking-for", json={"looking_for": "laboral"})
+    return client.post("/invitations", json={"inviter_id": inviter, "friend_name": "Juan", **extra})
 
 
 def test_con_test_completo_arma_el_mensaje_sin_pedir_signo(client):
@@ -21,20 +18,8 @@ def test_con_test_completo_arma_el_mensaje_sin_pedir_signo(client):
     r = _invite(client, pid)
     assert r.status_code == 201
     assert r.json()["message"].startswith("¡Hola Juan! ¿Por qué con algunas personas fluye y con otras no?")
-    assert "Ya completé mi test de personalidad en Destiny" in r.json()["message"]
+    assert "Ya completé mi test de personalidad" in r.json()["message"]
     assert "https://destiny.test/onboarding/invitacion?ref=" in r.json()["message"]
-
-
-def test_invitacion_astrologica_sigue_pidiendo_signo(client):
-    pid = verified_user(client, "5491111111111", name="Ger")
-    r = client.post("/invitations", json={"inviter_id": pid, "friend_name": "Juan", "kind": "astro"})
-    assert r.status_code == 422
-
-
-def test_vinculo_invalido(client):
-    pid = verified_user(client, "5491111111111", name="Ger")
-    complete_personality(client, pid)
-    assert _invite(client, pid, relationship="jefe").status_code == 422
 
 
 def test_el_link_muestra_quien_invita_tipo_y_vinculo(new_client):

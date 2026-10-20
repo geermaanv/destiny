@@ -21,6 +21,7 @@ from app.schemas import (
     InvitationAcceptOut,
     InvitationIn,
     InvitationOut,
+    InvitationPreviewOut,
     InvitationPreloadOut,
     MyInvitationOut,
     PartialReportOut,
@@ -31,6 +32,7 @@ router = APIRouter(prefix="/invitations", tags=["invitations"])
 
 # Gancho de Destiny (VISION.md, spec C8 v3): va después del saludo en los dos mensajes.
 HOOK = "¿Por qué con algunas personas fluye y con otras no?"
+TEST_LINE = "Ya completé mi test de personalidad"
 
 
 def _get_profile(profile_id: uuid.UUID, db: Session) -> Profile:
@@ -40,76 +42,86 @@ def _get_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     return profile
 
 
-@router.post("", response_model=InvitationOut, status_code=201)
-def create_invitation(
-    payload: InvitationIn, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
-) -> InvitationOut:
+def _test_complete(db: Session, profile_id: uuid.UUID) -> bool:
+    mine = db.get(PersonalityAnswers, profile_id)
+    return completed(mine.answers if mine else {}) == len(load_config()["questions"])
+
+
+def _sun_aspect(inviter: Profile, friend_sun_sign: str) -> dict:
+    # Aproximado: del amigo solo tenemos el signo solar (fricción mínima al invitar).
+    return classify_aspect(angle_between(natal_sun_longitude(inviter), approximate_longitude_for_sign(friend_sun_sign)))
+
+
+def _message(inviter: Profile, payload: InvitationIn, with_test: bool, link: str) -> str:
+    """Spec C12: el mensaje se arma solo con lo que haya (signo del amigo, mi test completo)."""
+    parts = [f"¡Hola {payload.friend_name}! {HOOK}"]
+    if payload.friend_sun_sign:
+        sentence = aspect_sentence(_sun_aspect(inviter, payload.friend_sun_sign)["aspect"]).replace("sus soles", "nuestros soles")
+        parts.append(f"Con tu signo ({payload.friend_sun_sign}) y mi carta, parece que {sentence}.")
+    if with_test:
+        parts.append(f"{TEST_LINE}: hacelo vos y comparamos.")
+    parts.append(f"Descubrilo en Destiny ✨ {link}")
+    return " ".join(parts)
+
+
+def _inviter_for(payload: InvitationIn, db: Session, current: uuid.UUID | None) -> Profile:
     require_self(payload.inviter_id, current)
     inviter = _get_profile(payload.inviter_id, db)
     if inviter.birth_date is None:
         raise HTTPException(status_code=422, detail="Completá tu carta natal antes de invitar")
+    return inviter
 
+
+@router.post("/preview", response_model=InvitationPreviewOut)
+def preview_invitation(
+    payload: InvitationIn, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> InvitationPreviewOut:
+    """Spec C12: el mensaje en vivo mientras se completa el formulario; no crea nada."""
+    inviter = _inviter_for(payload, db, current)
+    return InvitationPreviewOut(message=_message(inviter, payload, _test_complete(db, inviter.id), "[link]"))
+
+
+@router.post("", response_model=InvitationOut, status_code=201)
+def create_invitation(
+    payload: InvitationIn, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> InvitationOut:
+    inviter = _inviter_for(payload, db, current)
+    with_test = _test_complete(db, inviter.id)
     ref_id = secrets.token_urlsafe(6)
     link = f"{settings.web_base_url}/onboarding/invitacion?ref={ref_id}"
-
-    if payload.kind == "test":
-        # C8 v2: comparar el test de personalidad. Solo con mi test completo (el mensaje lo dice).
-        mine = db.get(PersonalityAnswers, inviter.id)
-        if completed(mine.answers if mine else {}) < len(load_config()["questions"]):
-            raise HTTPException(status_code=409, detail="Completá tu test de personalidad antes de invitar a compararlo")
-        db.add(
-            Invitation(
-                ref_id=ref_id,
-                inviter_profile_id=inviter.id,
-                friend_name=payload.friend_name,
-                kind="test",
-                relationship=payload.relationship or "pareja",
-            )
+    kind = "test" if with_test else "astro"
+    db.add(
+        Invitation(
+            ref_id=ref_id,
+            inviter_profile_id=inviter.id,
+            friend_name=payload.friend_name,
+            friend_sun_sign=payload.friend_sun_sign,
+            kind=kind,
+            relationship=inviter.looking_for or "pareja",
         )
-        db.commit()
-        message = (
-            f"¡Hola {payload.friend_name}! {HOOK} Ya completé mi test de personalidad en Destiny ✨ Hacelo vos "
-            "(son 32 preguntas) y vemos qué tan compatibles somos en atracción, afecto, comunicación y "
-            f"compromiso: {link}"
-        )
-        return InvitationOut(
-            ref_id=ref_id, kind="test", message=message, whatsapp_url=f"https://wa.me/?text={quote(message)}"
-        )
-
-    invitation = Invitation(
-        ref_id=ref_id,
-        inviter_profile_id=inviter.id,
-        friend_name=payload.friend_name,
-        friend_sun_sign=payload.friend_sun_sign,
-        relationship=payload.relationship,
     )
-    db.add(invitation)
     db.commit()
 
-    # Resultado necesariamente aproximado: solo tenemos el signo solar del
-    # amigo, no su fecha/hora exacta (fricción mínima al invitar).
-    friend_lon = approximate_longitude_for_sign(payload.friend_sun_sign)
-    inviter_lon = natal_sun_longitude(inviter)
-    aspect = classify_aspect(angle_between(inviter_lon, friend_lon))
-
-    teaser = (
-        f"Con el sol en {payload.friend_sun_sign}, {payload.friend_name} podría tener esta "
-        f"conexión con vos: {aspect_sentence(aspect['aspect'])}. Para ver la resonancia real (y revelarla para los "
-        "dos) necesitamos que complete su carta natal."
-    )
-    partial_report = PartialReportOut(
-        teaser=teaser,
-        locked_fields=["hora_de_nacimiento", "ascendente", "compatibilidad_exacta"],
-    )
-
+    partial_report = None
+    if payload.friend_sun_sign:
+        aspect = _sun_aspect(inviter, payload.friend_sun_sign)
+        partial_report = PartialReportOut(
+            teaser=(
+                f"Con el sol en {payload.friend_sun_sign}, {payload.friend_name} podría tener esta "
+                f"conexión con vos: {aspect_sentence(aspect['aspect'])}. Para ver la resonancia real (y revelarla para los "
+                "dos) necesitamos que complete su carta natal."
+            ),
+            locked_fields=["hora_de_nacimiento", "ascendente", "compatibilidad_exacta"],
+        )
     # El mensaje lo manda quien invita desde su WhatsApp: le habla al amigo en primera persona.
-    message = (
-        f"¡Hola {payload.friend_name}! {HOOK} Te invito a Destiny a descubrirlo ✨ Con tu signo ({payload.friend_sun_sign}) y mi carta, "
-        f"parece que {aspect_sentence(aspect['aspect']).replace('sus soles', 'nuestros soles')}. Completá tu carta acá y vemos los dos la resonancia real: {link}"
+    message = _message(inviter, payload, with_test, link)
+    return InvitationOut(
+        ref_id=ref_id,
+        kind=kind,
+        message=message,
+        whatsapp_url=f"https://wa.me/?text={quote(message)}",
+        partial_report=partial_report,
     )
-    whatsapp_url = f"https://wa.me/?text={quote(message)}"
-
-    return InvitationOut(ref_id=ref_id, whatsapp_url=whatsapp_url, partial_report=partial_report, message=message)
 
 
 @router.get("/mine", response_model=list[MyInvitationOut])
@@ -212,30 +224,26 @@ def get_invitation(ref_id: str, db: Session = Depends(get_db)) -> InvitationPrel
         raise HTTPException(status_code=404, detail="Invitation not found")
 
     inviter = db.get(Profile, invitation.inviter_profile_id)
+    name = inviter.display_name or "Alguien"
+    # Spec C12: adelanto si hay signo, invitación al test si quien invita lo hizo, o un mensaje general.
+    parts = []
+    if invitation.friend_sun_sign:
+        aspect = _sun_aspect(inviter, invitation.friend_sun_sign)
+        parts.append(f"Con tu signo, puede que {aspect_sentence(aspect['aspect'])}. Completá tu carta para la revelación real.")
     if invitation.kind == "test":
-        name = inviter.display_name or "Alguien"
-        return InvitationPreloadOut(
-            ref_id=ref_id,
-            friend_name=invitation.friend_name,
-            kind="test",
-            inviter_name=inviter.display_name,
-            relationship=invitation.relationship,
-            teaser=(
-                f"{name} completó su test de personalidad en Destiny y quiere ver qué tan compatibles son. "
-                "Registrate, hacé el test (32 preguntas) y lo descubren juntos."
-            ),
+        parts.append(
+            f"{name} completó su test de personalidad en Destiny y quiere ver qué tan compatibles son. "
+            "Registrate, hacé el test (32 preguntas) y lo descubren juntos."
         )
-    friend_lon = approximate_longitude_for_sign(invitation.friend_sun_sign)
-    aspect = classify_aspect(angle_between(natal_sun_longitude(inviter), friend_lon))
-
+    if not parts:
+        parts.append(f"{name} te invitó a Destiny para descubrir cuánto fluyen. Registrate y lo ven juntos.")
     return InvitationPreloadOut(
         ref_id=ref_id,
         friend_name=invitation.friend_name,
+        kind=invitation.kind,
         inviter_name=inviter.display_name,
-        teaser=(
-            f"Alguien te invitó a Destiny. Con tu signo, puede que {aspect_sentence(aspect['aspect'])}. "
-            "Completá tu carta para la revelación real."
-        ),
+        relationship=invitation.relationship,
+        teaser=" ".join(parts),
     )
 
 

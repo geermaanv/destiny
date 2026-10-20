@@ -403,17 +403,16 @@ export type Invitation = {
   partial_report: { teaser: string; locked_fields: string[] } | null;
 };
 
-export function createInvitation(
-  inviterId: string,
-  friendName: string,
-  options: { kind: InvitationKind; friendSunSign?: string; relationship?: RelationshipContext }
-): Promise<Invitation> {
-  return postJson("/invitations", {
+// Spec C12: nombre y, si lo sabe, su signo; el tipo y el vínculo los deduce la API.
+export function createInvitation(inviterId: string, friendName: string, friendSunSign?: string): Promise<Invitation> {
+  return postJson("/invitations", { inviter_id: inviterId, friend_name: friendName, friend_sun_sign: friendSunSign || undefined });
+}
+
+export function previewInvitation(inviterId: string, friendName: string, friendSunSign?: string): Promise<{ message: string }> {
+  return postJson("/invitations/preview", {
     inviter_id: inviterId,
     friend_name: friendName,
-    kind: options.kind,
-    friend_sun_sign: options.friendSunSign,
-    relationship: options.relationship,
+    friend_sun_sign: friendSunSign || undefined,
   });
 }
 
