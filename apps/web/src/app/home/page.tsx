@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { indagarDayHref } from "@/lib/indagar";
 import AskBox from "@/components/AskBox";
 import { ListCard, ListRow, Page, SectionTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
@@ -113,7 +114,13 @@ function HomeContent() {
         <ListCard>
           {upcoming.length > 0 ? (
             upcoming.map((e) => (
-              <ListRow key={e.start} href="/calendario" title={`${shortDate(e.start)} · ${e.title}`} detail={e.text} />
+              <div key={e.start}>
+                <ListRow href="/calendario" title={`${shortDate(e.start)} · ${e.title}`} detail={e.text} />
+                {/* Spec U2 (ajuste de German): consultar ese día en Indagar. */}
+                <Link href={indagarDayHref(e.start)} className="block px-4 pb-3 text-right text-xs text-violet-400">
+                  Indagar sobre este día →
+                </Link>
+              </div>
             ))
           ) : (
             <p className="px-4 py-3 text-sm text-slate-400">Sin tránsitos fuertes en los próximos días.</p>

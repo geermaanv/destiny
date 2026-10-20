@@ -299,6 +299,8 @@ class AstrochatOut(BaseModel):
     mensajes: list[AstroMessageOut]
     restantes_hoy: int
     limite: int
+    # Spec C11: preguntas extra por amigos que se registraron con tu invitación (ya incluidas en `limite`).
+    extra_por_invitados: int = 0
     ejemplos: list[str]
 
 

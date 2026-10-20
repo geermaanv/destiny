@@ -165,7 +165,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [x] Se sacaron las notas del calendario de todos lados, incluidas las ya escritas (spec U2; había 1). El registro de ánimo queda.
 - [x] Aviso de privacidad aceptado al registrarse (casilla obligatoria) y al empezar el test; se guarda versión y fecha (spec A12). Falta revisar si otros lugares lo necesitan.
 - [x] Test ordenado según lo que busca la persona ("¿Qué buscás?" de Círculo se guarda en el perfil), pantalla de entrada a Atracción y "Responder más tarde"; aviso en Círculo para completarla (spec A12).
-- [ ] Tokens por invitar: +1 pregunta diaria en Indagar por cada invitado que termina el registro.
+- [x] Tokens por invitar: +1 pregunta diaria en Indagar por cada amigo que se registra con tu invitación y la acepta, tope 20 (spec C11).
 - [x] Círculo: foto de 128 px, número global y una columna de barras por sistema con el promedio por eje (spec B9, boceto de German).
 - [x] Distancia: "¿Dónde vivís?" con el buscador de ciudades y filtro "a menos de X km" (spec B9).
 - [x] Círculo: filtro de intereses (tiene que tener todos), "N intereses en común" en la tarjeta y desempate por intereses; filtros activos con ✕ (spec B10).

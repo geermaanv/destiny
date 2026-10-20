@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Page, PageTitle } from "@/components/ui";
+import { indagarDayHref } from "@/lib/indagar";
 import { useSessionProfileId } from "@/lib/session";
 import {
   CalendarDay,
@@ -173,7 +174,7 @@ function CalendarioContent() {
           )}
           {/* Spec U2: entender por qué el día es bueno o malo, en Indagar con el día precargado. */}
           <Link
-            href={`/astrochat?q=${encodeURIComponent(`¿Qué significa para mí el ${longDate(selectedDay).toLowerCase().replace(",", "")}?`)}&dia=${selectedDay}`}
+            href={indagarDayHref(selectedDay)}
             className="block text-right text-sm text-violet-400"
           >
             Indagar sobre este día →

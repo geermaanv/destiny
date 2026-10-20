@@ -30,6 +30,7 @@
   "intuitivo": "acompanante"
  },
  "limite_diario": 10,
+  "invitados": {"preguntas_por_invitado": 1, "bonus_maximo": 20, "nota": "Spec C11: +1 pregunta diaria por cada amigo que se registra con tu invitación y la acepta."},
  "max_entrada": 500,
  "max_salida": 700,
  "max_tokens": 450,

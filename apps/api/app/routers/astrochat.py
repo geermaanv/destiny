@@ -9,7 +9,7 @@ from app.astrochat.chat import is_crisis, load_config, suggested_mode, system_pr
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.llm import converse
-from app.models import AstroMessage, PersonalityAnswers, Profile
+from app.models import AstroMessage, Invitation, PersonalityAnswers, Profile
 from app.personalization.style import prompt_instructions, style_for
 from app.schemas import AstroAnswerOut, AstroAskIn, AstrochatOut, AstroMessageOut, AstroModeOut
 
@@ -38,6 +38,21 @@ def _used_today(db: Session, profile_id: uuid.UUID) -> int:
     ) or 0
 
 
+def _invite_bonus(db: Session, profile_id: uuid.UUID) -> int:
+    """Spec C11: amigos distintos que crearon su perfil después de tu invitación y la aceptaron."""
+    cfg = load_config()["invitados"]
+    friends = db.scalar(
+        select(func.count(func.distinct(Invitation.invitee_profile_id)))
+        .join(Profile, Profile.id == Invitation.invitee_profile_id)
+        .where(
+            Invitation.inviter_profile_id == profile_id,
+            Invitation.accepted_at.is_not(None),
+            Profile.created_at > Invitation.created_at,
+        )
+    )
+    return min(friends * cfg["preguntas_por_invitado"], cfg["bonus_maximo"])
+
+
 def _history(db: Session, profile_id: uuid.UUID, limit: int | None = None) -> list[AstroMessage]:
     query = (
         select(AstroMessage)
@@ -64,12 +79,14 @@ def get_astrochat(
 ) -> AstrochatOut:
     profile = _own(profile_id, current, db)
     cfg = load_config()
+    bonus = _invite_bonus(db, profile_id)
     return AstrochatOut(
         modo=_current_mode(profile),
         modos=[AstroModeOut(clave=k, nombre=m["nombre"], descripcion=m["descripcion"]) for k, m in cfg["modos"].items()],
         mensajes=[_out(m) for m in _history(db, profile_id)],
-        restantes_hoy=max(0, cfg["limite_diario"] - _used_today(db, profile_id)),
-        limite=cfg["limite_diario"],
+        restantes_hoy=max(0, cfg["limite_diario"] + bonus - _used_today(db, profile_id)),
+        limite=cfg["limite_diario"] + bonus,
+        extra_por_invitados=bonus,
         ejemplos=cfg["ejemplos"],
     )
 
@@ -90,6 +107,7 @@ def ask_astrochat(
     if mode not in cfg["modos"]:
         raise HTTPException(status_code=422, detail="Modo inexistente")
     used = _used_today(db, profile_id)
+    limit = cfg["limite_diario"] + _invite_bonus(db, profile_id)
     now = datetime.now(timezone.utc)
 
     def save(question_counts: bool, answer: str, result=None) -> AstroMessage:
@@ -112,9 +130,9 @@ def ask_astrochat(
     # Crisis: respuesta fija con dónde pedir ayuda, sin IA y sin contar para el límite.
     if is_crisis(text):
         reply = save(False, cfg["crisis"]["respuesta"])
-        return AstroAnswerOut(respuesta=_out(reply), ia=False, restantes_hoy=max(0, cfg["limite_diario"] - used))
+        return AstroAnswerOut(respuesta=_out(reply), ia=False, restantes_hoy=max(0, limit - used))
 
-    if used >= cfg["limite_diario"]:
+    if used >= limit:
         raise HTTPException(status_code=429, detail=cfg["limite_alcanzado"])
 
     context = [
@@ -133,7 +151,7 @@ def ask_astrochat(
         timeout=cfg["timeout_segundos"],
     )
     reply = save(True, result.text if result else cfg["sin_ia"], result)
-    return AstroAnswerOut(respuesta=_out(reply), ia=result is not None, restantes_hoy=max(0, cfg["limite_diario"] - used - 1))
+    return AstroAnswerOut(respuesta=_out(reply), ia=result is not None, restantes_hoy=max(0, limit - used - 1))
 
 
 @router.delete("/profiles/{profile_id}/astrochat", status_code=204)

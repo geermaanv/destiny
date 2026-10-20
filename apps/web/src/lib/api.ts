@@ -744,6 +744,7 @@ export type Astrochat = {
   mensajes: AstroMessage[];
   restantes_hoy: number;
   limite: number;
+  extra_por_invitados: number; // spec C11, ya incluido en `limite`
   ejemplos: string[];
 };
 

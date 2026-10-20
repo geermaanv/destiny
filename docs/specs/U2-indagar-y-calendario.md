@@ -43,4 +43,8 @@ Ninguno.
 
 ## Fuera de alcance
 
-Volver a tener notas (BACKLOG), link a Indagar desde "Próximos días" de Hoy.
+Volver a tener notas (BACKLOG).
+
+**Ajuste (2026-10-20, German)**: el link "Indagar sobre este día →" ya no deja la pregunta precargada para enviar: la manda sola (como desde Hoy y Tu día), con los datos de ese día.
+
+**Ajuste (2026-10-20, German)**: también cada día de "Próximos días" en Hoy tiene "Indagar sobre este día →" (en la reunión se había dicho que no; German lo pidió al probarlo). El armado de la pregunta está en `lib/indagar.ts`.

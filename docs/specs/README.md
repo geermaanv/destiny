@@ -46,3 +46,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [B10-filtros-activos-intereses](./B10-filtros-activos-intereses.md) | B5 | implemented |
 | [U2-indagar-y-calendario](./U2-indagar-y-calendario.md) | transversal + B6 + X3 | implemented |
 | [A12-privacidad-y-orden-del-test](./A12-privacidad-y-orden-del-test.md) | A + A6 | implemented |
+| [C11-tokens-por-invitar](./C11-tokens-por-invitar.md) | C + X3 | implemented |

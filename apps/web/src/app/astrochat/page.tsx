@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
@@ -110,6 +111,17 @@ function Chat() {
         <div className="flex items-center justify-between text-sm">
           <span className="text-xs text-slate-500">
             Te {chat.restantes_hoy === 1 ? "queda 1 pregunta" : `quedan ${chat.restantes_hoy} preguntas`} hoy
+            {/* Spec C11: preguntas extra por invitar amigos. */}
+            {chat.extra_por_invitados > 0 ? (
+              ` · ${chat.limite} por día con ${chat.extra_por_invitados} por amigos invitados`
+            ) : (
+              <>
+                {" · "}
+                <Link href="/invitar" className="text-violet-400">
+                  Sumá más invitando →
+                </Link>
+              </>
+            )}
           </span>
           <button
             type="submit"

@@ -100,6 +100,8 @@ function InvitarForm() {
       <div>
         <h1 className="text-2xl font-semibold">Invitá a alguien</h1>
         <p className="mt-1 text-sm text-slate-400">Se lo mandás por WhatsApp desde tu celular.</p>
+        {/* Spec C11: recompensa por invitar. */}
+        <p className="mt-1 text-sm text-gold-300">Por cada amigo que se registre, sumás una pregunta diaria en Indagar.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-2">
