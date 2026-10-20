@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Reunión de check: decisiones del 20 de octubre</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  :root { --navy: #25225b; --navy-2: #3a3779; --coral: #e9342c; --ink: #1d1b33; --muted: #5d5a7a; --line: #dcd9ec; --soft: #f5f4fb; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  header.cover { border-bottom: 3px solid var(--coral); padding-bottom: 10px; margin-bottom: 18px; }
+  .kicker { color: var(--coral); font-size: 9pt; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+  h1 { color: var(--navy); font-size: 22pt; margin: 4px 0 2px; }
+  .meta { color: var(--muted); font-size: 9pt; }
+  h2 { color: var(--navy); font-size: 13.5pt; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--line); page-break-after: avoid; }
+  p { margin: 6px 0; }
+  ul { margin: 6px 0 6px 18px; padding: 0; }
+  li { margin: 3px 0; }
+  .summary { background: var(--soft); border-left: 4px solid var(--navy); padding: 10px 14px; border-radius: 4px; }
+  .summary p { margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 9.5pt; }
+  tr { page-break-inside: avoid; }
+  th { background: var(--navy); color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: #faf9fd; }
+  td:first-child { width: 26%; font-weight: 600; color: var(--navy-2); }
+  td:last-child { width: 15%; }
+  .tag { display: inline-block; font-size: 8pt; padding: 1px 7px; border-radius: 8px; white-space: nowrap; }
+  .ok { background: #e3f3e8; color: #1f6b3a; }
+  .def { background: #fbf0d3; color: #7a5a06; }
+  .pablo { background: #fde4e2; color: #a0231d; }
+  .q { border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 8px 0; page-break-inside: avoid; }
+  .q strong { color: var(--navy); }
+  .small { font-size: 8.5pt; color: var(--muted); }
+  footer { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 8px; }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="kicker">Destiny · Reunión de check</div>
+  <h1>Decisiones del 20 de octubre</h1>
+  <div class="meta">Pablo Maiztegui y German Villamarin · 20 de octubre de 2026 · Revisión de la app en su estado actual</div>
+</header>
+
+<div class="summary">
+  <p><strong>En una línea:</strong> simplificar (se sacan las notas del calendario), darle más protagonismo a preguntar ("Indagar", "¿En qué necesitás claridad hoy?"), cuidar la privacidad del test como si fuera una aceptación de términos y hacer que Círculo ayude a elegir: foto más chica, ejes visibles, distancia y un número global de compatibilidad ajustable.</p>
+  <p><strong>Lo que necesito de vos, Pablo:</strong> los pesos por defecto del número global, el ok al nuevo título del grupo de atracción y, cuando puedas, el modelo de numerología (sin fecha). Están al final.</p>
+</div>
+
+<p class="small">Estado: <span class="tag ok">Decidido</span> se implementa así · <span class="tag def">A definir</span> hay que diseñarlo o pensarlo · <span class="tag pablo">Para Pablo</span> necesita tu respuesta.</p>
+
+<h2>1. Hoy e Indagar</h2>
+<table>
+  <tr><th>Tema</th><th>Decisión</th><th>Estado</th></tr>
+  <tr><td>Nombre de la pestaña</td><td>"Respuestas" pasa a llamarse <strong>Indagar</strong>. La barra queda Hoy · Carta · Indagar · Círculo · Perfil.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Caja para preguntar</td><td>El mismo título en todos los lugares donde aparece (Hoy, Tu día, Carta y la pantalla Indagar): <strong>"¿En qué necesitás claridad hoy?"</strong>.</td><td><span class="tag ok">Decidido</span></td></tr>
+</table>
+
+<h2>2. Calendario</h2>
+<table>
+  <tr><th>Tema</th><th>Decisión</th><th>Estado</th></tr>
+  <tr><td>Consultar un día</td><td>Al tocar un día del calendario se abre Indagar con ese día ya cargado, para consultar en detalle por qué es un buen o mal día y qué significa. No se agrega en "Próximos días" de Hoy.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Notas del día</td><td>Se sacan de todos lados, incluidas las ya escritas. La idea es simplificar. Queda anotada como posible función para otra versión.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Registro de ánimo</td><td>Se queda: solo se sacan las notas.</td><td><span class="tag ok">Decidido</span></td></tr>
+</table>
+
+<h2>3. Privacidad y test de personalidad</h2>
+<table>
+  <tr><th>Tema</th><th>Decisión</th><th>Estado</th></tr>
+  <tr><td>Aviso de privacidad</td><td>Funciona como una aceptación de términos, para que no quede ninguna duda de cómo se usan los datos: "Tus respuestas son privadas: son solo para vos y para mejorar las coincidencias. Nunca se comparten." Va sí o sí <strong>al registrarse</strong> y <strong>al empezar el test</strong>. Hay que revisar qué otros lugares lo necesitan.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Orden de los grupos del test</td><td>Los 4 grupos de 8 preguntas se ordenan según lo que busca la persona, con tus pesos por tipo de vínculo, sin preguntarle nada nuevo. Se usa lo que eligió en "¿Qué buscás?" de Círculo, que pasa a guardarse en el perfil. Si todavía no eligió nada, Atracción va al final.<br>
+    <span class="small">Pareja: Emoción · Comunicación · Compromiso · Atracción (pesos iguales) · Casual: Atracción · Comunicación · Emoción · Compromiso · Amistad: Comunicación · Emoción · Compromiso · Atracción · Trabajo: Comunicación · Compromiso · Emoción · Atracción</span></td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Que Atracción no intimide</td><td>La idea es completar todo el test, pero el grupo de atracción puede incomodar a quien no busca pareja. Se resuelve así:
+    <ul>
+      <li>Va último (salvo para quien busca algo casual).</li>
+      <li>Antes del grupo, una pantalla que explica que esas preguntas son privadas y solo pesan si buscás pareja o algo casual.</li>
+      <li>Quien no busca pareja puede elegir "Responder más tarde": completa los otros tres grupos ahora, y este se le ofrece cuando elija pareja o casual en Círculo.</li>
+    </ul></td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Título del grupo</td><td>Mostrar "Química y atracción" en vez de "Atracción y sexualidad". Es un cambio de texto de tu test.</td><td><span class="tag pablo">Para Pablo</span></td></tr>
+</table>
+
+<h2>4. Invitaciones y crecimiento</h2>
+<table>
+  <tr><th>Tema</th><th>Decisión</th><th>Estado</th></tr>
+  <tr><td>Tokens por invitar</td><td>Por cada amigo que se registra (no alcanza con mandar la invitación), quien invitó suma <strong>una pregunta diaria más en Indagar</strong>: si tenía 10 por día, pasa a tener 11 por día. Por ahora los tokens sirven solo para eso.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Contactos del teléfono</td><td>Una app web no puede leer la agenda del teléfono en iPhone (en Android, solo en forma limitada). Se invita compartiendo un link por WhatsApp a quien elijas.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Cómo viralizar</td><td>Ideas en orden de impacto:
+    <ul>
+      <li><strong>"¿Cuánto fluimos?"</strong>: un link para mandar por WhatsApp; al registrarse, el invitado ve la compatibilidad con vos y quedan conectados.</li>
+      <li>Imagen para historias de Instagram con tu carta o tu día.</li>
+      <li>Tokens por invitar (arriba).</li>
+      <li>Usuario con @ y QR para pasarse el perfil en persona.</li>
+    </ul></td><td><span class="tag def">A definir</span></td></tr>
+</table>
+
+<h2>5. Círculo</h2>
+<table>
+  <tr><th>Tema</th><th>Decisión</th><th>Estado</th></tr>
+  <tr><td>Foto</td><td>Más chica en la tarjeta, para que no parezca una app de citas.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Ejes en la tarjeta</td><td>Al elegir a una persona, el detalle de cada eje es importante, así que tiene que verse sin abrir el perfil. Hay dos formas para comparar en un boceto: cuatro barritas finas (Química, Afecto, Comunicación, Compromiso) o una fila de cuatro números.</td><td><span class="tag def">A definir</span></td></tr>
+  <tr><td>Distancia</td><td>Es un filtro importante. Se pregunta "¿Dónde vivís?" con el mismo buscador de ciudades de los datos de nacimiento, y se filtra <strong>a menos de X km</strong>. Nunca se muestra la ubicación exacta de nadie, solo la ciudad o "a 15 km". No llega al barrio: el buscador devuelve ciudades. Para más precisión se puede pedir la ubicación del celular más adelante.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Intereses</td><td>Poder organizar Círculo por intereses en común. Hay que pensar cómo filtrarlo en la pantalla.</td><td><span class="tag def">A definir</span></td></tr>
+</table>
+
+<h2>6. Número global de compatibilidad</h2>
+<table>
+  <tr><th>Tema</th><th>Decisión</th><th>Estado</th></tr>
+  <tr><td>Número global</td><td>Un solo número que combina astrología, test de personalidad y numerología. Reemplaza al porcentaje que hoy se ve en las tarjetas; el detalle de cada sistema se sigue viendo por separado en el perfil.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Ponderador</td><td>Cuánto pesa cada sistema tiene un valor por defecto, el tuyo, y cada persona lo puede ajustar en su perfil.</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>En los filtros</td><td>Se elige si el número toma en cuenta todos los sistemas o se apaga alguno. Al apagar uno aparece un aviso: "Sin este sistema el resultado pierde precisión".</td><td><span class="tag ok">Decidido</span></td></tr>
+  <tr><td>Numerología</td><td>Sin fecha. Mientras no esté su modelo, el número global combina astrología y test.</td><td><span class="tag pablo">Para Pablo</span></td></tr>
+</table>
+
+<h2>7. Lo que necesito de vos</h2>
+<div class="q"><strong>1. Pesos por defecto del número global.</strong> ¿Cuánto pesa cada sistema? Por ejemplo, astrología 50 % y test 50 % mientras no haya numerología. ¿Cambia según el tipo de vínculo?</div>
+<div class="q"><strong>2. ¿Qué pasa si alguien no hizo el test?</strong> ¿El número global usa solo astrología (con el aviso de precisión), o esa persona no aparece cuando se filtra por número global?</div>
+<div class="q"><strong>3. Título del grupo de atracción.</strong> ¿Te va "Química y atracción" en lugar de "Atracción y sexualidad"?</div>
+<div class="q"><strong>4. Modelo de numerología.</strong> Cuando lo tengas, con el mismo formato que el test: qué se calcula, cómo se compara entre dos personas y con qué pesos.</div>
+
+<footer class="small">
+  Destiny · Acta de la reunión de check del 20/10/2026. Las decisiones se pasan al backlog del proyecto y cada una se implementa con su especificación y sus pruebas.
+</footer>
+
+</body>
+</html>

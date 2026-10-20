@@ -103,6 +103,7 @@ Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usua
 - [ ] Astrochat v3: compatibilidad con tus conexiones (con consentimiento), memoria opcional, varias conversaciones, respuestas en streaming. Con créditos: preguntas extra con tokens. Decidir si se suma el eje E1 del test.
 - [x] **Tu día completo** (spec B4 v3), primera versión de "Mi cielo": clima del día (Luna, fase y casa), los 3 tránsitos más fuertes de todos los planetas sobre la carta (con cuándo son exactos), estado por área y lectura con IA en el estilo de la persona.
 - [ ] Mi cielo v2: "hoy fluye con…" (tránsitos cruzados con tus conexiones), filtros por área en el calendario, tránsitos de varios meses.
+- [ ] Notas del día en el calendario (se sacan el 2026-10-20 para simplificar; volver a evaluar en otra versión).
 - [ ] **Consentimientos y datos**: aceptar privacidad al empezar, ver/exportar/borrar mis datos, memoria del chat opcional.
 - [ ] Timeline / Diario cósmico (fase 2 del whitepaper). Incluye volver a pedir el ánimo del día **con devolución** (una línea en "Tu día" según ánimo y tránsito, y patrones con el tiempo); el check-in se sacó de Hoy el 2026-10-13 porque no devolvía nada (endpoint y tabla quedan).
 - [x] Navegación reorganizada (spec U1): Hoy · Mi carta · Descubrir · Conexiones · Perfil; Perfil corto; Hoy con jerarquía; Mi carta en pestañas; sistema visual común. Cuando lleguen Astrochat y Mi cielo, se suman a esta estructura.
@@ -157,6 +158,20 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Créditos: por ahora la moneda se llama **"token"** (decisión de German, 2026-10-13). **No es prioridad.** Falta definir qué cuesta y qué es siempre gratis.
 - [ ] Propuesta para respetar los 6 meses gratis: lanzar primero solo **ganar y gastar** créditos (sin venta) para aprender qué valora la gente.
 - [ ] Revisión legal del saldo prepago (Defensa del Consumidor: vencimiento, devoluciones, información de precios).
+
+**Reunión de check con Pablo (2026-10-20)** — acta: `docs/reuniones/2026-10-20-check-pablo.html` (y PDF).
+- [ ] Pestaña "Respuestas" → **Indagar**; la caja para preguntar se titula "¿En qué necesitás claridad hoy?" en todos lados.
+- [ ] Calendario: tocar un día abre Indagar con ese día precargado.
+- [ ] Sacar las notas del calendario de todos lados, incluidas las ya escritas (el registro de ánimo queda). Posible función futura.
+- [ ] Aviso de privacidad tipo aceptación de términos al registrarse y al empezar el test; revisar otros lugares.
+- [ ] Test: ordenar los grupos según lo que busca la persona (guardar "¿Qué buscás?" de Círculo en el perfil; sin dato, Atracción al final), pantalla de entrada al grupo de Atracción y "Responder más tarde" para quien no busca pareja.
+- [ ] Tokens por invitar: +1 pregunta diaria en Indagar por cada invitado que termina el registro.
+- [ ] Círculo: foto más chica y ejes visibles en la tarjeta (boceto: barritas o números).
+- [ ] Distancia: "¿Dónde vivís?" con el buscador de ciudades y filtro "a menos de X km" (sin mostrar ubicación exacta).
+- [ ] Círculo: organizar o filtrar por intereses en común (a diseñar).
+- [ ] Número global de compatibilidad (astrología + test + numerología) en las tarjetas, ponderador por defecto de Pablo ajustable en el perfil, filtro para apagar sistemas con aviso de precisión. **Cambia la decisión de mostrar los sistemas solo por separado (ADR 0011)**: necesita ADR nuevo.
+- [ ] Ideas de viralización: "¿Cuánto fluimos?" (Compartir v2), imagen para historias, @ y QR.
+- [ ] Pablo: pesos por defecto del número global, qué pasa sin test, título "Química y atracción", modelo de numerología (sin fecha).
 
 **Fotos y búsqueda (pedido de Pablo, 2026-10-15)**
 - [x] Fotos: hasta 4 con chequeo automático (spec A11, ADR 0013).
