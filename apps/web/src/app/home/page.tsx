@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { indagarDayHref } from "@/lib/indagar";
+import { DAY_TYPES } from "@/lib/dayTypes";
 import AskBox from "@/components/AskBox";
 import { ListCard, ListRow, Page, SectionTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
@@ -115,7 +116,12 @@ function HomeContent() {
           {upcoming.length > 0 ? (
             upcoming.map((e) => (
               <div key={e.start}>
-                <ListRow href="/calendario" title={`${shortDate(e.start)} · ${e.title}`} detail={e.text} />
+                <ListRow
+                  href="/calendario"
+                  icon={<span className={`inline-block h-2.5 w-2.5 rounded-full ${DAY_TYPES[e.tipo].dot}`} />}
+                  title={`${shortDate(e.start)} · ${e.title}`}
+                  detail={e.text}
+                />
                 {/* Spec U2 (ajuste de German): consultar ese día en Indagar. */}
                 <Link href={indagarDayHref(e.start)} className="block px-4 pb-3 text-right text-xs text-violet-400">
                   Indagar sobre este día →

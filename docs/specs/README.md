@@ -48,3 +48,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [A12-privacidad-y-orden-del-test](./A12-privacidad-y-orden-del-test.md) | A + A6 | implemented |
 | [C11-tokens-por-invitar](./C11-tokens-por-invitar.md) | C + X3 | implemented |
 | [C12-invitar-simple](./C12-invitar-simple.md) | C (simplifica C8) | implemented |
+| [B11-colores-del-calendario](./B11-colores-del-calendario.md) | B6 + B4 | implemented |

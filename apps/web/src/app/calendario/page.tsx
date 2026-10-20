@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Page, PageTitle } from "@/components/ui";
 import { indagarDayHref } from "@/lib/indagar";
+import { DAY_TYPE_ORDER, DAY_TYPES } from "@/lib/dayTypes";
 import { useSessionProfileId } from "@/lib/session";
 import {
   CalendarDay,
@@ -130,33 +131,29 @@ function CalendarioContent() {
               <button
                 key={d.date}
                 onClick={() => openDay(d.date)}
-                className={`relative aspect-square rounded-md text-sm ${
-                  d.has_key_transit ? "bg-violet-950" : "bg-slate-900"
-                } ${
+                className={`relative aspect-square rounded-md text-sm ${DAY_TYPES[d.tipo].cell} ${
                   selectedDay === d.date
                     ? "ring-2 ring-slate-100"
                     : isToday
                       ? "font-semibold text-gold-300 ring-2 ring-gold-400"
-                      : d.has_key_transit
-                        ? "ring-1 ring-violet-700"
-                        : "ring-1 ring-slate-800"
+                      : "ring-1 ring-slate-800"
                 }`}
               >
                 {dayNum}
-                {d.has_key_transit && (
-                  <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-violet-400" />
-                )}
               </button>
             );
           })}
         </div>
 
-        <div className="flex items-center gap-4 text-xs text-slate-400">
+        {/* Spec B11: tipo de día (nombres neutros: Destiny no predice). */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-400">
+          {DAY_TYPE_ORDER.map((tipo) => (
+            <span key={tipo} className="flex items-center gap-1.5">
+              <span className={`h-2.5 w-2.5 rounded-full ${DAY_TYPES[tipo].dot}`} /> {DAY_TYPES[tipo].label}
+            </span>
+          ))}
           <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-violet-400" /> Tránsito importante
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full ring-2 ring-gold-400" /> Hoy
+            <span className="h-2.5 w-2.5 rounded-full ring-2 ring-gold-400" /> Hoy
           </span>
         </div>
       </section>
@@ -196,7 +193,10 @@ function CalendarioContent() {
                 className="w-full rounded-xl bg-slate-900 p-3 text-left ring-1 ring-slate-800 hover:ring-violet-400"
               >
                 <span className="flex items-baseline justify-between gap-2">
-                  <span className="font-medium text-gold-300">{e.title}</span>
+                  <span className="flex items-center gap-2 font-medium text-gold-300">
+                    <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${DAY_TYPES[e.tipo].dot}`} />
+                    {e.title}
+                  </span>
                   <span className="shrink-0 text-xs text-slate-400">
                     {e.start === today ? "Hoy" : eventDates(e)}
                   </span>

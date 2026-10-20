@@ -494,9 +494,13 @@ class ExplanationOut(BaseModel):
     text: str
 
 
+DayType = Literal["fluye", "desafia", "intenso", "tranquilo"]
+
+
 class CalendarDayOut(BaseModel):
     date: date
     has_key_transit: bool
+    tipo: DayType = "tranquilo"  # spec B11
 
 
 class TransitOut(BaseModel):
@@ -509,6 +513,7 @@ class UpcomingEventOut(BaseModel):
     start: date
     end: date
     aspect: str
+    tipo: DayType = "tranquilo"  # spec B11
     title: str
     text: str
 

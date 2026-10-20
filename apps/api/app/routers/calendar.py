@@ -13,7 +13,7 @@ from app.schemas import (
     TransitOut,
     UpcomingEventOut,
 )
-from app.transits import TRANSIT_TEXT, day_transit, month_transits, upcoming_events
+from app.transits import TRANSIT_TEXT, day_transit, day_type, month_transits, upcoming_events
 
 router = APIRouter(prefix="/calendar", tags=["calendar"])
 
@@ -71,4 +71,6 @@ def get_month(
     require_self(profile_id, current)
     profile = _get_profile_or_404(profile_id, db)
     transits = month_transits(profile, year, month)
-    return [CalendarDayOut(date=t["date"], has_key_transit=t["is_major"]) for t in transits]
+    return [
+        CalendarDayOut(date=t["date"], has_key_transit=t["is_major"], tipo=day_type(t["aspect"])) for t in transits
+    ]

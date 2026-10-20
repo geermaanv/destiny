@@ -6,6 +6,20 @@ from app.astro import moon_longitude, natal_sun_longitude
 from app.models import Profile
 
 
+# Spec B11: tipo de día según el aspecto de la Luna con tu Sol (nombres neutros: Destiny no predice).
+DAY_TYPES = {
+    "trígono": "fluye",
+    "sextil": "fluye",
+    "cuadratura": "desafia",
+    "oposición": "desafia",
+    "conjunción": "intenso",
+}
+
+
+def day_type(aspect: str) -> str:
+    return DAY_TYPES.get(aspect, "tranquilo")
+
+
 def day_transit(profile: Profile, day: date) -> dict:
     """Tránsito del día: Luna vs. Sol natal del usuario (simplificación v1, ver
     B6-calendario-memoria.md). El Sol natal usa la hora local de nacimiento."""
@@ -47,6 +61,13 @@ def upcoming_events(profile: Profile, start: date, limit: int = 10) -> list[dict
         if len(events) == limit:
             break
         title, text = TRANSIT_TEXT.get(transit["aspect"], (transit["aspect"].capitalize(), ""))
-        current = {"start": day, "end": day, "aspect": transit["aspect"], "title": title, "text": text}
+        current = {
+            "start": day,
+            "end": day,
+            "aspect": transit["aspect"],
+            "tipo": day_type(transit["aspect"]),
+            "title": title,
+            "text": text,
+        }
         events.append(current)
     return events

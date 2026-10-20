@@ -66,3 +66,5 @@ Tests automáticos en `apps/api/tests/test_b6_calendario.py` (correr: `cd apps/a
 **Corrección (revisión nocturna, 2026-10-14)**: las notas se guardan sin espacios de más y tienen que tener entre 1 y 500 caracteres (antes se aceptaban vacías o de cualquier largo). El campo de la app tiene el mismo límite.
 
 **Cambio posterior (2026-10-20, spec U2)**: se sacan las notas del día (pantalla, API y datos guardados) para simplificar; quedan en el BACKLOG como posible función futura. El detalle del día suma "Indagar sobre este día →".
+
+**Cambio posterior (2026-10-20, spec B11)**: cada día tiene un tipo con su color (fluye, desafía, intenso, tranquilo) en vez de solo "tránsito importante".

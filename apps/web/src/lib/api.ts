@@ -1,4 +1,5 @@
 import { Fondo, resetLook } from "@/lib/theme";
+import type { DayType } from "@/lib/dayTypes";
 // "/api" en vez de una URL absoluta: Next.js la proxea server-side a
 // API_INTERNAL_URL (ver next.config.ts). Así el browser solo necesita
 // llegar al origen de Next — un solo túnel alcanza para hostear
@@ -297,7 +298,7 @@ export async function getExplanation(
   return res.json();
 }
 
-export type CalendarDay = { date: string; has_key_transit: boolean };
+export type CalendarDay = { date: string; has_key_transit: boolean; tipo: DayType };
 // Las notas del día se sacaron (spec U2).
 export type CalendarDayDetail = {
   transits: { aspect: string; title: string | null; text: string | null }[];
@@ -307,6 +308,7 @@ export type UpcomingEvent = {
   start: string;
   end: string;
   aspect: string;
+  tipo: DayType; // spec B11
   title: string;
   text: string;
 };
