@@ -169,35 +169,66 @@ function Filters({
   );
 }
 
-// Spec B10: lo que está filtrado, con ✕ para sacarlo.
-function ActiveFilters({ filters, onChange }: { filters: DiscoverFilters; onChange: (f: DiscoverFilters) => void }) {
-  const chips: { label: string; clear: DiscoverFilters }[] = [];
-  if (filters.max_km !== null) chips.push({ label: `A menos de ${filters.max_km} km`, clear: { ...filters, max_km: null } });
-  if (filters.edad_min !== DEFAULT_FILTERS.edad_min || filters.edad_max !== DEFAULT_FILTERS.edad_max)
-    chips.push({
-      label: `${filters.edad_min} a ${filters.edad_max} años`,
-      clear: { ...filters, edad_min: DEFAULT_FILTERS.edad_min, edad_max: DEFAULT_FILTERS.edad_max },
-    });
-  if (filters.min_pct > 0) chips.push({ label: `${filters.min_pct}% o más`, clear: { ...filters, min_pct: 0 } });
-  for (const s of SISTEMAS)
-    if (!filters.sistemas.includes(s.value))
-      chips.push({ label: `Sin ${s.label.toLowerCase()}`, clear: { ...filters, sistemas: DEFAULT_FILTERS.sistemas } });
+// Spec B10: con qué criterio se está buscando. Siempre visible: lo que está por defecto
+// en gris y sin ✕ (tocarlo abre Filtros); lo que cambiaste, resaltado y con ✕.
+function ActiveFilters({
+  filters,
+  onChange,
+  onOpen,
+}: {
+  filters: DiscoverFilters;
+  onChange: (f: DiscoverFilters) => void;
+  onOpen: () => void;
+}) {
+  type Chip = { label: string; clear?: DiscoverFilters };
+  const chips: Chip[] = [{ label: CONTEXTS.find((c) => c.value === filters.context)?.label ?? "" }];
+  const both = filters.sistemas.length === SISTEMAS.length;
+  chips.push(
+    both
+      ? { label: "Astrología y test" }
+      : {
+          label: filters.sistemas[0] === "astrologia" ? "Solo astrología" : "Solo test",
+          clear: { ...filters, sistemas: DEFAULT_FILTERS.sistemas },
+        }
+  );
+  chips.push(
+    filters.max_km === null
+      ? { label: "Cualquier distancia" }
+      : { label: `A menos de ${filters.max_km} km`, clear: { ...filters, max_km: null } }
+  );
+  const defaultAges = filters.edad_min === DEFAULT_FILTERS.edad_min && filters.edad_max === DEFAULT_FILTERS.edad_max;
+  chips.push({
+    label: `${filters.edad_min} a ${filters.edad_max} años`,
+    clear: defaultAges ? undefined : { ...filters, edad_min: DEFAULT_FILTERS.edad_min, edad_max: DEFAULT_FILTERS.edad_max },
+  });
+  chips.push(
+    filters.min_pct === 0
+      ? { label: "Cualquier compatibilidad" }
+      : { label: `${filters.min_pct}% o más`, clear: { ...filters, min_pct: 0 } }
+  );
   for (const i of filters.intereses)
     chips.push({ label: interestLabel(i), clear: { ...filters, intereses: filters.intereses.filter((x) => x !== i) } });
-  if (chips.length === 0) return null;
+  const changed = chips.filter((c) => c.clear).length;
+
   return (
     <div className="flex flex-wrap gap-2">
-      {chips.map((c) => (
-        <button
-          key={c.label}
-          onClick={() => onChange(c.clear)}
-          aria-label={`Sacar filtro ${c.label}`}
-          className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3 py-1 text-xs text-slate-200 ring-1 ring-slate-500"
-        >
-          {c.label} <span className="text-slate-400">✕</span>
-        </button>
-      ))}
-      {chips.length > 1 && (
+      {chips.map((c) =>
+        c.clear ? (
+          <button
+            key={c.label}
+            onClick={() => onChange(c.clear!)}
+            aria-label={`Sacar filtro ${c.label}`}
+            className="inline-flex items-center gap-1.5 rounded-full bg-slate-700 px-3 py-1 text-xs text-white ring-1 ring-slate-400"
+          >
+            {c.label} <span className="text-slate-300">✕</span>
+          </button>
+        ) : (
+          <button key={c.label} onClick={onOpen} className="rounded-full px-3 py-1 text-xs text-slate-400 ring-1 ring-slate-700">
+            {c.label}
+          </button>
+        )
+      )}
+      {changed > 1 && (
         <button
           onClick={() => onChange({ ...DEFAULT_FILTERS, context: filters.context })}
           className="rounded-full border border-dashed border-slate-600 px-3 py-1 text-xs text-slate-400"
@@ -402,7 +433,7 @@ function DiscoverContent() {
           myInterests={me.interests ?? []}
         />
       )}
-      {!search && <ActiveFilters filters={filters} onChange={update} />}
+      {!search && <ActiveFilters filters={filters} onChange={update} onOpen={() => setShowFilters(true)} />}
 
       {needsPrefs && (
         <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">

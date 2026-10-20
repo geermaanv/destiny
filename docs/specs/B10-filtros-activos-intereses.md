@@ -47,3 +47,5 @@ Por candidato: `common_interests: ["musica", "viajes"]` (en el orden de la lista
 ## Fuera de alcance
 
 Intereses nuevos o libres, pesar los intereses en el número global.
+
+**Ajuste (2026-10-20, German)**: la fila de filtros se ve siempre, con todos los criterios: los que están por defecto en gris y sin ✕ (tocarlos abre Filtros), los que cambiaste resaltados y con ✕.
