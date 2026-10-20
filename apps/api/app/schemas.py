@@ -442,6 +442,8 @@ class DiscoverCandidateOut(BaseModel):
     axes_global: dict[str, int | None] = {}
     systems: dict[str, SystemOut | None] = {}
     distance_km: int | None = None
+    # Spec B10: intereses que coinciden con los de quien mira.
+    common_interests: list[str] = []
     astrology_pct: int = 0
     preview: str
     # Motor de sinastría (spec B5-motor-sinastria.md): puntaje por eje y contexto.

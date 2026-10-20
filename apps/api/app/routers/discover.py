@@ -1,7 +1,7 @@
 import math
 import unicodedata
 import uuid
-from typing import Literal
+from typing import Literal, get_args
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import or_, select
@@ -18,7 +18,7 @@ from app.public_profile import age, public_fields
 from app.ai_texts import cached, explanation_key, record
 from app.personalization.style import prompt_instructions, style_for
 from app.synastry import AXIS_LABELS, ai_facts, headline, profile_synastry
-from app.schemas import DiscoverCandidateOut, ExplanationOut, PersonalityCompatOut, SystemOut
+from app.schemas import DiscoverCandidateOut, ExplanationOut, Interest, PersonalityCompatOut, SystemOut
 
 router = APIRouter(prefix="/discover", tags=["discover"])
 
@@ -48,6 +48,7 @@ MAX_SEARCH = 20  # búsqueda por nombre (spec B8)
 # Ejes del test de Pablo ↔ ejes de la astrología: miden las mismas cuatro dimensiones (spec B9).
 TEST_AXES = {"E1": "atraccion", "E2": "afecto", "E3": "comunicacion", "E4": "compromiso"}
 EARTH_KM = 6371.0
+INTERESTS = get_args(Interest)  # lista de intereses de A4, en su orden
 
 
 def _mean(values: list[float | None]) -> float | None:
@@ -94,6 +95,7 @@ def list_discover(
     edad_min: int = Query(default=18, ge=18, le=99),
     edad_max: int = Query(default=99, ge=18, le=99),
     max_km: int | None = Query(default=None, ge=1, le=20000),
+    intereses: str = Query(default=""),
     q: str | None = Query(default=None, max_length=40),
     db: Session = Depends(get_db),
     current: uuid.UUID | None = Depends(session_profile_id),
@@ -107,6 +109,9 @@ def list_discover(
     included = {s.strip() for s in sistemas.split(",") if s.strip()}
     if not included or not included <= set(SISTEMAS):
         raise HTTPException(status_code=422, detail="Elegí al menos un sistema: astrologia o personalidad")
+    wanted = {i.strip() for i in intereses.split(",") if i.strip()}
+    if not wanted <= set(INTERESTS):
+        raise HTTPException(status_code=422, detail="Interés desconocido")
     search = _fold(q.strip()) if q and q.strip() else None
     if max_km is not None and not search and viewer.residence_lat is None:
         raise HTTPException(status_code=409, detail="Contanos dónde vivís para filtrar por distancia")
@@ -153,6 +158,9 @@ def list_discover(
                 continue
             if max_km is not None and (distance is None or distance > max_km):
                 continue
+            # Intereses (spec B10): tiene que tener todos los marcados.
+            if not wanted <= set(candidate.interests or []):
+                continue
         result = profile_synastry(viewer, candidate, context)
 
         # Cada sistema con los pesos de Pablo para el vínculo; el global es su promedio simple (ADR 0014).
@@ -185,6 +193,7 @@ def list_discover(
                 axes_global=axes_global,
                 systems=systems,
                 distance_km=distance,
+                common_interests=[i for i in INTERESTS if i in (viewer.interests or []) and i in (candidate.interests or [])],
                 astrology_pct=result["total"],
                 preview=headline(result),
                 axes=result["ejes"],
@@ -195,8 +204,8 @@ def list_discover(
                 **public_fields(candidate),
             )
         )
-    # Lista curada y chica: los de mayor número global (B5, B9).
-    results.sort(key=lambda r: r.global_pct, reverse=True)
+    # Lista curada y chica: los de mayor número global (B5, B9); a igual número, más intereses en común (B10).
+    results.sort(key=lambda r: (r.global_pct, len(r.common_interests)), reverse=True)
     return results[: MAX_SEARCH if search else MAX_CANDIDATES]
 
 

@@ -15,12 +15,14 @@ import {
   DiscoverFilters,
   getDiscoverCandidates,
   getProfile,
+  Interest,
   Place,
   Profile,
   Sistema,
   setResidence,
 } from "@/lib/api";
 import { activeFilterCount, DEFAULT_FILTERS, loadFilters, saveFilters, saveLastList } from "@/lib/discover";
+import { interestLabel, INTERESTS } from "@/lib/profile";
 
 const CONTEXTS: { value: DiscoverFilters["context"]; label: string }[] = [
   { value: "pareja", label: "Pareja" },
@@ -40,7 +42,15 @@ const pill = (active: boolean) =>
     active ? "bg-slate-700 text-white ring-slate-400" : "bg-slate-900 text-slate-300 ring-slate-700 hover:ring-slate-500"
   }`;
 
-function Filters({ filters, onChange }: { filters: DiscoverFilters; onChange: (f: DiscoverFilters) => void }) {
+function Filters({
+  filters,
+  onChange,
+  myInterests,
+}: {
+  filters: DiscoverFilters;
+  onChange: (f: DiscoverFilters) => void;
+  myInterests: Interest[];
+}) {
   const [edadMin, setEdadMin] = useState(String(filters.edad_min));
   const [edadMax, setEdadMax] = useState(String(filters.edad_max));
 
@@ -126,6 +136,75 @@ function Filters({ filters, onChange }: { filters: DiscoverFilters; onChange: (f
           <span className="text-slate-400">años</span>
         </div>
       </div>
+      <div className="space-y-2">
+        <div className="flex items-baseline justify-between">
+          <p className="text-xs text-slate-400">Intereses (tiene que tener todos los que marques)</p>
+          {myInterests.length > 0 && (
+            <button onClick={() => onChange({ ...filters, intereses: myInterests })} className="text-xs text-violet-400">
+              Usar mis intereses
+            </button>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {INTERESTS.map((i) => {
+            const on = filters.intereses.includes(i.value);
+            return (
+              <button
+                key={i.value}
+                onClick={() =>
+                  onChange({
+                    ...filters,
+                    intereses: on ? filters.intereses.filter((x) => x !== i.value) : [...filters.intereses, i.value],
+                  })
+                }
+                className={pill(on)}
+              >
+                {i.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Spec B10: lo que está filtrado, con ✕ para sacarlo.
+function ActiveFilters({ filters, onChange }: { filters: DiscoverFilters; onChange: (f: DiscoverFilters) => void }) {
+  const chips: { label: string; clear: DiscoverFilters }[] = [];
+  if (filters.max_km !== null) chips.push({ label: `A menos de ${filters.max_km} km`, clear: { ...filters, max_km: null } });
+  if (filters.edad_min !== DEFAULT_FILTERS.edad_min || filters.edad_max !== DEFAULT_FILTERS.edad_max)
+    chips.push({
+      label: `${filters.edad_min} a ${filters.edad_max} años`,
+      clear: { ...filters, edad_min: DEFAULT_FILTERS.edad_min, edad_max: DEFAULT_FILTERS.edad_max },
+    });
+  if (filters.min_pct > 0) chips.push({ label: `${filters.min_pct}% o más`, clear: { ...filters, min_pct: 0 } });
+  for (const s of SISTEMAS)
+    if (!filters.sistemas.includes(s.value))
+      chips.push({ label: `Sin ${s.label.toLowerCase()}`, clear: { ...filters, sistemas: DEFAULT_FILTERS.sistemas } });
+  for (const i of filters.intereses)
+    chips.push({ label: interestLabel(i), clear: { ...filters, intereses: filters.intereses.filter((x) => x !== i) } });
+  if (chips.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-2">
+      {chips.map((c) => (
+        <button
+          key={c.label}
+          onClick={() => onChange(c.clear)}
+          aria-label={`Sacar filtro ${c.label}`}
+          className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3 py-1 text-xs text-slate-200 ring-1 ring-slate-500"
+        >
+          {c.label} <span className="text-slate-400">✕</span>
+        </button>
+      ))}
+      {chips.length > 1 && (
+        <button
+          onClick={() => onChange({ ...DEFAULT_FILTERS, context: filters.context })}
+          className="rounded-full border border-dashed border-slate-600 px-3 py-1 text-xs text-slate-400"
+        >
+          Borrar todos
+        </button>
+      )}
     </div>
   );
 }
@@ -151,6 +230,12 @@ function CandidateCard({ c }: { c: DiscoverCandidate }) {
           </p>
           {c.verificado && <p className="text-xs text-gold-300">✓{"\uFE0E"} Verificado</p>}
           <p className="text-xs text-gold-300">{c.preview}</p>
+          {c.common_interests.length > 0 && (
+            <p className="text-xs text-slate-400">
+              {c.common_interests.length === 1 ? "1 interés en común" : `${c.common_interests.length} intereses en común`}:{" "}
+              {c.common_interests.map((i) => interestLabel(i).toLowerCase()).join(", ")}
+            </p>
+          )}
           <p className="pt-1 text-3xl font-semibold leading-none text-gold-300">{c.global_pct}%</p>
           <p className="text-xs text-slate-500">{globalCaption(c)}</p>
         </div>
@@ -309,7 +394,15 @@ function DiscoverContent() {
         </div>
       )}
 
-      {showFilters && !search && <Filters filters={filters} onChange={update} />}
+      {showFilters && !search && (
+        <Filters
+          key={`${filters.edad_min}-${filters.edad_max}`}
+          filters={filters}
+          onChange={update}
+          myInterests={me.interests ?? []}
+        />
+      )}
+      {!search && <ActiveFilters filters={filters} onChange={update} />}
 
       {needsPrefs && (
         <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">

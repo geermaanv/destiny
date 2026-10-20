@@ -215,6 +215,7 @@ export type DiscoverCandidate = {
   axes_global: Partial<Record<AxisKey, number | null>>;
   systems: { astrologia: SystemScore | null; personalidad: SystemScore | null };
   distance_km: number | null;
+  common_interests: Interest[]; // spec B10
   astrology_pct: number;
   preview: string;
   axes: Partial<Record<"atraccion" | "afecto" | "comunicacion" | "compromiso", number>>;
@@ -247,6 +248,7 @@ export type DiscoverFilters = {
   edad_min: number;
   edad_max: number;
   max_km: number | null;
+  intereses: Interest[]; // spec B10: tiene que tener todos
 };
 
 // Contexto de relación en Descubrir (spec B5): cambia los pesos de cada eje.
@@ -266,6 +268,7 @@ export async function getDiscoverCandidates(
     edad_max: String(filters.edad_max),
   });
   if (filters.max_km !== null) params.set("max_km", String(filters.max_km));
+  if (filters.intereses.length > 0) params.set("intereses", filters.intereses.join(","));
   if (q?.trim()) params.set("q", q.trim());
   const res = await fetch(`${API_URL}/discover?${params.toString()}`);
   if (!res.ok) throw new Error(String(res.status));

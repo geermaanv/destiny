@@ -12,6 +12,7 @@ export const DEFAULT_FILTERS: DiscoverFilters = {
   edad_min: 18,
   edad_max: 99,
   max_km: null,
+  intereses: [],
 };
 
 export function loadFilters(): DiscoverFilters {
@@ -21,6 +22,7 @@ export function loadFilters(): DiscoverFilters {
     const merged = { ...DEFAULT_FILTERS, ...saved };
     delete (merged as Record<string, unknown>).sistema; // filtro viejo de B8, reemplazado por `sistemas`
     if (!Array.isArray(merged.sistemas) || merged.sistemas.length === 0) merged.sistemas = DEFAULT_FILTERS.sistemas;
+    if (!Array.isArray(merged.intereses)) merged.intereses = [];
     return merged;
   } catch {
     return DEFAULT_FILTERS;
@@ -42,7 +44,7 @@ export function activeFilterCount(f: DiscoverFilters): number {
     f.max_km !== null,
     f.min_pct !== DEFAULT_FILTERS.min_pct,
     f.edad_min !== DEFAULT_FILTERS.edad_min || f.edad_max !== DEFAULT_FILTERS.edad_max,
-  ].filter(Boolean).length;
+  ].filter(Boolean).length + f.intereses.length;
 }
 
 export function saveLastList(filters: DiscoverFilters, candidates: DiscoverCandidate[]) {

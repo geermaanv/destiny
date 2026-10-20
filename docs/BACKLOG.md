@@ -168,7 +168,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Tokens por invitar: +1 pregunta diaria en Indagar por cada invitado que termina el registro.
 - [x] Círculo: foto de 128 px, número global y una columna de barras por sistema con el promedio por eje (spec B9, boceto de German).
 - [x] Distancia: "¿Dónde vivís?" con el buscador de ciudades y filtro "a menos de X km" (spec B9).
-- [ ] Círculo: organizar o filtrar por intereses en común (a diseñar).
+- [x] Círculo: filtro de intereses (tiene que tener todos), "N intereses en común" en la tarjeta y desempate por intereses; filtros activos con ✕ (spec B10).
 - [x] Número global en las tarjetas, provisorio con promedio simple de los sistemas (cada uno con los pesos de Pablo por vínculo), y filtro para apagar sistemas con aviso de precisión (spec B9, ADR 0014).
 - [ ] Ponderador entre sistemas: pesos por defecto de Pablo y ajuste por persona en el perfil.
 - [ ] Ideas de viralización: "¿Cuánto fluimos?" (Compartir v2), imagen para historias, @ y QR.

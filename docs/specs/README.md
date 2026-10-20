@@ -43,3 +43,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [A11-fotos](./A11-fotos.md) | A4 / B5 | implemented |
 | [B8-filtros-descubrir](./B8-filtros-descubrir.md) | B5 | implemented |
 | [B9-circulo-v2](./B9-circulo-v2.md) | B5 | implemented |
+| [B10-filtros-activos-intereses](./B10-filtros-activos-intereses.md) | B5 | implemented |
