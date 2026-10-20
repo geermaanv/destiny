@@ -8,7 +8,8 @@ from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session
 
 from app.aspects import angle_between, aspect_sentence, classify_aspect
-from app.astro import approximate_longitude_for_sign, natal_sun_longitude
+from app.astro import approximate_longitude_for_sign
+from app.public_profile import sun_sign
 from app.config import settings
 from app.auth import is_active, require_self, session_profile_id
 from app.database import get_db
@@ -47,16 +48,23 @@ def _test_complete(db: Session, profile_id: uuid.UUID) -> bool:
     return completed(mine.answers if mine else {}) == len(load_config()["questions"])
 
 
-def _sun_aspect(inviter: Profile, friend_sun_sign: str) -> dict:
-    # Aproximado: del amigo solo tenemos el signo solar (fricción mínima al invitar).
-    return classify_aspect(angle_between(natal_sun_longitude(inviter), approximate_longitude_for_sign(friend_sun_sign)))
+def _sun_aspect(inviter: Profile, friend_sun_sign: str | None) -> dict | None:
+    """Adelanto por signo, aproximado (del amigo solo tenemos el signo solar). Spec C12: si es flojo
+    (los soles no forman un aspecto mayor) no sirve de gancho y no se muestra."""
+    if not friend_sun_sign:
+        return None
+    # Signo con signo (los dos en su punto medio): comparar el Sol exacto con el medio del signo del
+    # amigo dejaba sin aspecto mayor a quien tiene el Sol cerca del borde de un signo.
+    mine = approximate_longitude_for_sign(sun_sign(inviter))
+    aspect = classify_aspect(angle_between(mine, approximate_longitude_for_sign(friend_sun_sign)))
+    return aspect if aspect["is_major"] else None
 
 
 def _message(inviter: Profile, payload: InvitationIn, with_test: bool, link: str) -> str:
     """Spec C12: el mensaje se arma solo con lo que haya (signo del amigo, mi test completo)."""
     parts = [f"¡Hola {payload.friend_name}! {HOOK}"]
-    if payload.friend_sun_sign:
-        sentence = aspect_sentence(_sun_aspect(inviter, payload.friend_sun_sign)["aspect"]).replace("sus soles", "nuestros soles")
+    if aspect := _sun_aspect(inviter, payload.friend_sun_sign):
+        sentence = aspect_sentence(aspect["aspect"]).replace("sus soles", "nuestros soles")
         parts.append(f"Con tu signo ({payload.friend_sun_sign}) y mi carta, parece que {sentence}.")
     if with_test:
         parts.append(f"{TEST_LINE}: hacelo vos y comparamos.")
@@ -103,8 +111,7 @@ def create_invitation(
     db.commit()
 
     partial_report = None
-    if payload.friend_sun_sign:
-        aspect = _sun_aspect(inviter, payload.friend_sun_sign)
+    if aspect := _sun_aspect(inviter, payload.friend_sun_sign):
         partial_report = PartialReportOut(
             teaser=(
                 f"Con el sol en {payload.friend_sun_sign}, {payload.friend_name} podría tener esta "
@@ -227,8 +234,7 @@ def get_invitation(ref_id: str, db: Session = Depends(get_db)) -> InvitationPrel
     name = inviter.display_name or "Alguien"
     # Spec C12: adelanto si hay signo, invitación al test si quien invita lo hizo, o un mensaje general.
     parts = []
-    if invitation.friend_sun_sign:
-        aspect = _sun_aspect(inviter, invitation.friend_sun_sign)
+    if aspect := _sun_aspect(inviter, invitation.friend_sun_sign):
         parts.append(f"Con tu signo, puede que {aspect_sentence(aspect['aspect'])}. Completá tu carta para la revelación real.")
     if invitation.kind == "test":
         parts.append(

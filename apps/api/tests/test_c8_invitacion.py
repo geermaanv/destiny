@@ -5,12 +5,12 @@ from tests.helpers import create_profile, verify, verified_user
 
 def test_invitacion_arma_mensaje_en_primera_persona(client):
     pid = verified_user(client, "5491111111111", name="Ana")
-    r = client.post("/invitations", json={"inviter_id": pid, "friend_name": "Juan", "friend_sun_sign": "Géminis"})
+    r = client.post("/invitations", json={"inviter_id": pid, "friend_name": "Juan", "friend_sun_sign": "Cáncer"})
     body = r.json()
     assert r.status_code == 201
     assert body["message"].startswith("¡Hola Juan! ¿Por qué con algunas personas fluye y con otras no?")
     assert "Descubrilo en Destiny" in body["message"]  # texto de la spec C12
-    assert "(Géminis)" in body["message"]
+    assert "(Cáncer)" in body["message"]  # Tauro y Cáncer: sextil (Géminis sería flojo, spec C12)
     assert "sus soles" not in body["message"]
     assert "https://destiny.test/onboarding/invitacion?ref=" in body["message"]
     assert body["whatsapp_url"].startswith("https://wa.me/?text=")

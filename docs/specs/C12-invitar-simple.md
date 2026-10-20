@@ -18,7 +18,7 @@ Ninguno.
 - **Un solo formulario**: su nombre (obligatorio) y su signo (opcional, "No lo sé"). Debajo, el mensaje armado en vivo y el botón **"Enviar por WhatsApp"**. Sin elegir tipo, sin vínculo, sin paso de vista previa.
 - **El mensaje se arma solo**:
   - Siempre: "¡Hola {nombre}! ¿Por qué con algunas personas fluye y con otras no?" y el link.
-  - Con su signo: suma el adelanto astrológico (signo del amigo con tu carta, aproximado).
+  - Con su signo: suma el adelanto astrológico (signo del amigo con tu carta, aproximado), **solo si es un gancho**: si los soles no forman un aspecto mayor ("la conexión está por descubrirse"), no se incluye (ajuste de German, 2026-10-20). Tampoco aparece en la página del invitado.
   - Si completaste tu test: suma "Ya completé mi test de personalidad: hacelo vos y comparamos". Si no, no lo menciona (no frena).
 - **Vínculo**: el que tenés en "¿Qué buscás?" (spec A12) o pareja.
 - **Del lado del invitado**: la página de la invitación muestra el adelanto si hay signo, la invitación al test si quien invita lo hizo, o un mensaje general si no hay ninguna de las dos. Se registra, acepta, quedan conectados (como en C8) y suma la pregunta extra de C11.
@@ -44,6 +44,7 @@ POST /invitations/preview  {inviter_id, friend_name, friend_sun_sign?} → {mess
 | 5 | Vínculo | Toma mi "¿Qué buscás?"; sin dato, pareja |
 | 6 | Vista previa | Devuelve el mismo mensaje con "[link]" y no crea invitaciones |
 | 7 | Página del invitado sin signo ni test | Mensaje general con el nombre de quien invita |
+| 8 | Adelanto flojo | Con un signo sin aspecto mayor, el mensaje y la página del invitado no traen adelanto ni hay `partial_report` |
 
 ## Criterios de aceptación
 
@@ -53,3 +54,5 @@ POST /invitations/preview  {inviter_id, friend_name, friend_sun_sign?} → {mess
 ## Fuera de alcance
 
 Link personal reutilizable, menú de compartir del celular, QR (spec C9).
+
+**Ajuste (2026-10-20)**: el adelanto compara signo con signo (Sol de quien invita y signo del amigo, los dos en su punto medio). Antes comparaba el Sol exacto con el medio del signo del amigo, y a quien tiene el Sol cerca del borde de un signo nunca le daba aspecto mayor. Así, 4 de los 12 signos quedan "flojos" (a 1 o 5 signos de distancia) y no se incluyen.
