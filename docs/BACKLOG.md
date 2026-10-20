@@ -160,9 +160,9 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Revisión legal del saldo prepago (Defensa del Consumidor: vencimiento, devoluciones, información de precios).
 
 **Reunión de check con Pablo (2026-10-20)** — acta: `docs/reuniones/2026-10-20-check-pablo.html` (y PDF).
-- [ ] Pestaña "Respuestas" → **Indagar**; la caja para preguntar se titula "¿En qué necesitás claridad hoy?" en todos lados.
-- [ ] Calendario: tocar un día abre Indagar con ese día precargado.
-- [ ] Sacar las notas del calendario de todos lados, incluidas las ya escritas (el registro de ánimo queda). Posible función futura.
+- [x] Pestaña "Respuestas" → **Indagar**; la caja para preguntar se titula "¿En qué necesitás claridad hoy?" en todos lados (spec U2).
+- [x] Calendario: "Indagar sobre este día →" abre Indagar con la pregunta precargada y la IA recibe los datos de ese día (spec U2).
+- [x] Se sacaron las notas del calendario de todos lados, incluidas las ya escritas (spec U2; había 1). El registro de ánimo queda.
 - [ ] Aviso de privacidad tipo aceptación de términos al registrarse y al empezar el test; revisar otros lugares.
 - [ ] Test: ordenar los grupos según lo que busca la persona (guardar "¿Qué buscás?" de Círculo en el perfil; sin dato, Atracción al final), pantalla de entrada al grupo de Atracción y "Responder más tarde" para quien no busca pareja.
 - [ ] Tokens por invitar: +1 pregunta diaria en Indagar por cada invitado que termina el registro.

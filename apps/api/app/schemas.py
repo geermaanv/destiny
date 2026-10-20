@@ -1,8 +1,8 @@
 import uuid
 from datetime import date, datetime, time
-from typing import Annotated, Literal
+from typing import Literal
 
-from pydantic import BaseModel, Field, StringConstraints, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
 
@@ -292,6 +292,8 @@ class AstrochatOut(BaseModel):
 class AstroAskIn(BaseModel):
     texto: str
     modo: str | None = None
+    # Spec U2: pregunta sobre un día del calendario; la IA recibe los datos de ese día.
+    dia: date | None = None
 
 
 class AstroAnswerOut(BaseModel):
@@ -479,17 +481,6 @@ class CalendarDayOut(BaseModel):
     has_key_transit: bool
 
 
-class AnnotationIn(BaseModel):
-    profile_id: uuid.UUID
-    # Revisión nocturna: antes aceptaba notas vacías o de cualquier largo.
-    text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=500)]
-
-
-class AnnotationOut(BaseModel):
-    text: str
-    created_at: datetime
-
-
 class TransitOut(BaseModel):
     aspect: str
     title: str | None = None
@@ -502,12 +493,11 @@ class UpcomingEventOut(BaseModel):
     aspect: str
     title: str
     text: str
-    has_notes: bool
 
 
 class CalendarDayDetailOut(BaseModel):
+    # Las notas del día se sacaron (spec U2).
     transits: list[TransitOut]
-    annotations: list[AnnotationOut]
 
 
 class MatchIn(BaseModel):

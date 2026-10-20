@@ -1,10 +1,10 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import {
-  addAnnotation,
   CalendarDay,
   CalendarDayDetail,
   getDay,
@@ -50,7 +50,6 @@ function CalendarioContent() {
   const [loadError, setLoadError] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [detail, setDetail] = useState<CalendarDayDetail | null>(null);
-  const [note, setNote] = useState("");
   const detailRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -88,14 +87,6 @@ function CalendarioContent() {
     const d = parseIso(e.start);
     setCursor({ year: d.getFullYear(), month: d.getMonth() + 1 });
     openDay(e.start);
-  }
-
-  async function submitNote() {
-    if (!profileId || !selectedDay || !note.trim()) return;
-    await addAnnotation(profileId, selectedDay, note.trim());
-    setNote("");
-    setDetail(await getDay(profileId, selectedDay));
-    getUpcoming(profileId, listFrom).then(setUpcoming).catch(() => setUpcoming([]));
   }
 
   if (loadError) return <p className="text-slate-400">No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo.</p>;
@@ -180,27 +171,13 @@ function CalendarioContent() {
           ) : (
             <p className="text-sm text-slate-400">Sin tránsitos importantes este día.</p>
           )}
-          {detail.annotations.length > 0 && (
-            <div className="space-y-1">
-              {detail.annotations.map((a, i) => (
-                <p key={i} className="text-sm text-slate-300">
-                  • {a.text}
-                </p>
-              ))}
-            </div>
-          )}
-          <div className="flex gap-2">
-            <input
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              maxLength={500}
-              placeholder="Agregar una nota a este día"
-              className="min-w-0 flex-1 rounded-md bg-slate-800 px-2 py-1 text-sm outline-none ring-1 ring-slate-700"
-            />
-            <button onClick={submitNote} className="rounded-md bg-violet-600 px-3 py-1 text-sm">
-              Agregar
-            </button>
-          </div>
+          {/* Spec U2: entender por qué el día es bueno o malo, en Indagar con el día precargado. */}
+          <Link
+            href={`/astrochat?q=${encodeURIComponent(`¿Qué significa para mí el ${longDate(selectedDay).toLowerCase().replace(",", "")}?`)}&dia=${selectedDay}`}
+            className="block text-right text-sm text-violet-400"
+          >
+            Indagar sobre este día →
+          </Link>
         </div>
       )}
 
@@ -224,7 +201,6 @@ function CalendarioContent() {
                   </span>
                 </span>
                 <span className="mt-1 block text-sm text-slate-300">{e.text}</span>
-                {e.has_notes && <span className="mt-1 block text-xs text-slate-500">📝 Tenés notas</span>}
               </button>
             </li>
           ))}

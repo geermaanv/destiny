@@ -6,7 +6,7 @@ import { Page, PageTitle } from "@/components/ui";
 import { useSessionProfileId } from "@/lib/session";
 import { askAstrochat, Astrochat, AstroMessage, clearAstrochat, getAstrochat } from "@/lib/api";
 
-// Respuestas basadas en tu carta (Astrochat, spec X3). Responde con tu carta y tu día, ya
+// Indagar (Astrochat, specs X3 y U2). Responde con tu carta y tu día, ya
 // calculados por el motor, en tu estilo. El modo no se elige acá (confundía con
 // "Tu estilo"): sale del estilo de la persona, que se cambia en Perfil > Tu estilo.
 function Chat() {
@@ -17,6 +17,9 @@ function Chat() {
   const [mode, setMode] = useState<string>("");
   // Desde Tu día o Mi carta llega una pregunta sugerida (?q=), lista para mandar o editar.
   const [text, setText] = useState(() => params.get("q") ?? "");
+  // Desde el calendario llega ?dia=YYYY-MM-DD con la pregunta precargada (spec U2): la próxima
+  // pregunta que se mande lleva los datos de ese día.
+  const [askedDay, setAskedDay] = useState<string | null>(() => params.get("dia"));
   const inputRef = useRef<HTMLTextAreaElement>(null);
   // Desde Hoy o Tu día la pregunta llega ya escrita y con ?enviar=1: se manda sola, una vez.
   const autoSent = useRef(false);
@@ -31,7 +34,7 @@ function Chat() {
         setMode(c.modo);
         setTimeout(() => inputRef.current?.focus(), 0);
       })
-      .catch(() => setNotice("No pudimos abrir el Astrochat. Probá en un rato."));
+      .catch(() => setNotice("No pudimos abrir Indagar. Probá en un rato."));
   }, [profileId]);
 
   useEffect(() => {
@@ -51,7 +54,8 @@ function Chat() {
     setChat({ ...chat, mensajes: [...chat.mensajes, mine] });
     setText("");
     try {
-      const answer = await askAstrochat(profileId, question.trim());
+      const answer = await askAstrochat(profileId, question.trim(), undefined, askedDay ?? undefined);
+      setAskedDay(null);
       setChat((c) => (c ? { ...c, mensajes: [...c.mensajes, answer.respuesta], restantes_hoy: answer.restantes_hoy } : c));
     } catch (e) {
       setChat((c) => (c ? { ...c, mensajes: c.mensajes.filter((m) => m !== mine) } : c));
@@ -67,7 +71,7 @@ function Chat() {
     send(text);
   }
 
-  if (!profileId || !chat) return <p className="text-slate-400">{notice ?? "Abriendo el Astrochat…"}</p>;
+  if (!profileId || !chat) return <p className="text-slate-400">{notice ?? "Abriendo Indagar…"}</p>;
 
   // Preguntas y respuestas en pares, lo más nuevo arriba (pedido de German): no es un
   // chat largo de ida y vuelta, sino consultas.
@@ -81,11 +85,12 @@ function Chat() {
   return (
     <>
       <PageTitle
-        title="Respuestas basadas en tu carta"
+        title="Indagar"
         subtitle="Preguntá lo que quieras sobre vos, tu momento o tus vínculos. Te respondemos con tu carta y tu día, en tu estilo."
       />
 
       <form onSubmit={submit} className="space-y-2 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">
+        <h3 className="text-sm font-medium text-slate-200">¿En qué necesitás claridad hoy?</h3>
         <textarea
           ref={inputRef}
           value={text}

@@ -2,15 +2,12 @@ import uuid
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.auth import require_self, session_profile_id
 from app.database import get_db
-from app.models import CalendarAnnotation, Profile
+from app.models import Profile
 from app.schemas import (
-    AnnotationIn,
-    AnnotationOut,
     CalendarDayDetailOut,
     CalendarDayOut,
     TransitOut,
@@ -41,25 +38,7 @@ def get_upcoming(
     """Próximos tránsitos importantes desde hoy (o `from`, la fecha local del usuario)."""
     require_self(profile_id, current)
     profile = _get_profile_or_404(profile_id, db)
-    events = upcoming_events(profile, from_date or date.today(), limit)
-    if not events:
-        return []
-
-    noted_days = set(
-        db.scalars(
-            select(CalendarAnnotation.day).where(
-                CalendarAnnotation.profile_id == profile_id,
-                CalendarAnnotation.day >= events[0]["start"],
-                CalendarAnnotation.day <= events[-1]["end"],
-            )
-        )
-    )
-    return [
-        UpcomingEventOut(
-            **e, has_notes=any(e["start"] <= d <= e["end"] for d in noted_days)
-        )
-        for e in events
-    ]
+    return [UpcomingEventOut(**e) for e in upcoming_events(profile, from_date or date.today(), limit)]
 
 
 @router.get("/day/{day}", response_model=CalendarDayDetailOut)
@@ -70,12 +49,6 @@ def get_day(
     profile = _get_profile_or_404(profile_id, db)
     transit = day_transit(profile, day)
 
-    annotations = db.scalars(
-        select(CalendarAnnotation)
-        .where(CalendarAnnotation.profile_id == profile_id, CalendarAnnotation.day == day)
-        .order_by(CalendarAnnotation.created_at)
-    ).all()
-
     return CalendarDayDetailOut(
         transits=[
             TransitOut(
@@ -84,20 +57,7 @@ def get_day(
                 text=TRANSIT_TEXT.get(transit["aspect"], (None, None))[1],
             )
         ],
-        annotations=[AnnotationOut(text=a.text, created_at=a.created_at) for a in annotations],
     )
-
-
-@router.post("/day/{day}/annotations", response_model=AnnotationOut, status_code=201)
-def create_annotation(
-    day: date, payload: AnnotationIn, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
-) -> AnnotationOut:
-    require_self(payload.profile_id, current)
-    annotation = CalendarAnnotation(profile_id=payload.profile_id, day=day, text=payload.text)
-    db.add(annotation)
-    db.commit()
-    db.refresh(annotation)
-    return AnnotationOut(text=annotation.text, created_at=annotation.created_at)
 
 
 @router.get("/{year}/{month}", response_model=list[CalendarDayOut])

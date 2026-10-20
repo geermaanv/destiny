@@ -122,7 +122,9 @@ def ask_astrochat(
         for m in _history(db, profile_id, cfg["mensajes_de_contexto"])
     ]
     test = db.get(PersonalityAnswers, profile_id)
-    system = system_prompt(profile, mode, prompt_instructions(style_for(profile)), now.date(), test.answers if test else None)
+    system = system_prompt(
+        profile, mode, prompt_instructions(style_for(profile)), now.date(), test.answers if test else None, payload.dia
+    )
     result = converse(
         system,
         [*context, {"role": "user", "content": text}],

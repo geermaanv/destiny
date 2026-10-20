@@ -87,7 +87,7 @@ def personality_facts(answers: dict | None) -> dict:
     return out
 
 
-def chart_facts(profile, today: date, answers: dict | None = None) -> dict:
+def chart_facts(profile, today: date, answers: dict | None = None, asked_day: date | None = None) -> dict:
     """Lo único que ve la IA: ya calculado, sin datos personales."""
     chart = chart_for_profile(profile)
     signs = {
@@ -112,13 +112,24 @@ def chart_facts(profile, today: date, answers: dict | None = None) -> dict:
         "aspectos_natales": natal_aspects,
         "proximos_30_dias": upcoming_transits(profile, today, ctx["proximos_dias"], ctx["maximo_transitos_proximos"]),
     }
+    if asked_day is not None:
+        # Spec U2: pregunta sobre un día del calendario.
+        other = day_detail(profile, asked_day)
+        facts["dia_consultado"] = {
+            "fecha": asked_day.isoformat(),
+            "luna": {k: v for k, v in other["luna"].items() if v is not None},
+            "transitos": [t["texto"] for t in other["transitos"]],
+            "areas": {a["nombre"]: a["estado"] for a in other["areas"]},
+        }
     test = personality_facts(answers)
     if test:
         facts["test_de_personalidad"] = test
     return facts
 
 
-def system_prompt(profile, mode: str, style_instructions: str, today: date, answers: dict | None = None) -> str:
+def system_prompt(
+    profile, mode: str, style_instructions: str, today: date, answers: dict | None = None, asked_day: date | None = None
+) -> str:
     cfg = load_config()
-    facts = json.dumps(chart_facts(profile, today, answers), ensure_ascii=False)
+    facts = json.dumps(chart_facts(profile, today, answers, asked_day), ensure_ascii=False)
     return f"{cfg['guia']} {cfg['modos'][mode]['instruccion']} {style_instructions}\n\nDatos de su carta (calculados por Destiny): {facts}"

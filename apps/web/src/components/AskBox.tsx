@@ -4,8 +4,8 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SectionTitle } from "@/components/ui";
 
-// Acceso a Respuestas (Astrochat, spec X3) desde Hoy y Tu día: la misma pieza en los
-// dos lugares. Se escribe acá mismo y "Preguntar" lleva a Respuestas con la pregunta
+// Acceso a Indagar (Astrochat, specs X3 y U2) desde Hoy y Tu día: la misma pieza en los
+// dos lugares. Se escribe acá mismo y "Preguntar" lleva a Indagar con la pregunta
 // ya enviada.
 export default function AskBox({ title, hint, example }: { title: string; hint: string; example: string }) {
   const router = useRouter();

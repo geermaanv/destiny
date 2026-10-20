@@ -19,7 +19,7 @@ import {
 
 // Hoy (spec U1-C): Tu día como protagonista, los próximos días importantes y lo
 // social en una sola tarjeta. (El check-in de ánimo se sacó: no devolvía nada.)
-// Ejemplos para el acceso a Respuestas (los mismos de astrochat_v1.json); rota por día.
+// Ejemplos para el acceso a Indagar (los mismos de astrochat_v1.json); rota por día.
 const CONSULT_EXAMPLES = [
   "¿Por qué me cuesta tanto decidir?",
   "¿Qué dice mi carta sobre cómo me vinculo?",
@@ -101,9 +101,9 @@ function HomeContent() {
         </section>
       )}
 
-      {/* Respuestas basadas en tu carta (spec X3): se escribe acá y se envía. */}
+      {/* Caja de Indagar (specs X3 y U2): se escribe acá y se envía. */}
       <AskBox
-        title="Respuestas basadas en tu carta"
+        title="¿En qué necesitás claridad hoy?"
         hint="Preguntá lo que quieras sobre vos, tu momento o tus vínculos."
         example={example}
       />

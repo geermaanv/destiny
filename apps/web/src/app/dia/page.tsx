@@ -112,7 +112,7 @@ function Dia() {
       </section>
 
       <AskBox
-        title="Respuestas sobre tu día"
+        title="¿En qué necesitás claridad hoy?"
         hint="Preguntá lo que quieras sobre lo que te trae hoy."
         example="¿Qué me conviene hacer hoy con lo que trae mi día?"
       />

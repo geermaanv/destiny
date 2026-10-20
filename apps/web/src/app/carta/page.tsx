@@ -240,7 +240,7 @@ function MiCarta() {
       </div>
       {tab === "cielo" ? style && <Cielo style={style} /> : <Dimension profileId={profileId} dimension={current} falta={data.falta} />}
       <AskBox
-        title="Respuestas basadas en tu carta"
+        title="¿En qué necesitás claridad hoy?"
         hint="¿Querés profundizar en algo de tu carta? Preguntá y te respondemos con ella."
         example="¿Qué dice mi carta sobre cómo me vinculo?"
       />

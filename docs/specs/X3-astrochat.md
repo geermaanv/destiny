@@ -65,3 +65,5 @@ Compatibilidad con conexiones en el chat, memoria a largo plazo, varias conversa
 12. (v2) El prompt trae los 10 planetas con su signo (y casa con hora exacta) y los aspectos natales calculados.
 13. (v2) El prompt trae los tránsitos de los próximos 30 días, cada uno con su día exacto dentro de la ventana, sin la Luna.
 14. (v2) Con el test respondido, el prompt trae las respuestas elegidas de los ejes configurados y no las del eje E1.
+
+**Cambio posterior (2026-10-20, spec U2)**: la pantalla pasa a llamarse **Indagar** y la caja para preguntar, "¿En qué necesitás claridad hoy?" en todos lados. La pregunta acepta `dia` (desde el calendario): la IA recibe además los datos de ese día (`dia_consultado`).

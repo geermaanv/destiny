@@ -286,10 +286,9 @@ export async function getExplanation(
 }
 
 export type CalendarDay = { date: string; has_key_transit: boolean };
-export type CalendarAnnotation = { text: string; created_at: string };
+// Las notas del día se sacaron (spec U2).
 export type CalendarDayDetail = {
   transits: { aspect: string; title: string | null; text: string | null }[];
-  annotations: CalendarAnnotation[];
 };
 
 export type UpcomingEvent = {
@@ -298,7 +297,6 @@ export type UpcomingEvent = {
   aspect: string;
   title: string;
   text: string;
-  has_notes: boolean;
 };
 
 export async function getUpcoming(profileId: string, fromDate: string, limit = 10): Promise<UpcomingEvent[]> {
@@ -317,10 +315,6 @@ export async function getDay(profileId: string, day: string): Promise<CalendarDa
   const res = await fetch(`${API_URL}/calendar/day/${day}?profile_id=${profileId}`);
   if (!res.ok) throw new Error("No se pudo cargar el día");
   return res.json();
-}
-
-export function addAnnotation(profileId: string, day: string, text: string): Promise<CalendarAnnotation> {
-  return postJson(`/calendar/day/${day}/annotations`, { profile_id: profileId, text });
 }
 
 export type ChatMessage = { sender: string; text: string; created_at: string };
@@ -745,11 +739,12 @@ export async function askAstrochat(
   profileId: string,
   texto: string,
   modo?: string,
+  dia?: string, // spec U2: pregunta sobre un día del calendario (YYYY-MM-DD)
 ): Promise<{ respuesta: AstroMessage; ia: boolean; restantes_hoy: number }> {
   const res = await fetch(`${API_URL}/profiles/${profileId}/astrochat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ texto, modo }),
+    body: JSON.stringify({ texto, modo, dia }),
   });
   if (!res.ok) {
     const body = await res.json().catch(() => null);
