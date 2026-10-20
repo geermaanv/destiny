@@ -49,3 +49,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [C11-tokens-por-invitar](./C11-tokens-por-invitar.md) | C + X3 | implemented |
 | [C12-invitar-simple](./C12-invitar-simple.md) | C (simplifica C8) | implemented |
 | [B11-colores-del-calendario](./B11-colores-del-calendario.md) | B6 + B4 | implemented |
+| [U3-circulo-sin-solapas](./U3-circulo-sin-solapas.md) | transversal + B7 | implemented |

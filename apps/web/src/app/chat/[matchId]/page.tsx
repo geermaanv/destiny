@@ -94,7 +94,7 @@ function ChatContent() {
     <div className="flex w-full flex-col space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/conexiones" aria-label="Volver" className="text-xl text-slate-400">
+          <Link href="/discover" aria-label="Volver" className="text-xl text-slate-400">
             ‹
           </Link>
           <ProfileAvatar

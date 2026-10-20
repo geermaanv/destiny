@@ -88,7 +88,19 @@ def _connection_out(match: Match, me: uuid.UUID, db: Session) -> ConnectionOut:
         last_message=last.text if last and match.status == "aceptada" else None,
         last_message_at=last.created_at if last and match.status == "aceptada" else None,
         whatsapp=_whatsapp_state(match, me, db),
+        unread=_unread(match, me, db),
     )
+
+
+def _unread(match: Match, me: uuid.UUID, db: Session) -> bool:
+    """Spec U3: mensajes de la otra persona después de la última vez que abrí el chat (el rompehielos no cuenta)."""
+    if match.status != "aceptada":
+        return False
+    read_at = match.a_read_at if match.profile_a_id == me else match.b_read_at
+    query = select(ChatMessage.id).where(ChatMessage.match_id == match.id, ChatMessage.sender == str(_other_id(match, me)))
+    if read_at is not None:
+        query = query.where(ChatMessage.created_at > read_at)
+    return db.scalars(query.limit(1)).first() is not None
 
 
 @router.post("/matches", response_model=MatchOut, status_code=201)
@@ -275,6 +287,12 @@ def list_messages(
     if match.status != "aceptada":
         return []
 
+    # Spec U3: abrir el chat lo marca como leído.
+    if match.profile_a_id == current:
+        match.a_read_at = datetime.now(timezone.utc)
+    else:
+        match.b_read_at = datetime.now(timezone.utc)
+    db.commit()
     messages = db.scalars(
         select(ChatMessage).where(ChatMessage.match_id == match_id).order_by(ChatMessage.created_at)
     ).all()

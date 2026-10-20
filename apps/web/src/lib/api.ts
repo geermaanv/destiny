@@ -355,6 +355,7 @@ export type Connection = {
     photo_url: string | null;
     avatar: AvatarKey | null;
   };
+  unread: boolean; // spec U3
   last_message: string | null;
   last_message_at: string | null;
   whatsapp: { me_ok: boolean; other_ok: boolean; link: string | null };

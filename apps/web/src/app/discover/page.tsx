@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { Page } from "@/components/ui";
-import ConexionesTabs from "@/components/ConexionesTabs";
+import ConnectionsStrip from "@/components/ConnectionsStrip";
 import GenderPrefs from "@/components/GenderPrefs";
 import PlaceField from "@/components/PlaceField";
 import ProfileAvatar from "@/components/ProfileAvatar";
@@ -406,7 +406,9 @@ function DiscoverContent() {
 
   return (
     <div className="w-full space-y-4">
-      <ConexionesTabs />
+      <h1 className="text-2xl font-semibold">¿Con quién fluye?</h1>
+      {/* Spec U3: sin solapas; las conexiones van en una franja arriba de Descubrir. */}
+      <ConnectionsStrip profileId={profileId} />
 
       {!me.has_photo && (
         <Link

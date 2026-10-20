@@ -2,8 +2,8 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { Page } from "@/components/ui";
-import ConexionesTabs from "@/components/ConexionesTabs";
+import { Page, PageTitle } from "@/components/ui";
+
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { Connection, getConnections, respondConnection } from "@/lib/api";
 import { useSessionProfileId } from "@/lib/session";
@@ -48,7 +48,8 @@ function ConexionesContent() {
 
   return (
     <div className="w-full space-y-6">
-      <ConexionesTabs />
+      {/* Spec U3: lista completa, desde "Ver todas →" de la franja de Círculo. */}
+      <PageTitle title="Tus conexiones" back={{ href: "/discover", label: "Círculo" }} />
 
       {connections.length === 0 && (
         <p className="text-slate-400">

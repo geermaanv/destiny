@@ -570,6 +570,8 @@ class ConnectionOut(BaseModel):
     last_message: str | None = None
     last_message_at: datetime | None = None
     whatsapp: WhatsappHandoffOut
+    # Spec U3: la otra persona escribió después de la última vez que abriste el chat.
+    unread: bool = False
 
 
 class ProfileRefIn(BaseModel):

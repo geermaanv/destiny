@@ -59,3 +59,5 @@ Rediseño de Descubrir, Conexiones, chat y onboarding (solo pasan a usar `Page`/
 
 - **Opciones seleccionadas en tono neutro** en toda la app (Tu estilo, Descubrir, panel del chat, invitar, test, perfil, franjas del registro), igual que las solapas: el color de acción queda solo para links y botones. Excepción: el ranking de respuestas del test, donde el color marca el orden de preferencia.
 - **Tarjetas con el mismo radio** (`rounded-xl`) en las pantallas viejas (calendario, chat, conexiones, invitar, registro, verificación); los campos de texto y menús mantienen su radio.
+
+**Cambio posterior (2026-10-20, spec U3)**: Círculo ya no tiene las solapas Descubrir / Mis chats: las conexiones van en una franja arriba de Descubrir y la lista completa en "Ver todas →".

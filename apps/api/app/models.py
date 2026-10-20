@@ -171,6 +171,9 @@ class Match(Base):
     # Vínculo con el que se mira la compatibilidad (C8 v2) y de dónde salió la conexión.
     relationship: Mapped[str | None] = mapped_column(String, nullable=True)
     source: Mapped[str] = mapped_column(String, default="descubrir", nullable=False)  # descubrir | invitacion
+    # Spec U3: cuándo abrió el chat cada uno (para marcar novedades).
+    a_read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    b_read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class ChatMessage(Base):
