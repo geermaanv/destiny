@@ -67,7 +67,19 @@ export type Profile = {
   residence_label: string | null;
   residence_lat: number | null;
   residence_lon: number | null;
+  // Spec A12
+  privacy_version: string | null;
+  test_privacy_version: string | null;
+  looking_for: RelationshipContext | null;
 };
+
+export function acceptPrivacy(profileId: string, contexto: "registro" | "test", version: string): Promise<Profile> {
+  return postJson(`/profiles/${profileId}/privacy`, { version, contexto });
+}
+
+export function setLookingFor(profileId: string, lookingFor: RelationshipContext): Promise<Profile> {
+  return postJson(`/profiles/${profileId}/looking-for`, { looking_for: lookingFor });
+}
 
 export function setResidence(profileId: string, place: Place): Promise<Profile> {
   return postJson(`/profiles/${profileId}/residence`, { query: place.label, lat: place.lat, lon: place.lon });
@@ -548,7 +560,13 @@ export type PersonalityTest = {
   axes: Record<string, { title: string; short: string; caption: string }>;
   questions: PersonalityQuestion[];
 };
-export type MyPersonality = { answers: Record<string, number[]>; completed: number; total_questions: number };
+export type MyPersonality = {
+  answers: Record<string, number[]>;
+  completed: number;
+  total_questions: number;
+  axis_order: ("E1" | "E2" | "E3" | "E4")[]; // spec A12: según lo que busca
+  privacy_accepted: boolean;
+};
 export type PersonalityCompat = {
   axes: Record<"E1" | "E2" | "E3" | "E4", number | null>;
   coverage: Record<string, number>;

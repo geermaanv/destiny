@@ -2,7 +2,8 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BirthTimePeriod, createProfile, getMe, getProfile, Place, setBirthData } from "@/lib/api";
+import { acceptPrivacy, BirthTimePeriod, createProfile, getMe, getProfile, Place, setBirthData } from "@/lib/api";
+import { PRIVACY_VERSION, REGISTRO_PRIVACY } from "@/lib/privacy";
 import PlaceField from "@/components/PlaceField";
 import OnboardingSteps from "@/components/OnboardingSteps";
 
@@ -72,6 +73,9 @@ function DatosNatalesForm() {
   // Mientras se averigua si ya hay sesión no se muestra el formulario (si hay, se va a Hoy):
   // si no, aparecía el registro unos segundos antes de redirigir.
   const [checkingSession, setCheckingSession] = useState(!existingProfileId);
+  // Spec A12: aviso de privacidad aceptado como requisito para seguir.
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [privacyAlready, setPrivacyAlready] = useState(false);
 
   useEffect(() => {
     if (started.current) return;
@@ -99,6 +103,10 @@ function DatosNatalesForm() {
     getProfile(existingProfileId)
       .then((p) => {
         setProfileId(p.id);
+        if (p.privacy_version) {
+          setPrivacyAccepted(true);
+          setPrivacyAlready(true);
+        }
         if (p.birth_date) {
           const [y, m, d] = p.birth_date.split("-");
           setBirthYear(y);
@@ -158,9 +166,14 @@ function DatosNatalesForm() {
       setError("Elegí tu ciudad de la lista de sugerencias.");
       return;
     }
+    if (!editing && !privacyAccepted) {
+      setError("Para seguir, aceptá cómo Destiny usa tus datos.");
+      return;
+    }
     setStatus("submitting");
     setError(null);
     try {
+      if (!editing && !privacyAlready) await acceptPrivacy(profileId, "registro", PRIVACY_VERSION);
       await setBirthData(profileId, {
         birth_date: birthDate,
         birth_time: timeUnknown || !birthTime ? undefined : birthTime,
@@ -342,6 +355,27 @@ function DatosNatalesForm() {
           </div>
         )}
       </div>
+
+      {!editing && (
+        <div className="space-y-2 rounded-xl bg-slate-900 p-3 text-xs text-slate-300 ring-1 ring-slate-700">
+          <p className="text-sm font-medium text-slate-100">Cómo cuidamos tus datos</p>
+          <ul className="list-disc space-y-1 pl-4">
+            {REGISTRO_PRIVACY.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+          <label className="flex items-start gap-2 pt-1 text-sm text-slate-100">
+            <input
+              type="checkbox"
+              checked={privacyAccepted}
+              disabled={privacyAlready}
+              onChange={(e) => setPrivacyAccepted(e.target.checked)}
+              className="mt-1"
+            />
+            Leí y acepto cómo Destiny usa mis datos
+          </label>
+        </div>
+      )}
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 

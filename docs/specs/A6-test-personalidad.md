@@ -86,3 +86,5 @@ Tests en `apps/api/tests/test_a6_test_personalidad.py`. Los resultados esperados
 - Editar pesos y matrices desde la app (hoy se editan en el archivo de configuración). El HTML de Pablo lo permite por dispositivo; en Destiny sería una pantalla de administración futura.
 - Compartir respuestas con códigos (el HTML de Pablo lo necesita porque no tiene servidor; Destiny no).
 - Sumar el resultado del test al de la sinastría.
+
+**Cambio posterior (2026-10-20, spec A12)**: antes de empezar se acepta un aviso de privacidad (sin aceptarlo no se guardan respuestas); los grupos se ordenan según lo que busca la persona (pesos de Pablo, Atracción al final si no hay dato) y antes de Atracción hay una pantalla de entrada con "Responder más tarde" para quien no busca pareja ni casual.

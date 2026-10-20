@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, HTTPException, Response, UploadFile
@@ -23,7 +24,9 @@ from app.schemas import (
     NotificationPreferenceIn,
     PhotoOut,
     PhotosOut,
+    LookingForIn,
     PreferencesIn,
+    PrivacyIn,
     ResidenceIn,
     ProfileOut,
     VerificationOut,
@@ -249,6 +252,40 @@ def set_preferences(
     profile.show_me = list(dict.fromkeys(payload.show_me))
     profile.appear_in = list(dict.fromkeys(payload.appear_in)) if payload.gender == "no_binario" else []
     profile.show_gender = payload.show_gender
+    db.commit()
+    db.refresh(profile)
+    return profile
+
+
+@router.post("/{profile_id}/privacy", response_model=ProfileOut)
+def accept_privacy(
+    profile_id: uuid.UUID,
+    payload: PrivacyIn,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> Profile:
+    """Spec A12: se guarda qué versión del aviso aceptó y cuándo (registro o test)."""
+    profile = _owned(profile_id, db, current)
+    now = datetime.now(timezone.utc)
+    if payload.contexto == "registro":
+        profile.privacy_version, profile.privacy_accepted_at = payload.version, now
+    else:
+        profile.test_privacy_version, profile.test_privacy_accepted_at = payload.version, now
+    db.commit()
+    db.refresh(profile)
+    return profile
+
+
+@router.post("/{profile_id}/looking-for", response_model=ProfileOut)
+def set_looking_for(
+    profile_id: uuid.UUID,
+    payload: LookingForIn,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> Profile:
+    """Spec A12: lo último que eligió en "¿Qué buscás?" de Círculo; ordena el test."""
+    profile = _owned(profile_id, db, current)
+    profile.looking_for = payload.looking_for
     db.commit()
     db.refresh(profile)
     return profile

@@ -45,3 +45,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [B9-circulo-v2](./B9-circulo-v2.md) | B5 | implemented |
 | [B10-filtros-activos-intereses](./B10-filtros-activos-intereses.md) | B5 | implemented |
 | [U2-indagar-y-calendario](./U2-indagar-y-calendario.md) | transversal + B6 + X3 | implemented |
+| [A12-privacidad-y-orden-del-test](./A12-privacidad-y-orden-del-test.md) | A + A6 | implemented |

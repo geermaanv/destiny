@@ -57,6 +57,9 @@ def start_without_whatsapp(
         raise HTTPException(status_code=403, detail="Este dispositivo no creó el perfil")
     if profile.birth_date is None or not profile.display_name:
         raise HTTPException(status_code=409, detail="Completá tus datos de nacimiento y tu nombre")
+    if profile.privacy_accepted_at is None:
+        # Spec A12: el aviso de privacidad se acepta para terminar el registro.
+        raise HTTPException(status_code=409, detail="Aceptá el aviso de privacidad para terminar el registro")
     if profile.activated_at is None:
         profile.activated_at = datetime.now(timezone.utc)
     start_session(db, response, profile.id)

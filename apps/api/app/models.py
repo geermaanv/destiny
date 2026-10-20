@@ -56,6 +56,13 @@ class Profile(Base):
     residence_lat: Mapped[float | None] = mapped_column(Float, nullable=True)
     residence_lon: Mapped[float | None] = mapped_column(Float, nullable=True)
 
+    # Spec A12: aviso de privacidad aceptado (registro y test) y qué busca (de "¿Qué buscás?" en Círculo).
+    privacy_version: Mapped[str | None] = mapped_column(String, nullable=True)
+    privacy_accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    test_privacy_version: Mapped[str | None] = mapped_column(String, nullable=True)
+    test_privacy_accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    looking_for: Mapped[str | None] = mapped_column(String, nullable=True)
+
     @property
     def has_photo(self) -> bool:
         return self.photo_path is not None

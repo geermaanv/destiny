@@ -80,9 +80,17 @@ def add_photo(client: TestClient, profile_id: str):
     return client.post(f"/profiles/{profile_id}/photos", files={"photo": ("p.png", png(), "image/png")})
 
 
+def accept_privacy(client: TestClient, profile_id: str) -> None:
+    """Acepta los avisos de privacidad del registro y del test (spec A12), como cualquier persona registrada."""
+    for contexto in ("registro", "test"):
+        r = client.post(f"/profiles/{profile_id}/privacy", json={"version": "privacidad_v1", "contexto": contexto})
+        assert r.status_code == 200, r.text
+
+
 def verified_user(client: TestClient, phone: str, name: str = "Test", photo: bool = True, **kwargs) -> str:
-    """Usuario completo: datos natales + nombre + verificado + sesión iniciada en `client` + foto."""
+    """Usuario completo: datos natales + nombre + avisos aceptados + verificado + sesión en `client` + foto."""
     profile_id = create_profile(client, name=name, **kwargs)
+    accept_privacy(client, profile_id)
     verify(client, profile_id, phone)
     assert client.get("/me").status_code == 200
     if photo:

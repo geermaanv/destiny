@@ -103,6 +103,16 @@ class PreferencesIn(BaseModel):
         return value or None
 
 
+# Spec A12: aviso de privacidad y qué busca.
+class PrivacyIn(BaseModel):
+    version: str = Field(min_length=1, max_length=40)
+    contexto: Literal["registro", "test"]
+
+
+class LookingForIn(BaseModel):
+    looking_for: Literal["pareja", "amistad", "laboral", "ocasional"]
+
+
 # Spec B9: dónde vive (del buscador de ciudades: con coordenadas).
 class ResidenceIn(BaseModel):
     query: str = Field(min_length=1, max_length=200)
@@ -150,6 +160,9 @@ class ProfileOut(BaseModel):
     residence_label: str | None = None
     residence_lat: float | None = None
     residence_lon: float | None = None
+    privacy_version: str | None = None
+    test_privacy_version: str | None = None
+    looking_for: str | None = None
 
     class Config:
         from_attributes = True
@@ -419,6 +432,9 @@ class PersonalityMineOut(BaseModel):
     answers: dict[str, list[int]]
     completed: int
     total_questions: int
+    # Spec A12: orden de los grupos según lo que busca y si aceptó el aviso del test.
+    axis_order: list[str] = []
+    privacy_accepted: bool = False
 
 
 class PersonalityCompatOut(BaseModel):

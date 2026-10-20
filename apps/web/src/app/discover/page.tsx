@@ -14,11 +14,14 @@ import {
   DiscoverCandidate,
   DiscoverFilters,
   getDiscoverCandidates,
+  getMyPersonality,
   getProfile,
+  MyPersonality,
   Interest,
   Place,
   Profile,
   Sistema,
+  setLookingFor,
   setResidence,
 } from "@/lib/api";
 import { activeFilterCount, DEFAULT_FILTERS, loadFilters, saveFilters, saveLastList } from "@/lib/discover";
@@ -323,6 +326,7 @@ function ResidencePrompt({ me, onSaved, onSkip }: { me: Profile; onSaved: (p: Pr
 function DiscoverContent() {
   const profileId = useSessionProfileId();
   const [me, setMe] = useState<Profile | null>(null);
+  const [myTest, setMyTest] = useState<MyPersonality | null>(null);
   const [filters, setFilters] = useState<DiscoverFilters>(DEFAULT_FILTERS);
   const [filtersReady, setFiltersReady] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -339,8 +343,19 @@ function DiscoverContent() {
   }, []);
 
   useEffect(() => {
-    if (profileId) getProfile(profileId).then(setMe).catch(() => null);
+    if (!profileId) return;
+    getProfile(profileId).then(setMe).catch(() => null);
+    getMyPersonality(profileId).then(setMyTest).catch(() => null);
   }, [profileId]);
+
+  // Spec A12: lo que busca se guarda en el perfil (ordena el test de personalidad).
+  useEffect(() => {
+    if (profileId && me && filtersReady && me.looking_for !== filters.context) {
+      setLookingFor(profileId, filters.context)
+        .then(setMe)
+        .catch(() => null);
+    }
+  }, [profileId, me, filters.context, filtersReady]);
 
   // La búsqueda espera a que se deje de escribir.
   useEffect(() => {
@@ -381,6 +396,12 @@ function DiscoverContent() {
 
   const needsPrefs = filters.context === "pareja" && (!me.gender || me.show_me.length === 0) && !skipPrefs;
   const filterCount = activeFilterCount(filters);
+  // Spec A12: quien dejó Atracción para más tarde y ahora busca pareja o casual.
+  const attractionPending =
+    (filters.context === "pareja" || filters.context === "ocasional") &&
+    myTest !== null &&
+    myTest.completed > 0 &&
+    Object.keys(myTest.answers).filter((id) => id.startsWith("E1.")).length < 8;
   const needsResidence = !needsPrefs && me.residence_lat === null && (filters.max_km !== null || !skipResidence);
 
   return (
@@ -446,6 +467,12 @@ function DiscoverContent() {
             Ahora no
           </button>
         </div>
+      )}
+
+      {attractionPending && (
+        <Link href="/perfil/test?eje=E1" className="block rounded-xl bg-slate-900 p-3 text-sm text-gold-200 ring-1 ring-gold-400/50">
+          Completá las preguntas de atracción para tu compatibilidad de pareja →
+        </Link>
       )}
 
       {needsResidence && (

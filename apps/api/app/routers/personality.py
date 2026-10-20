@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.models import PersonalityAnswers, Profile
+from app.personality import CONTEXT_TO_MODE
 from app.personality.engine import completed, load_config
 from app.schemas import PersonalityAnswersIn, PersonalityMineOut
 
@@ -37,10 +38,26 @@ def _own_profile(profile_id: uuid.UUID, current: uuid.UUID | None, db: Session) 
     return profile
 
 
-def _mine(row: PersonalityAnswers | None) -> PersonalityMineOut:
+# Spec A12: a igual peso (o sin saber qué busca), Atracción va al final.
+BASE_AXIS_ORDER = ["E2", "E3", "E4", "E1"]
+
+
+def axis_order(looking_for: str | None) -> list[str]:
+    """Grupos del test de mayor a menor peso de Pablo para lo que busca la persona."""
+    if looking_for not in CONTEXT_TO_MODE:
+        return list(BASE_AXIS_ORDER)
+    weights = load_config()["modes"][CONTEXT_TO_MODE[looking_for]]["weights"]
+    return sorted(BASE_AXIS_ORDER, key=lambda axis: (-weights[axis], BASE_AXIS_ORDER.index(axis)))
+
+
+def _mine(row: PersonalityAnswers | None, profile: Profile) -> PersonalityMineOut:
     answers = row.answers if row else {}
     return PersonalityMineOut(
-        answers=answers, completed=completed(answers), total_questions=len(load_config()["questions"])
+        answers=answers,
+        completed=completed(answers),
+        total_questions=len(load_config()["questions"]),
+        axis_order=axis_order(profile.looking_for),
+        privacy_accepted=profile.test_privacy_accepted_at is not None,
     )
 
 
@@ -48,8 +65,8 @@ def _mine(row: PersonalityAnswers | None) -> PersonalityMineOut:
 def get_my_answers(
     profile_id: uuid.UUID, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
 ) -> PersonalityMineOut:
-    _own_profile(profile_id, current, db)
-    return _mine(db.get(PersonalityAnswers, profile_id))
+    profile = _own_profile(profile_id, current, db)
+    return _mine(db.get(PersonalityAnswers, profile_id), profile)
 
 
 @router.put("/profiles/{profile_id}/personality", response_model=PersonalityMineOut)
@@ -60,7 +77,9 @@ def save_answers(
     current: uuid.UUID | None = Depends(session_profile_id),
 ) -> PersonalityMineOut:
     """Guarda respuestas (parciales): las que vienen reemplazan a las anteriores de esas preguntas."""
-    _own_profile(profile_id, current, db)
+    profile = _own_profile(profile_id, current, db)
+    if profile.test_privacy_accepted_at is None:
+        raise HTTPException(status_code=409, detail="Aceptá el aviso de privacidad del test para guardar respuestas")
     row = db.get(PersonalityAnswers, profile_id)
     if row is None:
         row = PersonalityAnswers(profile_id=profile_id, answers={})
@@ -68,4 +87,4 @@ def save_answers(
     row.answers = {**row.answers, **payload.answers}
     db.commit()
     db.refresh(row)
-    return _mine(row)
+    return _mine(row, profile)

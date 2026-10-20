@@ -2,29 +2,60 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Page } from "@/components/ui";
-import { getMyPersonality, getPersonalityTest, PersonalityTest, savePersonality } from "@/lib/api";
+import {
+  acceptPrivacy,
+  getMyPersonality,
+  getPersonalityTest,
+  getProfile,
+  PersonalityTest,
+  RelationshipContext,
+  savePersonality,
+} from "@/lib/api";
+import { PRIVACY_VERSION, TEST_PRIVACY } from "@/lib/privacy";
 import { useSessionProfileId } from "@/lib/session";
 
 // Test de personalidad de Pablo dentro del perfil (spec A6): un eje por vez,
 // 1 o 2 opciones por pregunta (principal 70 % / secundaria 30 %), se guarda solo.
-const AXES = ["E1", "E2", "E3", "E4"] as const;
+// Spec A12: aviso de privacidad antes de empezar, grupos ordenados según lo que busca
+// la persona y pantalla de entrada a Atracción.
+type Axis = "E1" | "E2" | "E3" | "E4";
+const BASE_ORDER: Axis[] = ["E2", "E3", "E4", "E1"];
+const SEEKS_ATTRACTION: (RelationshipContext | null)[] = ["pareja", "ocasional"];
 const LETTERS = ["A", "B", "C", "D", "E"];
 
 function TestContent() {
   const profileId = useSessionProfileId();
+  const router = useRouter();
+  const params = useSearchParams();
   const [test, setTest] = useState<PersonalityTest | null>(null);
   const [answers, setAnswers] = useState<Record<string, number[]>>({});
-  const [axis, setAxis] = useState<(typeof AXES)[number]>("E1");
+  const [AXES, setAxes] = useState<Axis[]>(BASE_ORDER);
+  const [axis, setAxis] = useState<Axis | null>(null);
+  const [accepted, setAccepted] = useState<boolean | null>(null);
+  const [lookingFor, setLookingFor] = useState<RelationshipContext | null>(null);
+  const [attractionIntroSeen, setAttractionIntroSeen] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profileId) return;
-    getPersonalityTest().then(setTest).catch(() => setNotice("No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo."));
+    const failed = () => setNotice("No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo.");
+    getPersonalityTest().then(setTest).catch(failed);
+    getProfile(profileId)
+      .then((p) => setLookingFor(p.looking_for))
+      .catch(() => null);
     getMyPersonality(profileId)
-      .then((m) => setAnswers(m.answers))
-      .catch(() => setNotice("No pudimos cargar esta pantalla. Revisá tu conexión y probá de nuevo."));
-  }, [profileId]);
+      .then((m) => {
+        setAnswers(m.answers);
+        setAxes(m.axis_order);
+        setAccepted(m.privacy_accepted);
+        // Arranca en el grupo pedido (?eje=, desde Círculo) o en el primero que no terminó.
+        const wanted = params.get("eje") as Axis | null;
+        setAxis(wanted && m.axis_order.includes(wanted) ? wanted : m.axis_order[0]);
+      })
+      .catch(failed);
+  }, [profileId, params]);
 
   async function save(qid: string, choices: number[]) {
     if (!profileId) return;
@@ -46,9 +77,40 @@ function TestContent() {
     save(qid, [...current, option]);
   }
 
-  if (!profileId || !test) return <p className="text-slate-400">{notice ?? "Cargando…"}</p>;
+  if (!profileId || !test || accepted === null || axis === null) return <p className="text-slate-400">{notice ?? "Cargando…"}</p>;
+
+  if (!accepted) {
+    return (
+      <div className="w-full space-y-5">
+        <Link href="/perfil" className="text-xs text-slate-300">
+          ‹ Mi perfil
+        </Link>
+        <h1 className="text-2xl font-semibold">Test de personalidad</h1>
+        <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">
+          <p className="font-medium">Antes de empezar</p>
+          <p className="text-sm text-slate-300">{TEST_PRIVACY}</p>
+          <button
+            onClick={async () => {
+              try {
+                await acceptPrivacy(profileId, "test", PRIVACY_VERSION);
+                setAccepted(true);
+              } catch {
+                setNotice("No se pudo guardar. Probá de nuevo.");
+              }
+            }}
+            className="w-full rounded-md bg-violet-600 px-3 py-2 text-sm font-medium text-white"
+          >
+            Entiendo, empezar
+          </button>
+        </div>
+        {notice && <p className="text-sm text-gold-300">{notice}</p>}
+      </div>
+    );
+  }
 
   const questions = test.questions.filter((q) => q.axis === axis);
+  const attractionEmpty = !test.questions.some((q) => q.axis === "E1" && answers[q.id]?.length);
+  const showAttractionIntro = axis === "E1" && attractionEmpty && !attractionIntroSeen;
   const answered = test.questions.filter((q) => answers[q.id]?.length).length;
   const axisIndex = AXES.indexOf(axis);
 
@@ -96,7 +158,34 @@ function TestContent() {
       </div>
       <p className="text-sm text-gold-300">{test.axes[axis]?.title}</p>
 
-      {questions.map((q) => {
+      {showAttractionIntro && (
+        <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
+          <p className="text-sm text-slate-200">
+            Las próximas preguntas son sobre atracción. Son privadas, nadie las ve, y solo pesan si buscás pareja o algo
+            casual.
+          </p>
+          <button
+            onClick={() => setAttractionIntroSeen(true)}
+            className="w-full rounded-md bg-violet-600 px-3 py-2 text-sm font-medium text-white"
+          >
+            Responder ahora
+          </button>
+          {!SEEKS_ATTRACTION.includes(lookingFor) && (
+            <button
+              onClick={() => {
+                const next = AXES[AXES.indexOf("E1") + 1];
+                if (next) setAxis(next);
+                else router.push("/perfil");
+              }}
+              className="w-full text-center text-sm text-slate-400 underline"
+            >
+              Responder más tarde
+            </button>
+          )}
+        </div>
+      )}
+
+      {!showAttractionIntro && questions.map((q) => {
         const selected = answers[q.id] ?? [];
         return (
           <fieldset key={q.id} className="space-y-2 rounded-xl bg-slate-900 p-3 ring-1 ring-slate-800">
