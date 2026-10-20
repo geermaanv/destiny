@@ -1,3 +1,4 @@
+import math
 import unicodedata
 import uuid
 from typing import Literal
@@ -16,8 +17,8 @@ from app.personality.engine import compare
 from app.public_profile import age, public_fields
 from app.ai_texts import cached, explanation_key, record
 from app.personalization.style import prompt_instructions, style_for
-from app.synastry import ai_facts, headline, profile_synastry
-from app.schemas import DiscoverCandidateOut, ExplanationOut, PersonalityCompatOut
+from app.synastry import AXIS_LABELS, ai_facts, headline, profile_synastry
+from app.schemas import DiscoverCandidateOut, ExplanationOut, PersonalityCompatOut, SystemOut
 
 router = APIRouter(prefix="/discover", tags=["discover"])
 
@@ -42,8 +43,25 @@ def _require_verified_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     return profile
 
 
-Sistema = Literal["astrologia", "personalidad"]
+SISTEMAS = ("astrologia", "personalidad")
 MAX_SEARCH = 20  # búsqueda por nombre (spec B8)
+# Ejes del test de Pablo ↔ ejes de la astrología: miden las mismas cuatro dimensiones (spec B9).
+TEST_AXES = {"E1": "atraccion", "E2": "afecto", "E3": "comunicacion", "E4": "compromiso"}
+EARTH_KM = 6371.0
+
+
+def _mean(values: list[float | None]) -> float | None:
+    present = [v for v in values if v is not None]
+    return sum(present) / len(present) if present else None
+
+
+def distance_km(a: Profile, b: Profile) -> int | None:
+    """Distancia entre dónde viven (haversine), en km redondeados; mínimo 1 (spec B9)."""
+    if None in (a.residence_lat, a.residence_lon, b.residence_lat, b.residence_lon):
+        return None
+    lat1, lon1, lat2, lon2 = map(math.radians, (a.residence_lat, a.residence_lon, b.residence_lat, b.residence_lon))
+    h = math.sin((lat2 - lat1) / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin((lon2 - lon1) / 2) ** 2
+    return max(1, round(2 * EARTH_KM * math.asin(math.sqrt(h))))
 
 
 def _fold(text: str) -> str:
@@ -71,10 +89,11 @@ def gender_match(viewer: Profile, candidate: Profile) -> bool:
 def list_discover(
     viewer_id: uuid.UUID = Query(...),
     context: Relationship = Query(default="pareja"),
-    sistema: Sistema = Query(default="astrologia"),
+    sistemas: str = Query(default="astrologia,personalidad"),
     min_pct: int = Query(default=0, ge=0, le=100),
     edad_min: int = Query(default=18, ge=18, le=99),
     edad_max: int = Query(default=99, ge=18, le=99),
+    max_km: int | None = Query(default=None, ge=1, le=20000),
     q: str | None = Query(default=None, max_length=40),
     db: Session = Depends(get_db),
     current: uuid.UUID | None = Depends(session_profile_id),
@@ -85,6 +104,12 @@ def list_discover(
         raise HTTPException(status_code=409, detail="Perfil sin datos natales")
     if edad_min > edad_max:
         raise HTTPException(status_code=422, detail="La edad mínima no puede ser mayor que la máxima")
+    included = {s.strip() for s in sistemas.split(",") if s.strip()}
+    if not included or not included <= set(SISTEMAS):
+        raise HTTPException(status_code=422, detail="Elegí al menos un sistema: astrologia o personalidad")
+    search = _fold(q.strip()) if q and q.strip() else None
+    if max_km is not None and not search and viewer.residence_lat is None:
+        raise HTTPException(status_code=409, detail="Contanos dónde vivís para filtrar por distancia")
 
     candidates = db.scalars(
         select(Profile)
@@ -101,7 +126,6 @@ def list_discover(
     # Género y "Mostrame" (spec B8): solo para pareja, también en la búsqueda.
     if context == "pareja":
         candidates = [c for c in candidates if gender_match(viewer, c)]
-    search = _fold(q.strip()) if q and q.strip() else None
     if search:
         candidates = [c for c in candidates if search in _fold(c.display_name or "")]
 
@@ -114,28 +138,53 @@ def list_discover(
         )
     }
     mine = answers.get(viewer.id)
-    if sistema == "personalidad" and not mine and not search:
+    if included == {"personalidad"} and not mine and not search:
         raise HTTPException(status_code=409, detail="Completá tu test de personalidad para usar este filtro")
 
     results = []
     for candidate in candidates:
+        distance = distance_km(viewer, candidate)
         theirs = answers.get(candidate.id)
         personality = PersonalityCompatOut(**compare(mine, theirs, mode)) if mine and theirs else None
         if not search:
-            # La búsqueda por nombre ignora sistema, compatibilidad y edad (spec B8).
+            # La búsqueda por nombre ignora sistemas, compatibilidad, edad y distancia (specs B8, B9).
             candidate_age = age(candidate.birth_date)
             if candidate_age is None or not edad_min <= candidate_age <= edad_max:
                 continue
-            if sistema == "personalidad" and (personality is None or personality.total is None):
+            if max_km is not None and (distance is None or distance > max_km):
                 continue
         result = profile_synastry(viewer, candidate, context)
-        pct = round(personality.total) if sistema == "personalidad" and personality and personality.total is not None else result["total"]
-        if not search and pct < min_pct:
+
+        # Cada sistema con los pesos de Pablo para el vínculo; el global es su promedio simple (ADR 0014).
+        systems: dict[str, SystemOut | None] = {"astrologia": None, "personalidad": None}
+        totals: list[float] = []
+        if "astrologia" in included:
+            systems["astrologia"] = SystemOut(total=result["total"], axes=dict(result["ejes"]))
+            totals.append(result["total"])
+        if "personalidad" in included and personality is not None and personality.total is not None:
+            test_axes = {TEST_AXES[k]: (round(v) if v is not None else None) for k, v in personality.axes.items()}
+            systems["personalidad"] = SystemOut(total=round(personality.total), axes=test_axes)
+            totals.append(personality.total)
+        if not totals:
+            if search:
+                totals.append(result["total"])  # la búsqueda muestra a la persona aunque no tenga test
+            else:
+                continue  # solo test y esta persona no lo completó
+        global_pct = round(sum(totals) / len(totals))
+        if not search and global_pct < min_pct:
             continue
+        axes_global = {
+            axis: (round(m) if (m := _mean([s.axes.get(axis) for s in systems.values() if s])) is not None else None)
+            for axis in AXIS_LABELS
+        }
         results.append(
             DiscoverCandidateOut(
                 profile_id=candidate.id,
-                compatibility_pct=pct,
+                compatibility_pct=global_pct,
+                global_pct=global_pct,
+                axes_global=axes_global,
+                systems=systems,
+                distance_km=distance,
                 astrology_pct=result["total"],
                 preview=headline(result),
                 axes=result["ejes"],
@@ -146,8 +195,8 @@ def list_discover(
                 **public_fields(candidate),
             )
         )
-    # Lista curada y chica: los de mayor compatibilidad según el sistema elegido (B5, B8).
-    results.sort(key=lambda r: r.compatibility_pct, reverse=True)
+    # Lista curada y chica: los de mayor número global (B5, B9).
+    results.sort(key=lambda r: r.global_pct, reverse=True)
     return results[: MAX_SEARCH if search else MAX_CANDIDATES]
 
 

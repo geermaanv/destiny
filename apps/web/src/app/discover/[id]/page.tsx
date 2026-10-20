@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Page, PageTitle } from "@/components/ui";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import { AstrologyBlock, PersonalityBlock } from "@/components/CompatibilityView";
+import SystemsGrid, { globalCaption } from "@/components/SystemsGrid";
 import { useSessionProfileId } from "@/lib/session";
 import { apiUrl, createMatch, DiscoverCandidate, DiscoverFilters, getExplanation } from "@/lib/api";
 import { findInLastList } from "@/lib/discover";
@@ -96,7 +96,9 @@ function PerfilDeOtra() {
         title={`${c.display_name ?? "Perfil"}${c.age !== null ? `, ${c.age}` : ""}`}
         subtitle={
           <>
-            {[c.sun_sign, c.gender_label, c.neighborhood].filter(Boolean).join(" · ")}
+            {[c.sun_sign, c.gender_label, c.distance_km !== null ? `a ${c.distance_km} km` : c.neighborhood]
+              .filter(Boolean)
+              .join(" · ")}
             {c.verificado && <span className="ml-2 text-xs text-gold-300">✓{"\uFE0E"} Verificado</span>}
           </>
         }
@@ -123,8 +125,15 @@ function PerfilDeOtra() {
         </div>
       )}
       <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
-        <AstrologyBlock total={c.astrology_pct} axes={c.axes} approximate={c.approximate} />
-        <PersonalityBlock p={c.personality} />
+        <div className="flex items-baseline gap-2">
+          <span className="text-3xl font-semibold text-gold-300">{c.global_pct}%</span>
+          <span className="text-xs text-slate-500">{globalCaption(c)}</span>
+        </div>
+        <SystemsGrid c={c} large />
+        {c.approximate && <p className="text-xs text-slate-500">Astrología aproximada: sin hora exacta de nacimiento no se usan las casas.</p>}
+        {c.personality?.flags && c.personality.flags.length > 0 && (
+          <p className="text-xs text-gold-300">Diferencia importante en: {c.personality.flags.join(", ").toLowerCase()}.</p>
+        )}
         <p className="text-sm text-slate-300">{explanation ?? "Cargando explicación…"}</p>
       </div>
       {requested ? (

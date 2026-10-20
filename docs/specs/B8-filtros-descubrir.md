@@ -67,3 +67,5 @@ POST /profiles/{id}/preferences {gender, gender_detail, show_me: [..], appear_in
 ## Fuera de alcance
 
 Distancia y ubicación, numerología, @ usuario y QR (C9), filtrar por intereses, guardar filtros en la cuenta (se guardan en el navegador).
+
+**Cambio posterior (2026-10-20, spec B9)**: "Según qué sistema" pasa a ser qué sistemas suman al número global (`sistemas` reemplaza a `sistema`), y el porcentaje que se ordena y filtra es el global.

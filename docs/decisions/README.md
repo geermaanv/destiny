@@ -19,3 +19,4 @@ Architecture Decision Records. Cada decisión técnica con peso (elegir una libr
 | [0011](./0011-modelo-matematico-pablo.md) | Compatibilidad con modelo matemático; Pablo es la última palabra del modelo | aceptada |
 | [0012](./0012-motor-oficial-destiny-1-0.md) | Motor oficial Destiny 1.0 (calculadoras de Pablo), tablas generadas desde los Excel | aceptada |
 | [0013](./0013-chequeo-fotos-con-ia.md) | Chequeo de fotos con IA (excepción acotada a "la IA no recibe datos personales") | aceptada |
+| [0014](./0014-numero-global-provisorio.md) | Número global de compatibilidad provisorio: promedio simple de los sistemas | aceptada (provisoria, pendiente de Pablo) |

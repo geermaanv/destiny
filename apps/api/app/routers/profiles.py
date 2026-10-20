@@ -24,6 +24,7 @@ from app.schemas import (
     PhotoOut,
     PhotosOut,
     PreferencesIn,
+    ResidenceIn,
     ProfileOut,
     VerificationOut,
     WhatsappCodeOut,
@@ -248,6 +249,23 @@ def set_preferences(
     profile.show_me = list(dict.fromkeys(payload.show_me))
     profile.appear_in = list(dict.fromkeys(payload.appear_in)) if payload.gender == "no_binario" else []
     profile.show_gender = payload.show_gender
+    db.commit()
+    db.refresh(profile)
+    return profile
+
+
+@router.post("/{profile_id}/residence", response_model=ProfileOut)
+def set_residence(
+    profile_id: uuid.UUID,
+    payload: ResidenceIn,
+    db: Session = Depends(get_db),
+    current: uuid.UUID | None = Depends(session_profile_id),
+) -> Profile:
+    """Spec B9: dónde vive, para el filtro de distancia. Solo lo ve su dueño."""
+    profile = _owned(profile_id, db, current)
+    profile.residence_label = payload.query
+    profile.residence_lat = payload.lat
+    profile.residence_lon = payload.lon
     db.commit()
     db.refresh(profile)
     return profile

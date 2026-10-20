@@ -103,6 +103,13 @@ class PreferencesIn(BaseModel):
         return value or None
 
 
+# Spec B9: dónde vive (del buscador de ciudades: con coordenadas).
+class ResidenceIn(BaseModel):
+    query: str = Field(min_length=1, max_length=200)
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
+
+
 # Spec A11: fotos del perfil.
 class PhotoOut(BaseModel):
     id: uuid.UUID
@@ -140,6 +147,9 @@ class ProfileOut(BaseModel):
     show_me: list[str] = []
     appear_in: list[str] = []
     show_gender: bool = False
+    residence_label: str | None = None
+    residence_lat: float | None = None
+    residence_lon: float | None = None
 
     class Config:
         from_attributes = True
@@ -417,10 +427,21 @@ class PersonalityCompatOut(BaseModel):
     complete: bool
 
 
+class SystemOut(BaseModel):
+    """Un sistema de compatibilidad (spec B9): su total con los pesos de Pablo para el vínculo y sus ejes."""
+
+    total: int
+    axes: dict[str, int | None]
+
+
 class DiscoverCandidateOut(BaseModel):
     profile_id: uuid.UUID
-    # Según el sistema elegido (spec B8); astrology_pct es siempre el de la sinastría.
+    # Número global (spec B9, ADR 0014): promedio de los sistemas incluidos; compatibility_pct es el mismo.
     compatibility_pct: int
+    global_pct: int = 0
+    axes_global: dict[str, int | None] = {}
+    systems: dict[str, SystemOut | None] = {}
+    distance_km: int | None = None
     astrology_pct: int = 0
     preview: str
     # Motor de sinastría (spec B5-motor-sinastria.md): puntaje por eje y contexto.

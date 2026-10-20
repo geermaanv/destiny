@@ -63,7 +63,15 @@ export type Profile = {
   show_me: Gender[];
   appear_in: ("mujer" | "hombre")[];
   show_gender: boolean;
+  // Spec B9: dónde vive (solo lo ve su dueño).
+  residence_label: string | null;
+  residence_lat: number | null;
+  residence_lon: number | null;
 };
+
+export function setResidence(profileId: string, place: Place): Promise<Profile> {
+  return postJson(`/profiles/${profileId}/residence`, { query: place.label, lat: place.lat, lon: place.lon });
+}
 
 export type Gender = "mujer" | "hombre" | "no_binario";
 
@@ -201,7 +209,12 @@ export function submitMoodCheckin(profileId: string, mood: Mood): Promise<void> 
 
 export type DiscoverCandidate = {
   profile_id: string;
-  compatibility_pct: number; // según el sistema elegido (spec B8)
+  compatibility_pct: number; // = global_pct
+  // Spec B9: número global (promedio de los sistemas incluidos), sus ejes y cada sistema.
+  global_pct: number;
+  axes_global: Partial<Record<AxisKey, number | null>>;
+  systems: { astrologia: SystemScore | null; personalidad: SystemScore | null };
+  distance_km: number | null;
   astrology_pct: number;
   preview: string;
   axes: Partial<Record<"atraccion" | "afecto" | "comunicacion" | "compromiso", number>>;
@@ -222,13 +235,18 @@ export type DiscoverCandidate = {
   neighborhood: string | null;
 };
 
-// Filtros de Descubrir (spec B8).
+export type AxisKey = "atraccion" | "afecto" | "comunicacion" | "compromiso";
+export type SystemScore = { total: number; axes: Partial<Record<AxisKey, number | null>> };
+export type Sistema = "astrologia" | "personalidad";
+
+// Filtros de Descubrir (specs B8 y B9).
 export type DiscoverFilters = {
   context: RelationshipContext;
-  sistema: "astrologia" | "personalidad";
+  sistemas: Sistema[];
   min_pct: number;
   edad_min: number;
   edad_max: number;
+  max_km: number | null;
 };
 
 // Contexto de relación en Descubrir (spec B5): cambia los pesos de cada eje.
@@ -242,11 +260,12 @@ export async function getDiscoverCandidates(
   const params = new URLSearchParams({
     viewer_id: viewerId,
     context: filters.context,
-    sistema: filters.sistema,
+    sistemas: filters.sistemas.join(","),
     min_pct: String(filters.min_pct),
     edad_min: String(filters.edad_min),
     edad_max: String(filters.edad_max),
   });
+  if (filters.max_km !== null) params.set("max_km", String(filters.max_km));
   if (q?.trim()) params.set("q", q.trim());
   const res = await fetch(`${API_URL}/discover?${params.toString()}`);
   if (!res.ok) throw new Error(String(res.status));

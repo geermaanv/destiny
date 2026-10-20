@@ -5,9 +5,21 @@ import Link from "next/link";
 import { Page } from "@/components/ui";
 import ConexionesTabs from "@/components/ConexionesTabs";
 import GenderPrefs from "@/components/GenderPrefs";
+import PlaceField from "@/components/PlaceField";
 import ProfileAvatar from "@/components/ProfileAvatar";
+import SystemsGrid, { globalCaption } from "@/components/SystemsGrid";
 import { useSessionProfileId } from "@/lib/session";
-import { apiUrl, DiscoverCandidate, DiscoverFilters, getDiscoverCandidates, getProfile, Profile } from "@/lib/api";
+import {
+  apiUrl,
+  DiscoverCandidate,
+  DiscoverFilters,
+  getDiscoverCandidates,
+  getProfile,
+  Place,
+  Profile,
+  Sistema,
+  setResidence,
+} from "@/lib/api";
 import { activeFilterCount, DEFAULT_FILTERS, loadFilters, saveFilters, saveLastList } from "@/lib/discover";
 
 const CONTEXTS: { value: DiscoverFilters["context"]; label: string }[] = [
@@ -17,6 +29,11 @@ const CONTEXTS: { value: DiscoverFilters["context"]; label: string }[] = [
   { value: "ocasional", label: "Casual" },
 ];
 const MIN_PCTS = [0, 50, 60, 70, 80];
+const DISTANCES: (number | null)[] = [null, 5, 10, 25, 50, 100];
+const SISTEMAS: { value: Sistema; label: string }[] = [
+  { value: "astrologia", label: "Astrología" },
+  { value: "personalidad", label: "Test de personalidad" },
+];
 
 const pill = (active: boolean) =>
   `rounded-full px-3 py-1.5 text-xs ring-1 ${
@@ -40,15 +57,40 @@ function Filters({ filters, onChange }: { filters: DiscoverFilters; onChange: (f
   return (
     <div className="space-y-4 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
       <div className="space-y-2">
-        <p className="text-xs text-slate-400">Según qué sistema</p>
-        <div className="flex gap-2">
-          <button onClick={() => onChange({ ...filters, sistema: "astrologia" })} className={pill(filters.sistema === "astrologia")}>
-            Astrología
-          </button>
-          <button onClick={() => onChange({ ...filters, sistema: "personalidad" })} className={pill(filters.sistema === "personalidad")}>
-            Test de personalidad
-          </button>
-          <span className="self-center text-xs text-slate-500">Numerología, próximamente</span>
+        <p className="text-xs text-slate-400">Sistemas que suman al número global</p>
+        <div className="flex flex-wrap gap-2">
+          {SISTEMAS.map((s) => {
+            const on = filters.sistemas.includes(s.value);
+            return (
+              <button
+                key={s.value}
+                // Siempre queda al menos un sistema prendido.
+                onClick={() =>
+                  on
+                    ? filters.sistemas.length > 1 && onChange({ ...filters, sistemas: filters.sistemas.filter((x) => x !== s.value) })
+                    : onChange({ ...filters, sistemas: [...filters.sistemas, s.value] })
+                }
+                className={pill(on)}
+              >
+                {on ? "✓ " : ""}
+                {s.label}
+              </button>
+            );
+          })}
+          <span className="self-center text-xs text-slate-500">Numerología, pronto</span>
+        </div>
+        {filters.sistemas.length < SISTEMAS.length && (
+          <p className="text-xs text-gold-300">Sin todos los sistemas, el resultado pierde precisión.</p>
+        )}
+      </div>
+      <div className="space-y-2">
+        <p className="text-xs text-slate-400">Distancia</p>
+        <div className="flex flex-wrap gap-2">
+          {DISTANCES.map((d) => (
+            <button key={d ?? "todas"} onClick={() => onChange({ ...filters, max_km: d })} className={pill(filters.max_km === d)}>
+              {d === null ? "Cualquiera" : `A menos de ${d} km`}
+            </button>
+          ))}
         </div>
       </div>
       <div className="space-y-2">
@@ -88,40 +130,77 @@ function Filters({ filters, onChange }: { filters: DiscoverFilters; onChange: (f
   );
 }
 
-function CandidateCard({ c, big }: { c: DiscoverCandidate; big: boolean }) {
+function CandidateCard({ c }: { c: DiscoverCandidate }) {
+  const details = [c.sun_sign, c.distance_km !== null ? `a ${c.distance_km} km` : null].filter(Boolean).join(" · ");
   return (
-    <Link
-      href={`/discover/${c.profile_id}`}
-      className="block overflow-hidden rounded-xl bg-slate-900 ring-1 ring-slate-700 hover:ring-slate-500"
-    >
-      {c.photo_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={apiUrl(c.photo_url)} alt="" className={`w-full object-cover object-top ${big ? "aspect-square" : "aspect-[16/9]"}`} />
-      ) : (
-        <div className="flex aspect-[16/9] items-center justify-center bg-slate-800">
-          <ProfileAvatar photoUrl={null} avatar={c.avatar} sunSign={c.sun_sign} size={64} />
-        </div>
-      )}
-      <div className="flex items-start gap-3 p-3">
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-medium">
+    <Link href={`/discover/${c.profile_id}`} className="block rounded-xl bg-slate-900 p-3 ring-1 ring-slate-700 hover:ring-slate-500">
+      <div className="flex gap-3">
+        {c.photo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={apiUrl(c.photo_url)} alt="" className="h-32 w-32 shrink-0 rounded-lg object-cover object-top" />
+        ) : (
+          <span className="flex h-32 w-32 shrink-0 items-center justify-center rounded-lg bg-slate-800">
+            <ProfileAvatar photoUrl={null} avatar={c.avatar} sunSign={c.sun_sign} size={64} />
+          </span>
+        )}
+        <div className="min-w-0 flex-1 space-y-1">
+          <p className="font-medium">
             {c.display_name ?? "Sin nombre"}
-            {c.age !== null && <span className="font-normal text-slate-400">, {c.age}</span>}
-            {c.verificado && (
-              <span className="ml-1.5 align-middle text-xs font-normal text-gold-300" title="Verificó su WhatsApp">
-                ✓{"︎"} Verificado
-              </span>
-            )}
+            {c.age !== null && `, ${c.age}`}
+            {details && <span className="font-normal text-slate-400"> · {details}</span>}
           </p>
-          <p className="text-xs text-slate-400">{[c.sun_sign, c.gender_label, c.neighborhood].filter(Boolean).join(" · ")}</p>
+          {c.verificado && <p className="text-xs text-gold-300">✓{"\uFE0E"} Verificado</p>}
           <p className="text-xs text-gold-300">{c.preview}</p>
-        </div>
-        <div className="text-right">
-          <p className="font-semibold text-gold-300">{c.compatibility_pct}%</p>
-          <p className="text-xs text-violet-400">Ver perfil →</p>
+          <p className="pt-1 text-3xl font-semibold leading-none text-gold-300">{c.global_pct}%</p>
+          <p className="text-xs text-slate-500">{globalCaption(c)}</p>
         </div>
       </div>
+      <div className="mt-3">
+        <SystemsGrid c={c} />
+      </div>
+      <p className="mt-2 text-right text-xs text-violet-400">Ver perfil →</p>
     </Link>
+  );
+}
+
+function ResidencePrompt({ me, onSaved, onSkip }: { me: Profile; onSaved: (p: Profile) => void; onSkip?: () => void }) {
+  const [place, setPlace] = useState<Place | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  async function save() {
+    if (!place) {
+      setError("Elegí tu ciudad de la lista.");
+      return;
+    }
+    try {
+      onSaved(await setResidence(me.id, place));
+    } catch {
+      setError("No se pudo guardar. Probá de nuevo.");
+    }
+  }
+  return (
+    <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">
+      <div>
+        <p className="font-medium">¿Dónde vivís?</p>
+        <p className="text-xs text-slate-400">Para mostrarte la distancia. Nadie ve tu ciudad: solo los kilómetros.</p>
+      </div>
+      <PlaceField
+        id="residence"
+        placeholder="Tu ciudad (ej. Córdoba)"
+        selected={place}
+        initialText=""
+        onSelect={(p) => setPlace(p)}
+        onUnavailable={(u) => u && setError("El buscador de ciudades no responde. Probá en un rato.")}
+      />
+      {error && <p className="text-sm text-gold-300">{error}</p>}
+      <button onClick={save} className="w-full rounded-md bg-violet-600 px-3 py-2 text-sm font-medium text-white">
+        Guardar
+      </button>
+      {onSkip && (
+        <button onClick={onSkip} className="w-full text-center text-xs text-slate-500 underline">
+          Ahora no
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -134,6 +213,7 @@ function DiscoverContent() {
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState("");
   const [skipPrefs, setSkipPrefs] = useState(false);
+  const [skipResidence, setSkipResidence] = useState(false);
   const [candidates, setCandidates] = useState<DiscoverCandidate[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -163,7 +243,9 @@ function DiscoverContent() {
       })
       .catch((e: Error) =>
         setError(
-          e.message === "409" && filters.sistema === "personalidad"
+          e.message === "409" && filters.max_km !== null && me?.residence_lat == null
+            ? "residencia"
+            : e.message === "409" && filters.sistemas.length === 1 && filters.sistemas[0] === "personalidad"
             ? "test"
             : e.message === "403"
               ? "Para ver Descubrir primero tenés que verificar tu identidad."
@@ -172,7 +254,7 @@ function DiscoverContent() {
                 : "No pudimos cargar Descubrir. Probá de nuevo en un rato."
         )
       );
-  }, [profileId, filters, filtersReady, search]);
+  }, [profileId, filters, filtersReady, search, me?.residence_lat]);
 
   function update(next: DiscoverFilters) {
     setFilters(next);
@@ -183,6 +265,7 @@ function DiscoverContent() {
 
   const needsPrefs = filters.context === "pareja" && (!me.gender || me.show_me.length === 0) && !skipPrefs;
   const filterCount = activeFilterCount(filters);
+  const needsResidence = !needsPrefs && me.residence_lat === null && (filters.max_km !== null || !skipResidence);
 
   return (
     <div className="w-full space-y-4">
@@ -241,7 +324,11 @@ function DiscoverContent() {
         </div>
       )}
 
-      {error === "test" ? (
+      {needsResidence && (
+        <ResidencePrompt me={me} onSaved={setMe} onSkip={filters.max_km === null ? () => setSkipResidence(true) : undefined} />
+      )}
+
+      {error === "residencia" ? null : error === "test" ? (
         <p className="text-sm text-slate-300">
           Para buscar por personalidad primero completá tu test.{" "}
           <Link href="/perfil/test" className="text-violet-400">
@@ -269,7 +356,7 @@ function DiscoverContent() {
           )}
         </div>
       )}
-      {!needsPrefs && candidates?.map((c, i) => <CandidateCard key={c.profile_id} c={c} big={i === 0 || !search} />)}
+      {!needsPrefs && candidates?.map((c) => <CandidateCard key={c.profile_id} c={c} />)}
     </div>
   );
 }

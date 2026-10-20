@@ -51,6 +51,11 @@ class Profile(Base):
     appear_in: Mapped[list[str]] = mapped_column(ARRAY(String), default=list, server_default="{}", nullable=False)
     show_gender: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", nullable=False)
 
+    # Spec B9: dónde vive (ciudad del buscador) para filtrar por distancia. Nunca se muestra a otros.
+    residence_label: Mapped[str | None] = mapped_column(String, nullable=True)
+    residence_lat: Mapped[float | None] = mapped_column(Float, nullable=True)
+    residence_lon: Mapped[float | None] = mapped_column(Float, nullable=True)
+
     @property
     def has_photo(self) -> bool:
         return self.photo_path is not None

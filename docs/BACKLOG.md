@@ -166,10 +166,11 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Aviso de privacidad tipo aceptación de términos al registrarse y al empezar el test; revisar otros lugares.
 - [ ] Test: ordenar los grupos según lo que busca la persona (guardar "¿Qué buscás?" de Círculo en el perfil; sin dato, Atracción al final), pantalla de entrada al grupo de Atracción y "Responder más tarde" para quien no busca pareja.
 - [ ] Tokens por invitar: +1 pregunta diaria en Indagar por cada invitado que termina el registro.
-- [ ] Círculo: foto más chica y ejes visibles en la tarjeta (boceto: barritas o números).
-- [ ] Distancia: "¿Dónde vivís?" con el buscador de ciudades y filtro "a menos de X km" (sin mostrar ubicación exacta).
+- [x] Círculo: foto de 128 px, número global y una columna de barras por sistema con el promedio por eje (spec B9, boceto de German).
+- [x] Distancia: "¿Dónde vivís?" con el buscador de ciudades y filtro "a menos de X km" (spec B9).
 - [ ] Círculo: organizar o filtrar por intereses en común (a diseñar).
-- [ ] Número global de compatibilidad (astrología + test + numerología) en las tarjetas, ponderador por defecto de Pablo ajustable en el perfil, filtro para apagar sistemas con aviso de precisión. **Cambia la decisión de mostrar los sistemas solo por separado (ADR 0011)**: necesita ADR nuevo.
+- [x] Número global en las tarjetas, provisorio con promedio simple de los sistemas (cada uno con los pesos de Pablo por vínculo), y filtro para apagar sistemas con aviso de precisión (spec B9, ADR 0014).
+- [ ] Ponderador entre sistemas: pesos por defecto de Pablo y ajuste por persona en el perfil.
 - [ ] Ideas de viralización: "¿Cuánto fluimos?" (Compartir v2), imagen para historias, @ y QR.
 - [ ] Pablo: pesos por defecto del número global, qué pasa sin test, título "Química y atracción", modelo de numerología (sin fecha).
 

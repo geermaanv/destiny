@@ -7,16 +7,21 @@ const LAST_KEY = "destiny:descubrir:ultima";
 
 export const DEFAULT_FILTERS: DiscoverFilters = {
   context: "pareja",
-  sistema: "astrologia",
+  sistemas: ["astrologia", "personalidad"],
   min_pct: 0,
   edad_min: 18,
   edad_max: 99,
+  max_km: null,
 };
 
 export function loadFilters(): DiscoverFilters {
   try {
     const saved = JSON.parse(localStorage.getItem(FILTERS_KEY) ?? "null");
-    return saved ? { ...DEFAULT_FILTERS, ...saved } : DEFAULT_FILTERS;
+    if (!saved) return DEFAULT_FILTERS;
+    const merged = { ...DEFAULT_FILTERS, ...saved };
+    delete (merged as Record<string, unknown>).sistema; // filtro viejo de B8, reemplazado por `sistemas`
+    if (!Array.isArray(merged.sistemas) || merged.sistemas.length === 0) merged.sistemas = DEFAULT_FILTERS.sistemas;
+    return merged;
   } catch {
     return DEFAULT_FILTERS;
   }
@@ -33,7 +38,8 @@ export function saveFilters(filters: DiscoverFilters) {
 // Cuántos filtros se apartan del valor por defecto (sin contar el tipo de vínculo).
 export function activeFilterCount(f: DiscoverFilters): number {
   return [
-    f.sistema !== DEFAULT_FILTERS.sistema,
+    f.sistemas.length !== DEFAULT_FILTERS.sistemas.length,
+    f.max_km !== null,
     f.min_pct !== DEFAULT_FILTERS.min_pct,
     f.edad_min !== DEFAULT_FILTERS.edad_min || f.edad_max !== DEFAULT_FILTERS.edad_max,
   ].filter(Boolean).length;

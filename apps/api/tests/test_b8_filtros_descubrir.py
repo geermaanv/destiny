@@ -110,14 +110,14 @@ def test_sistema_personalidad(new_client):
     viewer = active_user(a, name="Vera")
     con_test = active_user(b, name="Tomi")
     sin_test = active_user(c, name="Nico")
-    r = a.get("/discover", params={"viewer_id": viewer, "sistema": "personalidad"})
+    r = a.get("/discover", params={"viewer_id": viewer, "sistemas": "personalidad"})
     assert r.status_code == 409
     complete_personality(a, viewer)
     complete_personality(b, con_test)
-    found = discover(a, viewer, sistema="personalidad")
+    found = discover(a, viewer, sistemas="personalidad")
     assert con_test in found and sin_test not in found
     assert found[con_test]["compatibility_pct"] == round(found[con_test]["personality"]["total"])
-    assert found[con_test]["astrology_pct"] == discover(a, viewer)[con_test]["compatibility_pct"]
+    assert found[con_test]["astrology_pct"] == discover(a, viewer)[con_test]["systems"]["astrologia"]["total"]
 
 
 # 9
