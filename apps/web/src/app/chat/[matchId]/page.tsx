@@ -21,7 +21,6 @@ import { useSessionProfileId } from "@/lib/session";
 // Chat híbrido (spec B7 v2): primer contacto en Destiny y, cuando los dos
 // quieren, "Pasar a WhatsApp" revela el link al número del otro.
 const POLL_MS = 4000;
-const VINCULO_LABELS: Record<string, string> = { pareja: "Pareja", amistad: "Amistad", laboral: "Trabajo", ocasional: "Casual" };
 
 function ChatContent() {
   const { matchId } = useParams<{ matchId: string }>();
@@ -137,29 +136,7 @@ function ChatContent() {
                   <span className="text-3xl font-semibold text-gold-300">{compat.global_pct}%</span>
                   <span className="text-xs text-slate-400">Compatibilidad global · {globalCaption(compat.systems).toLowerCase()}</span>
                 </p>
-                <SystemsGrid systems={compat.systems} axesGlobal={compat.axes_global} />
-                <table className="w-full text-xs">
-                  <thead>
-                    <tr className="text-slate-500">
-                      <th className="py-1 text-left font-normal">Vínculo</th>
-                      <th className="py-1 text-right font-normal">Global</th>
-                      <th className="py-1 text-right font-normal">Astro</th>
-                      <th className="py-1 text-right font-normal">Test</th>
-                      <th className="py-1 text-right font-normal">Numer.</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {compat.por_vinculo.map((v) => (
-                      <tr key={v.vinculo} className="border-t border-slate-800">
-                        <td className="py-1.5 text-slate-300">{VINCULO_LABELS[v.vinculo]}</td>
-                        <td className="py-1.5 text-right font-semibold text-gold-300">{v.global_pct ?? "—"}%</td>
-                        <td className="py-1.5 text-right text-slate-300">{v.astrologia != null ? `${v.astrologia}%` : "—"}</td>
-                        <td className="py-1.5 text-right text-slate-300">{v.personalidad != null ? `${v.personalidad}%` : "—"}</td>
-                        <td className="py-1.5 text-right text-slate-500">—</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <SystemsGrid systems={compat.systems} axesGlobal={compat.axes_global} vinculos={compat.por_vinculo} />
                 {compat.approximate && (
                   <p className="text-xs text-slate-500">Astrología aproximada: sin hora exacta de nacimiento no se usan las casas.</p>
                 )}

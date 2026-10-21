@@ -15,7 +15,7 @@ type Systems = { astrologia: SystemScore | null; personalidad: SystemScore | nul
 function Score({ value, color }: { value: number | null | undefined; color: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <span className="w-5 shrink-0 text-right text-slate-300">{value ?? "—"}</span>
+      <span className="w-6 shrink-0 text-right text-slate-300">{value ?? "—"}</span>
       <span className="flex flex-1 gap-0.5">
         {[0, 1, 2, 3, 4].map((i) => {
           const fill = value == null ? 0 : Math.max(0, Math.min(1, (value - i * 20) / 20));
@@ -37,13 +37,24 @@ export function globalCaption(systems: Systems): string {
   return test ? "Solo test de personalidad" : "Solo astrología";
 }
 
+export type VinculoRow = { vinculo: string; global_pct: number | null; astrologia: number | null; personalidad: number | null };
+const VINCULO_LABELS: Record<string, string> = { pareja: "Pareja", amistad: "Amistad", laboral: "Trabajo", ocasional: "Casual" };
+
+// Número de la tabla de vínculos, en la misma posición que el número de cada eje (spec B12:
+// las dos tablas encolumnadas, con la misma letra).
+function Plain({ value }: { value: number | null | undefined }) {
+  return <span className="block w-6 text-right text-slate-300">{value ?? "—"}</span>;
+}
+
 export default function SystemsGrid({
   systems,
   axesGlobal,
+  vinculos,
   large = false,
 }: {
   systems: Systems;
   axesGlobal: Partial<Record<AxisKey, number | null>>;
+  vinculos?: VinculoRow[];
   large?: boolean;
 }) {
   const { astrologia, personalidad } = systems;
@@ -67,6 +78,23 @@ export default function SystemsGrid({
           <Score value={null} color="" />
         </div>
       ))}
+      {vinculos && (
+        <>
+          <span className="col-span-5 my-1 border-t border-slate-800" />
+          <span className="text-slate-500">Vínculo</span>
+          <span className="text-slate-500">Global</span>
+          <span className="col-span-3" />
+          {vinculos.map((v) => (
+            <div key={v.vinculo} className="contents">
+              <span className="text-slate-400">{VINCULO_LABELS[v.vinculo] ?? v.vinculo}</span>
+              <span className="font-semibold text-gold-300">{v.global_pct ?? "—"}</span>
+              <Plain value={v.astrologia} />
+              <Plain value={v.personalidad} />
+              <Plain value={null} />
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 }

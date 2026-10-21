@@ -57,3 +57,5 @@ Ninguno. El número global sigue siendo provisorio (ADR 0014) hasta que Pablo de
 Pesos de Pablo entre sistemas (ADR 0014), numerología.
 
 **Implementación**: cálculo compartido con Círculo en `app/compat_summary.py` (el motor ya calculaba los cuatro vínculos en una pasada; ahora los devuelve en `totales_por_vinculo`). Círculo usa el mismo número global (decisión de German: "en Círculo también el número global, hay que simplificar entender la compatibilidad"). La grilla de ejes (total primero, número y barra de 5 tramos por sistema) es la misma en Círculo y en el chat. El botón "Quiero pasar a WhatsApp" pasa a ser verde relleno, igual al de Invitar.
+
+**Ajuste (2026-10-20, German)**: la tabla de vínculos va en la misma grilla que los ejes (mismas columnas y letra): Total y Global en la misma columna, y los números de cada sistema alineados.
