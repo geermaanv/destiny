@@ -46,6 +46,7 @@ Ninguno. El número global sigue siendo provisorio (ADR 0014) hasta que Pablo de
 | 3 | Sin test | `personalidad` null y cada global es la astrología |
 | 4 | Solo los participantes | Un tercero no lo ve |
 | 5 | Conexión pendiente | 409 |
+| 6 | "Fuerte en…" de la tarjeta de Círculo | Sale del eje combinado más fuerte y es igual para cualquier vínculo |
 
 ## Criterios de aceptación
 
@@ -61,3 +62,5 @@ Pesos de Pablo entre sistemas (ADR 0014), numerología.
 **Ajuste (2026-10-20, German)**: la tabla de vínculos va en la misma grilla que los ejes (mismas columnas y letra): Total y Global en la misma columna, y los números de cada sistema alineados.
 
 **Ajuste (2026-10-20, German)**: en la tabla de vínculos se resaltan el **nombre y el Global** del vínculo más alto, en el mismo color (los empatados también; si todos dan igual, ninguno). Los demás Global van en el tono de los otros números. Se probaron flechas ▲/▼ y números en dorado: metían ruido y corrían la alineación. Sin barras en la tabla: las diferencias entre vínculos son chicas y el número se lee mejor.
+
+**Ajuste (2026-10-20, German: "¿por qué cambia? no hace falta")**: el "Fuerte en…" de la tarjeta sale del eje combinado más fuerte (antes, de los ejes que más pesan en el vínculo elegido). Así, cambiar entre amistad, trabajo y casual no cambia la lista; la web solo la vuelve a pedir al entrar o salir de pareja (filtro de género) y sin parpadear.

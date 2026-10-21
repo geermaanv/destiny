@@ -18,7 +18,7 @@ from app.public_profile import age, public_fields
 from app.ai_texts import cached, explanation_key, record
 from app.personalization.style import prompt_instructions, style_for
 from app.compat_summary import SISTEMAS, summarize
-from app.synastry import ai_facts, headline, profile_synastry
+from app.synastry import AXIS_LABELS, ai_facts, profile_synastry
 from app.schemas import DiscoverCandidateOut, ExplanationOut, Interest, PersonalityCompatOut, SystemOut
 
 router = APIRouter(prefix="/discover", tags=["discover"])
@@ -179,7 +179,8 @@ def list_discover(
                 distance_km=distance,
                 common_interests=[i for i in INTERESTS if i in (viewer.interests or []) and i in (candidate.interests or [])],
                 astrology_pct=result["total"],
-                preview=headline(result),
+                # Spec B12: del eje combinado más fuerte, igual para cualquier vínculo (como el número global).
+                preview=f"Fuerte en {AXIS_LABELS[max(axes_global, key=lambda k: axes_global[k] or 0)].lower()}",
                 axes=result["ejes"],
                 relationship=result["tipo_de_relacion"],
                 approximate=result["aproximado"],

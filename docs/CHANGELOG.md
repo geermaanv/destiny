@@ -153,3 +153,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - Chat (pedido de German): título "Mensajes con {nombre}" antes del rompehielos, para separar la compatibilidad de la conversación.
 - Chat (pedidos de German): con la charla empezada, el rompehielos queda como contexto más discreto ("Destiny les sugirió arrancar con:"); y los mensajes propios pasan de color de acción relleno a un tinte suave con borde fino.
 - Círculo (pedido de German): "¿Qué buscás?" pasa al panel de Filtros. Con el número global igual para todos los vínculos, los cuatro botones redibujaban la lista casi igual y confundían.
+- Círculo (German: "¿por qué cambia? no hace falta"): el "Fuerte en…" de la tarjeta sale del eje combinado más fuerte (igual para cualquier vínculo, como el número global), y la lista solo se vuelve a pedir al entrar o salir de pareja (filtro de género), sin borrar la anterior mientras carga. Test nuevo en B12. 343 tests en verde.

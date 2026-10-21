@@ -374,15 +374,16 @@ function DiscoverContent() {
     return () => clearTimeout(id);
   }, [query]);
 
+  // Spec B12: el número y el "Fuerte en…" no dependen del vínculo; la lista solo cambia al entrar o
+  // salir de pareja (filtro de género). Entre amistad, trabajo y casual no se vuelve a pedir.
+  const fetchKey = JSON.stringify({ ...filters, context: filters.context === "pareja" ? "pareja" : "otro" });
+
   useEffect(() => {
     if (!profileId || !filtersReady) return;
-    setCandidates(null);
+    // Sin borrar la lista actual: queda en pantalla hasta que llega la nueva (no parpadea).
     setError(null);
     getDiscoverCandidates(profileId, filters, search)
-      .then((list) => {
-        setCandidates(list);
-        saveLastList(filters, list);
-      })
+      .then((list) => setCandidates(list))
       .catch((e: Error) =>
         setError(
           e.message === "409" && filters.max_km !== null && me?.residence_lat == null
@@ -396,7 +397,13 @@ function DiscoverContent() {
                 : "No pudimos cargar Descubrir. Probá de nuevo en un rato."
         )
       );
-  }, [profileId, filters, filtersReady, search, me?.residence_lat]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileId, fetchKey, filtersReady, search, me?.residence_lat]);
+
+  // El perfil de cada persona usa el vínculo elegido para la explicación.
+  useEffect(() => {
+    if (candidates) saveLastList(filters, candidates);
+  }, [candidates, filters]);
 
   function update(next: DiscoverFilters) {
     setFilters(next);

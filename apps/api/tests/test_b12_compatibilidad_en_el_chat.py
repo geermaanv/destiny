@@ -68,3 +68,20 @@ def test_solo_los_participantes(conexion, new_client):
 def test_conexion_pendiente(conexion):
     a, pid_a, b, pid_b, mid = conexion
     assert a.get(f"/matches/{mid}/compatibility/summary").status_code == 409
+
+
+# 6
+def test_fuerte_en_igual_para_cualquier_vinculo(new_client):
+    from tests.test_a10_verificacion_opcional import active_user
+
+    a, b = new_client(), new_client()
+    viewer = active_user(a, name="Vera")
+    otra = active_user(b, name="Ana", birth_date="1992-08-03")
+    vistos = [
+        {x["profile_id"]: x for x in a.get("/discover", params={"viewer_id": viewer, "context": c}).json()}[otra]
+        for c in ["amistad", "laboral", "ocasional"]
+    ]
+    assert len({c["preview"] for c in vistos}) == 1
+    labels = {"atraccion": "química", "afecto": "afecto", "comunicacion": "comunicación", "compromiso": "compromiso"}
+    axes = vistos[0]["axes_global"]
+    assert vistos[0]["preview"] == f"Fuerte en {labels[max(axes, key=lambda k: axes[k])]}"
