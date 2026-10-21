@@ -93,6 +93,8 @@ npm run dev
 
 Corre en `http://localhost:3000`.
 
+Para probar desde el celular (túnel), la web corre en **modo producción**, que abre cada pantalla en milisegundos: `npm run build && npm run start`. Después de cada cambio en `apps/web` hay que recompilar y reiniciar. `next dev` compila cada pantalla al abrirla (2 a 20 s) y en una Mac de 8 GB se reinicia por memoria: usarlo solo mientras se programa.
+
 ## Decisiones técnicas y razonamiento
 
 > Resumen operativo. El detalle y el porqué completo de cada una está en `docs/decisions/` (ADRs 0001–0013) — actualizar ahí primero si una decisión cambia, y reflejar el resumen acá.
