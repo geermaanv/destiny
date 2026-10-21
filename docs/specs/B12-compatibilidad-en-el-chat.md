@@ -60,4 +60,4 @@ Pesos de Pablo entre sistemas (ADR 0014), numerología.
 
 **Ajuste (2026-10-20, German)**: la tabla de vínculos va en la misma grilla que los ejes (mismas columnas y letra): Total y Global en la misma columna, y los números de cada sistema alineados.
 
-**Ajuste (2026-10-20, German)**: en la tabla de vínculos se resalta solo el **nombre** del vínculo con el Global más alto (los empatados también; si todos dan igual, ninguno). Los números de Global van en el mismo tono que los demás. Se probaron flechas ▲/▼ y números en dorado: metían ruido y corrían la alineación. Sin barras en la tabla: las diferencias entre vínculos son chicas y el número se lee mejor.
+**Ajuste (2026-10-20, German)**: en la tabla de vínculos se resaltan el **nombre y el Global** del vínculo más alto, en el mismo color (los empatados también; si todos dan igual, ninguno). Los demás Global van en el tono de los otros números. Se probaron flechas ▲/▼ y números en dorado: metían ruido y corrían la alineación. Sin barras en la tabla: las diferencias entre vínculos son chicas y el número se lee mejor.

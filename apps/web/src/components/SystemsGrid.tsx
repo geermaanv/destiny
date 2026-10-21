@@ -118,7 +118,7 @@ export default function SystemsGrid({
       ))}
       {vinculos && (
         <>
-          {/* Se resalta el nombre del vínculo con el Global más alto (pedido de German); si todos dan igual, ninguno. */}
+          {/* Se resaltan el nombre y el Global del vínculo más alto (pedido de German); si todos dan igual, ninguno. */}
           <span className="col-span-5 my-1 border-t border-slate-800" />
           <span className="text-slate-500">Vínculo</span>
           <span className="text-slate-500">Global</span>
@@ -139,7 +139,7 @@ export default function SystemsGrid({
                   {VINCULO_LABELS[v.vinculo] ?? v.vinculo}
                 </span>
                 <span
-                  className="text-slate-300"
+                  className={best ? "font-semibold text-gold-300" : "text-slate-300"}
                 >
                   {v.global_pct ?? "—"}
                 </span>
