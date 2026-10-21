@@ -69,3 +69,5 @@ POST /profiles/{id}/preferences {gender, gender_detail, show_me: [..], appear_in
 Distancia y ubicación, numerología, @ usuario y QR (C9), filtrar por intereses, guardar filtros en la cuenta (se guardan en el navegador).
 
 **Cambio posterior (2026-10-20, spec B9)**: "Según qué sistema" pasa a ser qué sistemas suman al número global (`sistemas` reemplaza a `sistema`), y el porcentaje que se ordena y filtra es el global.
+
+**Cambio posterior (2026-10-20, German)**: "¿Qué buscás?" deja de ser una fila de botones fija arriba de las tarjetas y pasa al panel de Filtros (sigue visible en la fila de filtros activos). Desde la spec B12 el número no depende del vínculo, así que cambiarlo casi no cambia la lista: solo aplica "Mostrame" en pareja y la explicación.

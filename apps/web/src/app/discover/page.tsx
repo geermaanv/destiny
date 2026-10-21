@@ -69,6 +69,17 @@ function Filters({
 
   return (
     <div className="space-y-4 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
+      {/* "¿Qué buscás?" es un filtro más (pedido de German): en pareja aplica "Mostrame". */}
+      <div className="space-y-2">
+        <p className="text-xs text-slate-400">¿Qué buscás?</p>
+        <div className="flex gap-2">
+          {CONTEXTS.map((c) => (
+            <button key={c.value} onClick={() => onChange({ ...filters, context: c.value })} className={`flex-1 ${pill(filters.context === c.value)}`}>
+              {c.label}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="space-y-2">
         <p className="text-xs text-slate-400">Sistemas que suman al número global</p>
         <div className="flex flex-wrap gap-2">
@@ -434,19 +445,6 @@ function DiscoverContent() {
           Filtros{filterCount > 0 && ` · ${filterCount}`}
         </button>
       </div>
-
-      {!search && (
-        <div className="space-y-1">
-          <p className="text-xs text-slate-400">¿Qué buscás?</p>
-          <div className="flex gap-2">
-            {CONTEXTS.map((c) => (
-              <button key={c.value} onClick={() => update({ ...filters, context: c.value })} className={`flex-1 ${pill(filters.context === c.value)}`}>
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {showFilters && !search && (
         <Filters
