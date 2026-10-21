@@ -118,7 +118,7 @@ export default function SystemsGrid({
       ))}
       {vinculos && (
         <>
-          {/* Se marcan el vínculo con el Global más alto (▲) y el más bajo (▼); si todos dan igual, ninguno. */}
+          {/* Se resalta el nombre del vínculo con el Global más alto (pedido de German); si todos dan igual, ninguno. */}
           <span className="col-span-5 my-1 border-t border-slate-800" />
           <span className="text-slate-500">Vínculo</span>
           <span className="text-slate-500">Global</span>
@@ -128,30 +128,20 @@ export default function SystemsGrid({
               .map((x) => x.global_pct)
               .filter((x): x is number => x !== null);
             const max = Math.max(...values);
-            const min = Math.min(...values);
-            const best = max !== min && v.global_pct === max;
-            const worst = max !== min && v.global_pct === min;
+            const best = max !== Math.min(...values) && v.global_pct === max;
             return (
               <div key={v.vinculo} className="contents">
                 <span
                   className={
-                    best ? "font-medium text-slate-100" : "text-slate-400"
+                    best ? "font-semibold text-gold-300" : "text-slate-400"
                   }
                 >
                   {VINCULO_LABELS[v.vinculo] ?? v.vinculo}
                 </span>
                 <span
-                  className={
-                    best
-                      ? "font-bold text-gold-300"
-                      : worst
-                        ? "text-slate-500"
-                        : "font-semibold text-gold-300"
-                  }
+                  className="text-slate-300"
                 >
                   {v.global_pct ?? "—"}
-                  {best && <span className="ml-0.5 text-[10px]">▲</span>}
-                  {worst && <span className="ml-0.5 text-[10px]">▼</span>}
                 </span>
                 <Plain value={v.astrologia} />
                 <Plain value={v.personalidad} />
