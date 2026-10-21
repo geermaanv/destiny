@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Page } from "@/components/ui";
+import { Page, SectionTitle } from "@/components/ui";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import SystemsGrid, { globalCaption } from "@/components/SystemsGrid";
 import {
@@ -183,6 +183,8 @@ function ChatContent() {
           </div>
 
           <div className="space-y-2">
+            {/* Separa la compatibilidad de la conversación (pedido de German). */}
+            <SectionTitle>Mensajes con {name}</SectionTitle>
             {messages.map((m, i) => (
               <div
                 key={i}
