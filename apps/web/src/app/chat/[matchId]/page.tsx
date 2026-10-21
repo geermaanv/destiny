@@ -86,6 +86,8 @@ function ChatContent() {
   if (!profileId || !connection) return <p className="text-slate-400">Cargando…</p>;
 
   const name = connection.other.display_name ?? "Tu conexión";
+  // Con la charla empezada, el rompehielos queda como contexto, más discreto (pedido de German).
+  const talking = messages.some((m) => m.sender !== "system_icebreaker");
   const wa = connection.whatsapp;
 
   return (
@@ -190,13 +192,19 @@ function ChatContent() {
                 key={i}
                 className={`rounded-md p-3 text-sm ${
                   m.sender === "system_icebreaker"
-                    ? "bg-slate-800 text-gold-200"
+                    ? talking
+                      ? "p-2 text-xs text-slate-400 ring-1 ring-slate-800"
+                      : "bg-slate-800 text-gold-200"
                     : m.sender === profileId
-                      ? "ml-8 bg-violet-600 text-white"
+                      ? "ml-8 bg-violet-600/20 text-slate-100 ring-1 ring-violet-500/40"
                       : "mr-8 bg-slate-900 text-slate-200"
                 }`}
               >
-                {m.sender === "system_icebreaker" && <span className="mb-1 block text-xs text-gold-400">✨ Rompehielos de Destiny</span>}
+                {m.sender === "system_icebreaker" && (
+                  <span className={`mb-1 block text-xs ${talking ? "text-slate-500" : "text-gold-400"}`}>
+                    {talking ? "✨ Destiny les sugirió arrancar con:" : "✨ Rompehielos de Destiny"}
+                  </span>
+                )}
                 {m.text}
                 <span className="mt-1 block text-right text-[10px] opacity-60">
                   {new Date(m.created_at).toLocaleString("es-AR", {

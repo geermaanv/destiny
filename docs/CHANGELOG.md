@@ -151,3 +151,4 @@ Bitácora cronológica de qué se hizo y qué se decidió en cada sesión. Para 
 - Chat (pedido de German): la tabla de vínculos y la de ejes quedan encolumnadas en una sola grilla, con la misma letra; Total y Global en la misma columna.
 - Chat (pedido de German): en la tabla de vínculos se resaltan el nombre y el Global del vínculo más alto, en el mismo color (se probaron flechas ▲/▼ y números en dorado, pero metían ruido); si todos dan igual, ninguno.
 - Chat (pedido de German): título "Mensajes con {nombre}" antes del rompehielos, para separar la compatibilidad de la conversación.
+- Chat (pedidos de German): con la charla empezada, el rompehielos queda como contexto más discreto ("Destiny les sugirió arrancar con:"); y los mensajes propios pasan de color de acción relleno a un tinte suave con borde fino.
