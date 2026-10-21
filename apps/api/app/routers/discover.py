@@ -17,7 +17,8 @@ from app.personality.engine import compare
 from app.public_profile import age, public_fields
 from app.ai_texts import cached, explanation_key, record
 from app.personalization.style import prompt_instructions, style_for
-from app.synastry import AXIS_LABELS, ai_facts, headline, profile_synastry
+from app.compat_summary import SISTEMAS, summarize
+from app.synastry import ai_facts, headline, profile_synastry
 from app.schemas import DiscoverCandidateOut, ExplanationOut, Interest, PersonalityCompatOut, SystemOut
 
 router = APIRouter(prefix="/discover", tags=["discover"])
@@ -43,17 +44,9 @@ def _require_verified_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     return profile
 
 
-SISTEMAS = ("astrologia", "personalidad")
 MAX_SEARCH = 20  # búsqueda por nombre (spec B8)
-# Ejes del test de Pablo ↔ ejes de la astrología: miden las mismas cuatro dimensiones (spec B9).
-TEST_AXES = {"E1": "atraccion", "E2": "afecto", "E3": "comunicacion", "E4": "compromiso"}
 EARTH_KM = 6371.0
 INTERESTS = get_args(Interest)  # lista de intereses de A4, en su orden
-
-
-def _mean(values: list[float | None]) -> float | None:
-    present = [v for v in values if v is not None]
-    return sum(present) / len(present) if present else None
 
 
 def distance_km(a: Profile, b: Profile) -> int | None:
@@ -150,7 +143,8 @@ def list_discover(
     for candidate in candidates:
         distance = distance_km(viewer, candidate)
         theirs = answers.get(candidate.id)
-        personality = PersonalityCompatOut(**compare(mine, theirs, mode)) if mine and theirs else None
+        raw_personality = compare(mine, theirs, mode) if mine and theirs else None
+        personality = PersonalityCompatOut(**raw_personality) if raw_personality else None
         if not search:
             # La búsqueda por nombre ignora sistemas, compatibilidad, edad y distancia (specs B8, B9).
             candidate_age = age(candidate.birth_date)
@@ -163,28 +157,18 @@ def list_discover(
                 continue
         result = profile_synastry(viewer, candidate, context)
 
-        # Cada sistema con los pesos de Pablo para el vínculo; el global es su promedio simple (ADR 0014).
-        systems: dict[str, SystemOut | None] = {"astrologia": None, "personalidad": None}
-        totals: list[float] = []
-        if "astrologia" in included:
-            systems["astrologia"] = SystemOut(total=result["total"], axes=dict(result["ejes"]))
-            totals.append(result["total"])
-        if "personalidad" in included and personality is not None and personality.total is not None:
-            test_axes = {TEST_AXES[k]: (round(v) if v is not None else None) for k, v in personality.axes.items()}
-            systems["personalidad"] = SystemOut(total=round(personality.total), axes=test_axes)
-            totals.append(personality.total)
-        if not totals:
+        # Número global (specs B9, B12; ADR 0014): promedio de los cuatro vínculos, igual que en el chat.
+        summary = summarize(result, raw_personality, included)
+        if summary["global"] is None:
             if search:
-                totals.append(result["total"])  # la búsqueda muestra a la persona aunque no tenga test
+                summary["global"] = result["total"]  # la búsqueda muestra a la persona aunque no tenga test
             else:
                 continue  # solo test y esta persona no lo completó
-        global_pct = round(sum(totals) / len(totals))
+        global_pct = round(summary["global"])
         if not search and global_pct < min_pct:
             continue
-        axes_global = {
-            axis: (round(m) if (m := _mean([s.axes.get(axis) for s in systems.values() if s])) is not None else None)
-            for axis in AXIS_LABELS
-        }
+        systems = {k: (SystemOut(**v) if v else None) for k, v in summary["systems"].items()}
+        axes_global = summary["axes_global"]
         results.append(
             DiscoverCandidateOut(
                 profile_id=candidate.id,

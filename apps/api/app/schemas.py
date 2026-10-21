@@ -556,6 +556,22 @@ class WhatsappHandoffOut(BaseModel):
     link: str | None = None  # solo cuando los dos aceptaron
 
 
+# Spec B12: compatibilidad del chat, resumida (número global, ejes por sistema, tabla por vínculo).
+class VinculoOut(BaseModel):
+    vinculo: str
+    global_pct: int | None
+    astrologia: int | None
+    personalidad: int | None
+
+
+class CompatSummaryOut(BaseModel):
+    global_pct: int
+    axes_global: dict[str, int | None]
+    systems: dict[str, "SystemOut | None"]
+    por_vinculo: list[VinculoOut]
+    approximate: bool
+
+
 class CompatibilityOut(BaseModel):
     relationship: str
     astrology: dict
@@ -646,3 +662,4 @@ class RevealOut(BaseModel):
 
 
 CompatibilityOut.model_rebuild()
+CompatSummaryOut.model_rebuild()

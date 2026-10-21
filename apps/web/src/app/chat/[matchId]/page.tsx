@@ -5,15 +5,14 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Page } from "@/components/ui";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import { AstrologyBlock, CONTEXTS, PersonalityBlock } from "@/components/CompatibilityView";
+import SystemsGrid, { globalCaption } from "@/components/SystemsGrid";
 import {
   ChatMessage,
-  Compatibility,
+  CompatSummary,
   Connection,
-  getCompatibility,
+  getCompatSummary,
   getConnection,
   getMessages,
-  RelationshipContext,
   respondConnection,
   sendMessage,
 } from "@/lib/api";
@@ -22,6 +21,7 @@ import { useSessionProfileId } from "@/lib/session";
 // Chat híbrido (spec B7 v2): primer contacto en Destiny y, cuando los dos
 // quieren, "Pasar a WhatsApp" revela el link al número del otro.
 const POLL_MS = 4000;
+const VINCULO_LABELS: Record<string, string> = { pareja: "Pareja", amistad: "Amistad", laboral: "Trabajo", ocasional: "Casual" };
 
 function ChatContent() {
   const { matchId } = useParams<{ matchId: string }>();
@@ -33,15 +33,14 @@ function ChatContent() {
   const [sendError, setSendError] = useState<string | null>(null);
   const [waError, setWaError] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  // Panel "Compatibilidad" (B7): astrología y personalidad por separado, con selector de vínculo.
-  const [showCompat, setShowCompat] = useState(false);
-  const [compat, setCompat] = useState<Compatibility | null>(null);
-  const [compatContext, setCompatContext] = useState<RelationshipContext | undefined>(undefined);
+  // Compatibilidad (spec B12): siempre abierta, el mismo número global de Círculo, los ejes por
+  // sistema y una tabla por vínculo que solo se muestra.
+  const [compat, setCompat] = useState<CompatSummary | null>(null);
 
   useEffect(() => {
-    if (!profileId || !showCompat || connection?.status !== "aceptada") return;
-    getCompatibility(matchId, compatContext).then(setCompat).catch(() => null);
-  }, [profileId, showCompat, matchId, compatContext, connection?.status]);
+    if (!profileId || connection?.status !== "aceptada") return;
+    getCompatSummary(matchId).then(setCompat).catch(() => null);
+  }, [profileId, matchId, connection?.status]);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -131,44 +130,42 @@ function ChatContent() {
         </p>
       ) : (
         <>
-          <div className="rounded-xl bg-slate-900 p-3 ring-1 ring-slate-800">
-            <button
-              onClick={() => setShowCompat((v) => !v)}
-              className="flex w-full items-center justify-between text-sm font-medium"
-            >
-              <span>Compatibilidad</span>
-              <span className="text-slate-400">{showCompat ? "▴" : "▾"}</span>
-            </button>
-            {showCompat && (
-              <div className="mt-3 space-y-3">
-                <div className="grid grid-cols-4 gap-1.5">
-                  {CONTEXTS.map((c) => (
-                    <button
-                      key={c.value}
-                      onClick={() => setCompatContext(c.value)}
-                      className={`rounded-full px-2 py-1 text-xs ring-1 ${
-                        (compat?.relationship ?? compatContext) === c.value
-                          ? "bg-slate-700 text-white ring-slate-400"
-                          : "bg-slate-950 text-slate-300 ring-slate-700"
-                      }`}
-                    >
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-                {compat ? (
-                  <>
-                    <AstrologyBlock
-                      total={compat.astrology.total}
-                      axes={compat.astrology.axes}
-                      approximate={compat.astrology.approximate}
-                    />
-                    <PersonalityBlock p={compat.personality} />
-                  </>
-                ) : (
-                  <p className="text-xs text-slate-400">Calculando…</p>
+          <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-800">
+            {compat ? (
+              <>
+                <p className="flex items-baseline gap-2">
+                  <span className="text-3xl font-semibold text-gold-300">{compat.global_pct}%</span>
+                  <span className="text-xs text-slate-400">Compatibilidad global · {globalCaption(compat.systems).toLowerCase()}</span>
+                </p>
+                <SystemsGrid systems={compat.systems} axesGlobal={compat.axes_global} />
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-slate-500">
+                      <th className="py-1 text-left font-normal">Vínculo</th>
+                      <th className="py-1 text-right font-normal">Global</th>
+                      <th className="py-1 text-right font-normal">Astro</th>
+                      <th className="py-1 text-right font-normal">Test</th>
+                      <th className="py-1 text-right font-normal">Numer.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {compat.por_vinculo.map((v) => (
+                      <tr key={v.vinculo} className="border-t border-slate-800">
+                        <td className="py-1.5 text-slate-300">{VINCULO_LABELS[v.vinculo]}</td>
+                        <td className="py-1.5 text-right font-semibold text-gold-300">{v.global_pct ?? "—"}%</td>
+                        <td className="py-1.5 text-right text-slate-300">{v.astrologia != null ? `${v.astrologia}%` : "—"}</td>
+                        <td className="py-1.5 text-right text-slate-300">{v.personalidad != null ? `${v.personalidad}%` : "—"}</td>
+                        <td className="py-1.5 text-right text-slate-500">—</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {compat.approximate && (
+                  <p className="text-xs text-slate-500">Astrología aproximada: sin hora exacta de nacimiento no se usan las casas.</p>
                 )}
-              </div>
+              </>
+            ) : (
+              <p className="text-xs text-slate-400">Calculando la compatibilidad…</p>
             )}
           </div>
 
@@ -191,7 +188,8 @@ function ChatContent() {
                     ? `${name} quiere seguir la charla por WhatsApp.`
                     : "¿Se entienden? Pueden pasar a WhatsApp cuando los dos quieran."}
                 </p>
-                <button onClick={() => act("whatsapp")} className="w-full rounded-md px-3 py-1.5 text-emerald-400 ring-1 ring-emerald-700">
+                {/* Mismo botón que Invitar (pedido de German). */}
+                <button onClick={() => act("whatsapp")} className="w-full rounded-md bg-emerald-600 px-4 py-2.5 font-medium text-white">
                   {wa.other_ok ? "Aceptar y pasar a WhatsApp" : "Quiero pasar a WhatsApp"}
                 </button>
                 <p className="text-xs text-slate-500">Tu número solo se comparte si los dos aceptan.</p>

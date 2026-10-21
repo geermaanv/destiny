@@ -15,3 +15,5 @@ En la reunión de check del 2026-10-20 se decidió mostrar en Círculo un númer
 ## Consecuencias
 
 - Cuando Pablo defina el ponderador, se reemplaza el promedio simple por sus pesos sin cambiar la pantalla. Después se suma el ajuste por persona (reunión del 2026-10-20).
+
+**Actualización (2026-10-20, German)**: el número que se muestra (Círculo y chat) es el promedio de los globales de los cuatro vínculos, así no cambia según lo que se busca ("simplificar al usuario entender la compatibilidad; si quiere el detalle, lo ve"). El detalle por vínculo se muestra en la tabla del chat (spec B12).

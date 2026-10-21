@@ -50,3 +50,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [C12-invitar-simple](./C12-invitar-simple.md) | C (simplifica C8) | implemented |
 | [B11-colores-del-calendario](./B11-colores-del-calendario.md) | B6 + B4 | implemented |
 | [U3-circulo-sin-solapas](./U3-circulo-sin-solapas.md) | transversal + B7 | implemented |
+| [B12-compatibilidad-en-el-chat](./B12-compatibilidad-en-el-chat.md) | B7 + B9 | implemented |

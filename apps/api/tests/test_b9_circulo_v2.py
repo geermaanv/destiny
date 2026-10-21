@@ -37,7 +37,9 @@ def test_global_con_los_dos_sistemas(new_client):
     c = discover(a, viewer, context="laboral")[otra]
     astro, test = c["systems"]["astrologia"], c["systems"]["personalidad"]
     assert test is not None
-    assert c["global_pct"] == mean([astro["total"], c["personality"]["total"]]) == c["compatibility_pct"]
+    # Spec B12: el global es el promedio de los cuatro vínculos (y cada sistema, el suyo).
+    assert abs(c["global_pct"] - (astro["total"] + test["total"]) / 2) <= 1
+    assert c["global_pct"] == c["compatibility_pct"]
     for axis in AXES:
         assert c["axes_global"][axis] == mean([astro["axes"][axis], test["axes"][axis]])
 
@@ -54,18 +56,17 @@ def test_sin_test_es_solo_astrologia(new_client):
     assert c["axes_global"] == c["systems"]["astrologia"]["axes"]
 
 
-# 3
-def test_los_pesos_de_pablo_siguen_valiendo(new_client):
+# 3 (cambió con la spec B12: el número global ya no depende de lo que buscás)
+def test_el_global_no_depende_del_vinculo(new_client):
     a, b = new_client(), new_client()
     viewer = active_user(a, name="Vera")
     otra = active_user(b, name="Ana", birth_date="1992-08-03")
     complete_personality(a, viewer, choice=1)
     complete_personality(b, otra, choice=3)
-    for context in ["pareja", "amistad", "laboral", "ocasional"]:
-        c = discover(a, viewer, context=context)[otra]
-        assert c["systems"]["astrologia"]["total"] == c["astrology_pct"]
-        assert c["systems"]["personalidad"]["total"] == round(c["personality"]["total"])
-        assert c["global_pct"] == mean([c["astrology_pct"], c["personality"]["total"]])
+    vistos = [discover(a, viewer, context=c)[otra] for c in ["pareja", "amistad", "laboral", "ocasional"]]
+    assert len({c["global_pct"] for c in vistos}) == 1
+    assert len({c["systems"]["astrologia"]["total"] for c in vistos}) == 1
+    assert len({c["systems"]["personalidad"]["total"] for c in vistos}) == 1
 
 
 # 4

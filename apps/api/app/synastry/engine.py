@@ -361,6 +361,8 @@ def synastry(a: Chart, b: Chart, relationship: str | None = None) -> dict:
     return {
         "tipo_de_relacion": relationship,
         "total": result["visibles"][relationship],
+        # Spec B12: el total de los cuatro vínculos sale de la misma pasada (solo cambian los pesos).
+        "totales_por_vinculo": {t: result["visibles"][t] for t in types["tipos"]},
         "ejes": {axis: result["visibles"][axis] for axis in SCORED_AXES},
         "ejes_exactos": result["integrado"],
         "aproximado": not (a.time_known and b.time_known),

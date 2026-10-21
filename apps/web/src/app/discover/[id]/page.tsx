@@ -127,9 +127,9 @@ function PerfilDeOtra() {
       <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-slate-700">
         <div className="flex items-baseline gap-2">
           <span className="text-3xl font-semibold text-gold-300">{c.global_pct}%</span>
-          <span className="text-xs text-slate-500">{globalCaption(c)}</span>
+          <span className="text-xs text-slate-500">{globalCaption(c.systems)}</span>
         </div>
-        <SystemsGrid c={c} large />
+        <SystemsGrid systems={c.systems} axesGlobal={c.axes_global} large />
         {c.approximate && <p className="text-xs text-slate-500">Astrología aproximada: sin hora exacta de nacimiento no se usan las casas.</p>}
         {c.personality?.flags && c.personality.flags.length > 0 && (
           <p className="text-xs text-gold-300">Diferencia importante en: {c.personality.flags.join(", ").toLowerCase()}.</p>

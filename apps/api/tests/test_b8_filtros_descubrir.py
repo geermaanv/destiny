@@ -116,8 +116,8 @@ def test_sistema_personalidad(new_client):
     complete_personality(b, con_test)
     found = discover(a, viewer, sistemas="personalidad")
     assert con_test in found and sin_test not in found
-    assert found[con_test]["compatibility_pct"] == round(found[con_test]["personality"]["total"])
-    assert found[con_test]["astrology_pct"] == discover(a, viewer)[con_test]["systems"]["astrologia"]["total"]
+    assert found[con_test]["compatibility_pct"] == found[con_test]["systems"]["personalidad"]["total"]
+    assert found[con_test]["astrology_pct"] == discover(a, viewer)[con_test]["astrology_pct"]
 
 
 # 9

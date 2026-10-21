@@ -16,9 +16,11 @@ from app.personality.engine import compare
 from app.ai_texts import record
 from app.synastry import ai_facts, profile_synastry
 from app.public_profile import public_fields
+from app.compat_summary import summarize
 from app.schemas import (
     ChatMessageOut,
     CompatibilityOut,
+    CompatSummaryOut,
     ConnectionOut,
     MatchIn,
     MatchOut,
@@ -215,6 +217,28 @@ def match_compatibility(
         relationship=relationship,
         astrology={"total": result["total"], "axes": result["ejes"], "approximate": result["aproximado"]},
         personality=personality,
+    )
+
+
+@router.get("/matches/{match_id}/compatibility/summary", response_model=CompatSummaryOut)
+def match_compatibility_summary(
+    match_id: uuid.UUID, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> CompatSummaryOut:
+    """Spec B12: el mismo número global de Círculo, los ejes por sistema y la tabla por vínculo."""
+    match = _get_own_match(match_id, current, db)
+    if match.status != "aceptada":
+        raise HTTPException(status_code=409, detail="La compatibilidad se ve con la conexión aceptada")
+    me, other = db.get(Profile, current), db.get(Profile, _other_id(match, current))
+    result = profile_synastry(me, other)
+    mine, theirs = db.get(PersonalityAnswers, me.id), db.get(PersonalityAnswers, other.id)
+    personality = compare(mine.answers, theirs.answers, "formal") if mine and theirs and mine.answers and theirs.answers else None
+    summary = summarize(result, personality)
+    return CompatSummaryOut(
+        global_pct=round(summary["global"]),
+        axes_global=summary["axes_global"],
+        systems=summary["systems"],
+        por_vinculo=summary["por_vinculo"],
+        approximate=result["aproximado"],
     )
 
 

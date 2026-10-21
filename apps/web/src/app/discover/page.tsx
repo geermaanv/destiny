@@ -271,11 +271,11 @@ function CandidateCard({ c }: { c: DiscoverCandidate }) {
             </p>
           )}
           <p className="pt-1 text-3xl font-semibold leading-none text-gold-300">{c.global_pct}%</p>
-          <p className="text-xs text-slate-500">{globalCaption(c)}</p>
+          <p className="text-xs text-slate-500">{globalCaption(c.systems)}</p>
         </div>
       </div>
       <div className="mt-3">
-        <SystemsGrid c={c} />
+        <SystemsGrid systems={c.systems} axesGlobal={c.axes_global} />
       </div>
       <p className="mt-2 text-right text-xs text-violet-400">Ver perfil →</p>
     </Link>

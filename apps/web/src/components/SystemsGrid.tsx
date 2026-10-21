@@ -1,8 +1,8 @@
-import { AxisKey, DiscoverCandidate } from "@/lib/api";
+import { AxisKey, SystemScore } from "@/lib/api";
 
-// Spec B9: una columna de barras por sistema (astrología, test, numerología "pronto")
-// y a la derecha el promedio de cada eje. Los colores son los mismos que en el resto
-// de la app: dorado para astrología y violeta para el test.
+// Specs B9 y B12: por cada eje, primero el total (promedio de los sistemas) y después cada
+// sistema con su número y una barra de 5 tramos de 20 %. La misma grilla en Círculo y en el chat.
+// Colores de la app: dorado para astrología y violeta para el test.
 const AXES: { key: AxisKey; label: string }[] = [
   { key: "atraccion", label: "Química" },
   { key: "afecto", label: "Afecto" },
@@ -10,38 +10,61 @@ const AXES: { key: AxisKey; label: string }[] = [
   { key: "compromiso", label: "Compromiso" },
 ];
 
-function Bar({ value, color }: { value: number | null | undefined; color: string }) {
+type Systems = { astrologia: SystemScore | null; personalidad: SystemScore | null };
+
+function Score({ value, color }: { value: number | null | undefined; color: string }) {
   return (
-    <span className="block h-1.5 overflow-hidden rounded-full bg-slate-800">
-      {value != null && <span className={`block h-full rounded-full ${color}`} style={{ width: `${value}%` }} />}
+    <span className="flex items-center gap-1.5">
+      <span className="w-5 shrink-0 text-right text-slate-300">{value ?? "—"}</span>
+      <span className="flex flex-1 gap-0.5">
+        {[0, 1, 2, 3, 4].map((i) => {
+          const fill = value == null ? 0 : Math.max(0, Math.min(1, (value - i * 20) / 20));
+          return (
+            <span key={i} className="block h-1.5 flex-1 overflow-hidden rounded-sm bg-slate-800">
+              {fill > 0 && <span className={`block h-full ${color}`} style={{ width: `${fill * 100}%` }} />}
+            </span>
+          );
+        })}
+      </span>
     </span>
   );
 }
 
-export function globalCaption(c: DiscoverCandidate): string {
-  const astro = c.systems.astrologia !== null;
-  const test = c.systems.personalidad !== null;
+export function globalCaption(systems: Systems): string {
+  const astro = systems.astrologia !== null;
+  const test = systems.personalidad !== null;
   if (astro && test) return "Promedio de astrología y test";
   return test ? "Solo test de personalidad" : "Solo astrología";
 }
 
-export default function SystemsGrid({ c, large = false }: { c: DiscoverCandidate; large?: boolean }) {
-  const { astrologia, personalidad } = c.systems;
-  const text = large ? "text-sm" : "text-xs";
+export default function SystemsGrid({
+  systems,
+  axesGlobal,
+  large = false,
+}: {
+  systems: Systems;
+  axesGlobal: Partial<Record<AxisKey, number | null>>;
+  large?: boolean;
+}) {
+  const { astrologia, personalidad } = systems;
   return (
-    <div className={`grid grid-cols-[5.5rem_1fr_1fr_1fr_1.75rem] items-center gap-x-2 gap-y-1.5 ${text}`}>
+    <div
+      className={`grid grid-cols-[5.5rem_1.75rem_1fr_1fr_1fr] items-center gap-x-2 gap-y-1.5 ${large ? "text-sm" : "text-xs"}`}
+    >
       <span />
+      <span className="text-slate-500">Total</span>
       <span className={astrologia ? "text-slate-300" : "text-slate-500"}>✦ Astro {astrologia?.total ?? "—"}</span>
       <span className={personalidad ? "text-slate-300" : "text-slate-500"}>◉ Test {personalidad?.total ?? "—"}</span>
-      <span className="text-slate-500" title="Numerología: pronto"># Numer.</span>
-      <span />
+      <span className="text-slate-500" title="Numerología: pronto">
+        # Numer.
+      </span>
       {AXES.map((a) => (
         <div key={a.key} className="contents">
           <span className="text-slate-400">{a.label}</span>
-          <Bar value={astrologia?.axes[a.key]} color="bg-gold-400" />
-          <Bar value={personalidad?.axes[a.key]} color="bg-violet-400" />
-          <Bar value={null} color="" />
-          <span className="text-right font-medium text-slate-200">{c.axes_global[a.key] ?? "—"}</span>
+          <span className="font-semibold text-gold-300">{axesGlobal[a.key] ?? "—"}</span>
+          <Score value={astrologia?.axes[a.key]} color="bg-gold-400" />
+          <Score value={personalidad?.axes[a.key]} color="bg-violet-400" />
+          <Score value={null} color="" />
         </div>
       ))}
     </div>

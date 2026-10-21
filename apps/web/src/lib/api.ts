@@ -249,6 +249,21 @@ export type DiscoverCandidate = {
   neighborhood: string | null;
 };
 
+// Spec B12: compatibilidad del chat.
+export type CompatSummary = {
+  global_pct: number;
+  axes_global: Partial<Record<AxisKey, number | null>>;
+  systems: { astrologia: SystemScore | null; personalidad: SystemScore | null };
+  por_vinculo: { vinculo: RelationshipContext; global_pct: number | null; astrologia: number | null; personalidad: number | null }[];
+  approximate: boolean;
+};
+
+export async function getCompatSummary(matchId: string): Promise<CompatSummary> {
+  const res = await fetch(`${API_URL}/matches/${matchId}/compatibility/summary`);
+  if (!res.ok) throw new Error(String(res.status));
+  return res.json();
+}
+
 export type AxisKey = "atraccion" | "afecto" | "comunicacion" | "compromiso";
 export type SystemScore = { total: number; axes: Partial<Record<AxisKey, number | null>> };
 export type Sistema = "astrologia" | "personalidad";
