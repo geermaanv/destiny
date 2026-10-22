@@ -255,7 +255,7 @@ function ActiveFilters({
 }
 
 function CandidateCard({ c }: { c: DiscoverCandidate }) {
-  const details = [c.sun_sign, c.distance_km !== null ? `a ${c.distance_km} km` : null].filter(Boolean).join(" · ");
+  const details = [c.sun_sign, c.distance_km !== null ? `a menos de ${c.distance_km} km` : null].filter(Boolean).join(" · ");
   return (
     <Link href={`/discover/${c.profile_id}`} className="block rounded-xl bg-slate-900 p-3 ring-1 ring-slate-700 hover:ring-slate-500">
       <div className="flex gap-3">

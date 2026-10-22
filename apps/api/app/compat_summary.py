@@ -24,6 +24,18 @@ def _round(value: float | None) -> int | None:
     return round(value) if value is not None else None
 
 
+def _round5(value: float | None) -> int | None:
+    """Spec P2: los ejes del test que ve otra persona, en múltiplos de 5 (menos precisión, menos oráculo)."""
+    return int(5 * round(value / 5)) if value is not None else None
+
+
+def public_personality(compared: dict | None) -> dict | None:
+    """Spec P2: la compatibilidad del test solo con los dos tests completos, con los ejes redondeados."""
+    if compared is None or compared.get("total") is None:
+        return None
+    return {**compared, "axes": {k: _round5(v) for k, v in compared["axes"].items()}}
+
+
 def summarize(synastry: dict, personality: dict | None, included=SISTEMAS) -> dict:
     """`synastry`: resultado del motor (con `totales_por_vinculo`); `personality`: `compare()` o None.
 
@@ -46,7 +58,7 @@ def summarize(synastry: dict, personality: dict | None, included=SISTEMAS) -> di
     if test_on:
         systems["personalidad"] = {
             "total": _round(_mean([v["personalidad"] for v in por_vinculo])),
-            "axes": {TEST_AXES[k]: _round(v) for k, v in personality["axes"].items()},
+            "axes": {TEST_AXES[k]: _round5(v) for k, v in personality["axes"].items()},
         }
     axes_global = {
         axis: _round(_mean([s["axes"].get(axis) for s in systems.values() if s])) for axis in AXIS_LABELS

@@ -141,15 +141,14 @@ def test_descubrir_con_los_dos_tests_completos(new_client):
     assert set(p["axes"]) == set(AXES)
 
 
-def test_descubrir_con_un_test_incompleto_es_provisorio(new_client):
+def test_descubrir_con_un_test_incompleto_no_se_muestra(new_client):
+    # Cambió con la spec P2: antes se mostraba un resultado provisorio, que servía de oráculo.
     a, b = new_client(), new_client()
     pid_a = verified_user(a, "5491111111111", name="Ana")
     pid_b = verified_user(b, "5492222222222", name="Beto")
     a.put(f"/profiles/{pid_a}/personality", json={"answers": {"E1.01": [2], "E2.01": [1]}})
     b.put(f"/profiles/{pid_b}/personality", json={"answers": _all([2])})
-    p = _discover_one(b, pid_b)["personality"]
-    assert p["complete"] is False and p["total"] is None
-    assert 0 < p["coverage"]["E1"] < 1 and p["axes"]["E3"] is None
+    assert _discover_one(b, pid_b)["personality"] is None
 
 
 def test_descubrir_sin_respuestas_del_otro(new_client):

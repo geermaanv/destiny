@@ -96,7 +96,7 @@ function PerfilDeOtra() {
         title={`${c.display_name ?? "Perfil"}${c.age !== null ? `, ${c.age}` : ""}`}
         subtitle={
           <>
-            {[c.sun_sign, c.gender_label, c.distance_km !== null ? `a ${c.distance_km} km` : c.neighborhood]
+            {[c.sun_sign, c.gender_label, c.distance_km !== null ? `a menos de ${c.distance_km} km` : c.neighborhood]
               .filter(Boolean)
               .join(" · ")}
             {c.verificado && <span className="ml-2 text-xs text-gold-300">✓{"\uFE0E"} Verificado</span>}

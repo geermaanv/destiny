@@ -94,3 +94,5 @@ Ponderador ajustable por persona y pesos de Pablo (cuando los defina), numerolog
 - Colores de los sistemas: los de la app (dorado para astrología, violeta para el test), que cambian con el tema de cada persona.
 
 **Cambio posterior (2026-10-20, spec B12, decisión de German)**: el número global ya **no depende de lo que buscás**: es el promedio de los globales de los cuatro vínculos (cada uno, promedio de los sistemas con los pesos de Pablo para ese vínculo), el mismo número en Círculo y en el chat. El total de cada sistema en la tarjeta también es su promedio de los cuatro vínculos. "¿Qué buscás?" sigue filtrando (género en pareja) y ordenando el test. Caso 3 reemplazado por "el global no depende del vínculo". Cálculo compartido en `app/compat_summary.py`.
+
+**Cambio posterior (2026-10-22, spec P2)**: la distancia se muestra en franjas ("a menos de 5, 10, 25, 50, 100 km"), el filtro solo acepta esas franjas, y "Dónde vivís" se guarda a ~1 km con hasta 3 cambios por día.

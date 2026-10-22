@@ -16,7 +16,7 @@ from app.personality.engine import compare
 from app.ai_texts import record
 from app.synastry import ai_facts, profile_synastry
 from app.public_profile import public_fields
-from app.compat_summary import summarize
+from app.compat_summary import public_personality, summarize
 from app.schemas import (
     ChatMessageOut,
     CompatibilityOut,
@@ -204,15 +204,18 @@ def match_compatibility(
 ) -> CompatibilityOut:
     """Panel "Compatibilidad" del chat (B7): astrología y personalidad por separado."""
     match = _get_own_match(match_id, current, db)
+    if match.status != "aceptada":  # spec P2: no con conexiones bloqueadas o pendientes
+        raise HTTPException(status_code=409, detail="La compatibilidad se ve con la conexión aceptada")
     relationship = context or match.relationship or "pareja"
     me, other = db.get(Profile, current), db.get(Profile, _other_id(match, current))
     result = profile_synastry(me, other, relationship)
     mine, theirs = db.get(PersonalityAnswers, me.id), db.get(PersonalityAnswers, other.id)
-    personality = (
-        PersonalityCompatOut(**compare(mine.answers, theirs.answers, CONTEXT_TO_MODE[relationship]))
+    shown = public_personality(  # spec P2: solo con los dos tests completos
+        compare(mine.answers, theirs.answers, CONTEXT_TO_MODE[relationship])
         if mine and theirs and mine.answers and theirs.answers
         else None
     )
+    personality = PersonalityCompatOut(**shown) if shown else None
     return CompatibilityOut(
         relationship=relationship,
         astrology={"total": result["total"], "axes": result["ejes"], "approximate": result["aproximado"]},

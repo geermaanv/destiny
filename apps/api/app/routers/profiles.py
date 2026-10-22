@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, HTTPException, Response, UploadFile
@@ -35,6 +35,7 @@ from app.schemas import (
 from app.whatsapp import build_wa_link, is_mock_mode, issue_code
 
 router = APIRouter(prefix="/profiles", tags=["profiles"])
+MAX_RESIDENCE_CHANGES = 3  # por día (spec P2)
 
 
 @router.post("", response_model=ProfileOut, status_code=201)
@@ -300,9 +301,16 @@ def set_residence(
 ) -> Profile:
     """Spec B9: dónde vive, para el filtro de distancia. Solo lo ve su dueño."""
     profile = _owned(profile_id, db, current)
+    # Spec P2: hasta 3 cambios por día y coordenadas a ~1 km (contra la triangulación).
+    today = date.today()
+    if profile.residence_changed_on != today:
+        profile.residence_changed_on, profile.residence_changes = today, 0
+    if profile.residence_changes >= MAX_RESIDENCE_CHANGES:
+        raise HTTPException(status_code=429, detail="Podés volver a cambiar dónde vivís mañana")
+    profile.residence_changes += 1
     profile.residence_label = payload.query
-    profile.residence_lat = payload.lat
-    profile.residence_lon = payload.lon
+    profile.residence_lat = round(payload.lat, 2)
+    profile.residence_lon = round(payload.lon, 2)
     db.commit()
     db.refresh(profile)
     return profile

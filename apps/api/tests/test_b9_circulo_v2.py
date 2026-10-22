@@ -108,7 +108,7 @@ def test_guardar_donde_vivo(client):
     live(client, pid, PALERMO)
     me = client.get(f"/profiles/{pid}").json()
     assert me["residence_label"] == PALERMO["query"]
-    assert me["residence_lat"] == PALERMO["lat"]
+    assert me["residence_lat"] == round(PALERMO["lat"], 2)  # spec P2: redondeado a ~1 km
     r = client.post(f"/profiles/{pid}/residence", json={"query": "Algún lugar"})
     assert r.status_code == 422
 

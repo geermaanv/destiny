@@ -12,13 +12,13 @@ from app.auth import is_active, require_self, session_profile_id
 from app.config import settings
 from app.database import get_db
 from app.explainer import ResonanceExplainer, get_explainer
-from app.models import PersonalityAnswers, Profile
+from app.models import Match, PersonalityAnswers, Profile
 from app.personality import CONTEXT_TO_MODE
 from app.personality.engine import compare
 from app.public_profile import age, public_fields
 from app.ai_texts import cached, explanation_key, record
 from app.personalization.style import prompt_instructions, style_for
-from app.compat_summary import SISTEMAS, summarize
+from app.compat_summary import SISTEMAS, public_personality, summarize
 from app.synastry import AXIS_LABELS, ai_facts, profile_synastry
 from app.schemas import DiscoverCandidateOut, ExplanationOut, Interest, PersonalityCompatOut, SystemOut
 
@@ -36,6 +36,15 @@ def account_filter():
     return verified if settings.verificacion_obligatoria else or_(verified, Profile.activated_at.is_not(None))
 
 
+def _blocked_ids(db: Session, profile_id: uuid.UUID) -> set[uuid.UUID]:
+    rows = db.execute(
+        select(Match.profile_a_id, Match.profile_b_id).where(
+            Match.status == "bloqueada", or_(Match.profile_a_id == profile_id, Match.profile_b_id == profile_id)
+        )
+    ).all()
+    return {b if a == profile_id else a for a, b in rows}
+
+
 def _require_verified_profile(profile_id: uuid.UUID, db: Session) -> Profile:
     profile = db.get(Profile, profile_id)
     if profile is None:
@@ -49,6 +58,19 @@ def _require_verified_profile(profile_id: uuid.UUID, db: Session) -> Profile:
 MAX_SEARCH = 20  # búsqueda por nombre (spec B8)
 EARTH_KM = 6371.0
 INTERESTS = get_args(Interest)  # lista de intereses de A4, en su orden
+
+
+DISTANCE_BANDS = (5, 10, 25, 50, 100)
+
+
+def distance_band(km: int | None) -> int | None:
+    """Spec P2: la distancia que se muestra es una franja (contra la triangulación)."""
+    if km is None:
+        return None
+    for band in DISTANCE_BANDS:
+        if km <= band:
+            return band
+    return -(-km // 100) * 100
 
 
 def distance_km(a: Profile, b: Profile) -> int | None:
@@ -86,7 +108,8 @@ def _candidate_out(viewer, candidate, context, mode, mine, answers, included, se
     distance = distance_km(viewer, candidate)
     theirs = answers.get(candidate.id)
     raw_personality = compare(mine, theirs, mode) if mine and theirs else None
-    personality = PersonalityCompatOut(**raw_personality) if raw_personality else None
+    shown = public_personality(raw_personality)  # spec P2: solo con los dos tests completos
+    personality = PersonalityCompatOut(**shown) if shown else None
     if not search:
         # La búsqueda por nombre ignora sistemas, compatibilidad, edad y distancia (specs B8, B9).
         candidate_age = age(candidate.birth_date)
@@ -118,7 +141,7 @@ def _candidate_out(viewer, candidate, context, mode, mine, answers, included, se
             global_pct=global_pct,
             axes_global=axes_global,
             systems=systems,
-            distance_km=distance,
+            distance_km=distance_band(distance),
             common_interests=[i for i in INTERESTS if i in (viewer.interests or []) and i in (candidate.interests or [])],
             astrology_pct=result["total"],
             # Spec B12: del eje combinado más fuerte, igual para cualquier vínculo (como el número global).
@@ -141,7 +164,7 @@ def list_discover(
     min_pct: int = Query(default=0, ge=0, le=100),
     edad_min: int = Query(default=18, ge=18, le=99),
     edad_max: int = Query(default=99, ge=18, le=99),
-    max_km: int | None = Query(default=None, ge=1, le=20000),
+    max_km: int | None = Query(default=None),
     intereses: str = Query(default=""),
     q: str | None = Query(default=None, max_length=40),
     db: Session = Depends(get_db),
@@ -159,6 +182,8 @@ def list_discover(
     wanted = {i.strip() for i in intereses.split(",") if i.strip()}
     if not wanted <= set(INTERESTS):
         raise HTTPException(status_code=422, detail="Interés desconocido")
+    if max_km is not None and max_km not in DISTANCE_BANDS:  # spec P2: solo franjas
+        raise HTTPException(status_code=422, detail="La distancia tiene que ser 5, 10, 25, 50 o 100 km")
     search = _fold(q.strip()) if q and q.strip() else None
     if max_km is not None and not search and viewer.residence_lat is None:
         raise HTTPException(status_code=409, detail="Contanos dónde vivís para filtrar por distancia")
@@ -175,6 +200,9 @@ def list_discover(
             Profile.photo_path.is_not(None),
         )
     ).all()
+    # Spec P2: con un bloqueo entre los dos (de cualquiera), no se ven.
+    blocked = _blocked_ids(db, viewer.id)
+    candidates = [c for c in candidates if c.id not in blocked]
     # Género y "Mostrame" (spec B8): solo para pareja, también en la búsqueda.
     if context == "pareja":
         candidates = [c for c in candidates if gender_match(viewer, c)]
@@ -222,6 +250,8 @@ def get_explanation(
     require_self(viewer_id, current)
     viewer = _require_verified_profile(viewer_id, db)
     candidate = _require_verified_profile(candidate_id, db)
+    if candidate.id in _blocked_ids(db, viewer.id):
+        raise HTTPException(status_code=404, detail="Profile not found")
 
     if viewer.birth_date is None or candidate.birth_date is None:
         raise HTTPException(status_code=422, detail="Perfil sin datos natales")

@@ -176,7 +176,8 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 
 **Hallazgos del agente breaker (2026-10-22)**
 - [x] Robustez y validaciones: datos de nacimiento inválidos, Descubrir tolerante, fechas extremas, textos con nulos/invisibles, fotos por contenido, doble toque, webhook (spec R1).
-- [ ] Privacidad: deducir respuestas del test, triangular la distancia, bloqueo que no oculta (spec P2).
+- [x] Privacidad: deducir respuestas del test, triangular la distancia, bloqueo que no oculta (spec P2).
+- [ ] Analizar si se puede deducir el género oculto con los filtros mutuos de pareja.
 - [ ] Concurrencia y flujos: conexiones duplicadas, límite de Indagar en paralelo, aviso de privacidad por WhatsApp, invitación con conexión previa, rechazo trabado (spec R2).
 - [ ] Antes de hosting real: `ENVIRONMENT=production` para que la cookie de sesión sea `Secure` (hallazgo 19).
 

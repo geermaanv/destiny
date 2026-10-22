@@ -1,4 +1,5 @@
 import uuid
+from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -37,6 +38,8 @@ def _own_profile(profile_id: uuid.UUID, current: uuid.UUID | None, db: Session) 
         raise HTTPException(status_code=404, detail="Profile not found")
     return profile
 
+
+MAX_CHANGES_PER_DAY = 10  # spec P2: respuestas que se pueden cambiar por día con el test completo
 
 # Spec A12: a igual peso (o sin saber qué busca), Atracción va al final.
 BASE_AXIS_ORDER = ["E2", "E3", "E4", "E1"]
@@ -84,6 +87,15 @@ def save_answers(
     if row is None:
         row = PersonalityAnswers(profile_id=profile_id, answers={})
         db.add(row)
+    # Spec P2: con el test completo, cambios limitados por día (sino sirve de oráculo de las respuestas ajenas).
+    if completed(row.answers) == len(load_config()["questions"]):
+        changed = sum(1 for qid, value in payload.answers.items() if row.answers.get(qid) != value)
+        today = date.today()
+        if row.changes_on != today:
+            row.changes_on, row.changes_count = today, 0
+        if row.changes_count + changed > MAX_CHANGES_PER_DAY:
+            raise HTTPException(status_code=429, detail="Podés seguir cambiando respuestas mañana")
+        row.changes_count += changed
     row.answers = {**row.answers, **payload.answers}
     db.commit()
     db.refresh(row)

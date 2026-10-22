@@ -114,3 +114,5 @@ Tests automáticos en `apps/api/tests/test_b7_conexiones_chat.py` (correr: `cd a
 **Corrección (revisión nocturna, 2026-10-14)**: si falla la red al refrescar los mensajes, se reintenta en el próximo refresco (antes quedaba un error sin atrapar en cada intento); si falla el envío, se conserva lo escrito y se avisa (antes se perdía sin aviso). El campo tiene el mismo límite de 1000 caracteres que la API. La pantalla usa el contenedor común (`Page`).
 
 **Cambio posterior (2026-10-20, spec U3)**: cada conexión informa si hay mensajes nuevos de la otra persona (`unread`); abrir el chat lo marca como leído.
+
+**Cambio posterior (2026-10-22, spec P2)**: con un bloqueo entre dos personas no se ven en Descubrir (en ninguna dirección, tampoco buscando), y la compatibilidad del chat solo con la conexión aceptada.

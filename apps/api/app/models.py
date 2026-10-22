@@ -55,6 +55,9 @@ class Profile(Base):
     residence_label: Mapped[str | None] = mapped_column(String, nullable=True)
     residence_lat: Mapped[float | None] = mapped_column(Float, nullable=True)
     residence_lon: Mapped[float | None] = mapped_column(Float, nullable=True)
+    # Spec P2: cambios de "Dónde vivís" por día (contra la triangulación).
+    residence_changed_on: Mapped[date | None] = mapped_column(Date, nullable=True)
+    residence_changes: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
 
     # Spec A12: aviso de privacidad aceptado (registro y test) y qué busca (de "¿Qué buscás?" en Círculo).
     privacy_version: Mapped[str | None] = mapped_column(String, nullable=True)
@@ -203,6 +206,9 @@ class PersonalityAnswers(Base):
 
     profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("profiles.id"), primary_key=True)
     answers: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)  # {"E1.01": [2], "E1.02": [1, 3]}
+    # Spec P2: cambios de respuestas con el test completo, por día (para que no sirva de oráculo).
+    changes_on: Mapped[date | None] = mapped_column(Date, nullable=True)
+    changes_count: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
