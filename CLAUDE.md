@@ -148,6 +148,10 @@ KYC (v2) — candidatos con soporte de captura por cámara web: **Persona, Onfid
 
 Scaffoldear como **interfaz/adapter abstracto** — no atar código a un vendor específico hasta que se elija.
 
+## Agente breaker
+
+`.claude/agents/breaker.md`: agente que intenta romper la app (permisos, privacidad, validaciones, flujos) y devuelve un informe priorizado, sin arreglar nada. Trabaja **solo** contra una API propia en el puerto 8001 con la base `destiny_breaker` (nunca la base `destiny`, que tiene usuarios reales). Los hallazgos se triagean con German antes de arreglarlos (spec → tests → código).
+
 ## Reglas del MVP
 
 - **100% gratis, sin paywall.** Ver `docs/ALCANCE_MVP.md` — cualquier fricción de pago contamina los datos de retención de cohortes, la única métrica que importa en los primeros 6 meses.
