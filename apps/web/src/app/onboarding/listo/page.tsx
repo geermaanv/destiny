@@ -18,6 +18,7 @@ function Listo() {
   const [error, setError] = useState<string | null>(null);
   const [reveal, setReveal] = useState<string | null>(null);
   const [invitedBy, setInvitedBy] = useState<{ name: string; matchId: string } | null>(null);
+  const [connectFailed, setConnectFailed] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profileId || started.current) return;
@@ -33,8 +34,10 @@ function Listo() {
         if (ref) {
           const inv = await getInvitation(ref).catch(() => null);
           if (inv?.kind === "test") {
-            const { match_id } = await acceptInvitation(ref);
-            setInvitedBy({ name: inv.inviter_name ?? "quien te invitó", matchId: match_id });
+            // Spec C13: si conectar falla, igual se entra a la app (antes quedaba en una pantalla de error).
+            const accepted = await acceptInvitation(ref).catch(() => null);
+            if (accepted) setInvitedBy({ name: inv.inviter_name ?? "quien te invitó", matchId: accepted.match_id });
+            else setConnectFailed(inv.inviter_name ?? "quien te invitó");
           } else if (inv) {
             const r = await revealInvitation(ref, profileId).catch(() => null);
             if (r) setReveal(r.text);
@@ -65,6 +68,11 @@ function Listo() {
             Hacer el test →
           </Link>
         </div>
+      )}
+      {connectFailed && (
+        <p className="rounded-xl bg-slate-900 p-3 text-sm text-slate-300 ring-1 ring-slate-700">
+          No pudimos conectarte con {connectFailed} en este momento. Podés encontrarle en Círculo.
+        </p>
       )}
       <Link href="/home" className="block w-full rounded-md bg-violet-600 px-3 py-2.5 font-medium text-white">
         Entrar

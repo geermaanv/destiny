@@ -644,6 +644,7 @@ class MyInvitationOut(BaseModel):
     status: Literal["enviada", "registrado", "test_completo"]
     match_id: uuid.UUID | None
     created_at: datetime
+    aceptaron: int = 0  # spec C13: personas que aceptaron este link
 
 
 class InvitationPreloadOut(BaseModel):

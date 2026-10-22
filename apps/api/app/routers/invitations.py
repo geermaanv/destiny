@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import and_, or_, select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.orm import Session
 
 from app.aspects import angle_between, aspect_sentence, classify_aspect
@@ -15,7 +15,7 @@ from app.auth import is_active, require_self, session_profile_id
 from app.database import get_db
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
 from app.ai_texts import record
-from app.models import ChatMessage, Invitation, Match, PersonalityAnswers, Profile
+from app.models import ChatMessage, Invitation, InvitationAcceptance, Match, PersonalityAnswers, Profile
 from app.personality.engine import completed, load_config
 from app.synastry import ai_facts, headline, profile_synastry
 from app.schemas import (
@@ -161,6 +161,9 @@ def my_invitations(
                 status=status,
                 match_id=match_id,
                 created_at=inv.created_at,
+                aceptaron=db.scalar(
+                    select(func.count()).select_from(InvitationAcceptance).where(InvitationAcceptance.ref_id == inv.ref_id)
+                ),
             )
         )
     return out
@@ -193,8 +196,7 @@ def accept_invitation(
         raise HTTPException(status_code=404, detail="Invitation not found")
     if invitation.inviter_profile_id == current:
         raise HTTPException(status_code=409, detail="No podés aceptar tu propia invitación")
-    if invitation.invitee_profile_id not in (None, current):
-        raise HTTPException(status_code=409, detail="Esta invitación ya la usó otra persona")
+    # Spec C13: el mismo link sirve para varias personas (se reenvía o se manda a un grupo).
 
     inviter = _get_profile(invitation.inviter_profile_id, db)
     invitee = _get_profile(current, db)
@@ -217,9 +219,11 @@ def accept_invitation(
         db.add(ChatMessage(match_id=match.id, sender="system_icebreaker", text=written.text))
         record(db, f"rompehielos:{match.id}", "rompehielos", written)
         match_id = match.id
-    if invitation.invitee_profile_id is None:
+    if invitation.invitee_profile_id is None:  # la primera persona (compatibilidad con C8)
         invitation.invitee_profile_id = invitee.id
         invitation.accepted_at = datetime.now(timezone.utc)
+    if db.get(InvitationAcceptance, (ref_id, invitee.id)) is None:
+        db.add(InvitationAcceptance(ref_id=ref_id, invitee_profile_id=invitee.id))
     db.commit()
     return InvitationAcceptOut(match_id=match_id)
 

@@ -122,3 +122,5 @@ Los dos mensajes de invitación arrancan con el gancho de Destiny después del s
 **Corrección (revisión nocturna, 2026-10-14)**: un link de invitación vencido o mal copiado mostraba "Cargando..." para siempre; ahora dice que no es válido y ofrece "Conocer Destiny".
 
 **Cambio posterior (2026-10-20, spec C12)**: invitar pasa a ser un solo formulario (nombre y signo opcional) con el mensaje en vivo. Ya no se elige el tipo ni el vínculo, ni hace falta tener el test completo: el mensaje suma el adelanto si hay signo y la comparación del test si quien invita lo completó; el vínculo sale de su "¿Qué buscás?".
+
+**Cambio posterior (2026-10-22, spec C13)**: un link de invitación sirve para varias personas; cada una queda conectada con quien invitó.

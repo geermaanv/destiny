@@ -153,6 +153,16 @@ class Invitation(Base):
     accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
+class InvitationAcceptance(Base):
+    """Spec C13: un link de invitación sirve para varias personas; una fila por cada una que aceptó."""
+
+    __tablename__ = "invitation_acceptances"
+
+    ref_id: Mapped[str] = mapped_column(String, ForeignKey("invitations.ref_id"), primary_key=True)
+    invitee_profile_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
+    accepted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
 class Match(Base):
     __tablename__ = "matches"
 

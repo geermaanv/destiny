@@ -9,7 +9,7 @@ from app.astrochat.chat import is_crisis, load_config, suggested_mode, system_pr
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.llm import converse
-from app.models import AstroMessage, Invitation, PersonalityAnswers, Profile
+from app.models import AstroMessage, Invitation, InvitationAcceptance, PersonalityAnswers, Profile
 from app.personalization.style import prompt_instructions, style_for
 from app.schemas import AstroAnswerOut, AstroAskIn, AstrochatOut, AstroMessageOut, AstroModeOut
 
@@ -41,14 +41,12 @@ def _used_today(db: Session, profile_id: uuid.UUID) -> int:
 def _invite_bonus(db: Session, profile_id: uuid.UUID) -> int:
     """Spec C11: amigos distintos que crearon su perfil después de tu invitación y la aceptaron."""
     cfg = load_config()["invitados"]
+    # Spec C13: cuenta a cada persona distinta que aceptó alguno de tus links.
     friends = db.scalar(
-        select(func.count(func.distinct(Invitation.invitee_profile_id)))
-        .join(Profile, Profile.id == Invitation.invitee_profile_id)
-        .where(
-            Invitation.inviter_profile_id == profile_id,
-            Invitation.accepted_at.is_not(None),
-            Profile.created_at > Invitation.created_at,
-        )
+        select(func.count(func.distinct(InvitationAcceptance.invitee_profile_id)))
+        .join(Invitation, Invitation.ref_id == InvitationAcceptance.ref_id)
+        .join(Profile, Profile.id == InvitationAcceptance.invitee_profile_id)
+        .where(Invitation.inviter_profile_id == profile_id, Profile.created_at > Invitation.created_at)
     )
     return min(friends * cfg["preguntas_por_invitado"], cfg["bonus_maximo"])
 
