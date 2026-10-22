@@ -44,3 +44,5 @@ Ninguno.
 ## Fuera de alcance
 
 Límite de cuentas por dispositivo (hallazgo 14, por diseño con tope 20).
+
+**Cambio posterior (2026-10-22, spec R3)**: un link de invitación no conecta si quien invita había rechazado a esa persona (sí si quien acepta era quien había rechazado y cambió de idea).

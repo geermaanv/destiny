@@ -20,6 +20,7 @@ function MiPerfil() {
   const [me, setMe] = useState<Profile | null>(null);
   const [style, setStyle] = useState<Style | null>(null);
   const [personality, setPersonality] = useState<MyPersonality | null>(null);
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     if (!profileId) return;
@@ -107,11 +108,38 @@ function MiPerfil() {
           icon="⎋"
           title="Cerrar sesión"
           onClick={async () => {
+            // Spec R3: cerrar sesión cierra de verdad; sin WhatsApp verificado, la cuenta se pierde.
+            if (me.verification_status !== "verificado") {
+              setConfirmLogout(true);
+              return;
+            }
             await logout();
             router.replace("/");
           }}
         />
       </ListCard>
+      {confirmLogout && (
+        <div className="space-y-3 rounded-xl bg-slate-900 p-4 ring-1 ring-gold-400/50">
+          <p className="text-sm text-slate-200">
+            Si cerrás sesión sin verificar tu WhatsApp, vas a perder tu cuenta: no hay otra forma de volver a entrar.
+          </p>
+          <a
+            href={`/onboarding/verificacion?profileId=${profileId}`}
+            className="block w-full rounded-md bg-violet-600 px-3 py-2 text-center text-sm font-medium text-white"
+          >
+            Verificar ahora
+          </a>
+          <button
+            onClick={async () => {
+              await logout();
+              router.replace("/");
+            }}
+            className="w-full text-center text-sm text-red-400 underline"
+          >
+            Cerrar igual
+          </button>
+        </div>
+      )}
     </>
   );
 }

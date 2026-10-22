@@ -170,6 +170,12 @@ def my_invitations(
     return out
 
 
+def _blocked(db: Session, a: uuid.UUID, b: uuid.UUID) -> bool:
+    """Spec R3: con un bloqueo entre los dos, la invitación no muestra ni conecta nada."""
+    match_id = _match_between(db, a, b)
+    return match_id is not None and db.get(Match, match_id).status == "bloqueada"
+
+
 def _match_between(db: Session, a: uuid.UUID, b: uuid.UUID) -> uuid.UUID | None:
     match = db.scalars(
         select(Match).where(
@@ -205,8 +211,13 @@ def accept_invitation(
         raise HTTPException(status_code=403, detail="Terminá tu registro antes de aceptar")
 
     advisory_lock(db, pair_key(inviter.id, invitee.id))  # spec R2: una sola conexión por par
+    if _blocked(db, inviter.id, invitee.id):
+        raise HTTPException(status_code=404, detail="Invitation not found")
     match_id = _match_between(db, inviter.id, invitee.id)
     existing = db.get(Match, match_id) if match_id else None
+    if existing is not None and existing.status == "rechazada" and existing.profile_b_id == inviter.id:
+        # Spec R3: un link (quizás reenviado) no pasa por encima de un rechazo de quien invita.
+        return InvitationAcceptOut(match_id=existing.id)
     if existing is not None and existing.status in ("pendiente", "rechazada"):
         # Spec R2: la invitación conecta igual aunque hubiera una solicitud previa (un bloqueo no se levanta).
         existing.status = "aceptada"
@@ -286,6 +297,8 @@ def reveal_invitation(
 
     inviter = _get_profile(invitation.inviter_profile_id, db)
     invitee = _get_profile(invitee_id, db)
+    if _blocked(db, inviter.id, invitee.id):  # spec R3
+        raise HTTPException(status_code=404, detail="Invitation not found")
     if invitee.birth_date is None:
         raise HTTPException(status_code=422, detail="El invitado necesita completar su carta natal")
 

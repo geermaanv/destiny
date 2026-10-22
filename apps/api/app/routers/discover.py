@@ -265,7 +265,8 @@ def get_explanation(
 
     result = profile_synastry(viewer, candidate, context)
     mine, theirs = db.get(PersonalityAnswers, viewer.id), db.get(PersonalityAnswers, candidate.id)
-    personality = (
+    # Spec R3: la IA usa el test solo si los dos lo completaron (y redondeado, como la pantalla).
+    personality = public_personality(
         compare(mine.answers, theirs.answers, CONTEXT_TO_MODE[context]) if mine and theirs and mine.answers and theirs.answers else None
     )
     written = explainer.explain(ai_facts(result, personality), prompt_instructions(style))

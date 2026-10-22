@@ -352,12 +352,23 @@ def calcular(a: dict, b: dict, neutralizar: bool = True) -> dict:
     }
 
 
+@lru_cache(maxsize=10000)
+def _calcular_par(a_points: tuple, b_points: tuple) -> dict:
+    """Spec R3: la sinastría de un par se calcula una vez (Círculo la pedía con todos en cada pedido).
+    La clave son las posiciones de las dos cartas: si cambian los datos de nacimiento, es otra clave."""
+    return calcular(dict(a_points), dict(b_points))
+
+
+def clear_pair_cache() -> None:
+    _calcular_par.cache_clear()
+
+
 def synastry(a: Chart, b: Chart, relationship: str | None = None) -> dict:
     """Resultado para la app: ejes y total visibles (enteros), detalle para explicar."""
     cfg = load_config()
     types = cfg["tipos_de_relacion"]
     relationship = relationship if relationship in types["tipos"] else types["por_defecto"]
-    result = calcular(a.points, b.points)
+    result = _calcular_par(tuple(sorted(a.points.items())), tuple(sorted(b.points.items())))
     return {
         "tipo_de_relacion": relationship,
         "total": result["visibles"][relationship],

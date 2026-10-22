@@ -76,8 +76,8 @@ def test_donde_vivis_redondeado_y_limitado(client):
     pid = active_user(client)
     r = client.post(f"/profiles/{pid}/residence", json={"query": "x", "lat": -34.603722, "lon": -58.381592})
     assert r.json()["residence_lat"] == -34.6 and r.json()["residence_lon"] == -58.38
-    for _ in range(2):
-        assert client.post(f"/profiles/{pid}/residence", json=PALERMO).status_code == 200
+    # Spec R3 (antes 3 por día): después de la primera carga, un cambio cada 30 días.
+    assert client.post(f"/profiles/{pid}/residence", json=PALERMO).status_code == 200
     assert client.post(f"/profiles/{pid}/residence", json=ROSARIO).status_code == 429
 
 

@@ -4,16 +4,29 @@ from pathlib import Path
 
 from fastapi import APIRouter, Depends, File, HTTPException, Response, UploadFile
 from fastapi.responses import FileResponse
-from sqlalchemy import delete, select
+from sqlalchemy import delete, or_, select
 from sqlalchemy.orm import Session
 
 from app.adapters.kyc import IdentityVerificationAdapter, get_kyc_adapter
 from app.auth import hash_token, is_active, new_token, require_owner_if_active, session_profile_id, set_device_cookie, start_session
 from app.config import settings
 from app.public_profile import sun_sign
-from app.database import get_db
+from app.database import advisory_lock, get_db
 from app import photos
-from app.models import PhoneVerificationCode, Profile, ProfilePhoto
+from app.models import (
+    AstroMessage,
+    ChatMessage,
+    Invitation,
+    InvitationAcceptance,
+    Match,
+    MoodCheckin,
+    PersonalityAnswers,
+    PhoneVerificationCode,
+    Profile,
+    ProfilePhoto,
+    ShareLink,
+    UserSession,
+)
 from app.schemas import (
     PERIOD_MIDPOINTS,
     UNKNOWN_TIME,
@@ -35,7 +48,7 @@ from app.schemas import (
 from app.whatsapp import build_wa_link, is_mock_mode, issue_code
 
 router = APIRouter(prefix="/profiles", tags=["profiles"])
-MAX_RESIDENCE_CHANGES = 3  # por día (spec P2)
+RESIDENCE_DAYS = 30  # spec R3: un cambio de "Dónde vivís" cada 30 días (después de la primera carga)
 
 
 @router.post("", response_model=ProfileOut, status_code=201)
@@ -209,11 +222,29 @@ def continue_with_existing_profile(
     if proof is None:
         raise HTTPException(status_code=403, detail="Comprobante inválido")
 
-    db.execute(delete(PhoneVerificationCode).where(PhoneVerificationCode.profile_id == profile.id))
-    db.delete(profile)
+    _delete_profile(db, profile)
     db.commit()
     start_session(db, response, existing.id)
     return ContinueExistingOut(profile_id=existing.id)
+
+
+def _delete_profile(db: Session, profile: Profile) -> None:
+    """Spec R3: borra el perfil con todo lo suyo. Desde A10 un duplicado ya tiene sesión, fotos, test,
+    etc., y borrar solo el perfil fallaba por las referencias."""
+    pid = profile.id
+    for photo in profile.photos:
+        Path(photo.path).unlink(missing_ok=True)
+    match_ids = select(Match.id).where(or_(Match.profile_a_id == pid, Match.profile_b_id == pid))
+    db.execute(delete(ChatMessage).where(ChatMessage.match_id.in_(match_ids)))
+    db.execute(delete(Match).where(or_(Match.profile_a_id == pid, Match.profile_b_id == pid)))
+    refs = select(Invitation.ref_id).where(Invitation.inviter_profile_id == pid)
+    db.execute(delete(InvitationAcceptance).where(or_(InvitationAcceptance.invitee_profile_id == pid, InvitationAcceptance.ref_id.in_(refs))))
+    db.execute(delete(Invitation).where(Invitation.inviter_profile_id == pid))
+    for model in (PhoneVerificationCode, UserSession, ProfilePhoto, PersonalityAnswers, ShareLink, AstroMessage, MoodCheckin):
+        db.execute(delete(model).where(model.profile_id == pid))
+    db.flush()
+    db.expunge(profile)
+    db.execute(delete(Profile).where(Profile.id == pid))
 
 
 # Perfil liviano (spec A4); las fotos son de la spec A11.
@@ -304,13 +335,15 @@ def set_residence(
 ) -> Profile:
     """Spec B9: dónde vive, para el filtro de distancia. Solo lo ve su dueño."""
     profile = _owned(profile_id, db, current)
-    # Spec P2: hasta 3 cambios por día y coordenadas a ~1 km (contra la triangulación).
+    # Spec R3 (antes P2: 3 por día): la primera carga es libre y después un cambio cada 30 días,
+    # de a un pedido por vez. Coordenadas a ~1 km (contra la triangulación).
+    advisory_lock(db, f"residence:{profile.id}")
+    db.refresh(profile)
     today = date.today()
-    if profile.residence_changed_on != today:
-        profile.residence_changed_on, profile.residence_changes = today, 0
-    if profile.residence_changes >= MAX_RESIDENCE_CHANGES:
-        raise HTTPException(status_code=429, detail="Podés volver a cambiar dónde vivís mañana")
-    profile.residence_changes += 1
+    if profile.residence_lat is not None:
+        if profile.residence_changed_on is not None and (today - profile.residence_changed_on).days < RESIDENCE_DAYS:
+            raise HTTPException(status_code=429, detail="Podés volver a cambiar dónde vivís dentro de un mes")
+        profile.residence_changed_on = today
     profile.residence_label = payload.query
     profile.residence_lat = round(payload.lat, 2)
     profile.residence_lon = round(payload.lon, 2)

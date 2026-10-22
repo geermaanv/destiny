@@ -47,3 +47,5 @@ La verificación por WhatsApp es el último paso del registro y frena a mucha ge
 10. "En tu frecuencia" cuenta los perfiles activos.
 
 **Corrección (2026-10-14, reportado por German)**: entrar al registro (`/onboarding/datos-natales`) con una sesión iniciada creaba un perfil nuevo y volvía a pedir los datos; pasaba con el link corto de pruebas, que apunta ahí desde antes de que existiera la sesión (y TinyURL no deja cambiarlo). Ahora, con sesión, el registro lleva a Hoy.
+
+**Cambio posterior (2026-10-22, spec R3)**: cerrar sesión borra también la marca del dispositivo; quien no verificó su WhatsApp pierde la cuenta, y la web lo avisa antes con "Verificar ahora" o "Cerrar igual".

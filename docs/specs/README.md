@@ -55,3 +55,4 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [R1-robustez-y-validaciones](./R1-robustez-y-validaciones.md) | transversal (API) | implemented |
 | [P2-privacidad-breaker](./P2-privacidad-breaker.md) | A6 + B9 + B7 | implemented |
 | [R2-concurrencia-y-flujos](./R2-concurrencia-y-flujos.md) | B7 + X3 + A12 + C13 | implemented |
+| [R3-breaker-segunda-corrida](./R3-breaker-segunda-corrida.md) | B7 + C13 + B5 + A5/A10 + A3 | implemented |

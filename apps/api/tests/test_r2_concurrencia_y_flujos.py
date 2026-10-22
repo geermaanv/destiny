@@ -70,9 +70,13 @@ def test_la_invitacion_conecta_igual(new_client, previo):
     pablo = verified_user(a, "5491111111111", name="Pablo")
     ref = a.post("/invitations", json={"inviter_id": pablo, "friend_name": "Mavi"}).json()["ref_id"]
     mavi = active_user(b, name="Mavi")
-    m = b.post("/matches", json={"profile_a_id": mavi, "profile_b_id": pablo}).json()
     if previo == "rechazada":
-        a.post(f"/matches/{m['id']}/reject", json={"profile_id": pablo})
+        # Mavi había rechazado a Pablo y después acepta su link: cambió de idea, se conectan.
+        # (Si Pablo la hubiera rechazado, su link no los conecta: spec R3.)
+        m = a.post("/matches", json={"profile_a_id": pablo, "profile_b_id": mavi}).json()
+        b.post(f"/matches/{m['id']}/reject", json={"profile_id": mavi})
+    else:
+        b.post("/matches", json={"profile_a_id": mavi, "profile_b_id": pablo})
     r = b.post(f"/invitations/{ref}/accept")
     assert r.status_code == 200
     assert b.get(f"/matches/{r.json()['match_id']}").json()["status"] == "aceptada"

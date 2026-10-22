@@ -102,7 +102,14 @@ def me(current: uuid.UUID | None = Depends(session_profile_id), db: Session = De
 
 
 @router.post("/sessions/logout", status_code=204)
-def logout(request: Request, response: Response, db: Session = Depends(get_db)) -> Response:
+def logout(
+    request: Request, response: Response, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
+) -> Response:
+    # Spec R3: cerrar sesión cierra de verdad. También se borra la marca del dispositivo, así nadie
+    # vuelve a entrar desde este navegador sin WhatsApp (quien no verificó pierde la cuenta; la web avisa).
+    if current is not None and (profile := db.get(Profile, current)) is not None:
+        profile.device_token_hash = None
+    response.delete_cookie(DEVICE_COOKIE, path="/")
     end_session(db, request, response)
     response.status_code = 204
     return response

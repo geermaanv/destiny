@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.auth import require_self, session_profile_id
-from app.database import get_db
+from app.database import advisory_lock, get_db
 from app.models import PersonalityAnswers, Profile
 from app.personality import CONTEXT_TO_MODE
 from app.personality.engine import completed, load_config
@@ -83,10 +83,13 @@ def save_answers(
     profile = _own_profile(profile_id, current, db)
     if profile.test_privacy_accepted_at is None:
         raise HTTPException(status_code=409, detail="Aceptá el aviso de privacidad del test para guardar respuestas")
+    advisory_lock(db, f"personality:{profile_id}")  # spec R3: cambios de a uno (el límite no se pasa)
     row = db.get(PersonalityAnswers, profile_id)
     if row is None:
         row = PersonalityAnswers(profile_id=profile_id, answers={})
         db.add(row)
+    else:
+        db.refresh(row)
     # Spec P2: con el test completo, cambios limitados por día (sino sirve de oráculo de las respuestas ajenas).
     if completed(row.answers) == len(load_config()["questions"]):
         changed = sum(1 for qid, value in payload.answers.items() if row.answers.get(qid) != value)

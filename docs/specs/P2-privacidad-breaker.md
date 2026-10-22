@@ -51,3 +51,5 @@ Ninguno.
 ## Fuera de alcance
 
 Deducir el género oculto con los filtros de pareja (pendiente de analizar), límite de cuentas por dispositivo.
+
+**Cambio posterior (2026-10-22, spec R3)**: "Dónde vivís" pasa de 3 cambios por día a un cambio cada 30 días después de la primera carga (decisión de German).

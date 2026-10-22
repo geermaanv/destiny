@@ -567,6 +567,9 @@ export async function getLoginStatus(loginId: string): Promise<"pendiente" | "li
 export async function logout(): Promise<void> {
   await fetch(`${API_URL}/sessions/logout`, { method: "POST" });
   resetLook(); // el estilo es de la persona: al salir vuelve el clásico (spec X2 v2)
+  try {
+    sessionStorage.clear(); // spec R3: la última lista de Círculo no queda para el próximo que use el navegador
+  } catch {}
 }
 
 // Test de personalidad de Pablo (spec A6).

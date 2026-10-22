@@ -190,12 +190,16 @@ def get_match(
     match_id: uuid.UUID, db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
 ) -> ConnectionOut:
     match = _get_own_match(match_id, current, db)
+    if match.status == "bloqueada":  # spec R3: la ficha de una conexión bloqueada no se ve más
+        raise HTTPException(status_code=404, detail="Match not found")
     return _connection_out(match, current, db)
 
 
 def _respond(match_id: uuid.UUID, payload: ProfileRefIn, current: uuid.UUID | None, db: Session, accept: bool):
     require_self(payload.profile_id, current)
     match = _get_own_match(match_id, current, db)
+    advisory_lock(db, f"match:{match.id}")  # spec R3: aceptar y rechazar a la vez no se pisan
+    db.refresh(match)
     if match.profile_b_id != current or match.status != "pendiente":
         raise HTTPException(status_code=409, detail="No hay una solicitud pendiente para responder")
     match.status = "aceptada" if accept else "rechazada"
@@ -284,6 +288,8 @@ def block_match(
 ) -> ConnectionOut:
     require_self(payload.profile_id, current)
     match = _get_own_match(match_id, current, db)
+    if match.status == "bloqueada":  # spec R3: no se pisa quién bloqueó
+        raise HTTPException(status_code=409, detail="Esta conexión ya está bloqueada")
     match.status = "bloqueada"
     match.blocked_by = current
     db.commit()
