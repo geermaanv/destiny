@@ -13,7 +13,7 @@ from app.astro import approximate_longitude_for_sign
 from app.public_profile import sun_sign
 from app.config import settings
 from app.auth import is_active, require_self, session_profile_id
-from app.database import get_db
+from app.database import advisory_lock, get_db, pair_key
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
 from app.ai_texts import record
 from app.models import ChatMessage, Invitation, InvitationAcceptance, Match, PersonalityAnswers, Profile
@@ -204,7 +204,20 @@ def accept_invitation(
     if not is_active(invitee):  # spec A10: alcanza con una cuenta activa
         raise HTTPException(status_code=403, detail="Terminá tu registro antes de aceptar")
 
+    advisory_lock(db, pair_key(inviter.id, invitee.id))  # spec R2: una sola conexión por par
     match_id = _match_between(db, inviter.id, invitee.id)
+    existing = db.get(Match, match_id) if match_id else None
+    if existing is not None and existing.status in ("pendiente", "rechazada"):
+        # Spec R2: la invitación conecta igual aunque hubiera una solicitud previa (un bloqueo no se levanta).
+        existing.status = "aceptada"
+        existing.accepted_at = datetime.now(timezone.utc)
+        has_icebreaker = db.scalars(
+            select(ChatMessage.id).where(ChatMessage.match_id == existing.id, ChatMessage.sender == "system_icebreaker")
+        ).first()
+        if not has_icebreaker:
+            written = generator.generate(ai_facts(profile_synastry(inviter, invitee, existing.relationship or "pareja")))
+            db.add(ChatMessage(match_id=existing.id, sender="system_icebreaker", text=written.text))
+            record(db, f"rompehielos:{existing.id}", "rompehielos", written)
     if match_id is None:
         match = Match(
             profile_a_id=inviter.id,

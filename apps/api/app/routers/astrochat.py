@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.astrochat.chat import is_crisis, load_config, suggested_mode, system_prompt
 from app.auth import require_self, session_profile_id
-from app.database import get_db
+from app.database import advisory_lock, get_db
 from app.llm import converse
 from app.models import AstroMessage, Invitation, InvitationAcceptance, PersonalityAnswers, Profile
 from app.personalization.style import prompt_instructions, style_for
@@ -104,6 +104,8 @@ def ask_astrochat(
     mode = payload.modo or _current_mode(profile)
     if mode not in cfg["modos"]:
         raise HTTPException(status_code=422, detail="Modo inexistente")
+    # Spec R2: las preguntas de una persona se procesan de a una, así el límite no se pasa en paralelo.
+    advisory_lock(db, f"astrochat:{profile_id}")
     used = _used_today(db, profile_id)
     limit = cfg["limite_diario"] + _invite_bonus(db, profile_id)
     now = datetime.now(timezone.utc)

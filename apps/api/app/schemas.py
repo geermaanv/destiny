@@ -117,7 +117,7 @@ class PreferencesIn(BaseModel):
 
 # Spec A12: aviso de privacidad y qué busca.
 class PrivacyIn(BaseModel):
-    version: str = Field(min_length=1, max_length=40)
+    version: Literal["privacidad_v1"]  # spec R2: solo versiones vigentes del aviso
     contexto: Literal["registro", "test"]
 
 

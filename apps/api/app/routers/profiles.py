@@ -8,7 +8,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from app.adapters.kyc import IdentityVerificationAdapter, get_kyc_adapter
-from app.auth import hash_token, new_token, require_owner_if_active, session_profile_id, set_device_cookie, start_session
+from app.auth import hash_token, is_active, new_token, require_owner_if_active, session_profile_id, set_device_cookie, start_session
 from app.config import settings
 from app.public_profile import sun_sign
 from app.database import get_db
@@ -153,6 +153,9 @@ def start_whatsapp_verification(
     if profile.birth_date is None:
         # La verificación cierra el onboarding: sin datos natales no hay Descubrir posible.
         raise HTTPException(status_code=409, detail="Profile has no birth data")
+    if not is_active(profile) and profile.privacy_accepted_at is None:
+        # Spec R2: registrarse por WhatsApp también pide aceptar el aviso de privacidad (A12).
+        raise HTTPException(status_code=409, detail="Aceptá el aviso de privacidad para terminar el registro")
 
     entry, claim_token = issue_code(db, profile)
     return WhatsappCodeOut(

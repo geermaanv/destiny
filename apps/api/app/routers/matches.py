@@ -8,7 +8,7 @@ from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session
 
 from app.auth import require_self, session_profile_id
-from app.database import get_db
+from app.database import advisory_lock, get_db, pair_key
 from app.icebreaker import IcebreakerGenerator, get_icebreaker_generator
 from app.models import ChatMessage, Match, PersonalityAnswers, Profile
 from app.personality import CONTEXT_TO_MODE
@@ -81,7 +81,8 @@ def _connection_out(match: Match, me: uuid.UUID, db: Session) -> ConnectionOut:
     ).first()
     return ConnectionOut(
         match_id=match.id,
-        status=match.status,
+        # Spec R2: quien pidió y fue rechazado sigue viendo "pendiente".
+        status="pendiente" if match.status == "rechazada" and match.profile_a_id == me else match.status,
         direction="enviada" if match.profile_a_id == me else "recibida",
         other=PublicProfileOut(
             profile_id=_other_id(match, me),
@@ -121,6 +122,7 @@ def create_match(
     if profile_a.birth_date is None or profile_b.birth_date is None:
         raise HTTPException(status_code=422, detail="Ambos perfiles necesitan datos natales")
 
+    advisory_lock(db, pair_key(profile_a.id, profile_b.id))  # spec R2: una sola conexión por par
     existing = db.scalars(
         select(Match).where(
             or_(
@@ -132,8 +134,8 @@ def create_match(
     if existing is not None:
         if existing.status == "bloqueada":
             raise HTTPException(status_code=409, detail="Esta conexión no está disponible")
-        if existing.status == "pendiente" and existing.profile_b_id == profile_a.id:
-            # Las dos personas se pidieron conexión: se acepta sola.
+        if existing.status in ("pendiente", "rechazada") and existing.profile_b_id == profile_a.id:
+            # Las dos personas se pidieron conexión (también si quien rechazó cambió de idea, spec R2).
             existing.status = "aceptada"
             existing.accepted_at = datetime.now(timezone.utc)
             db.commit()
@@ -142,7 +144,9 @@ def create_match(
                 ChatMessage.match_id == existing.id, ChatMessage.sender == "system_icebreaker"
             )
         ).first()
-        return MatchOut(id=existing.id, icebreaker=icebreaker or "", status=existing.status)
+        # Spec R2: quien fue rechazado no se entera; sigue viendo su pedido pendiente.
+        shown = "pendiente" if existing.status == "rechazada" else existing.status
+        return MatchOut(id=existing.id, icebreaker=icebreaker or "", status=shown)
 
     match = Match(profile_a_id=profile_a.id, profile_b_id=profile_b.id, status="pendiente")
     db.add(match)
@@ -167,8 +171,14 @@ def list_connections(
     matches = db.scalars(
         select(Match)
         .where(
-            or_(Match.profile_a_id == profile_id, Match.profile_b_id == profile_id),
-            Match.status.in_(("pendiente", "aceptada")),
+            or_(
+                and_(
+                    or_(Match.profile_a_id == profile_id, Match.profile_b_id == profile_id),
+                    Match.status.in_(("pendiente", "aceptada")),
+                ),
+                # Spec R2: el rechazo no se le muestra a quien pidió (lo ve pendiente).
+                and_(Match.profile_a_id == profile_id, Match.status == "rechazada"),
+            ),
         )
         .order_by(Match.created_at.desc())
     ).all()

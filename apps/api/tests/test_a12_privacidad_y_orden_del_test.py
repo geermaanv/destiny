@@ -12,7 +12,7 @@ def privacy(client, pid, contexto, version="privacidad_v1"):
 
 # 1
 def test_aceptar_el_aviso_del_registro(client):
-    pid = create_profile(client, name="Ana")
+    pid = create_profile(client, name="Ana", privacy=False)
     assert client.get(f"/profiles/{pid}").json()["privacy_version"] is None
     assert privacy(client, pid, "registro").status_code == 200
     me = client.get(f"/profiles/{pid}").json()
@@ -21,7 +21,7 @@ def test_aceptar_el_aviso_del_registro(client):
 
 # 2
 def test_no_se_termina_el_registro_sin_aceptar(client):
-    pid = create_profile(client, name="Ana")
+    pid = create_profile(client, name="Ana", privacy=False)
     r = client.post("/sessions/start", json={"profile_id": pid})
     assert r.status_code == 409 and "privacidad" in r.json()["detail"].lower()
     privacy(client, pid, "registro")
@@ -30,7 +30,7 @@ def test_no_se_termina_el_registro_sin_aceptar(client):
 
 # 3
 def test_el_test_pide_su_aviso(client):
-    pid = create_profile(client, name="Ana")
+    pid = create_profile(client, name="Ana", privacy=False)
     privacy(client, pid, "registro")
     client.post("/sessions/start", json={"profile_id": pid})
     assert client.get(f"/profiles/{pid}/personality").json()["privacy_accepted"] is False

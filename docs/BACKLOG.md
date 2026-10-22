@@ -178,7 +178,8 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [x] Robustez y validaciones: datos de nacimiento inválidos, Descubrir tolerante, fechas extremas, textos con nulos/invisibles, fotos por contenido, doble toque, webhook (spec R1).
 - [x] Privacidad: deducir respuestas del test, triangular la distancia, bloqueo que no oculta (spec P2).
 - [ ] Analizar si se puede deducir el género oculto con los filtros mutuos de pareja.
-- [ ] Concurrencia y flujos: conexiones duplicadas, límite de Indagar en paralelo, aviso de privacidad por WhatsApp, invitación con conexión previa, rechazo trabado (spec R2).
+- [x] Concurrencia y flujos: conexiones duplicadas, límite de Indagar en paralelo, aviso de privacidad por WhatsApp, invitación con conexión previa, rechazo trabado (spec R2).
+- [ ] Volver a correr el agente breaker para confirmar los arreglos y buscar lo que no llegó a probar (login "Ya tengo cuenta", web, rendimiento con muchos perfiles).
 - [ ] Antes de hosting real: `ENVIRONMENT=production` para que la cookie de sesión sea `Secure` (hallazgo 19).
 
 **Fotos y búsqueda (pedido de Pablo, 2026-10-15)**

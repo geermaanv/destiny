@@ -42,8 +42,11 @@ def create_profile(
     birth_time: str | None = "14:30",
     place: dict | None = None,
     name: str | None = None,
+    privacy: bool = True,
 ) -> str:
     profile_id = client.post("/profiles").json()["id"]
+    if privacy:  # en la app la casilla del aviso es obligatoria en el primer paso (specs A12 y R2)
+        client.post(f"/profiles/{profile_id}/privacy", json={"version": "privacidad_v1", "contexto": "registro"})
     payload = {"birth_date": birth_date, "birth_place": place or BUENOS_AIRES}
     if birth_time:
         payload["birth_time"] = birth_time
