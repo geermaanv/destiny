@@ -182,6 +182,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [x] Segunda corrida del breaker y sus arreglos claros (spec R3): bloqueo por invitaciones y ficha, explicación con test completo, Círculo con cache por par, límites con pedidos simultáneos, "seguir con mi cuenta", cierre de sesión real.
 - [ ] Probar a fondo el login "Ya tengo cuenta" (quedó sin probar contra la API en la segunda corrida).
 - [ ] Antes de hosting real: `ENVIRONMENT=production` para que la cookie de sesión sea `Secure` (hallazgo 19).
+- [ ] Email opcional (registro o Perfil) para poder contactar a usuarios: hoy no hay forma de escribirle a quien no verificó su WhatsApp (pasó con Iñaki, Miguel W. y Carla tras el bug de C13). Es un dato personal más: sumarlo al aviso de privacidad. Decidir junto con la validación de WhatsApp de producción (German, 2026-10-22).
 - [ ] **Antes de producción: pedir validación de WhatsApp (o similar)** — decisión de German (2026-10-22). Cierra las cuentas descartables que permiten deducir el test, la ubicación y el género de otros (segunda corrida del breaker). Riesgo aceptado durante el piloto (spec A10).
 
 **Fotos y búsqueda (pedido de Pablo, 2026-10-15)**
