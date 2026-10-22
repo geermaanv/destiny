@@ -108,13 +108,17 @@ def signature_is_valid(raw_body: bytes, header: str | None) -> bool:
 
 
 def extract_text_messages(payload: dict) -> list[tuple[str, str]]:
-    """(remitente, texto) de cada mensaje de texto del payload de Meta. Ignora el resto."""
+    """(remitente, texto) de cada mensaje de texto del payload de Meta. Ignora el resto, incluido
+    un JSON con otra forma (spec R1: antes daba 500)."""
     messages = []
-    for entry in payload.get("entry", []):
-        for change in entry.get("changes", []):
-            for message in change.get("value", {}).get("messages", []):
-                if message.get("type") == "text" and message.get("from"):
-                    messages.append((message["from"], message.get("text", {}).get("body", "")))
+    try:
+        for entry in payload.get("entry", []):
+            for change in entry.get("changes", []):
+                for message in change.get("value", {}).get("messages", []):
+                    if message.get("type") == "text" and message.get("from"):
+                        messages.append((message["from"], message.get("text", {}).get("body", "")))
+    except (AttributeError, TypeError):
+        return []
     return messages
 
 

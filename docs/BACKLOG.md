@@ -174,6 +174,12 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Ideas de viralización: "¿Cuánto fluimos?" (Compartir v2), imagen para historias, @ y QR.
 - [ ] Pablo: pesos por defecto del número global, qué pasa sin test, título "Química y atracción", modelo de numerología (sin fecha).
 
+**Hallazgos del agente breaker (2026-10-22)**
+- [x] Robustez y validaciones: datos de nacimiento inválidos, Descubrir tolerante, fechas extremas, textos con nulos/invisibles, fotos por contenido, doble toque, webhook (spec R1).
+- [ ] Privacidad: deducir respuestas del test, triangular la distancia, bloqueo que no oculta (spec P2).
+- [ ] Concurrencia y flujos: conexiones duplicadas, límite de Indagar en paralelo, aviso de privacidad por WhatsApp, invitación con conexión previa, rechazo trabado (spec R2).
+- [ ] Antes de hosting real: `ENVIRONMENT=production` para que la cookie de sesión sea `Secure` (hallazgo 19).
+
 **Fotos y búsqueda (pedido de Pablo, 2026-10-15)**
 - [x] Fotos: hasta 4 con chequeo automático (spec A11, ADR 0013).
 - [x] Descubrir: lupa por nombre, filtros por sistema, compatibilidad mínima y edad, género y "Mostrame" (spec B8).

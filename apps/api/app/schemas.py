@@ -4,6 +4,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
+from app.validation import MAX_DAY, MIN_DAY, TIMEZONES, CleanStr, clean_text
+
 NotificationRhythm = Literal["ritmo_diario", "pulso_cosmos"]
 
 
@@ -12,10 +14,18 @@ class NotificationPreferenceIn(BaseModel):
 
 
 class BirthPlaceIn(BaseModel):
-    query: str
-    lat: float | None = None
-    lon: float | None = None
+    # Spec R1: un lugar inválido rompía la carta (y Descubrir para todos).
+    query: CleanStr = Field(min_length=1, max_length=200)
+    lat: float | None = Field(default=None, ge=-90, le=90, allow_inf_nan=False)
+    lon: float | None = Field(default=None, ge=-180, le=180, allow_inf_nan=False)
     timezone: str | None = None
+
+    @field_validator("timezone")
+    @classmethod
+    def known_timezone(cls, value: str | None) -> str | None:
+        if value is not None and value not in TIMEZONES:
+            raise ValueError("zona horaria desconocida")
+        return value
 
 
 class PlaceOut(BaseModel):
@@ -50,6 +60,8 @@ class BirthDataIn(BaseModel):
     @field_validator("birth_date")
     @classmethod
     def must_be_adult(cls, value: date) -> date:
+        if value < MIN_DAY:
+            raise ValueError("fecha de nacimiento demasiado antigua")
         today = date.today()
         age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
         if age < MIN_AGE:
@@ -79,7 +91,7 @@ class BasicInfoIn(BaseModel):
     def strip_blank(cls, value: str | None) -> str | None:
         if value is None:
             return None
-        value = value.strip()
+        value = clean_text(value)  # spec R1: sin nulos ni invisibles
         return value or None
 
 
@@ -99,7 +111,7 @@ class PreferencesIn(BaseModel):
     def strip_blank(cls, value: str | None) -> str | None:
         if value is None:
             return None
-        value = value.strip()
+        value = clean_text(value)
         return value or None
 
 
@@ -115,9 +127,9 @@ class LookingForIn(BaseModel):
 
 # Spec B9: dónde vive (del buscador de ciudades: con coordenadas).
 class ResidenceIn(BaseModel):
-    query: str = Field(min_length=1, max_length=200)
-    lat: float = Field(ge=-90, le=90)
-    lon: float = Field(ge=-180, le=180)
+    query: CleanStr = Field(min_length=1, max_length=200)
+    lat: float = Field(ge=-90, le=90, allow_inf_nan=False)
+    lon: float = Field(ge=-180, le=180, allow_inf_nan=False)
 
 
 # Spec A11: fotos del perfil.
@@ -305,10 +317,17 @@ class AstrochatOut(BaseModel):
 
 
 class AstroAskIn(BaseModel):
-    texto: str
+    texto: CleanStr
     modo: str | None = None
     # Spec U2: pregunta sobre un día del calendario; la IA recibe los datos de ese día.
     dia: date | None = None
+
+    @field_validator("dia")
+    @classmethod
+    def day_in_range(cls, value: date | None) -> date | None:
+        if value is not None and not MIN_DAY <= value <= MAX_DAY:
+            raise ValueError("la fecha tiene que estar entre 1900 y 2100")
+        return value
 
 
 class AstroAnswerOut(BaseModel):
@@ -596,7 +615,7 @@ class ProfileRefIn(BaseModel):
 
 class SendMessageIn(BaseModel):
     profile_id: uuid.UUID
-    text: str
+    text: CleanStr = Field(min_length=1)
 
 
 Relationship = Literal["pareja", "amistad", "laboral", "ocasional"]
@@ -605,7 +624,7 @@ Relationship = Literal["pareja", "amistad", "laboral", "ocasional"]
 class InvitationIn(BaseModel):
     # Spec C12: nombre y, si lo sabe, el signo. El tipo y el vínculo se deducen solos.
     inviter_id: uuid.UUID
-    friend_name: str = Field(min_length=1, max_length=40)
+    friend_name: CleanStr = Field(min_length=1, max_length=40)
     friend_sun_sign: (
         Literal[
             "Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo",

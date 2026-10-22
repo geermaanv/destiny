@@ -16,6 +16,15 @@ from app.config import settings
 CONFIG_PATH = Path(__file__).parent / "config" / "fotos_v1.json"
 
 
+def is_image(content: bytes) -> bool:
+    """Spec R1: JPG, PNG o WebP de verdad (sus primeros bytes), no vacía."""
+    return (
+        content.startswith(b"\xff\xd8\xff")
+        or content.startswith(b"\x89PNG\r\n\x1a\n")
+        or (content[:4] == b"RIFF" and content[8:12] == b"WEBP")
+    )
+
+
 def load_config() -> dict:
     return json.loads(CONFIG_PATH.read_text())
 

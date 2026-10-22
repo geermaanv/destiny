@@ -1,3 +1,4 @@
+import logging
 import math
 import unicodedata
 import uuid
@@ -21,6 +22,7 @@ from app.compat_summary import SISTEMAS, summarize
 from app.synastry import AXIS_LABELS, ai_facts, profile_synastry
 from app.schemas import DiscoverCandidateOut, ExplanationOut, Interest, PersonalityCompatOut, SystemOut
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/discover", tags=["discover"])
 
 Relationship = Literal["pareja", "amistad", "laboral", "ocasional"]
@@ -77,6 +79,58 @@ def _wants(viewer: Profile, other: Profile) -> bool:
 def gender_match(viewer: Profile, candidate: Profile) -> bool:
     """Mutuo: cada uno entra en lo que el otro quiere ver."""
     return _wants(viewer, candidate) and _wants(candidate, viewer)
+
+
+def _candidate_out(viewer, candidate, context, mode, mine, answers, included, search, edad_min, edad_max, max_km, wanted, min_pct):
+    """Una tarjeta de Descubrir, o None si el candidato no pasa los filtros."""
+    distance = distance_km(viewer, candidate)
+    theirs = answers.get(candidate.id)
+    raw_personality = compare(mine, theirs, mode) if mine and theirs else None
+    personality = PersonalityCompatOut(**raw_personality) if raw_personality else None
+    if not search:
+        # La búsqueda por nombre ignora sistemas, compatibilidad, edad y distancia (specs B8, B9).
+        candidate_age = age(candidate.birth_date)
+        if candidate_age is None or not edad_min <= candidate_age <= edad_max:
+            return None
+        if max_km is not None and (distance is None or distance > max_km):
+            return None
+        # Intereses (spec B10): tiene que tener todos los marcados.
+        if not wanted <= set(candidate.interests or []):
+            return None
+    result = profile_synastry(viewer, candidate, context)
+
+    # Número global (specs B9, B12; ADR 0014): promedio de los cuatro vínculos, igual que en el chat.
+    summary = summarize(result, raw_personality, included)
+    if summary["global"] is None:
+        if search:
+            summary["global"] = result["total"]  # la búsqueda muestra a la persona aunque no tenga test
+        else:
+            return None  # solo test y esta persona no lo completó
+    global_pct = round(summary["global"])
+    if not search and global_pct < min_pct:
+        return None
+    systems = {k: (SystemOut(**v) if v else None) for k, v in summary["systems"].items()}
+    axes_global = summary["axes_global"]
+    return (
+        DiscoverCandidateOut(
+            profile_id=candidate.id,
+            compatibility_pct=global_pct,
+            global_pct=global_pct,
+            axes_global=axes_global,
+            systems=systems,
+            distance_km=distance,
+            common_interests=[i for i in INTERESTS if i in (viewer.interests or []) and i in (candidate.interests or [])],
+            astrology_pct=result["total"],
+            # Spec B12: del eje combinado más fuerte, igual para cualquier vínculo (como el número global).
+            preview=f"Fuerte en {AXIS_LABELS[max(axes_global, key=lambda k: axes_global[k] or 0)].lower()}",
+            axes=result["ejes"],
+            relationship=result["tipo_de_relacion"],
+            approximate=result["aproximado"],
+            personality=personality,
+            verificado=candidate.verification_status == "verificado",
+            **public_fields(candidate),
+        )
+    )
 
 
 @router.get("", response_model=list[DiscoverCandidateOut])
@@ -141,54 +195,16 @@ def list_discover(
 
     results = []
     for candidate in candidates:
-        distance = distance_km(viewer, candidate)
-        theirs = answers.get(candidate.id)
-        raw_personality = compare(mine, theirs, mode) if mine and theirs else None
-        personality = PersonalityCompatOut(**raw_personality) if raw_personality else None
-        if not search:
-            # La búsqueda por nombre ignora sistemas, compatibilidad, edad y distancia (specs B8, B9).
-            candidate_age = age(candidate.birth_date)
-            if candidate_age is None or not edad_min <= candidate_age <= edad_max:
-                continue
-            if max_km is not None and (distance is None or distance > max_km):
-                continue
-            # Intereses (spec B10): tiene que tener todos los marcados.
-            if not wanted <= set(candidate.interests or []):
-                continue
-        result = profile_synastry(viewer, candidate, context)
-
-        # Número global (specs B9, B12; ADR 0014): promedio de los cuatro vínculos, igual que en el chat.
-        summary = summarize(result, raw_personality, included)
-        if summary["global"] is None:
-            if search:
-                summary["global"] = result["total"]  # la búsqueda muestra a la persona aunque no tenga test
-            else:
-                continue  # solo test y esta persona no lo completó
-        global_pct = round(summary["global"])
-        if not search and global_pct < min_pct:
-            continue
-        systems = {k: (SystemOut(**v) if v else None) for k, v in summary["systems"].items()}
-        axes_global = summary["axes_global"]
-        results.append(
-            DiscoverCandidateOut(
-                profile_id=candidate.id,
-                compatibility_pct=global_pct,
-                global_pct=global_pct,
-                axes_global=axes_global,
-                systems=systems,
-                distance_km=distance,
-                common_interests=[i for i in INTERESTS if i in (viewer.interests or []) and i in (candidate.interests or [])],
-                astrology_pct=result["total"],
-                # Spec B12: del eje combinado más fuerte, igual para cualquier vínculo (como el número global).
-                preview=f"Fuerte en {AXIS_LABELS[max(axes_global, key=lambda k: axes_global[k] or 0)].lower()}",
-                axes=result["ejes"],
-                relationship=result["tipo_de_relacion"],
-                approximate=result["aproximado"],
-                personality=personality,
-                verificado=candidate.verification_status == "verificado",
-                **public_fields(candidate),
+        try:
+            out = _candidate_out(
+                viewer, candidate, context, mode, mine, answers, included, search, edad_min, edad_max, max_km, wanted, min_pct
             )
-        )
+        except Exception:  # spec R1: datos rotos de una persona no tiran Descubrir para todos
+            logger.exception("Descubrir: se saltea a %s por datos inválidos", candidate.id)
+            continue
+        if out is not None:
+            results.append(out)
+
     # Lista curada y chica: los de mayor número global (B5, B9); a igual número, más intereses en común (B10).
     results.sort(key=lambda r: (r.global_pct, len(r.common_interests)), reverse=True)
     return results[: MAX_SEARCH if search else MAX_CANDIDATES]

@@ -19,6 +19,7 @@ from app.ai_texts import cached, day_key, record
 from app.day.detail import day_detail, load_config as day_config, write_reading
 from app.personalization.style import prompt_instructions
 from app.schemas import MyDayDetailOut
+from app.validation import check_day
 
 router = APIRouter(prefix="/home", tags=["home"])
 
@@ -26,6 +27,7 @@ router = APIRouter(prefix="/home", tags=["home"])
 @router.get("/today", response_model=AstroWeatherOut)
 def get_today(day: date | None = Query(default=None, alias="date")) -> AstroWeatherOut:
     """Clima del día. La app manda su fecha local, así coincide con "Tu día" (sin fecha: hoy en UTC)."""
+    check_day(day)
     if day is None:
         return AstroWeatherOut(astro_weather=today_astro_weather(), date=datetime.now(timezone.utc).date())
     return AstroWeatherOut(astro_weather=astro_weather_for_date(day), date=day)
@@ -63,6 +65,7 @@ def get_my_day(
     profile = db.get(Profile, profile_id)
     if profile is None or profile.birth_date is None:
         raise HTTPException(status_code=409, detail="Perfil sin datos natales")
+    check_day(day)
     transit = day_transit(profile, day)
     moon_sign = zodiac_sign(moon_longitude(day))
     title, text = text_for(transit["aspect"], moon_sign, style_for(profile)["registro"])
@@ -89,6 +92,7 @@ def get_my_day_detail(
     profile = db.get(Profile, profile_id)
     if profile is None or profile.birth_date is None:
         raise HTTPException(status_code=409, detail="Perfil sin datos natales")
+    check_day(day)
     detail = day_detail(profile, day)
     style = style_for(profile)
     key = day_key(profile, day, style, day_config()["version"])

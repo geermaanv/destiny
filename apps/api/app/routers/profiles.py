@@ -370,6 +370,8 @@ async def upload_photo(
     content = await photo.read(cfg["max_bytes"] + 1)
     if len(content) > cfg["max_bytes"]:
         raise HTTPException(status_code=413, detail="La foto no puede pesar más de 5 MB")
+    if not photos.is_image(content):  # spec R1: el contenido, no solo el tipo declarado
+        raise HTTPException(status_code=415, detail="La foto tiene que ser JPG, PNG o WebP")
 
     # Chequeo automático (ADR 0013): a la IA va solo la imagen.
     verdict = photos.check(content, content_type)
@@ -436,4 +438,4 @@ def get_photo(profile_id: uuid.UUID, db: Session = Depends(get_db)) -> FileRespo
     profile = db.get(Profile, profile_id)
     if profile is None or not profile.photo_path or not Path(profile.photo_path).exists():
         raise HTTPException(status_code=404, detail="Photo not found")
-    return FileResponse(profile.photo_path, headers={"Cache-Control": "no-cache"})
+    return FileResponse(profile.photo_path, headers={"Cache-Control": "no-cache", "X-Content-Type-Options": "nosniff"})

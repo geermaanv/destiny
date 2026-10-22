@@ -17,4 +17,4 @@ def get_photo(photo_id: uuid.UUID, db: Session = Depends(get_db)) -> FileRespons
     photo = db.get(ProfilePhoto, photo_id)
     if photo is None or not Path(photo.path).exists():
         raise HTTPException(status_code=404, detail="Photo not found")
-    return FileResponse(photo.path)
+    return FileResponse(photo.path, headers={"X-Content-Type-Options": "nosniff"})

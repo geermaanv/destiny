@@ -5,6 +5,7 @@ from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import and_, func, or_, select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
 
 from app.aspects import angle_between, aspect_sentence, classify_aspect
@@ -222,8 +223,12 @@ def accept_invitation(
     if invitation.invitee_profile_id is None:  # la primera persona (compatibilidad con C8)
         invitation.invitee_profile_id = invitee.id
         invitation.accepted_at = datetime.now(timezone.utc)
-    if db.get(InvitationAcceptance, (ref_id, invitee.id)) is None:
-        db.add(InvitationAcceptance(ref_id=ref_id, invitee_profile_id=invitee.id))
+    # Spec R1: dos toques a la vez no dan error (ON CONFLICT DO NOTHING).
+    db.execute(
+        pg_insert(InvitationAcceptance)
+        .values(ref_id=ref_id, invitee_profile_id=invitee.id)
+        .on_conflict_do_nothing(index_elements=["ref_id", "invitee_profile_id"])
+    )
     db.commit()
     return InvitationAcceptOut(match_id=match_id)
 

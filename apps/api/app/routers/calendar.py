@@ -1,12 +1,13 @@
 import uuid
 from datetime import date
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from sqlalchemy.orm import Session
 
 from app.auth import require_self, session_profile_id
 from app.database import get_db
 from app.models import Profile
+from app.validation import check_day
 from app.schemas import (
     CalendarDayDetailOut,
     CalendarDayOut,
@@ -38,6 +39,7 @@ def get_upcoming(
     """Próximos tránsitos importantes desde hoy (o `from`, la fecha local del usuario)."""
     require_self(profile_id, current)
     profile = _get_profile_or_404(profile_id, db)
+    check_day(from_date)
     return [UpcomingEventOut(**e) for e in upcoming_events(profile, from_date or date.today(), limit)]
 
 
@@ -46,6 +48,7 @@ def get_day(
     day: date, profile_id: uuid.UUID = Query(...), db: Session = Depends(get_db), current: uuid.UUID | None = Depends(session_profile_id)
 ) -> CalendarDayDetailOut:
     require_self(profile_id, current)
+    check_day(day)
     profile = _get_profile_or_404(profile_id, db)
     transit = day_transit(profile, day)
 
@@ -62,8 +65,8 @@ def get_day(
 
 @router.get("/{year}/{month}", response_model=list[CalendarDayOut])
 def get_month(
-    year: int,
-    month: int,
+    year: int = Path(ge=1900, le=2100),
+    month: int = Path(ge=1, le=12),
     profile_id: uuid.UUID = Query(...),
     db: Session = Depends(get_db),
     current: uuid.UUID | None = Depends(session_profile_id),
