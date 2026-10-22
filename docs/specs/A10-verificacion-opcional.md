@@ -31,6 +31,7 @@ La verificación por WhatsApp es el último paso del registro y frena a mucha ge
 - Si alguien borra los datos del navegador sin haber verificado, pierde la cuenta (lo mitiga el aviso).
 - Perfiles falsos o duplicados en Descubrir (grupo chico de prueba; la marca de verificado ayuda).
 - Si al verificar después el número ya pertenece a otra cuenta verificada, sigue valiendo el flujo de A3 (seguir con la cuenta existente).
+- **Cuentas descartables (agente breaker, 2026-10-22)**: como crear una cuenta es gratis y sin teléfono, con varias cuentas se pueden deducir las respuestas del test de otra persona, ubicarla a ~400 m y deducir su género y orientación ocultos (los límites por cuenta no frenan eso). **Decisión de German**: se acepta durante el piloto para facilitar las pruebas y la adopción; **en producción se pide la validación de WhatsApp (o algo similar)**, que deja una cuenta por teléfono y cierra el problema de raíz (interruptor `VERIFICACION_OBLIGATORIA` o verificación para usar Círculo).
 
 ## Casos de prueba (`apps/api/tests/test_a10_verificacion_opcional.py`)
 
