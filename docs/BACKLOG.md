@@ -192,7 +192,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Fotos en almacenamiento en la nube (hoy disco de la Mac), junto con el hosting.
 - [ ] Política de privacidad: avisar que las fotos se chequean con un proveedor externo (ADR 0013).
 - [ ] Filtro por distancia (hace falta pedir ciudad o ubicación aproximada).
-- [ ] Numerología como sistema de compatibilidad (modelo a definir por Pablo).
+- [ ] Numerología como sistema de compatibilidad (modelo a definir por Pablo). **Propuesta v0 enviada para que corrija** (2026-10-22): `docs/referencias/numerologia/` (planilla con fórmulas y README).
 - [ ] @ usuario y QR para compartir el perfil (spec C9).
 - [ ] Qué compartir con cada conexión (idea de Pablo: fotos, carta, test, valores, metas; spec C10).
 - [ ] Propuesta a Pablo: 4 fotos por elemento y Destiny elige cuál mostrar según el día (enviada por WhatsApp, sin respuesta).
