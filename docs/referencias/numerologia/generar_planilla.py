@@ -111,7 +111,13 @@ lines = [
     ("Qué te pido:", BOLD),
     ("• Todas las celdas amarillas son editables: matriz, afinidades, pesos y parámetros.",),
     ("• Probá con la hoja Calculadora (poné dos fechas) y ajustá hasta que los resultados te cierren.",),
-    ("• Si preferís otro método (otros números, nombre completo, otra forma de comparar), contame y lo armo.",),
+    ("• Si preferís otro método (otros números, otra forma de comparar), contame y lo armo.",),
+    ("",),
+    ("Opcional, con el nombre completo de nacimiento (hoja Con nombre):", BOLD),
+    ("• Expresión (todas las letras), Alma (vocales) y Personalidad (consonantes), con la tabla pitagórica (A=1 … I=9, J=1 …).",),
+    ("• Alma → Afecto, Personalidad → Química, Expresión → Comunicación y Compromiso.",),
+    ("• Se mezcla con lo de la fecha según el Peso del nombre (hoja Parámetros, 50 % de arranque).",),
+    ("• Sería opcional en la app: el nombre que guardamos hoy es el apodo del perfil, que no sirve para esto.",),
     ("",),
     ("Los valores de este borrador salen de las reglas clásicas de la numerología (grupos 1-5-7, 3-6-9, 2-4-8 y",),
     ("combinaciones en tensión como 4-5 y 1-8). Son un punto de partida: el modelo final lo definís vos.",),
@@ -151,7 +157,12 @@ widths(ws, [8] + [7] * 9)
 
 # --- Parámetros ---
 ws = wb.create_sheet("Parámetros")
-params = [("Peso Camino de vida", 0.7), ("Peso Número del día", 0.3), ("Ajuste por eje (puntos máximos)", 10)]
+params = [
+    ("Peso Camino de vida", 0.7),
+    ("Peso Número del día", 0.3),
+    ("Ajuste por eje (puntos máximos)", 10),
+    ("Peso del nombre, si se carga (hoja Con nombre)", 0.5),
+]
 for i, (k, v) in enumerate(params, start=1):
     ws.cell(row=i, column=1, value=k)
     c = ws.cell(row=i, column=2, value=v)
@@ -252,6 +263,68 @@ ws.cell(row=29, column=1, value="Global numerológico (promedio de los 4 víncul
 c = ws.cell(row=29, column=2, value="=AVERAGE(B24:B27)")
 c.number_format, c.fill, c.font = "0", OUTF, BOLD
 widths(ws, [44, 18, 18, 18])
+
+# --- Con nombre (opcional) ---
+ws = wb.create_sheet("Con nombre")
+ws.cell(row=1, column=1, value="Opcional: con el nombre completo de nacimiento (el del acta). Poné los nombres en las celdas amarillas.").font = BOLD
+ws.cell(row=2, column=1, value="Las fechas son las de la hoja Calculadora. Tildes y ñ se leen como la letra sin tilde y N; la Y cuenta como consonante.")
+header(ws, 3, ["", "Persona A", "Persona B"])
+ws.cell(row=4, column=1, value="Nombre completo de nacimiento")
+for col, name in [(2, "María Laura Gómez"), (3, "Juan Pablo Ruiz")]:
+    c = ws.cell(row=4, column=col, value=name)
+    c.fill, c.border = EDIT, THIN
+NAME_AUX = {2: 10, 3: 16}
+
+
+def letters(ref, vowels_only=False):
+    arr = f'MID({ref},ROW(INDIRECT("1:"&LEN({ref}))),1)'
+    vowel = f'*ISNUMBER(SEARCH({arr},"AEIOU"))' if vowels_only else ""
+    return f"IF(LEN({ref})=0,0,SUMPRODUCT((CODE({arr})>=65)*(CODE({arr})<=90)*(MOD(CODE({arr})-65,9)+1){vowel}))"
+
+
+rows = ["Expresión", "Alma", "Personalidad", "Expresión (base)", "Alma (base)", "Personalidad (base)"]
+for i, label in enumerate(rows, start=5):
+    ws.cell(row=i, column=1, value=label)
+for col in (2, 3):
+    L = get_column_letter(col)
+    ax = NAME_AUX[col]
+    norm = ws.cell(row=30, column=ax)
+    up = f"UPPER({L}4)"
+    for src, dst in [("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"), ("Ü", "U"), ("Ñ", "N")]:
+        up = f'SUBSTITUTE({up},"{src}","{dst}")'
+    norm.value = "=" + up
+    n = norm.coordinate
+    raw_e = ws.cell(row=31, column=ax, value="=" + letters(n))
+    raw_a = ws.cell(row=32, column=ax, value="=" + letters(n, vowels_only=True))
+    raw_p = ws.cell(row=33, column=ax, value=f"={raw_e.coordinate}-{raw_a.coordinate}")
+    for r, raw in [(5, raw_e), (6, raw_a), (7, raw_p)]:
+        red = reduce_formulas(ws, 30 + r, ax, raw.coordinate, [11, 22, 33])
+        ws.cell(row=r, column=col, value=f"={red.coordinate}").font = BOLD
+        ws.cell(row=r + 3, column=col, value=f"=IF({L}{r}=11,2,IF({L}{r}=22,4,IF({L}{r}=33,6,{L}{r})))")
+for c in range(10, 22):
+    ws.column_dimensions[get_column_letter(c)].hidden = True
+
+header(ws, 12, ["Eje", "Con la fecha", "Con el nombre", "Combinado"])
+NAME_SRC = {"Química": 10, "Afecto": 9, "Comunicación": 8, "Compromiso": 8}  # fila del número base que usa cada eje
+for i, axis in enumerate(AXES):
+    r = 13 + i
+    ws.cell(row=r, column=1, value=f"{axis} ({ {10: 'Personalidad', 9: 'Alma', 8: 'Expresión'}[NAME_SRC[axis]] })").font = BOLD
+    ws.cell(row=r, column=2, value=f"=Calculadora!D{17 + i}").number_format = "0"
+    ws.cell(row=r, column=3, value="=" + axis_formula(f"$B${NAME_SRC[axis]}", f"$C${NAME_SRC[axis]}", i)).number_format = "0"
+    c = ws.cell(row=r, column=4, value=f"=(1-Parámetros!$B$4)*B{r}+Parámetros!$B$4*C{r}")
+    c.number_format, c.fill, c.font = "0", OUTF, BOLD
+header(ws, 18, ["Vínculo", "Solo fecha", "Con nombre"])
+for i, k in enumerate(WEIGHTS, start=19):
+    wr = 6 + list(WEIGHTS).index(k)
+    ws.cell(row=i, column=1, value=k).font = BOLD
+    ws.cell(row=i, column=2, value=f"=Calculadora!B{24 + list(WEIGHTS).index(k)}").number_format = "0"
+    c = ws.cell(row=i, column=3, value=f"=D13*Parámetros!B{wr}+D14*Parámetros!C{wr}+D15*Parámetros!D{wr}+D16*Parámetros!E{wr}")
+    c.number_format, c.fill, c.font = "0", OUTF, BOLD
+ws.cell(row=24, column=1, value="Global (promedio de los 4 vínculos)").font = BOLD
+ws.cell(row=24, column=2, value="=Calculadora!B29").number_format = "0"
+c = ws.cell(row=24, column=3, value="=AVERAGE(C19:C22)")
+c.number_format, c.fill, c.font = "0", OUTF, BOLD
+widths(ws, [40, 22, 22, 16])
 
 wb.save(OUT)
 print("ok", OUT)
