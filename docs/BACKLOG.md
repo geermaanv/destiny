@@ -170,7 +170,8 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [x] Distancia: "¿Dónde vivís?" con el buscador de ciudades y filtro "a menos de X km" (spec B9).
 - [x] Círculo: filtro de intereses (tiene que tener todos), "N intereses en común" en la tarjeta y desempate por intereses; filtros activos con ✕ (spec B10).
 - [x] Número global en las tarjetas, provisorio con promedio simple de los sistemas (cada uno con los pesos de Pablo por vínculo), y filtro para apagar sistemas con aviso de precisión (spec B9, ADR 0014).
-- [ ] Ponderador entre sistemas: pesos por defecto de Pablo y ajuste por persona en el perfil.
+- [x] Ponderador entre sistemas: Pablo aprobó el promedio simple (2026-10-23, ADR 0014).
+- [ ] Ajuste del ponderador por persona en el perfil (idea de la reunión; sin fecha).
 - [ ] Ideas de viralización: "¿Cuánto fluimos?" (Compartir v2), imagen para historias, @ y QR.
 - [ ] Pablo: pesos por defecto del número global, qué pasa sin test, título "Química y atracción", modelo de numerología (sin fecha).
 
