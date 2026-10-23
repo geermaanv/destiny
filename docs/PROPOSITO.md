@@ -166,6 +166,56 @@ Casi nada se tira; se reordena:
 - **En paralelo:** acordar con Pablo la dirección, sumar a un profesional de la psicología y diseñar el circuito del vínculo.
 - **Después de la salida:** construir el circuito del vínculo con lo que aprendamos de los primeros usuarios.
 
+## Qué existe parecido
+
+Relevamiento rápido del 2026-10-23, con datos públicos (prensa, comunicados y tiendas). Las cifras son las que informan las propias empresas o la prensa, no están auditadas y algunas son de años anteriores.
+
+### Salud de la pareja
+
+| Servicio | Qué cubre | Cómo le va | Qué no cubre |
+|---|---|---|---|
+| **Paired** (Reino Unido) | Preguntas diarias, ejercicios y contenido de expertos para parejas. | Seed de US$3,6M (2021), con 5.000 suscriptores pagos en ese momento. Hoy dice tener más de 4M de parejas. Un estudio independiente informa un 36% de mejora en la calidad de la relación en 3 meses. | Solo pareja. No hay autoconocimiento ni otros vínculos. |
+| **Gottman Connect** (EE.UU.) | Evaluación del vínculo con base científica (el "Love Lab" de Gottman), plan personalizado y coach, también para terapeutas. | Respaldado por la marca y la investigación de Gottman. No hay cifras públicas de usuarios. | Solo pareja. Es caro y clínico. |
+| **Lasting** (EE.UU.) | Consejería de pareja por app, por suscripción. | Lo compró Talkspace en 2020 por US$10,7M y hoy es parte de su plataforma de terapia. | Solo pareja. Quedó dentro de un servicio de terapia. |
+| **Relish** (EE.UU.) | Plan semanal de entrenamiento de pareja con coach por chat, a US$100 por año para los dos. | Levantó US$7,2M, con "miles" de suscriptores pagos. | Solo pareja. |
+| **Wefeel** (España) | Actividades para hablar de temas difíciles y compartir emociones. Fundada por psicólogas. | Más de 700.000 usuarios, presencia en México, Colombia y Chile y una ronda de €500.000. A €5 por mes. El 86% dice haber mejorado su relación. | Solo pareja. Sin astrología ni otros vínculos. |
+
+### Astrología y compatibilidad
+
+| Servicio | Qué cubre | Cómo le va | Qué no cubre |
+|---|---|---|---|
+| **Co-Star** (EE.UU.) | Carta natal con IA, horóscopo diario y compatibilidad con amigos. | 30M de usuarios registrados y ~4,3M activos por mes. Levantó US$21M y lo compró Midjourney. | Es entretenimiento con tono de oráculo. No ayuda a hacer algo con un vínculo. |
+| **The Pattern** (EE.UU.) | Personalidad y "Bonds" (compatibilidad con amigos, parejas y famosos). Desde 2021 también hace matchmaking. | Más de 8M de descargas y nota de 3,6/5. Suscripción desde US$14,99 por mes. | Afirma sobre pasado, presente y futuro. No mira cómo está el vínculo real. |
+
+### Amistad y soledad
+
+| Servicio | Qué cubre | Cómo le va | Qué no cubre |
+|---|---|---|---|
+| **Timeleft** (Francia) | Cenas semanales entre 6 desconocidos para combatir la soledad urbana. | Más de 1M de usuarios y 15.000 personas por semana en 275 ciudades de 62 países. A €12,99 por cena o con suscripción. | Solo conocer gente nueva. No cuida los vínculos que ya tenés. |
+| **Bumble BFF** (EE.UU.) | Amistades: matching, eventos y comunidades. | Relanzada como app aparte en 2025, sobre Geneva, que Bumble compró en 2024 por ~US$17M sin que hubiera generado ingresos. | Conocer gente; nada sobre la salud de los vínculos. |
+
+### Mapa de vínculos
+
+| Servicio | Qué cubre | Cómo le va | Qué no cubre |
+|---|---|---|---|
+| **Dex, Clay** (CRM personales) | Recordatorios para mantener el contacto y notas sobre cada persona, integrados con LinkedIn, el correo y el calendario. | Nicho de pago, pensado para el networking profesional. | Es gestión de contactos, no entendimiento. |
+| **Bond, Orbits, FriendFuss, Wellsayer** | Tu red en círculos o niveles (íntimo, cercano…) y recordatorios. Algunas se basan en el número de Dunbar. | Muy tempranas, sin cifras públicas relevantes. | Solo frecuencia de contacto. No miran cómo está el vínculo ni suman la mirada del otro. |
+
+### Qué aprendemos
+
+- **El mercado existe y paga.** Las apps de pareja cobran entre €5 por mes y US$100 por año, y tienen estudios que muestran mejoras. Pero son negocios medianos: Lasting se vendió por US$10,7M.
+- **La astrología tiene alcance masivo** (Co-Star: 30M de registrados), pero se queda en entretenimiento con tono de oráculo, justo lo que Destiny no quiere ser.
+- **La soledad y la amistad están creciendo** (Timeleft, el relanzamiento de Bumble BFF), aunque todos se enfocan en conocer gente nueva, no en cuidar a la que ya tenés.
+- **Los mapas de vínculos son muy nuevos** y se quedan en "acordate de escribirle". Ninguno mira la salud del vínculo ni suma la mirada de la otra persona.
+
+### El hueco
+
+No encontramos a nadie que junte las cuatro cosas: **autoconocimiento** (con la astrología como lente y no como oráculo), **todos los vínculos** (no solo pareja), **la mirada de las dos personas** sobre cada vínculo, y **el mapa de tu red**. Tampoco hay nada fuerte hecho desde y para Latinoamérica; Wefeel es lo más cercano, y es de España y solo de pareja.
+
+Hay dos señales a tener en cuenta. Paired y Wefeel muestran que funciona tener **psicólogos y estudios de impacto** detrás, cosa que Destiny todavía no tiene. Y Co-Star y The Pattern muestran que la astrología trae gente, pero sola no alcanza para mejorar un vínculo.
+
+Fuentes: [Paired, seed 2021](https://paired.com/press/paired-announces-dollar36-million-seed-round), [Paired, perfil](https://bitscale.ai/directory/paired), [Gottman Love Lab](https://www.gottman.com/love-lab/), [Talkspace compra Lasting](https://www.businesswire.com/news/home/20201112005199/en/Talkspace-Announces-Acquisition-of-Leading-Relationship-Counseling-App-Lasting), [Relish](https://alleywatch.com/2020/04/relish-couples-relationship-training-app-funding-lesley-eccles/), [Wefeel](https://elreferente.es/?p=106507), [Co-Star](https://www.cityam.com/?p=2090394), [Midjourney compra Co-Star](https://www.producthunt.com/p/midjourney/midjourney-acquires-astrology-startup-co-star), [The Pattern](https://apps.apple.com/us/app/-/id1071085727), [Timeleft](https://www.azfamily.com/2025/01/30/want-meet-new-people-app-organizes-dinners-with-strangers-phoenix-area), [Bumble BFF](https://techcrunch.com/2025/09/18/bumble-bffs-revamped-app-is-here-focusing-on-friend-groups-and-community-building), [Dex](https://guide.getdex.com), [Bond](https://apps.apple.com/app/id6453560385), [Orbits](https://builder.aws.com/content/3Asf5dF2dX4xULLCxKVKukuxepY/aideas-orbits-the-ultimate-social-life-manager).
+
 ## Para hablar con Pablo
 
 Esto no choca con la visión del pitch (empezar por las citas, con el grafo de compatibilidad como ventaja), pero cambia el énfasis: la sinastría, el test y Círculo son las herramientas, y estos principios definen cómo se usan y con qué tono. Conviene acordarlo explícitamente, porque define cientos de decisiones chicas.
