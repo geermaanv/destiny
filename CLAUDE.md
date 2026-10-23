@@ -3,6 +3,7 @@
 Instrucciones de proyecto para Claude Code. Leer también, en este orden, antes de trabajar en producto:
 
 1. `docs/VISION.md` — tesis, pitch deck.
+1. `docs/PROPOSITO.md` — propósito y principios (herramienta, no oráculo), propuesta de German.
 2. `docs/ALCANCE_MVP.md` — los 3 módulos del MVP, lo que ya está definido.
 3. `docs/BACKLOG.md` — qué sigue, priorizado.
 4. `docs/specs/` — specs por feature (ver regla dura abajo).
