@@ -95,7 +95,7 @@ Encontrado recorriendo la app en tamaño celular como usuario nuevo. Para decidi
 
 Estrategia en `VISION.md`: el autoconocimiento da valor mientras la base de usuarios crece; el matchmaking sigue. Prioridad tomada del MVP 1 del whitepaper (`docs/referencias/whitepaper-producto-v1.md`), sobre lo que ya existe:
 - [x] **Mi carta por dimensiones** (spec A8): identidad, amor, vocación y emociones, con síntesis en el estilo de la persona, fundamentos trazables y preguntas para pensar. Pantalla `/perfil/carta`, acceso desde Mi perfil.
-- [ ] Que Pablo revise la matriz de indicadores de Mi carta (`apps/api/app/natal/config/dimensiones_v1.json`) y los 144 textos (`apps/api/app/content/carta_v1.json`, `revisado_por_pablo: false`).
+- [ ] Que Pablo revise la matriz de indicadores de Mi carta (`apps/api/app/natal/config/dimensiones_v1.json`) y los 144 textos (`apps/api/app/content/carta_v1.json`, `revisado_por_pablo: false`). Los textos, y los de Tu día, van en la planilla de pendientes para Pablo.
 - [ ] Mi carta v2: las otras 12 dimensiones del whitepaper, guardar respuestas a las preguntas (Destiny Mirror), regentes de casas.
 - [x] **Astrochat** (spec X3): "Preguntale a Destiny" desde Hoy y Mi carta, 4 modos, en el estilo de la persona, con la carta y Tu día ya calculados (sin datos personales), límite diario, respuesta fija ante palabras de crisis (135 / 911) y borrar conversación.
 - [ ] **Decisiones del Astrochat a revisar (German)**: el modo sale del estilo (directo → Explorador, práctico → Mentor, analítico → Técnico, intuitivo → Acompañante) y ya no se elige en la pantalla; límite de 10 preguntas por día; sin datos de conexiones; sin memoria a largo plazo. Todo se cambia en `app/astrochat/config/astrochat_v1.json`.
@@ -173,7 +173,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [x] Ponderador entre sistemas: Pablo aprobó el promedio simple (2026-10-23, ADR 0014).
 - [ ] Ajuste del ponderador por persona en el perfil (idea de la reunión; sin fecha).
 - [ ] Ideas de viralización: "¿Cuánto fluimos?" (Compartir v2), imagen para historias, @ y QR.
-- [ ] Pablo: pesos por defecto del número global, qué pasa sin test, título "Química y atracción", modelo de numerología (sin fecha).
+- [ ] Pablo: qué pasa sin test, título "Química y atracción", modelo de numerología, Atracción en Indagar, fotos por elemento, gratis 6 meses y nombre del dominio. Todo junto, con los textos a revisar, en la planilla `docs/referencias/pendientes-pablo/Destiny-Pendientes-con-Pablo.xlsx` (2026-10-23).
 
 **Hallazgos del agente breaker (2026-10-22)**
 - [x] Robustez y validaciones: datos de nacimiento inválidos, Descubrir tolerante, fechas extremas, textos con nulos/invisibles, fotos por contenido, doble toque, webhook (spec R1).
