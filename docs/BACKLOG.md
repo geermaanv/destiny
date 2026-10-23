@@ -179,7 +179,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Revisar el documento con Pablo; la dirección "el vínculo como centro" cambia la tesis del pitch y se decide con él.
 - [ ] Antes de la salida (decidir esta semana): número de compatibilidad con su origen y qué tan seguro es, aviso visible, mostrar también la invitación floja, rompehielos como sugerencia, textos que proponen ("¿te pasa?").
 - [ ] Después de la salida: "esto no me representa", mandar hacia afuera, filtrar lo que engancha, usar Destiny sin astrología.
-- [ ] En paralelo: sumar a un profesional de la psicología y diseñar el circuito del vínculo (registro por vínculo, radar, pregunta para conversar).
+- [ ] En paralelo: sumar a un profesional de la psicología y diseñar el circuito del vínculo (sociograma como mapa, registro por vínculo, radar, pregunta para conversar).
 
 **Hallazgos del agente breaker (2026-10-22)**
 - [x] Robustez y validaciones: datos de nacimiento inválidos, Descubrir tolerante, fechas extremas, textos con nulos/invisibles, fotos por contenido, doble toque, webhook (spec R1).

@@ -71,6 +71,21 @@ Cada vínculo se muestra como un radar con esas dimensiones. Reglas para que sig
 - **Termina en una conversación.** Cada dimensión baja viene con una pregunta para hablar con esa persona, no con una conclusión.
 - **La astrología como contexto, no como causa.** Sirve para despersonalizar diferencias ("procesa distinto que vos"), no para decir si un vínculo es sano.
 
+### El mapa: un sociograma de tus vínculos
+
+El radar mira un vínculo; el sociograma muestra **todos tus vínculos juntos**, tu ecosistema. Son dos niveles: el mapa (paso "mapear" del circuito) y el zoom (paso "mirar uno"). Tocás a alguien en el mapa y se abre su radar.
+
+- **Vos en el centro, con tres círculos**: íntimo, cercano y amplio. Se basa en el "modelo del convoy" de Kahn y Antonucci, que también se usa como ejercicio en terapia.
+- **Cada persona la ubica uno mismo, no la app.** Si Destiny calculara dónde va cada uno, sería un ranking de afectos. Decidir dónde poner a alguien ya es reflexionar, y moverlo con el tiempo también dice algo.
+- **Qué muestra:** el grosor de la línea según cuánto contacto hay (por lo que registrás), una línea punteada para el vínculo que se está alejando y **patrones de la red**, no de las personas: "dos personas en lo íntimo", "casi todo es pareja y familia". Una red concentrada en una sola persona es frágil, y ahí se conecta con la soledad.
+- **Qué no muestra:** colores de "te hace bien / te hace mal" por persona (eso es etiquetar al otro; queda en su radar, como dinámica), ni puntajes por persona o de la red.
+- **Invitar con sentido:** en tu mapa hay gente que no está en Destiny. Si querés ver su mirada sobre el vínculo, la invitás. Sin forzar nada.
+
+**Privacidad: dos grafos que no se mezclan.**
+
+1. **Tu sociograma**: lo que vos dibujás, incluida gente que no está en Destiny. Es solo tuyo y nadie más lo ve.
+2. **El grafo real de Destiny** (quién está conectado con quién en la app): **nunca se muestra**. Ver la red de otro, o quién tiene a quién en su círculo íntimo, sería una invasión.
+
 ### Límites
 
 - **Nunca etiqueta personas** ("tu amigo es tóxico"): habla de dinámicas, no del carácter del otro.
