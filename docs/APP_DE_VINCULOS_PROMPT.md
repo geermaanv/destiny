@@ -51,9 +51,28 @@ Nadie va a cargar todo a mano. La app tiene que saber lo suficiente con muy poca
 
 Buscá formas mejores que estas. Para cada fuente que propongas: qué mide, cuánto esfuerzo pide, qué tan invasiva es y si involucra datos de terceros.
 
+## La mirada de quien impulsa la idea
+
+Respuestas de German (55 años), a tomar como guía fuerte, no como límite:
+
+- **Para quién:** personas de 40 a 60 años, donde la importancia de los vínculos está más clara. Con los años baja la carga de responsabilidades y hay más tiempo social, y ahí la app puede ayudar mucho.
+- **Qué vínculos:** amistad y familia primero. Solo vínculos de a dos, no grupos.
+- **Calidad antes que cantidad**, pero también **diversidad**: vincularse con gente parecida y con gente muy distinta. La app cuida y mejora los vínculos actuales, y también ayuda a ampliarlos y a sumar diversidad.
+- **Volver a acercarse es más simple de lo que parece:** con el tiempo, lo que te alejó deja de importar, y a veces alcanza con un "Hola". La app puede bajar esa barrera.
+- **Lo que cuida un vínculo es estar atento y dedicar tiempo.** El gesto que más hace sentir cuidado es que alguien esté atento y cada tanto pregunte cómo estás. No conoce a nadie que lo haga muy bien: ahí está la oportunidad.
+- **Las etapas cambian los vínculos:** al pasar de etapa o de proyecto, la red cambia sola, sin que uno lo decida. No está claro que eso sea bueno, y la app puede ayudar a notarlo.
+- **No automatizar el contacto.** La app recuerda y ayuda a estar atento; las ideas y los planes son bienvenidos, pero el que escribe y el que va es la persona.
+- **Desconfía de depender solo de preguntas:** además de la fiaca de contestar, las respuestas pueden no ser ciertas o estar sesgadas. Hay que combinar lo que dice la persona con otras señales. Está dispuesto a dar acceso al calendario, los contactos o las llamadas si la app explica para qué.
+- **Tiene que servir aunque el otro no participe:** la app es tuya.
+- **Puede mostrar que algo no te está ayudando** a mejorar tus vínculos, pero nunca como un oráculo o un dueño de la verdad.
+- **Tono:** un coach. El canal (dentro de la app o por WhatsApp) le da igual.
+- **Ambición:** que la gente diga "me ayudó a mejorar mis vínculos". Alcanza con que sea una herramienta útil; no hace falta un ritual, un objeto ni eventos.
+- **Lo haría desinstalarla:** que sea difícil de configurar, que dé mucho trabajo o que tarde en ayudar.
+- **Sí o sí:** una forma gráfica de ver las cercanías, como un mapa de calor de tus vínculos.
+
 ## Contexto
 
-- Mercado inicial: Argentina y Latinoamérica, en español rioplatense.
+- Mercado inicial: Argentina y Latinoamérica, en español rioplatense, empezando por personas de 40 a 60 años.
 - Antecedentes:
   - Paired, Gottman Connect, Relish y Wefeel cubren solo pareja.
   - Co-Star y The Pattern son compatibilidad astrológica con tono de oráculo.
@@ -66,7 +85,7 @@ Buscá formas mejores que estas. Para cada fuente que propongas: qué mide, cuá
 ### Fase 1: explorar (antes de escribir el documento)
 
 1. **La solución obvia.** Describí en un párrafo lo que haría cualquiera (probablemente: una app con recordatorios, un mapa y un radar) y explicá por qué no alcanza para ser increíble.
-2. **Las personas.** Imaginá tres personas concretas de Argentina, con vidas distintas, y qué les pasa con sus vínculos. Diseñá para ellas.
+2. **Las personas.** Imaginá tres personas concretas de Argentina, de entre 40 y 60 años y con vidas distintas, y qué les pasa con sus vínculos. Diseñá para ellas.
 3. **Romper el marco.** Pensá desde preguntas como:
    - ¿Qué hacen las personas que cuidan muy bien sus vínculos, sin ninguna app?
    - ¿Y si casi nunca hubiera que abrir la app? ¿Y si no fuera una app?
