@@ -1,4 +1,4 @@
-import { AxisKey, SystemScore } from "@/lib/api";
+import { AxisKey, Nivel, SystemScore } from "@/lib/api";
 
 // Specs B9 y B12: por cada eje, primero el total (promedio de los sistemas) y después cada
 // sistema con su número y una barra de 5 tramos de 20 %. La misma grilla en Círculo y en el chat.
@@ -47,6 +47,16 @@ function Score({
         })}
       </span>
     </span>
+  );
+}
+
+// Spec B13: nivel y frase junto al número global.
+export function NivelText({ nivel }: { nivel: Nivel | null | undefined }) {
+  if (!nivel) return null;
+  return (
+    <p className="text-sm">
+      <span className="font-medium text-gold-300">{nivel.nombre}.</span> <span className="text-slate-300">{nivel.texto}</span>
+    </p>
   );
 }
 

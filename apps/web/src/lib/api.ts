@@ -220,11 +220,15 @@ export function submitMoodCheckin(profileId: string, mood: Mood): Promise<void> 
   return postJson("/mood-checkins", { profile_id: profileId, mood });
 }
 
+// Spec B13: nivel del número global y su frase.
+export type Nivel = { id: string; nombre: string; texto: string };
+
 export type DiscoverCandidate = {
   profile_id: string;
   compatibility_pct: number; // = global_pct
   // Spec B9: número global (promedio de los sistemas incluidos), sus ejes y cada sistema.
   global_pct: number;
+  nivel: Nivel | null;
   axes_global: Partial<Record<AxisKey, number | null>>;
   systems: { astrologia: SystemScore | null; personalidad: SystemScore | null };
   distance_km: number | null;
@@ -252,6 +256,7 @@ export type DiscoverCandidate = {
 // Spec B12: compatibilidad del chat.
 export type CompatSummary = {
   global_pct: number;
+  nivel: Nivel;
   axes_global: Partial<Record<AxisKey, number | null>>;
   systems: { astrologia: SystemScore | null; personalidad: SystemScore | null };
   por_vinculo: { vinculo: RelationshipContext; global_pct: number | null; astrologia: number | null; personalidad: number | null }[];

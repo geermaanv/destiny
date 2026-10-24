@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Page, PageTitle } from "@/components/ui";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import SystemsGrid, { globalCaption } from "@/components/SystemsGrid";
+import SystemsGrid, { globalCaption, NivelText } from "@/components/SystemsGrid";
 import { useSessionProfileId } from "@/lib/session";
 import { apiUrl, createMatch, DiscoverCandidate, DiscoverFilters, getExplanation } from "@/lib/api";
 import { findInLastList } from "@/lib/discover";
@@ -129,6 +129,7 @@ function PerfilDeOtra() {
           <span className="text-3xl font-semibold text-gold-300">{c.global_pct}%</span>
           <span className="text-xs text-slate-500">{globalCaption(c.systems)}</span>
         </div>
+        <NivelText nivel={c.nivel} />
         <SystemsGrid systems={c.systems} axesGlobal={c.axes_global} large />
         {c.approximate && <p className="text-xs text-slate-500">Astrología aproximada: sin hora exacta de nacimiento no se usan las casas.</p>}
         {c.personality?.flags && c.personality.flags.length > 0 && (

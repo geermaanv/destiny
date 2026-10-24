@@ -5,6 +5,10 @@ es el promedio simple de los sistemas con dato, y el número que se muestra es e
 cuatro vínculos (no depende de lo que se busca). Los ejes son los mismos para todos los vínculos.
 """
 
+import json
+from functools import lru_cache
+from pathlib import Path
+
 from app.personality import CONTEXT_TO_MODE
 from app.personality.engine import weighted_total
 from app.synastry import AXIS_LABELS
@@ -13,6 +17,18 @@ VINCULOS = ["pareja", "amistad", "laboral", "ocasional"]
 # Ejes del test de Pablo ↔ ejes de la astrología: miden las mismas cuatro dimensiones.
 TEST_AXES = {"E1": "atraccion", "E2": "afecto", "E3": "comunicacion", "E4": "compromiso"}
 SISTEMAS = ("astrologia", "personalidad")
+
+
+@lru_cache
+def _levels() -> list[dict]:
+    path = Path(__file__).parent / "content" / "niveles_compatibilidad_v1.json"
+    return sorted(json.loads(path.read_text())["niveles"], key=lambda n: n["desde"])
+
+
+def level_for(pct: int) -> dict:
+    """Spec B13: nivel y frase del número global (rangos de Pablo; cada límite es del nivel de arriba)."""
+    level = next((n for n in reversed(_levels()) if pct >= n["desde"]), _levels()[0])
+    return {"id": level["id"], "nombre": level["nombre"], "texto": level["texto"]}
 
 
 def _mean(values) -> float | None:

@@ -16,7 +16,7 @@ from app.personality.engine import compare
 from app.ai_texts import record
 from app.synastry import ai_facts, profile_synastry
 from app.public_profile import public_fields
-from app.compat_summary import public_personality, summarize
+from app.compat_summary import level_for, public_personality, summarize
 from app.schemas import (
     ChatMessageOut,
     CompatibilityOut,
@@ -250,8 +250,10 @@ def match_compatibility_summary(
     mine, theirs = db.get(PersonalityAnswers, me.id), db.get(PersonalityAnswers, other.id)
     personality = compare(mine.answers, theirs.answers, "formal") if mine and theirs and mine.answers and theirs.answers else None
     summary = summarize(result, personality)
+    global_pct = round(summary["global"])
     return CompatSummaryOut(
-        global_pct=round(summary["global"]),
+        global_pct=global_pct,
+        nivel=level_for(global_pct),
         axes_global=summary["axes_global"],
         systems=summary["systems"],
         por_vinculo=summary["por_vinculo"],

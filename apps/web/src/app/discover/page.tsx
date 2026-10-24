@@ -7,7 +7,7 @@ import ConnectionsStrip from "@/components/ConnectionsStrip";
 import GenderPrefs from "@/components/GenderPrefs";
 import PlaceField from "@/components/PlaceField";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import SystemsGrid, { globalCaption } from "@/components/SystemsGrid";
+import SystemsGrid, { globalCaption, NivelText } from "@/components/SystemsGrid";
 import { useSessionProfileId } from "@/lib/session";
 import {
   apiUrl,
@@ -284,6 +284,9 @@ function CandidateCard({ c }: { c: DiscoverCandidate }) {
           <p className="pt-1 text-3xl font-semibold leading-none text-gold-300">{c.global_pct}%</p>
           <p className="text-xs text-slate-500">{globalCaption(c.systems)}</p>
         </div>
+      </div>
+      <div className="mt-2">
+        <NivelText nivel={c.nivel} />
       </div>
       <div className="mt-3">
         <SystemsGrid systems={c.systems} axesGlobal={c.axes_global} />

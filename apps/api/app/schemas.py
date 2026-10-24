@@ -473,11 +473,20 @@ class SystemOut(BaseModel):
     axes: dict[str, int | None]
 
 
+class NivelOut(BaseModel):
+    """Spec B13: nivel del número global y su frase."""
+
+    id: str
+    nombre: str
+    texto: str
+
+
 class DiscoverCandidateOut(BaseModel):
     profile_id: uuid.UUID
     # Número global (spec B9, ADR 0014): promedio de los sistemas incluidos; compatibility_pct es el mismo.
     compatibility_pct: int
     global_pct: int = 0
+    nivel: NivelOut | None = None
     axes_global: dict[str, int | None] = {}
     systems: dict[str, SystemOut | None] = {}
     distance_km: int | None = None
@@ -585,6 +594,7 @@ class VinculoOut(BaseModel):
 
 class CompatSummaryOut(BaseModel):
     global_pct: int
+    nivel: NivelOut
     axes_global: dict[str, int | None]
     systems: dict[str, "SystemOut | None"]
     por_vinculo: list[VinculoOut]

@@ -18,7 +18,7 @@ from app.personality.engine import compare
 from app.public_profile import age, public_fields
 from app.ai_texts import cached, explanation_key, record
 from app.personalization.style import prompt_instructions, style_for
-from app.compat_summary import SISTEMAS, public_personality, summarize
+from app.compat_summary import SISTEMAS, level_for, public_personality, summarize
 from app.synastry import AXIS_LABELS, ai_facts, profile_synastry
 from app.schemas import DiscoverCandidateOut, ExplanationOut, Interest, PersonalityCompatOut, SystemOut
 
@@ -139,6 +139,7 @@ def _candidate_out(viewer, candidate, context, mode, mine, answers, included, se
             profile_id=candidate.id,
             compatibility_pct=global_pct,
             global_pct=global_pct,
+            nivel=level_for(global_pct),
             axes_global=axes_global,
             systems=systems,
             distance_km=distance_band(distance),

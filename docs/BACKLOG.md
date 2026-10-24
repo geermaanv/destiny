@@ -177,6 +177,7 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 
 **Propósito y principios (`docs/PROPOSITO.md`, 2026-10-23)**
 - [ ] Revisar el documento con Pablo; la dirección "el vínculo como centro" cambia la tesis del pitch y se decide con él.
+- [x] Niveles de compatibilidad con frase junto al número global (spec B13, rangos de Pablo, textos ajustados).
 - [ ] Antes de la salida (decidir esta semana): número de compatibilidad con su origen y qué tan seguro es, aviso visible, mostrar también la invitación floja, rompehielos como sugerencia, textos que proponen ("¿te pasa?").
 - [ ] Después de la salida: "esto no me representa", mandar hacia afuera, filtrar lo que engancha, usar Destiny sin astrología.
 - [ ] En paralelo: sumar a un profesional de la psicología y diseñar el circuito del vínculo (sociograma como mapa, registro por vínculo, radar, pregunta para conversar).

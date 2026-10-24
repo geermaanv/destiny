@@ -1,0 +1,11 @@
+{
+  "version": "v1",
+  "notas": "Spec B13. Rangos de Pablo (cada límite pertenece al nivel de arriba). Textos de los niveles altos ajustados por German (2026-10-24) para no dar un veredicto: Pablo proponía 'ya te conocías de otra vida' y 'almas gemelas, unión absoluta'. Se edita acá sin tocar código.",
+  "niveles": [
+    {"id": "baja", "desde": 0, "nombre": "Baja compatibilidad", "texto": "Acá hay un desafío para trabajar."},
+    {"id": "moderada", "desde": 30, "nombre": "Moderada", "texto": "Las dificultades aparecen, pero también hay entendimiento."},
+    {"id": "alta", "desde": 50, "nombre": "Alta compatibilidad", "texto": "Fluye más de lo que se traba."},
+    {"id": "muy_alta", "desde": 65, "nombre": "Muy alta compatibilidad", "texto": "Mucho fluye solo. Es fácil sentir que ya se conocían."},
+    {"id": "excepcional", "desde": 85, "nombre": "Excepcional", "texto": "Una afinidad poco común. Lo que construyan depende de ustedes."}
+  ]
+}

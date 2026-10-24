@@ -51,6 +51,7 @@ Todas aprobadas para implementación por German Villamarin (2026-10-07). Cada sp
 | [B11-colores-del-calendario](./B11-colores-del-calendario.md) | B6 + B4 | implemented |
 | [U3-circulo-sin-solapas](./U3-circulo-sin-solapas.md) | transversal + B7 | implemented |
 | [B12-compatibilidad-en-el-chat](./B12-compatibilidad-en-el-chat.md) | B7 + B9 | implemented |
+| [B13-niveles-de-compatibilidad](./B13-niveles-de-compatibilidad.md) | B9 + B12 | implemented |
 | [C13-invitacion-reutilizable](./C13-invitacion-reutilizable.md) | C (cambia C8 y C11) | implemented |
 | [R1-robustez-y-validaciones](./R1-robustez-y-validaciones.md) | transversal (API) | implemented |
 | [P2-privacidad-breaker](./P2-privacidad-breaker.md) | A6 + B9 + B7 | implemented |

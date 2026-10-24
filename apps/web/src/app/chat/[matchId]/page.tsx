@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Page, SectionTitle } from "@/components/ui";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import SystemsGrid, { globalCaption } from "@/components/SystemsGrid";
+import SystemsGrid, { globalCaption, NivelText } from "@/components/SystemsGrid";
 import {
   ChatMessage,
   CompatSummary,
@@ -138,6 +138,7 @@ function ChatContent() {
                   <span className="text-3xl font-semibold text-gold-300">{compat.global_pct}%</span>
                   <span className="text-xs text-slate-400">Compatibilidad global · {globalCaption(compat.systems).toLowerCase()}</span>
                 </p>
+                <NivelText nivel={compat.nivel} />
                 <SystemsGrid systems={compat.systems} axesGlobal={compat.axes_global} vinculos={compat.por_vinculo} />
                 {compat.approximate && (
                   <p className="text-xs text-slate-500">Astrología aproximada: sin hora exacta de nacimiento no se usan las casas.</p>
