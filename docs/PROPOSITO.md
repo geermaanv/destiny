@@ -86,6 +86,27 @@ El radar mira un vínculo; el sociograma muestra **todos tus vínculos juntos**,
 1. **Tu sociograma**: lo que vos dibujás, incluida gente que no está en Destiny. Es solo tuyo y nadie más lo ve.
 2. **El grafo real de Destiny** (quién está conectado con quién en la app): **nunca se muestra**. Ver la red de otro, o quién tiene a quién en su círculo íntimo, sería una invasión.
 
+### Fuentes de datos: ¿y WhatsApp?
+
+Idea evaluada (2026-10-24): analizar las conversaciones de WhatsApp para armar y entender la red de vínculos. Es probablemente la mejor fuente de datos sobre vínculos que existe, porque muestra comportamiento real (quién busca a quién, cuánto hablan, cuándo se alejan) y no depende de lo que la persona anota. **Decisión: no ahora, y nunca leyendo el contenido.**
+
+Por qué:
+
+- **Los otros no dieron su consentimiento.** Cada chat tiene mensajes de alguien que nunca aceptó que Destiny los lea. En Argentina, la Ley 25.326 trata los datos sobre la vida íntima como sensibles.
+- **Choca con los principios:** el mapa lo arma la persona, no un algoritmo; analizar el tono del otro es etiquetarlo; abre la puerta a la vigilancia ("subí los chats de mi pareja"); y a la IA no le mandamos datos personales.
+- **No hay acceso legítimo.** No existe ninguna API de WhatsApp para chats personales, ni de contenido ni de metadatos. La API de WhatsApp Business solo ve los mensajes del número de la empresa. Las librerías no oficiales (whatsapp-web.js, Baileys) violan las condiciones de WhatsApp y pueden hacer que bloqueen el número: descartadas.
+- **Confianza:** "Destiny lee tus WhatsApp" mata la marca.
+
+Lo que sí está a nuestro alcance:
+
+1. **Los datos que genera Destiny, con consentimiento:** lo que cada persona registra y cómo cambia, **las dos miradas sobre el mismo vínculo** (algo que un chat no tiene) y los resultados. Con miles de personas es un conocimiento único sobre qué hace sanos a los vínculos: el grafo, construido con permiso.
+2. **El chat de Destiny:** con la aceptación de los dos, se pueden medir metadatos (quién escribe primero, con qué frecuencia), nunca el contenido. Pasar a WhatsApp hace que perdamos esa información: es un costo a tener en cuenta, no un motivo para cambiar la decisión.
+3. **Preguntar en vez de leer:** "¿quién suele escribir primero, vos o Lucía?". Es menos preciso, pero hacerse la pregunta ya es reflexionar.
+4. **Mirar los propios datos, sin que Destiny los lea:** "Abrí Ajustes → Almacenamiento y datos → Administrar almacenamiento en WhatsApp: tus chats están ordenados por tamaño. ¿Los de arriba son los de tu círculo íntimo?".
+5. **Más adelante, exportación voluntaria:** la persona exporta un chat a mano (WhatsApp lo permite), el celular lo procesa sin que salga del teléfono, se queda solo con quién escribe y cuándo, y devuelve solo los propios patrones como espejo ("en este chat empezás 7 de cada 10 conversaciones, ¿lo sentís así?"). Requiere revisión legal antes, porque los horarios del otro también son datos suyos.
+
+Una fuente de datos que la gente entrega sabiendo para qué genera confianza; una que se obtiene por atrás la destruye. Para una app sobre vínculos sanos, la confianza es el producto.
+
 ### Límites
 
 - **Nunca etiqueta personas** ("tu amigo es tóxico"): habla de dinámicas, no del carácter del otro.
