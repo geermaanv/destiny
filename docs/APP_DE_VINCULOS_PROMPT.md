@@ -3,7 +3,7 @@
 > Prompt para pedirle a Claude el documento funcional de la app de vínculos (`docs/APP_DE_VINCULOS.md`). Conviene correrlo en dos pasos: primero la fase 1 (conceptos); elegir o combinar; después pedir la fase 2 (documento) sobre el concepto elegido.
 
 ```markdown
-Actuá como Principal Product Designer con foco en psicología conductual y en productos de mínima fricción, junto con un psicólogo clínico especializado en vínculos. Tu trabajo no es escribir un documento correcto: es encontrar una solución que no exista todavía y que sea mucho mejor que lo obvio.
+Actuá como Principal Product Designer con foco en psicología conductual, en productos de mínima fricción y en el diseño por sustracción (la escuela de Dieter Rams y Don Norman: quitar hasta que quede lo esencial), junto con un psicólogo clínico especializado en vínculos. Tu trabajo no es escribir un documento correcto: es encontrar una solución que no exista todavía, mucho mejor que lo obvio, y que parezca evidente una vez vista aunque haya requerido descartar docenas de alternativas.
 
 ## El desafío
 
@@ -14,6 +14,7 @@ Qué significa "increíble" acá:
 - Cambia algo real afuera de la pantalla: una conversación, un reencuentro, un vínculo reparado.
 - Tiene momentos que la gente cuenta a otros sin que se lo pidan.
 - Se siente humano, no una herramienta de gestión de contactos.
+- El software se aparta del camino: el valor ocurre en la vida real, no en la pantalla.
 
 ## Lo único que no se negocia
 
@@ -84,16 +85,19 @@ Respuestas de German (55 años), a tomar como guía fuerte, no como límite:
 
 ### Fase 1: explorar (antes de escribir el documento)
 
-1. **La solución obvia.** Describí en un párrafo lo que haría cualquiera (probablemente: una app con recordatorios, un mapa y un radar) y explicá por qué no alcanza para ser increíble.
+1. **Descartar lo obvio.** Listá las 5 soluciones que propondría casi cualquier diseñador (por ejemplo: un tablero tipo agenda de contactos, deslizadores de ánimo, recordatorios programados, encuestas después de cada encuentro, un diario de texto) y explicá por qué fallan en la vida real (fatiga, artificialidad, volver transaccional un afecto). Quedan prohibidas en su forma obvia: una de ellas solo puede volver si la transformás tanto que deja de ser esa solución, y explicás por qué. Algunas ideas de partida y respuestas de German (por ejemplo, que la app recuerde y ayude a estar atento) se parecen a estas: tomalas como necesidades, no como soluciones.
 2. **Las personas.** Imaginá tres personas concretas de Argentina, de entre 40 y 60 años y con vidas distintas, y qué les pasa con sus vínculos. Diseñá para ellas.
-3. **Romper el marco.** Pensá desde preguntas como:
+3. **Primeros principios y romper el marco.** Pensá desde preguntas como:
+   - ¿Cómo sostuvieron las personas vínculos de confianza durante miles de años, antes del software? ¿Cuál es la unidad mínima de atención que genera reciprocidad y seguridad?
+   - ¿Cómo se sabe cómo quedó alguien después de un encuentro sin pedirle que complete nada?
    - ¿Qué hacen las personas que cuidan muy bien sus vínculos, sin ninguna app?
    - ¿Y si casi nunca hubiera que abrir la app? ¿Y si no fuera una app?
    - ¿Qué se puede aprender de otros campos (medicina preventiva, jardinería, rituales, diarios personales, Spotify Wrapped, entrenadores personales)?
    - ¿Qué momento de la vida de un vínculo nadie está acompañando hoy?
    - ¿Qué haría falta para que la persona sienta que la app la conoce, sin haberle contado casi nada?
 4. **Conceptos.** Proponé entre 5 y 7 conceptos de producto realmente distintos entre sí, no variaciones de uno. Para cada uno: la idea en una frase, cómo funciona, el momento "mágico", cuánto esfuerzo pide y su mayor riesgo. Incluí al menos uno que suene demasiado audaz.
-5. **Evaluar.** Compará los conceptos contra estos criterios: impacto real en los vínculos, esfuerzo para la persona, respeto de los principios, si dan ganas de contarlo y viabilidad. Elegí uno o una combinación, y explicá por qué.
+5. **Sustraer.** Para cada concepto, buscá su versión más extrema y simple: ¿qué pasa si le sacás todo menos una cosa? Sometelos a estrés: ¿cuál pide menos gestos, menos carga mental y menos datos cargados a mano, y aun así entrega el valor?
+6. **Evaluar.** Compará los conceptos contra estos criterios: impacto real en los vínculos, esfuerzo para la persona, respeto de los principios, si dan ganas de contarlo, si parece evidente una vez visto y viabilidad. Elegí uno o una combinación, y explicá por qué.
 
 Si este prompt se corre en dos pasos, frená acá y esperá la elección.
 
@@ -103,12 +107,15 @@ Sobre el concepto elegido, escribí un documento para discutir ideas, con todo e
 
 Una estructura posible, que podés cambiar si el concepto pide otra:
 - El problema y la tesis.
+- La mecánica central: el gesto, la interacción o la metáfora única que resuelve la mayor parte de los pilares. Todo lo demás se justifica contra ella.
 - Qué hace sano a un vínculo y qué hace la solución con cada pilar, con la evidencia (citá la fuente y qué tan sólida es, sin inventar datos).
 - Cómo sabe cómo está cada vínculo preguntando lo mínimo, y cuántas preguntas por semana le hace a la persona.
 - Las funciones: qué hace cada una, cuándo aparece, qué pide, qué devuelve y con qué reglas.
 - Casos de punta a punta, contados como historias: después de un encuentro; un conflicto o un distanciamiento largo; la revisión de la red cada tanto; invitar al otro a sumar su mirada.
 - Alcance de la primera versión, las hipótesis más riesgosas y el experimento más barato para validar cada una antes de construir.
 - Cómo sabemos que funciona en la vida real.
+- Cómo se aparta el software del camino: en qué momentos la app no aparece, y cómo lleva a la persona a la vida real lo antes posible.
+- Los riesgos de la simplicidad: dónde se queda corta y cómo se compensa sin sumar complejidad.
 - Privacidad, ética y riesgos de mal uso (vigilar a la pareja, rumiación, sesgo hacia los días malos), en términos de quién ve qué.
 - Un modelo de negocio sin publicidad ni venta de datos, que no premie la dependencia.
 - Entre 5 y 7 preguntas duras para desafiar el documento, respondidas con tu mejor argumento, marcando cuáles quedan abiertas.
