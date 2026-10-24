@@ -7,7 +7,7 @@
 
 ## Problema
 
-El número global solo dice de dónde sale ("Promedio de astrología y test"). Pablo mandó una escala de cinco niveles para interpretarlo. Sus rangos se respetan tal cual; los textos de los dos niveles altos ("ya te conocías de otra vida", "almas gemelas, unión absoluta") se ajustan para no dar un veredicto (principio "herramienta, no oráculo", `docs/PROPOSITO.md`) y para que valgan también en amistad y trabajo, porque el número global es el mismo para los cuatro vínculos.
+El número global solo dice de dónde sale ("Promedio de astrología y test"). Pablo mandó una escala de cinco niveles para interpretarlo. Sus rangos se respetan tal cual; los textos de los dos niveles altos ("ya te conocías de otra vida", "almas gemelas, unión absoluta") se ajustan para no dar un veredicto (principio "herramienta, no oráculo") y para que valgan también en amistad y trabajo, porque el número global es el mismo para los cuatro vínculos.
 
 ## Puntos abiertos
 

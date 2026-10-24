@@ -175,12 +175,10 @@ Fuente: `docs/referencias/backlog-pablo-2026-10.md` (8 líneas de Pablo + amplia
 - [ ] Ideas de viralización: "¿Cuánto fluimos?" (Compartir v2), imagen para historias, @ y QR.
 - [ ] Pablo: qué pasa sin test, título "Química y atracción", modelo de numerología, Atracción en Indagar, fotos por elemento, gratis 6 meses y nombre del dominio. Todo junto, con los textos a revisar, en la planilla `docs/referencias/pendientes-pablo/Destiny-Pendientes-con-Pablo.xlsx` (2026-10-23).
 
-**Propósito y principios (`docs/PROPOSITO.md`, 2026-10-23)**
-- [ ] Revisar el documento con Pablo; la dirección "el vínculo como centro" cambia la tesis del pitch y se decide con él.
+**Principios y tono en Destiny ("herramienta, no oráculo", 2026-10-23)**
 - [x] Niveles de compatibilidad con frase junto al número global (spec B13, rangos de Pablo, textos ajustados).
 - [ ] Antes de la salida (decidir esta semana): número de compatibilidad con su origen y qué tan seguro es, aviso visible, mostrar también la invitación floja, rompehielos como sugerencia, textos que proponen ("¿te pasa?").
 - [ ] Después de la salida: "esto no me representa", mandar hacia afuera, filtrar lo que engancha, usar Destiny sin astrología.
-- [ ] En paralelo: sumar a un profesional de la psicología y diseñar el circuito del vínculo (sociograma como mapa, registro por vínculo, radar, pregunta para conversar).
 
 **Hallazgos del agente breaker (2026-10-22)**
 - [x] Robustez y validaciones: datos de nacimiento inválidos, Descubrir tolerante, fechas extremas, textos con nulos/invisibles, fotos por contenido, doble toque, webhook (spec R1).

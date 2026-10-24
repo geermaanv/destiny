@@ -1,51 +1,34 @@
-# Propósito y principios de Destiny
+# App de vínculos: propósito y principios
 
-> Propuesta de German Villamarin (2026-10-23), para revisar con Pablo. Los principios y el tono guían el producto desde ya; la dirección de "Destiny desde el objetivo" se decide con Pablo antes de construirla.
+> Idea de German Villamarin (2026-10-23), en exploración. Es otra app, una app de vínculos. Todavía no tiene nombre: en este documento se la llama "la app".
 
 ## Propósito
 
-**Destiny es una herramienta para que las personas se entiendan y se relacionen mejor. Ofrece una mirada, no la verdad: la decisión siempre es de cada uno.**
+**La app es una herramienta para que las personas se entiendan y cuiden mejor sus vínculos. Ofrece una mirada, no la verdad: la decisión siempre es de cada uno.**
 
 En corto: **herramienta, no oráculo.**
 
-Por qué importa: el estudio más largo sobre felicidad (Harvard, más de 85 años) concluye que lo que más predice la salud y la felicidad es la calidad de los vínculos. Hoy casi todos nuestros vínculos dependen del azar, de la cercanía y de la primera impresión. Destiny quiere ayudar a entenderlos, sin reemplazar el criterio de nadie.
+Por qué importa: el estudio más largo sobre felicidad (Harvard, más de 85 años) concluye que lo que más predice la salud y la felicidad es la calidad de los vínculos. Hoy casi todos nuestros vínculos dependen del azar, de la cercanía y de la primera impresión. La app quiere ayudar a entenderlos, sin reemplazar el criterio de nadie.
 
 ## Principios
 
-1. **Nunca la única voz.** Destiny se suma a la intuición, la experiencia, los amigos, la terapia y otras herramientas; no las reemplaza. Cuando corresponde, manda hacia afuera.
+1. **Nunca la única voz.** La app se suma a la intuición, la experiencia, los amigos, la terapia y otras herramientas; no las reemplaza. Cuando corresponde, manda hacia afuera.
 2. **Una mirada, no un veredicto.** Ningún número ni texto dice "es tu persona" o "no va". Dice "esto puede fluir, esto puede costar, fijate vos".
 3. **Pensamiento propio.** Más preguntas que respuestas. La persona puede decir "esto no me representa", y eso tiene peso.
-4. **Transparencia sobre los límites.** Decimos de dónde sale cada cosa (la carta, el test, un cálculo) y qué tan seguro es. La astrología es un lenguaje para pensarse, no una ciencia que predice.
-5. **Éxito no es dependencia.** Si alguien se entiende mejor y usa menos la app, ganamos. No medimos el éxito por el tiempo que la gente pasa adentro.
-
-## Qué cambia en la app
-
-### Antes de salir a producción (noviembre)
-
-- **El número de compatibilidad acompaña, no manda.** Cada número dice de dónde sale y qué tan confiable es (por ejemplo, "astrología + test, sin hora exacta: aproximado"). Lo bajo no se presenta como "no va", sino como "acá puede costar, y eso también se trabaja".
-- **La invitación muestra también el resultado flojo**, bien explicado. Hoy se oculta.
-- **El aviso "no predice el futuro ni decide por vos" se ve**: al lado del número, en Círculo y en el chat. Hoy está en letra chica al pie.
-- **El rompehielos es una sugerencia** que la persona elige, edita o descarta. Hoy se manda solo como primer mensaje.
-- **Los textos proponen en vez de afirmar** ("tu carta sugiere…, ¿te pasa?" en lugar de "sos así"), en Mi carta, Tu día e Indagar.
-
-### Después de salir
-
-- **"Esto no me representa"** en los textos, para discrepar y para aprender de eso.
-- **Mandar hacia afuera**: "hablalo con esa persona", "preguntale a alguien que te conozca", "esto vale la pena verlo con un profesional".
-- **Filtrar lo que engancha**: las preguntas extra por invitar, las rachas y las alertas en tiempo real pasan por la pregunta "¿esto ayuda a la persona o solo a nosotros?".
-- **Usar Destiny sin astrología**: poder apagarla y quedarse con el test, diciendo honestamente qué tiene más y menos sustento. Antes de sumar sistemas (numerología), pensar que cada uno le da más autoridad al número.
+4. **Transparencia sobre los límites.** Decimos de dónde sale cada cosa y qué tan seguro es. Si se usa la astrología, es un lenguaje para pensarse, no una ciencia que predice.
+5. **Éxito no es dependencia.** Si alguien cuida mejor sus vínculos y usa menos la app, ganamos. No medimos el éxito por el tiempo que la gente pasa adentro.
 
 ## Qué medimos
 
-Además de la retención: si la gente siente que **se entiende mejor y se relaciona mejor**. Lo que retiene pero genera dependencia no cuenta como éxito.
+Si la gente siente que **se entiende mejor y que sus vínculos están mejor**, además de si vuelve. Lo que retiene pero genera dependencia no cuenta como éxito.
 
-## Hacia dónde vamos: la salud de los vínculos
+## La salud de los vínculos
 
-Evolución de Destiny, después de la salida. Hoy Destiny habla de **compatibilidad**: algo fijo, que sale de cuándo naciste, y que dice con quién podrías fluir. La **salud de un vínculo** depende de lo que las personas hacen, cambia con el tiempo y se puede trabajar.
+La compatibilidad es algo fijo, que dice con quién podrías fluir. La **salud de un vínculo** depende de lo que las personas hacen, cambia con el tiempo y se puede trabajar.
 
 > **La compatibilidad dice con quién. La salud del vínculo dice cómo.**
 
-Con esto Destiny pasa de ser una app para encontrar gente compatible a ser **una herramienta para cuidar tus vínculos**, los que ya tenés y los que vas a conocer. El matchmaking queda como una parte, no como el centro.
+La app no es para encontrar gente compatible: es **una herramienta para cuidar tus vínculos**, los que ya tenés y los que vas a conocer.
 
 ### Qué hace sano a un vínculo
 
@@ -65,26 +48,40 @@ Además, a nivel de la persona: tener una red variada, no depender de una sola p
 Cada vínculo se muestra como un radar con esas dimensiones. Reglas para que siga siendo una herramienta y no un juez:
 
 - **Sin número total.** El radar muestra una forma, no un puntaje: no hay "tu vínculo está en 64" ni ranking de vínculos.
-- **Sale de lo que la persona registra.** Preguntas cortas y espaciadas ("después de ver a Juan, ¿cómo te sentiste?"), también sobre lo bueno, no solo lo malo. Destiny devuelve patrones, no diagnósticos.
+- **Sale de lo que la persona registra.** Preguntas cortas y espaciadas ("después de ver a Juan, ¿cómo te sentiste?"), también sobre lo bueno, no solo lo malo. La app devuelve patrones, no diagnósticos.
 - **Dos miradas, si las dos personas quieren.** Lo más valioso es superponer el radar de cada uno sobre el mismo vínculo y ver dónde coinciden y dónde no. Nada se comparte sin que las dos lo acepten.
 - **En el tiempo.** Comparar con hace unos meses importa más que la forma de hoy.
 - **Termina en una conversación.** Cada dimensión baja viene con una pregunta para hablar con esa persona, no con una conclusión.
-- **La astrología como contexto, no como causa.** Sirve para despersonalizar diferencias ("procesa distinto que vos"), no para decir si un vínculo es sano.
+- **La astrología, si se usa, como contexto y no como causa.** Sirve para despersonalizar diferencias ("procesa distinto que vos"), no para decir si un vínculo es sano.
 
 ### El mapa: un sociograma de tus vínculos
 
 El radar mira un vínculo; el sociograma muestra **todos tus vínculos juntos**, tu ecosistema. Son dos niveles: el mapa (paso "mapear" del circuito) y el zoom (paso "mirar uno"). Tocás a alguien en el mapa y se abre su radar.
 
 - **Vos en el centro, con tres círculos**: íntimo, cercano y amplio. Se basa en el "modelo del convoy" de Kahn y Antonucci, que también se usa como ejercicio en terapia.
-- **Cada persona la ubica uno mismo, no la app.** Si Destiny calculara dónde va cada uno, sería un ranking de afectos. Decidir dónde poner a alguien ya es reflexionar, y moverlo con el tiempo también dice algo.
+- **Cada persona la ubica uno mismo, no la app.** Si la app calculara dónde va cada uno, sería un ranking de afectos. Decidir dónde poner a alguien ya es reflexionar, y moverlo con el tiempo también dice algo.
 - **Qué muestra:** el grosor de la línea según cuánto contacto hay (por lo que registrás), una línea punteada para el vínculo que se está alejando y **patrones de la red**, no de las personas: "dos personas en lo íntimo", "casi todo es pareja y familia". Una red concentrada en una sola persona es frágil, y ahí se conecta con la soledad.
 - **Qué no muestra:** colores de "te hace bien / te hace mal" por persona (eso es etiquetar al otro; queda en su radar, como dinámica), ni puntajes por persona o de la red.
-- **Invitar con sentido:** en tu mapa hay gente que no está en Destiny. Si querés ver su mirada sobre el vínculo, la invitás. Sin forzar nada.
+- **Invitar con sentido:** en tu mapa hay gente que no está en la app. Si querés ver su mirada sobre el vínculo, la invitás. Sin forzar nada.
 
 **Privacidad: dos grafos que no se mezclan.**
 
-1. **Tu sociograma**: lo que vos dibujás, incluida gente que no está en Destiny. Es solo tuyo y nadie más lo ve.
-2. **El grafo real de Destiny** (quién está conectado con quién en la app): **nunca se muestra**. Ver la red de otro, o quién tiene a quién en su círculo íntimo, sería una invasión.
+1. **Tu sociograma**: lo que vos dibujás, incluida gente que no está en la app. Es solo tuyo y nadie más lo ve.
+2. **El grafo real de la app** (quién está conectado con quién): **nunca se muestra**. Ver la red de otro, o quién tiene a quién en su círculo íntimo, sería una invasión.
+
+### Recordatorios que ayuden de verdad
+
+No "hace 30 días que no hablás con Juan", que genera culpa y se apaga:
+
+- **Pocos y elegidos:** solo para la gente que marcaste como importante.
+- **El ritmo lo ponés vos** para cada persona; avisa cuando te pasás de tu ritmo, no de uno genérico.
+- **Con un motivo, no con culpa:** "Lucía empezaba un trabajo nuevo", "se acerca el cumple de Martín", a partir de lo que anotaste.
+- **Te ayuda a dar el paso sin hablar por vos:** una idea para arrancar, no un mensaje armado por la IA.
+- **Aprende de lo que hacés:** si ignorás varios avisos sobre alguien, pregunta si cambió el vínculo. A veces alejarse está bien.
+- **Pregunta cómo te fue** después de hablar, y eso alimenta el mapa y el radar.
+- **También avisa lo bueno:** "este mes hablaste con todo tu círculo íntimo".
+
+Se puede probar a mano antes de construir: 10 a 20 conocidos eligen 5 personas y su ritmo, se les manda el recordatorio por WhatsApp con el motivo y al mes se les pregunta si les sirvió.
 
 ### Fuentes de datos: ¿y WhatsApp?
 
@@ -92,17 +89,17 @@ Idea evaluada (2026-10-24): analizar las conversaciones de WhatsApp para armar y
 
 Por qué:
 
-- **Los otros no dieron su consentimiento.** Cada chat tiene mensajes de alguien que nunca aceptó que Destiny los lea. En Argentina, la Ley 25.326 trata los datos sobre la vida íntima como sensibles.
+- **Los otros no dieron su consentimiento.** Cada chat tiene mensajes de alguien que nunca aceptó que la app los lea. En Argentina, la Ley 25.326 trata los datos sobre la vida íntima como sensibles.
 - **Choca con los principios:** el mapa lo arma la persona, no un algoritmo; analizar el tono del otro es etiquetarlo; abre la puerta a la vigilancia ("subí los chats de mi pareja"); y a la IA no le mandamos datos personales.
 - **No hay acceso legítimo.** No existe ninguna API de WhatsApp para chats personales, ni de contenido ni de metadatos. La API de WhatsApp Business solo ve los mensajes del número de la empresa. Las librerías no oficiales (whatsapp-web.js, Baileys) violan las condiciones de WhatsApp y pueden hacer que bloqueen el número: descartadas.
-- **Confianza:** "Destiny lee tus WhatsApp" mata la marca.
+- **Confianza:** "esta app lee tus WhatsApp" mata la marca.
 
 Lo que sí está a nuestro alcance:
 
-1. **Los datos que genera Destiny, con consentimiento:** lo que cada persona registra y cómo cambia, **las dos miradas sobre el mismo vínculo** (algo que un chat no tiene) y los resultados. Con miles de personas es un conocimiento único sobre qué hace sanos a los vínculos: el grafo, construido con permiso.
-2. **El chat de Destiny:** con la aceptación de los dos, se pueden medir metadatos (quién escribe primero, con qué frecuencia), nunca el contenido. Pasar a WhatsApp hace que perdamos esa información: es un costo a tener en cuenta, no un motivo para cambiar la decisión.
+1. **Los datos que genera la app, con consentimiento:** lo que cada persona registra y cómo cambia, **las dos miradas sobre el mismo vínculo** (algo que un chat no tiene) y los resultados. Con miles de personas es un conocimiento único sobre qué hace sanos a los vínculos, construido con permiso.
+2. **Un chat propio de la app, si lo tiene:** con la aceptación de los dos, se pueden medir metadatos (quién escribe primero, con qué frecuencia), nunca el contenido.
 3. **Preguntar en vez de leer:** "¿quién suele escribir primero, vos o Lucía?". Es menos preciso, pero hacerse la pregunta ya es reflexionar.
-4. **Mirar los propios datos, sin que Destiny los lea:** "Abrí Ajustes → Almacenamiento y datos → Administrar almacenamiento en WhatsApp: tus chats están ordenados por tamaño. ¿Los de arriba son los de tu círculo íntimo?".
+4. **Mirar los propios datos, sin que la app los lea:** "Abrí Ajustes → Almacenamiento y datos → Administrar almacenamiento en WhatsApp: tus chats están ordenados por tamaño. ¿Los de arriba son los de tu círculo íntimo?".
 5. **Más adelante, exportación voluntaria:** la persona exporta un chat a mano (WhatsApp lo permite), el celular lo procesa sin que salga del teléfono, se queda solo con quién escribe y cuándo, y devuelve solo los propios patrones como espejo ("en este chat empezás 7 de cada 10 conversaciones, ¿lo sentís así?"). Requiere revisión legal antes, porque los horarios del otro también son datos suyos.
 
 Una fuente de datos que la gente entrega sabiendo para qué genera confianza; una que se obtiene por atrás la destruye. Para una app sobre vínculos sanos, la confianza es el producto.
@@ -110,17 +107,15 @@ Una fuente de datos que la gente entrega sabiendo para qué genera confianza; un
 ### Límites
 
 - **Nunca etiqueta personas** ("tu amigo es tóxico"): habla de dinámicas, no del carácter del otro.
-- **Privacidad extrema**: lo que alguien registra sobre otra persona nunca se muestra, nunca se usa para el matchmaking y nunca va a la IA con nombres.
+- **Privacidad extrema**: lo que alguien registra sobre otra persona nunca se muestra, nunca se usa para otra cosa y nunca va a la IA con nombres.
 - **Saber cuándo mandar afuera**: si un patrón se repite, sugerir hablarlo o ir a terapia. Ante señales de violencia o control, no analizar: dar recursos (en Argentina, Línea 144).
-- **Riesgos a cuidar**: que se use para vigilar a la pareja, que evaluar todo el tiempo genere rumiación, que solo se anoten los días malos y que Destiny parezca un terapeuta, que no es.
+- **Riesgos a cuidar**: que se use para vigilar a la pareja, que evaluar todo el tiempo genere rumiación, que solo se anoten los días malos y que la app parezca un terapeuta, que no es.
 
 ### Cómo sabemos si funciona
 
 Si después de unos meses la persona dice que sus vínculos están mejor: que habló algo que no hablaba, que reparó algo o que se animó a cortar algo que la lastimaba.
 
-## Destiny desde el objetivo
-
-Ejercicio en paralelo: cómo sería Destiny si se diseñara desde el propósito, y no desde lo ya construido. **No cambia la salida de noviembre**, que va con la versión actual y los cambios de tono de arriba. Esto es la dirección para la fase siguiente.
+## La app desde el objetivo
 
 ### El problema
 
@@ -128,21 +123,21 @@ La gente no entiende por qué sus vínculos funcionan o se rompen, repite patron
 
 ### El centro es el vínculo, no el perfil
 
-La unidad de Destiny pasa a ser **el vínculo entre dos personas** (pareja, amistad, socio, familia), y la app existe para que esos vínculos estén mejor.
+La unidad de la app es **el vínculo entre dos personas** (pareja, amistad, socio, familia), y la app existe para que esos vínculos estén mejor.
 
 ### Cuándo llega la gente
 
-En un **momento de vínculo**: una pelea, una relación que empieza, un amigo que se aleja, un equipo nuevo, una separación. La entrada a la app es ese momento.
+En un **momento de vínculo**: una pelea, un vínculo que empieza, un amigo que se aleja, un equipo nuevo, una separación. La entrada a la app es ese momento.
 
 ### El circuito
 
-1. **Entenderte:** cómo te vinculás (patrones, cómo querés, cómo discutís). La carta y el test de Pablo funcionan como lentes para pensarte, no como verdad.
+1. **Entenderte:** cómo te vinculás (patrones, cómo querés, cómo discutís). Un test de personalidad y, para quien quiera, la carta astral funcionan como lentes para pensarte, no como verdad.
 2. **Mapear:** tus vínculos importantes, a quién cuidás y a quién descuidás.
 3. **Mirar uno:** el radar, solo o con la otra persona.
 4. **Conversar:** una pregunta o una guía para hablar. Lo que cambia algo pasa afuera de la app.
 5. **Volver a mirar:** semanas después, ¿cambió algo?
 
-El ritmo es semanal o mensual, no diario: que vuelvas cuando sirve.
+El ritmo es semanal o mensual, no diario: que vuelvas cuando sirve. Los recordatorios acompañan ese ritmo.
 
 ### Crecimiento desde el valor
 
@@ -150,12 +145,12 @@ Para ver la mirada del otro hay que invitarlo: **invitar es parte del valor**, n
 
 ### Conocer gente nueva
 
-Pasa a ser una extensión natural: cuando Destiny sabe cómo te vinculás, ayuda a conocer pareja y también amistades (la soledad muchas veces es falta de amigos). El matchmaking mejora porque se basa en cómo te vinculás de verdad, no solo en la carta.
+Puede ser una extensión natural: cuando la app sabe cómo te vinculás, puede ayudar a conocer pareja y también amistades (la soledad muchas veces es falta de amigos), basándose en cómo te vinculás de verdad.
 
 ### Qué exige para ser serio
 
 - **Profesionales adentro:** psicólogos que revisen el enfoque, las preguntas y los límites.
-- **La astrología como una lente entre varias** y opcional, junto con el test de personalidad y, a futuro, los estilos de apego. Es el gancho cultural, no la base.
+- **Varias lentes y ninguna obligatoria:** test de personalidad, estilos de apego y, para quien quiera, astrología. Son formas de pensarse, no la base.
 - **Seguridad:** ante señales de violencia o control, recursos (Línea 144) y no análisis.
 - **Datos sensibles:** lo que se anota sobre otro no se vende ni se usa para nada más.
 
@@ -165,27 +160,11 @@ Sin publicidad y sin vender datos. Más adelante, cobrar por profundidad: progra
 
 ### Cómo se mide
 
-Indicador principal: **conversaciones que importan** (cuántas personas hablaron algo con alguien gracias a Destiny). Después, si sienten que sus vínculos mejoraron, y recién ahí la retención.
+Indicador principal: **conversaciones que importan** (cuántas personas hablaron algo con alguien gracias a la app). Después, si sienten que sus vínculos mejoraron, y recién ahí la retención.
 
 ### En una línea
 
-> **Destiny te ayuda a entender y cuidar tus vínculos: los que tenés y los que vas a tener.**
-
-### Qué pasa con lo que ya existe
-
-Casi nada se tira; se reordena:
-
-- **Mi carta y el test** son la parte de "entenderte" (ya existen).
-- **Círculo** es la semilla del mapa de vínculos.
-- **Las invitaciones** son cómo se suma la otra persona (ya existen).
-- **La compatibilidad** queda como una lente, no como el número que decide.
-- **Lo nuevo** es el núcleo: el registro por vínculo, el radar y la pregunta para conversar.
-
-### Plan
-
-- **Noviembre:** salida con la versión actual, sí o sí, con los cambios de tono.
-- **En paralelo:** acordar con Pablo la dirección, sumar a un profesional de la psicología y diseñar el circuito del vínculo.
-- **Después de la salida:** construir el circuito del vínculo con lo que aprendamos de los primeros usuarios.
+> **Una app que te ayuda a entender y cuidar tus vínculos: los que tenés y los que vas a tener.**
 
 ## Qué existe parecido
 
@@ -195,11 +174,11 @@ Relevamiento rápido del 2026-10-23, con datos públicos (prensa, comunicados y 
 
 | Servicio | Qué cubre | Cómo le va | Qué no cubre |
 |---|---|---|---|
-| **Paired** (Reino Unido) | Preguntas diarias, ejercicios y contenido de expertos para parejas. | Seed de US$3,6M (2021), con 5.000 suscriptores pagos en ese momento. Hoy dice tener más de 4M de parejas. Un estudio independiente informa un 36% de mejora en la calidad de la relación en 3 meses. | Solo pareja. No hay autoconocimiento ni otros vínculos. |
+| **Paired** (Reino Unido) | Preguntas diarias, ejercicios y contenido de expertos para parejas. | Seed de US$3,6M (2021), con 5.000 suscriptores pagos en ese momento. Hoy dice tener más de 4M de parejas. Un estudio independiente informa un 36% de mejora en la calidad de la pareja en 3 meses. | Solo pareja. No hay autoconocimiento ni otros vínculos. |
 | **Gottman Connect** (EE.UU.) | Evaluación del vínculo con base científica (el "Love Lab" de Gottman), plan personalizado y coach, también para terapeutas. | Respaldado por la marca y la investigación de Gottman. No hay cifras públicas de usuarios. | Solo pareja. Es caro y clínico. |
 | **Lasting** (EE.UU.) | Consejería de pareja por app, por suscripción. | Lo compró Talkspace en 2020 por US$10,7M y hoy es parte de su plataforma de terapia. | Solo pareja. Quedó dentro de un servicio de terapia. |
 | **Relish** (EE.UU.) | Plan semanal de entrenamiento de pareja con coach por chat, a US$100 por año para los dos. | Levantó US$7,2M, con "miles" de suscriptores pagos. | Solo pareja. |
-| **Wefeel** (España) | Actividades para hablar de temas difíciles y compartir emociones. Fundada por psicólogas. | Más de 700.000 usuarios, presencia en México, Colombia y Chile y una ronda de €500.000. A €5 por mes. El 86% dice haber mejorado su relación. | Solo pareja. Sin astrología ni otros vínculos. |
+| **Wefeel** (España) | Actividades para hablar de temas difíciles y compartir emociones. Fundada por psicólogas. | Más de 700.000 usuarios, presencia en México, Colombia y Chile y una ronda de €500.000. A €5 por mes. El 86% dice que su pareja mejoró. | Solo pareja. Sin otros vínculos. |
 
 ### Astrología y compatibilidad
 
@@ -225,20 +204,14 @@ Relevamiento rápido del 2026-10-23, con datos públicos (prensa, comunicados y 
 ### Qué aprendemos
 
 - **El mercado existe y paga.** Las apps de pareja cobran entre €5 por mes y US$100 por año, y tienen estudios que muestran mejoras. Pero son negocios medianos: Lasting se vendió por US$10,7M.
-- **La astrología tiene alcance masivo** (Co-Star: 30M de registrados), pero se queda en entretenimiento con tono de oráculo, justo lo que Destiny no quiere ser.
+- **La astrología tiene alcance masivo** (Co-Star: 30M de registrados), pero se queda en entretenimiento con tono de oráculo, justo lo que esta app no quiere ser.
 - **La soledad y la amistad están creciendo** (Timeleft, el relanzamiento de Bumble BFF), aunque todos se enfocan en conocer gente nueva, no en cuidar a la que ya tenés.
 - **Los mapas de vínculos son muy nuevos** y se quedan en "acordate de escribirle". Ninguno mira la salud del vínculo ni suma la mirada de la otra persona.
 
 ### El hueco
 
-No encontramos a nadie que junte las cuatro cosas: **autoconocimiento** (con la astrología como lente y no como oráculo), **todos los vínculos** (no solo pareja), **la mirada de las dos personas** sobre cada vínculo, y **el mapa de tu red**. Tampoco hay nada fuerte hecho desde y para Latinoamérica; Wefeel es lo más cercano, y es de España y solo de pareja.
+No encontramos a nadie que junte las cuatro cosas: **autoconocimiento** (con lentes como el test de personalidad o la astrología, nunca como oráculo), **todos los vínculos** (no solo pareja), **la mirada de las dos personas** sobre cada vínculo, y **el mapa de tu red**. Tampoco hay nada fuerte hecho desde y para Latinoamérica; Wefeel es lo más cercano, y es de España y solo de pareja.
 
-Hay dos señales a tener en cuenta. Paired y Wefeel muestran que funciona tener **psicólogos y estudios de impacto** detrás, cosa que Destiny todavía no tiene. Y Co-Star y The Pattern muestran que la astrología trae gente, pero sola no alcanza para mejorar un vínculo.
+Hay dos señales a tener en cuenta. Paired y Wefeel muestran que funciona tener **psicólogos y estudios de impacto** detrás: la app los necesita desde el principio. Y Co-Star y The Pattern muestran que la astrología trae gente, pero sola no alcanza para cuidar un vínculo.
 
 Fuentes: [Paired, seed 2021](https://paired.com/press/paired-announces-dollar36-million-seed-round), [Paired, perfil](https://bitscale.ai/directory/paired), [Gottman Love Lab](https://www.gottman.com/love-lab/), [Talkspace compra Lasting](https://www.businesswire.com/news/home/20201112005199/en/Talkspace-Announces-Acquisition-of-Leading-Relationship-Counseling-App-Lasting), [Relish](https://alleywatch.com/2020/04/relish-couples-relationship-training-app-funding-lesley-eccles/), [Wefeel](https://elreferente.es/?p=106507), [Co-Star](https://www.cityam.com/?p=2090394), [Midjourney compra Co-Star](https://www.producthunt.com/p/midjourney/midjourney-acquires-astrology-startup-co-star), [The Pattern](https://apps.apple.com/us/app/-/id1071085727), [Timeleft](https://www.azfamily.com/2025/01/30/want-meet-new-people-app-organizes-dinners-with-strangers-phoenix-area), [Bumble BFF](https://techcrunch.com/2025/09/18/bumble-bffs-revamped-app-is-here-focusing-on-friend-groups-and-community-building), [Dex](https://guide.getdex.com), [Bond](https://apps.apple.com/app/id6453560385), [Orbits](https://builder.aws.com/content/3Asf5dF2dX4xULLCxKVKukuxepY/aideas-orbits-the-ultimate-social-life-manager).
-
-## Para hablar con Pablo
-
-Esto no choca con la visión del pitch (empezar por las citas, con el grafo de compatibilidad como ventaja), pero cambia el énfasis: la sinastría, el test y Círculo son las herramientas, y estos principios definen cómo se usan y con qué tono. Conviene acordarlo explícitamente, porque define cientos de decisiones chicas.
-
-"Destiny desde el objetivo" va más allá: cambia la tesis del pitch, de "las citas como puerta de entrada" a "el vínculo como centro". La tesis es de Pablo, así que esa dirección se decide con él antes de construirla.
